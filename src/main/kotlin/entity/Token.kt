@@ -1,3 +1,4 @@
+package entity
 /**
  * class modelling the tokens
  * @param color of the token

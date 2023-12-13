@@ -1,3 +1,4 @@
+package entity
 /**
  * enum class for the different Token colors
  */

@@ -1,4 +1,4 @@
-import entity.Tile
+package entity
 /**
  * class modelling the GameBoard consisting of Tiles and Tokens
  * @property gameBoardTiles represents tiles on the board

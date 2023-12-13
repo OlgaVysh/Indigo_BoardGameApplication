@@ -1,4 +1,4 @@
-import entity.Player
+package entity
 
 /**
  * class modelling the coordinate of a tile on the board
