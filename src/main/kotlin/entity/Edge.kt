@@ -1,1 +1,9 @@
-enum class Edge {}
+enum class Edge {
+    ZERO,
+    ONE,
+    TWO,
+    THREE,
+    FOUR,
+    FIVE
+
+}

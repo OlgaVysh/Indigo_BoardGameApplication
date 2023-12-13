@@ -1,1 +1,5 @@
-class GemColor {}
+enum class GemColor {
+    AMBER,
+    EMERALD,
+    SAPPHIRE
+}

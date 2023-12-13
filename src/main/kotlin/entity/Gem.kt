@@ -1,1 +1,1 @@
-class Gem {}
+class Gem(val gemColor: GemColor) {}
