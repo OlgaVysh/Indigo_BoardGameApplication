@@ -1,8 +1,5 @@
 package entity
 
-import GameBoard
-import Token
-
 /**
  * class modelling the game state of an Indigo game, acts like an element in a doubly linked list
  *

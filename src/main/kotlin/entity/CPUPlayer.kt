@@ -1,6 +1,5 @@
 package entity
 
-import TokenColor
 import java.util.Date
 
 /**
