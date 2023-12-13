@@ -1,3 +1,4 @@
+package entity
 enum class Edge {
     ZERO,
     ONE,
