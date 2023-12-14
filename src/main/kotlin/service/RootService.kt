@@ -15,4 +15,6 @@ class RootService {
      *  @property networkService The NetworkService
      */
     val networkService = NetworkService(this)
+
+    val networkMappingService = NetworkMappingService(this)
 }
