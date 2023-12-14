@@ -4,11 +4,7 @@ package entity
  * class modelling the game state of an Indigo game, acts like an element in a doubly linked list
  *
  * @constructor creates an instance of Indigo with the given parameters
- *
- * @param players [List] of [Player] entities involved in the game
- * @param playerIndex [Int] serving as an indicator of whose turn it is, defaults to 0
- * @param isRandom [Boolean] which, when true overrides the [currentPlayerIndex] with a random value on init,
- * defaults to false
+
  * @param gameBoard current state of the [GameBoard]
  * @param allTiles [List] of treasure and route tiles
  * @param gems [MutableList] of [Gem]s currently still in play
@@ -22,14 +18,14 @@ package entity
  * @property nextGameState saves the next state of the game for redo action, initially null
  *
  */
+
 class Indigo(
-    val players: List<Player>,
-    playerIndex:Int = 0,
-    isRandom: Boolean = false,
+    settings: GameSettings,
     val gameBoard: GameBoard,
     val allTiles: List<Tile>,
     var gems: MutableList<Gem>,
-    var tokens: MutableList<Token>) {
+    var tokens: MutableList<Token>
+){
 
     var currentPlayerIndex = 0
     val middleTile = MiddleTile()
@@ -38,7 +34,7 @@ class Indigo(
     var previousGameState: Indigo? = null
     var nextGameState: Indigo? = null
     init {
-        currentPlayerIndex = if (isRandom) (0..players.size).random()
-        else playerIndex
+        currentPlayerIndex = if (settings.isRandom) (0..settings.players.size).random()
+        else settings.playerIndex
     }
 }
