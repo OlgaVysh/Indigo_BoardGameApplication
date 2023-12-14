@@ -21,4 +21,4 @@ class CPUPlayer(name: String,
                 color: TokenColor,
                 var difficulty:String = "easy",
                 var simulationSpeed:Int = 1)
-                : Player(name,age,color,true)
+                : Player(name,age,color,true){}
