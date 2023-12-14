@@ -6,10 +6,10 @@ import tools.aqua.bgw.net.client.NetworkLogging
 /**
  *  The class [IndigoNetworkClient] describe the Interaction with bgw net as a client
  *
- *  @property playerName The player Name is tze name of the player
+ *  @property playerName The player Name is the name of the player
  *  @property host The name of the host
- *  @property secret the secret for the porjekt to make a secure connection
- *  @property networkService the netWorkservice of the game
+ *  @property secret The secret for the project to make a secure connection
+ *  @property networkService The networkService of the game
  *  to use the functions of the class
  */
 class IndigoNetworkClient(
