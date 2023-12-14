@@ -34,7 +34,7 @@ class Indigo(
     var previousGameState: Indigo? = null
     var nextGameState: Indigo? = null
     init {
-        currentPlayerIndex = if (settings.isRandom) (0..settings.players.size).random()
+        currentPlayerIndex = if (settings.isRandom) (0 until settings.players.size).random()
         else settings.playerIndex
     }
 }
