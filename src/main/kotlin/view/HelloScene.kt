@@ -4,20 +4,23 @@ import tools.aqua.bgw.components.uicomponents.Label
 import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
+import tools.aqua.bgw.visual.ImageVisual
 
-class HelloScene : BoardGameScene(500, 500) {
+class HelloScene : BoardGameScene(1920, 1080) {
+
+    private val gradient ="-fx-text-fill: linear-gradient(to bottom, #061598, #06987E);"
 
     private val helloLabel = Label(
-        width = 500,
-        height = 500,
-        posX = 0,
-        posY = 0,
-        text = "Hello, SoPra!",
-        font = Font(size = 20)
-    )
+        width = 697,
+        height = 145,
+        posX = 612,
+        posY = 468,
+        text = "Indigo Game",
+        font = Font(size = 100, family = "Irish Grover")
+    ).apply{componentStyle = gradient}
 
     init {
-        background = ColorVisual(108, 168, 59)
+        background =  ImageVisual("SevenGems1Background.png")
         addComponents(helloLabel)
     }
 
