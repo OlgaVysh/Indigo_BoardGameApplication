@@ -5,6 +5,7 @@ import edu.udo.cs.sopra.ntf.Player
 import edu.udo.cs.sopra.ntf.PlayerColor
 import edu.udo.cs.sopra.ntf.TileType
 import entity.Edge
+import entity.Tile
 import entity.TokenColor
 
 /**
@@ -124,5 +125,57 @@ class NetworkMappingService(private val rootService: RootService) {
             networkPlayers.add(Player(player.name,playerColor))
         }
         return networkPlayers.toList()
+    }
+    /**
+     * The function [toRouteTiles] is making the tileList to
+     * the routeTileList of the entity class
+     */
+    fun toRouteTiles(tileList: List<TileType>):MutableList<Tile>{
+        val routeTiles = mutableListOf<Tile>()
+        val tile0 = listOf(
+            Pair(Edge.ZERO, Edge.TWO),
+            Pair(Edge.ONE, Edge.FOUR),
+            Pair(Edge.THREE, Edge.FIVE)
+        )
+        val tile1 = listOf(
+            Pair(Edge.TWO, Edge.FIVE),
+            Pair(Edge.ONE, Edge.FOUR),
+            Pair(Edge.ZERO, Edge.THREE)
+        )
+        val tile2 = listOf(
+            Pair(Edge.ZERO, Edge.FIVE),
+            Pair(Edge.ONE, Edge.FOUR),
+            Pair(Edge.TWO, Edge.THREE)
+        )
+        val tile3 = listOf(
+            Pair(Edge.ZERO, Edge.FIVE),
+            Pair(Edge.ONE, Edge.THREE),
+            Pair(Edge.TWO, Edge.FOUR)
+        )
+        val tile4 = listOf(
+            Pair(Edge.ZERO, Edge.FIVE),
+            Pair(Edge.ONE, Edge.TWO),
+            Pair(Edge.THREE, Edge.FOUR)
+        )
+        for(tileType in tileList){
+            when (tileType) {
+                TileType.TYPE_0  -> {
+                    routeTiles.add(Tile(tile0, mapOf()))
+                }
+                TileType.TYPE_1  -> {
+                    routeTiles.add(Tile(tile1, mapOf()))
+                }
+                TileType.TYPE_2  -> {
+                routeTiles.add(Tile(tile2, mapOf()))
+            }
+                TileType.TYPE_3  -> {
+                routeTiles.add(Tile(tile3, mapOf()))
+            }
+                TileType.TYPE_4  -> {
+                routeTiles.add(Tile(tile4, mapOf()))
+            }
+            }
+        }
+        return routeTiles
     }
 }
