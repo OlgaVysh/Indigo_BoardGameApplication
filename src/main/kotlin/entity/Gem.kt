@@ -1,2 +1,2 @@
 package entity
-class Gem(val gemColor: GemColor) {}
+class Gem(val gemColor: GemColor)
