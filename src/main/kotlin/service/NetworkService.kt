@@ -70,9 +70,8 @@ class NetworkService(private val rootService: RootService) {
     fun startNewHostedGame(hostPlayer: Player, guestPlayerNames:MutableList<Player> ) {
         check(connectionState == ConnectionState.WAITING_FOR_GUEST)
         { "currently not prepared to start a new hosted game." }
-        var players = (guestPlayerNames).also {
-            it.add(0,hostPlayer)
-        }
+        val players = guestPlayerNames
+            players.add(0,hostPlayer)
         // comment until the Service for startNewGame are implemented
        // rootService.gameService.startNewGame(players)
         val networkPlayers = rootService.networkMappingService.toNetworkPlayer()
@@ -85,7 +84,9 @@ class NetworkService(private val rootService: RootService) {
         client?.sendGameActionMessage(message)
     }
 
+    fun startNewJoinedGame(){
 
+    }
     fun sendPlacedTile(placedTile: Tile, coordinate: Coordinate) {
         require(connectionState == ConnectionState.PLAYING_MY_TURN) { "not my turn" }
         val rotation = placedTile.edges.indexOf(Edge.ZERO)
@@ -103,7 +104,7 @@ class NetworkService(private val rootService: RootService) {
      * @param message The message is from the other player in the network mode
      * which have the information for the tile Coordinate und rotation
      */
-    fun receivedTilePLacedMessage(message: TilePlacedMessage) {
+    fun  receivedTilePLacedMessage(message: TilePlacedMessage) {
         check(
             connectionState in listOf(
                 ConnectionState.PLAYING_MY_TURN, ConnectionState.WAITING_FOR_OPPONENTS_TURN
