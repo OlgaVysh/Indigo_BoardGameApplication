@@ -7,27 +7,39 @@ import edu.udo.cs.sopra.ntf.TileType
 import entity.Edge
 import entity.TokenColor
 
+/**
+ * The class [NetworkMappingService] is for the translating
+ * form the entity layer classes to the data classes for the
+ * network
+ *
+ * @property rootService The rootService with all connection
+ * to other Services
+ */
 class NetworkMappingService(private val rootService: RootService) {
     fun toGameModeMapping(): GameMode {
         val game = rootService.currentGame
         checkNotNull(game) { "game should not be null right after starting it." }
         val gateTokens = game.gameBoard.gateTokens
         val players = game.players
-        var shared_GateWays = false
+        var sharedGateWays = false
         for (i in 0 until gateTokens.size - 1 step 2) {
             if (gateTokens[i] == gateTokens[i + 1]) {
-                shared_GateWays = true
+                sharedGateWays = true
             }
         }
         var gameMode = GameMode.TWO_NOT_SHARED_GATEWAYS
         if (players.size == 3) {
-            gameMode = if (shared_GateWays) GameMode.THREE_SHARED_GATEWAYS
+            gameMode = if (sharedGateWays) GameMode.THREE_SHARED_GATEWAYS
             else GameMode.THREE_NOT_SHARED_GATEWAYS
         }
         if (players.size == 4) gameMode = GameMode.FOUR_SHARED_GATEWAYS
         return gameMode
     }
 
+    /**
+     *  the function [toTileTypeList] is make the entity route list
+     *  to the tile type list for the network tile list.
+     */
     fun toTileTypeList(): List<TileType> {
         val game = rootService.currentGame
         checkNotNull(game) { "game should not be null right after starting it." }
@@ -89,6 +101,10 @@ class NetworkMappingService(private val rootService: RootService) {
         return tileList
     }
 
+    /**
+     *  The funktion[toNetworkPlayer] make the entity player list
+     *  to the
+     */
     fun toNetworkPlayer() :List<Player>  {
         val game = rootService.currentGame
         checkNotNull(game) { "game should not be null right after starting it." }
