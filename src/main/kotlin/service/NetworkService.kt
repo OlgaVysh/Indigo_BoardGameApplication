@@ -2,10 +2,7 @@ package service
 
 import edu.udo.cs.sopra.ntf.GameInitMessage
 import edu.udo.cs.sopra.ntf.TilePlacedMessage
-import entity.Coordinate
-import entity.Edge
-import entity.Player
-import entity.Tile
+import entity.*
 
 /**
  *  The class [NetworkService] is to have all function  with the network for online gaming.
@@ -32,6 +29,10 @@ class NetworkService(private val rootService: RootService) {
      */
     var client: IndigoNetworkClient? = null
 
+    /**
+     *  The function [disconnect] is to disconnect the server
+     *  if we leave an online Game
+     */
     fun disconnect() {
         client?.apply {
             if (sessionID != null) leaveGame("Goodbye!")
@@ -41,6 +42,13 @@ class NetworkService(private val rootService: RootService) {
         updateConnectionState(ConnectionState.DISCONNECTED)
     }
 
+    /**
+     *  The function[hostGame] is to start a Game as a Host
+     *
+     *  @param secret The secret to make a secure connection
+     *  @param name Name of the host
+     *  @param  sessionID Write a sessionID if you want else  you get one from the server
+     */
     fun hostGame(secret: String, name: String, sessionID: String?) {
         if (!connect(secret, name)) {
             error("Connection failed")
@@ -55,7 +63,13 @@ class NetworkService(private val rootService: RootService) {
         updateConnectionState(ConnectionState.HOST_WAITING_FOR_CONFIRMATION)
     }
 
-
+    /**
+     *  The function[hostGame] join a Game as a client
+     *
+     *  @param secret The secret to make a secure connection
+     *  @param name Name of the host
+     *  @param  sessionID The sessionID of the Game you want to join
+     */
     fun joinGame(secret: String, name: String, sessionID: String) {
         if (!connect(secret, name)) {
             error("Connection failed")
@@ -67,6 +81,12 @@ class NetworkService(private val rootService: RootService) {
         updateConnectionState(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
     }
 
+    /**
+     * The function [startNewHostedGame] start a new HostGame
+     *
+     * @param hostPlayer The host
+     * @param guestPlayerNames all other joined players
+     */
     fun startNewHostedGame(hostPlayer: Player, guestPlayerNames:MutableList<Player> ) {
         check(connectionState == ConnectionState.WAITING_FOR_GUEST)
         { "currently not prepared to start a new hosted game." }
@@ -80,13 +100,38 @@ class NetworkService(private val rootService: RootService) {
         val message = GameInitMessage(
              networkPlayers, gameMode, tileList
         )
-        updateConnectionState(ConnectionState.PLAYING_MY_TURN)
+        if(networkPlayers[0].name == hostPlayer.name) {
+            updateConnectionState(ConnectionState.PLAYING_MY_TURN)
+        }
+        else{
+            updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+        }
         client?.sendGameActionMessage(message)
     }
 
-    fun startNewJoinedGame(){
+    /**
+     * The function [startNewJoinedGame] start a new game by joining it.
+     *
+     * @param message The message you are getting from the host
+     * to initialize the game from your game
+     */
+    fun startNewJoinedGame(message: GameInitMessage){
+        check(connectionState == ConnectionState.WAITING_FOR_INIT)
+        { "not waiting for game init message. " }
+        val routeTiles = rootService.networkMappingService.toRouteTiles(message.tileList)
+        val players = message
+        updateConnectionState(ConnectionState.PLAYING_MY_TURN)
 
     }
+
+
+    /**
+     * The function [sendPlacedTile] make the placedTile to a message to send
+     * to other online Player
+     *
+     * @param placedTile PlacedTile is the tile you choose to placed
+     * @param coordinate Coordinate is where the tile placed
+     */
     fun sendPlacedTile(placedTile: Tile, coordinate: Coordinate) {
         require(connectionState == ConnectionState.PLAYING_MY_TURN) { "not my turn" }
         val rotation = placedTile.edges.indexOf(Edge.ZERO)
@@ -102,7 +147,7 @@ class NetworkService(private val rootService: RootService) {
      * to an Action in the Indigo game
      *
      * @param message The message is from the other player in the network mode
-     * which have the information for the tile Coordinate und rotation
+     * which have the information for the tile coordinate und rotation
      */
     fun  receivedTilePLacedMessage(message: TilePlacedMessage) {
         check(
