@@ -1,5 +1,10 @@
 package service
 
+/**
+ *  The class [NetworkService] is to have all function  with the network for online gaming.
+ *
+ *  @property rootService the rootService to have the information of the currentgame
+ */
 class NetworkService(private val rootService: RootService) {
 
     companion object {
@@ -16,10 +21,16 @@ class NetworkService(private val rootService: RootService) {
     var connectionState: ConnectionState = ConnectionState.DISCONNECTED
         private set
 
+    /**
+     *  The client if we are the client
+     */
     var client: IndigoNetworkClient? = null
 
     /**
-     *  The private fun
+     *  The private fun [connect] is to make a connection to the server
+     *
+     *  @param secret The secret to make a secure connection  to the Server
+     *  @param name The name of the player
      */
     fun connect(secret: String = "game23d", name: String): Boolean {
         require(connectionState == ConnectionState.DISCONNECTED && client == null)
@@ -41,7 +52,9 @@ class NetworkService(private val rootService: RootService) {
     }
 
     /**
-     * Updating the Statemachine
+     * The function [updateConnectionState] updated the Statemachine
+     *
+     * @param newState The state which the function update
      */
     fun updateConnectionState(newState: ConnectionState) {
         this.connectionState = newState
