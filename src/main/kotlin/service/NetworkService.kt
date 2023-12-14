@@ -10,7 +10,7 @@ import entity.Tile
 /**
  *  The class [NetworkService] is to have all function  with the network for online gaming.
  *
- *  @property rootService the rootService to have the information of the currentgame
+ *  @property rootService the rootService to have the information of the current game
  */
 class NetworkService(private val rootService: RootService) {
     companion object {
@@ -77,7 +77,7 @@ class NetworkService(private val rootService: RootService) {
        // rootService.gameService.startNewGame(players)
         val networkPlayers = rootService.networkMappingService.toNetworkPlayer()
         val gameMode = rootService.networkMappingService.toGameModeMapping()
-        var tileList = rootService.networkMappingService.toTileTypeList()
+        val tileList = rootService.networkMappingService.toTileTypeList()
         val message = GameInitMessage(
              networkPlayers, gameMode, tileList
         )
@@ -97,7 +97,7 @@ class NetworkService(private val rootService: RootService) {
         client?.sendGameActionMessage(message)
     }
     /**
-     * The function [receivedTilePLacedMessage] make the recieved message
+     * The function [receivedTilePLacedMessage] make the received message
      * to an Action in the Indigo game
      *
      * @param message The message is from the other player in the network mode
@@ -143,7 +143,7 @@ class NetworkService(private val rootService: RootService) {
     }
 
     /**
-     * The function [updateConnectionState] updated the Statemachine
+     * The function [updateConnectionState] updated the State machine
      *
      * @param newState The state which the function update
      */
