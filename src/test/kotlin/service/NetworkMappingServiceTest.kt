@@ -1,6 +1,7 @@
 package service
 
 import edu.udo.cs.sopra.ntf.GameMode
+import edu.udo.cs.sopra.ntf.TileType
 import entity.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -53,7 +54,6 @@ class NetworkMappingServiceTest {
     private val routeTiles = mutableListOf(
         Tile(tile0, mapOf()),
         Tile(tile1, mapOf()),
-        Tile(tile0, mapOf()),
         Tile(tile2, mapOf()),
         Tile(tile3, mapOf()),
         Tile(tile4, mapOf())
@@ -125,7 +125,7 @@ class NetworkMappingServiceTest {
         gameMode = testGame.networkMappingService.toGameMode()
         assertEquals(GameMode.THREE_SHARED_GATEWAYS, gameMode)
         val fourPlayers = players.toMutableList()
-            fourPlayers.add(Player("Charlie", color = TokenColor.RED))
+        fourPlayers.add(Player("Charlie", color = TokenColor.RED))
         var gameSettings = GameSettings(fourPlayers.toList())
         val twoPlayers = players.subList(0, 2)
         testGame.currentGame = Indigo(
@@ -147,6 +147,31 @@ class NetworkMappingServiceTest {
             tokens = notSharedTokens
         )
         gameMode = testGame.networkMappingService.toGameMode()
-        assertEquals(GameMode.TWO_NOT_SHARED_GATEWAYS,gameMode)
+        assertEquals(GameMode.TWO_NOT_SHARED_GATEWAYS, gameMode)
+    }
+
+    /**
+     *  The function[toTileTypeListTest] test the function to [toTileTypeList]
+     */
+    @Test
+    fun toTileTypeListTest() {
+        val testGame = RootService()
+        assertThrows<IllegalStateException> { (testGame.networkMappingService.toGameMode()) }
+        testGame.currentGame = Indigo(
+            gameSetting,
+            allTiles = placeTiles.toList(),
+            gameBoard = GameBoard(),
+            gems = gems,
+            tokens = tokens
+        )
+        val testTileList = listOf(
+            TileType.TYPE_0,
+            TileType.TYPE_1,
+            TileType.TYPE_2,
+            TileType.TYPE_3,
+            TileType.TYPE_4
+        )
+        val tileList = testGame.networkMappingService.toTileTypeList()
+        assertEquals(testTileList,tileList)
     }
 }
