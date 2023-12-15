@@ -126,6 +126,7 @@ class NetworkMappingService(private val rootService: RootService) {
         }
         return networkPlayers.toList()
     }
+
     /**
      * The function [toRouteTiles] is making the tileList to
      * the routeTileList of the entity class
@@ -160,22 +161,23 @@ class NetworkMappingService(private val rootService: RootService) {
         for(tileType in tileList){
             when (tileType) {
                 TileType.TYPE_0  -> {
-                    routeTiles.add(Tile(tile0, mapOf()))
+                    routeTiles.add(Tile(tile0, mutableMapOf()))
                 }
                 TileType.TYPE_1  -> {
-                    routeTiles.add(Tile(tile1, mapOf()))
+                    routeTiles.add(Tile(tile1, mutableMapOf()))
                 }
                 TileType.TYPE_2  -> {
-                routeTiles.add(Tile(tile2, mapOf()))
+                routeTiles.add(Tile(tile2, mutableMapOf()))
             }
                 TileType.TYPE_3  -> {
-                routeTiles.add(Tile(tile3, mapOf()))
+                routeTiles.add(Tile(tile3, mutableMapOf()))
             }
                 TileType.TYPE_4  -> {
-                routeTiles.add(Tile(tile4, mapOf()))
+                routeTiles.add(Tile(tile4, mutableMapOf()))
             }
             }
         }
         return routeTiles
     }
+
 }
