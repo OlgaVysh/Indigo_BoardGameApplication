@@ -1,6 +1,7 @@
 package service
 
 import edu.udo.cs.sopra.ntf.GameInitMessage
+import edu.udo.cs.sopra.ntf.PlayerColor
 import edu.udo.cs.sopra.ntf.TilePlacedMessage
 import entity.*
 
@@ -87,23 +88,22 @@ class NetworkService(private val rootService: RootService) {
      * @param hostPlayer The host
      * @param guestPlayerNames all other joined players
      */
-    fun startNewHostedGame(hostPlayer: Player, guestPlayerNames:MutableList<Player> ) {
+    fun startNewHostedGame(hostPlayer: Player, guestPlayerNames: MutableList<Player>) {
         check(connectionState == ConnectionState.WAITING_FOR_GUEST)
         { "currently not prepared to start a new hosted game." }
         val players = guestPlayerNames
-            players.add(0,hostPlayer)
+        players.add(0, hostPlayer)
         // comment until the Service for startNewGame are implemented
-       // rootService.gameService.startNewGame(players)
+        // rootService.gameService.startNewGame(players)
         val networkPlayers = rootService.networkMappingService.toNetworkPlayer()
         val gameMode = rootService.networkMappingService.toGameModeMapping()
         val tileList = rootService.networkMappingService.toTileTypeList()
         val message = GameInitMessage(
-             networkPlayers, gameMode, tileList
+            networkPlayers, gameMode, tileList
         )
-        if(networkPlayers[0].name == hostPlayer.name) {
+        if (networkPlayers[0].name == hostPlayer.name) {
             updateConnectionState(ConnectionState.PLAYING_MY_TURN)
-        }
-        else{
+        } else {
             updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
         }
         client?.sendGameActionMessage(message)
@@ -115,13 +115,12 @@ class NetworkService(private val rootService: RootService) {
      * @param message The message you are getting from the host
      * to initialize the game from your game
      */
-    fun startNewJoinedGame(message: GameInitMessage){
+    fun startNewJoinedGame(message: GameInitMessage) {
         check(connectionState == ConnectionState.WAITING_FOR_INIT)
         { "not waiting for game init message. " }
         val routeTiles = rootService.networkMappingService.toRouteTiles(message.tileList)
-        val players = message
+        val players = rootService.networkMappingService.toEntityPlayer(message.players)
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
-
     }
 
 
@@ -142,6 +141,7 @@ class NetworkService(private val rootService: RootService) {
         )
         client?.sendGameActionMessage(message)
     }
+
     /**
      * The function [receivedTilePLacedMessage] make the received message
      * to an Action in the Indigo game
@@ -149,7 +149,7 @@ class NetworkService(private val rootService: RootService) {
      * @param message The message is from the other player in the network mode
      * which have the information for the tile coordinate und rotation
      */
-    fun  receivedTilePLacedMessage(message: TilePlacedMessage) {
+    fun receivedTilePLacedMessage(message: TilePlacedMessage) {
         check(
             connectionState in listOf(
                 ConnectionState.PLAYING_MY_TURN, ConnectionState.WAITING_FOR_OPPONENTS_TURN
