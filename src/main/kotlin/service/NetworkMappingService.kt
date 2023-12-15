@@ -80,7 +80,7 @@ class NetworkMappingService(private val rootService: RootService) {
             Pair(Edge.THREE, Edge.FOUR)
         )
         for (routeTile in routeTiles) {
-            when (routeTile.edges) {
+            when (routeTile.paths) {
                 tile0 -> {
                     // Do something specific for tile0
                     tileList.add(TileType.TYPE_0)
