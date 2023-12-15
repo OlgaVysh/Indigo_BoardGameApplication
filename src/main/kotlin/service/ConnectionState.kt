@@ -1,5 +1,9 @@
 package service
 
+/**
+ *  The enum class [ConnectionState] represented our state for the state machine
+ *  to in which connection we are
+ */
 enum class ConnectionState {
     DISCONNECTED,
     CONNECTED,
