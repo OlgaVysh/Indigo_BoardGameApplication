@@ -17,14 +17,20 @@ import entity.TokenColor
  * to other Services
  */
 class NetworkMappingService(private val rootService: RootService) {
-    fun toGameModeMapping(): GameMode {
+
+    /**
+     * The function [toGameMode] find the right mode for the GameInitMessage
+     *
+     * @return Returns the Gamemode which the players playing
+     */
+    fun toGameMode(): GameMode {
         val game = rootService.currentGame
         checkNotNull(game) { "game should not be null right after starting it." }
         val gateTokens = game.gameBoard.gateTokens
         val players = game.players
         var sharedGateWays = false
-        for (i in 0 until gateTokens.size - 1 step 2) {
-            if (gateTokens[i] == gateTokens[i + 1]) {
+        for (i in 0 until gateTokens.size step 2) {
+            if (gateTokens[i].color != gateTokens[i + 1].color) {
                 sharedGateWays = true
             }
         }
@@ -33,13 +39,15 @@ class NetworkMappingService(private val rootService: RootService) {
             gameMode = if (sharedGateWays) GameMode.THREE_SHARED_GATEWAYS
             else GameMode.THREE_NOT_SHARED_GATEWAYS
         }
-        if (players.size == 4) gameMode = GameMode.FOUR_SHARED_GATEWAYS
+        if (players.size == 4) {gameMode = GameMode.FOUR_SHARED_GATEWAYS}
         return gameMode
     }
 
     /**
      *  the function [toTileTypeList] is make the entity route list
      *  to the tile type list for the network tile list.
+     *
+     *  @return a list of all routeTiles
      */
     fun toTileTypeList(): List<TileType> {
         val game = rootService.currentGame
@@ -104,7 +112,9 @@ class NetworkMappingService(private val rootService: RootService) {
 
     /**
      *  The funktion[toNetworkPlayer] make the entity player list
-     *  to the
+     *  to the network playerList
+     *
+     *  @return The List of the network player model
      */
     fun toNetworkPlayer(): List<Player> {
         val game = rootService.currentGame
@@ -137,6 +147,8 @@ class NetworkMappingService(private val rootService: RootService) {
     /**
      * The function [toRouteTiles] is making the tileList to
      * the routeTileList of the entity class
+     *
+     * @return Returns a List of all route tile from the entity model.
      */
     fun toRouteTiles(tileList: List<TileType>): MutableList<Tile> {
         val routeTiles = mutableListOf<Tile>()

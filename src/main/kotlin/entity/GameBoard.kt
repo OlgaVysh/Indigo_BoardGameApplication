@@ -7,5 +7,5 @@ package entity
  */
 class GameBoard {
     val gameBoardTiles = mutableMapOf<Coordinate, Tile>()
-    val gateTokens = listOf<Token>()
+    var gateTokens = listOf<Token>()
 }
