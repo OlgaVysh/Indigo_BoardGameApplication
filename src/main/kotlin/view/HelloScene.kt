@@ -7,7 +7,9 @@ import tools.aqua.bgw.visual.ImageVisual
 
 class HelloScene : BoardGameScene(1920, 1080) {
 
-    private val gradient ="-fx-text-fill: linear-gradient(to bottom, #061598, #06987E);"
+    private val gradient  ="-fx-text-fill: linear-gradient(to bottom, #061598, #06987E);"
+
+    private val button = Button(555,664, 810,207,"Start", 50)
 
     private val helloLabel = Label(
         width = 697,
@@ -21,6 +23,7 @@ class HelloScene : BoardGameScene(1920, 1080) {
     init {
         background =  ImageVisual("SevenGems1Background.png")
         addComponents(helloLabel)
+        addComponents(button)
     }
 
 }
