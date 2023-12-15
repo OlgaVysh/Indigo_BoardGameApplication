@@ -1,8 +1,5 @@
 package view
-
-import tools.aqua.bgw.components.uicomponents.Label
 import tools.aqua.bgw.core.BoardGameScene
-import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ImageVisual
 
 class HelloScene : BoardGameScene(1920, 1080) {
