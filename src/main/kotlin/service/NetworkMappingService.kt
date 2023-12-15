@@ -106,23 +106,30 @@ class NetworkMappingService(private val rootService: RootService) {
      *  The funktion[toNetworkPlayer] make the entity player list
      *  to the
      */
-    fun toNetworkPlayer() :List<Player>  {
+    fun toNetworkPlayer(): List<Player> {
         val game = rootService.currentGame
         checkNotNull(game) { "game should not be null right after starting it." }
         val networkPlayers = mutableListOf<Player>()
         val players = game.players
-        for (player in players){
-            val playerColor = when(player.color){
+        for (player in players) {
+            val playerColor = when (player.color) {
                 TokenColor.BLUE -> {
-                    PlayerColor.BLUE}
+                    PlayerColor.BLUE
+                }
+
                 TokenColor.RED -> {
-                    PlayerColor.RED}
+                    PlayerColor.RED
+                }
+
                 TokenColor.PURPLE -> {
-                    PlayerColor.PURPLE}
+                    PlayerColor.PURPLE
+                }
+
                 TokenColor.WHITE -> {
-                    PlayerColor.WHITE}
+                    PlayerColor.WHITE
+                }
             }
-            networkPlayers.add(Player(player.name,playerColor))
+            networkPlayers.add(Player(player.name, playerColor))
         }
         return networkPlayers.toList()
     }
@@ -131,7 +138,7 @@ class NetworkMappingService(private val rootService: RootService) {
      * The function [toRouteTiles] is making the tileList to
      * the routeTileList of the entity class
      */
-    fun toRouteTiles(tileList: List<TileType>):MutableList<Tile>{
+    fun toRouteTiles(tileList: List<TileType>): MutableList<Tile> {
         val routeTiles = mutableListOf<Tile>()
         val tile0 = listOf(
             Pair(Edge.ZERO, Edge.TWO),
@@ -158,26 +165,59 @@ class NetworkMappingService(private val rootService: RootService) {
             Pair(Edge.ONE, Edge.TWO),
             Pair(Edge.THREE, Edge.FOUR)
         )
-        for(tileType in tileList){
+        for (tileType in tileList) {
             when (tileType) {
-                TileType.TYPE_0  -> {
+                TileType.TYPE_0 -> {
                     routeTiles.add(Tile(tile0, mutableMapOf()))
                 }
-                TileType.TYPE_1  -> {
+
+                TileType.TYPE_1 -> {
                     routeTiles.add(Tile(tile1, mutableMapOf()))
                 }
-                TileType.TYPE_2  -> {
-                routeTiles.add(Tile(tile2, mutableMapOf()))
-            }
-                TileType.TYPE_3  -> {
-                routeTiles.add(Tile(tile3, mutableMapOf()))
-            }
-                TileType.TYPE_4  -> {
-                routeTiles.add(Tile(tile4, mutableMapOf()))
-            }
+
+                TileType.TYPE_2 -> {
+                    routeTiles.add(Tile(tile2, mutableMapOf()))
+                }
+
+                TileType.TYPE_3 -> {
+                    routeTiles.add(Tile(tile3, mutableMapOf()))
+                }
+
+                TileType.TYPE_4 -> {
+                    routeTiles.add(Tile(tile4, mutableMapOf()))
+                }
             }
         }
         return routeTiles
+    }
+
+    /**
+     *  The function [toEntityPlayer] make the Network player to entity Player
+     *
+     *  @param players players are all Players which participate the online game
+     */
+    fun toEntityPlayer(players: List<Player>): MutableList<entity.Player> {
+        val entityPlayers = mutableListOf<entity.Player>()
+        for (i in players.indices) {
+            var tokenColor = TokenColor.WHITE
+            when (players[i].color) {
+                PlayerColor.BLUE -> {
+                    tokenColor = TokenColor.BLUE
+                }
+
+                PlayerColor.RED -> {
+                    tokenColor = TokenColor.RED
+                }
+
+                PlayerColor.PURPLE -> {
+                    tokenColor = TokenColor.PURPLE
+                }
+
+                else -> {}
+            }
+            entityPlayers.add(entity.Player(name = players[i].name, color = tokenColor))
+        }
+        return entityPlayers
     }
 
 }
