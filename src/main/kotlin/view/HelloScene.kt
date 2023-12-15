@@ -6,7 +6,7 @@ class HelloScene : BoardGameScene(1920, 1080) {
 
     private val button = Button(555,664, 810,207, fontSize = 50)
 
-    private val helloLabel = view.Label(697,145,612,468, fontSize = 120)
+    private val helloLabel = Label(697,145,612,468, fontSize = 120)
 
 
     init {
