@@ -11,6 +11,13 @@ import java.io.FileNotFoundException
 class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
 {
     private val helloScene = HelloScene()
+    private val startScene = NewGameMenuScene()
+    private val modusScene = ModusMenuScene()
+    private val gatesScene = GateMenuScene()
+    private val networkScene = NetworkMenuScene()
+    private val saveGameScene = SaveGameMenuScene()
+    private val gameSavedMenuScene = GameSavedMenuScene()
+
     init {
         //das ladet unser IrishGrover Font
         val resource = this::class.java.getResource("/IrishGrover.ttf")
@@ -18,12 +25,13 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
         val fontFile = File(resource.toURI())
         loadFont(fontFile)
 
-        this.showGameScene(helloScene)
+        this.showMenuScene(startScene)
     }
 
 
     //In jeder Szene : private val gradient ="-fx-text-fill: linear-gradient(to bottom, #061598, #06987E);"
     //an jedem Component mit Text : font = Font(family: "Irish Grover")
     // .apply { componentStyle = gradient }
+
 
 }
