@@ -207,4 +207,24 @@ class NetworkMappingServiceTest {
         assertEquals(networkPlayerListResult, networkPlayerList)
 
     }
+
+    /**
+     * The test function [toRouteTilesTest] test the translating
+     * from the netWork model to the entity model
+     */
+    @Test
+    fun toRouteTilesTest(){
+        val testGame = RootService()
+        val tileList = listOf(
+            TileType.TYPE_0,
+            TileType.TYPE_1,
+            TileType.TYPE_2,
+            TileType.TYPE_3,
+            TileType.TYPE_4
+            )
+        val routeTilesResult = routeTiles
+        val routeTileList = testGame.networkMappingService.toRouteTiles(tileList)
+        assertEquals(routeTilesResult,routeTileList)
+    }
+
 }
