@@ -2,10 +2,13 @@ package service
 
 import edu.udo.cs.sopra.ntf.GameMode
 import edu.udo.cs.sopra.ntf.TileType
+import edu.udo.cs.sopra.ntf.Player
+import edu.udo.cs.sopra.ntf.PlayerColor
 import entity.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
+
 
 /**
  *  The class [NetworkMappingServiceTest] is testing
@@ -172,6 +175,36 @@ class NetworkMappingServiceTest {
             TileType.TYPE_4
         )
         val tileList = testGame.networkMappingService.toTileTypeList()
-        assertEquals(testTileList,tileList)
+        assertEquals(testTileList, tileList)
+    }
+
+    /**
+     *The function [toNetworkPlayerTest] make test the function of the entity
+     *if all translating from the entity player model to the network player model
+     * are correct.
+     */
+    @Test
+    fun toNetworkPlayerTest() {
+        val testGame = RootService()
+        assertThrows<IllegalStateException> { (testGame.networkMappingService.toGameMode()) }
+        val fourPlayers = players.toMutableList()
+        fourPlayers.add(Player("Charlie", color = TokenColor.RED))
+        val gameSettings = GameSettings(fourPlayers.toList())
+        testGame.currentGame = Indigo(
+            gameSettings,
+            allTiles = placeTiles.toList(),
+            gameBoard = GameBoard(),
+            gems = gems,
+            tokens = tokens
+        )
+        val networkPlayerListResult = listOf(
+            Player(name = "John", color = PlayerColor.PURPLE),
+            Player(name = "Alice", color = PlayerColor.BLUE),
+            Player(name = "Bob", color = PlayerColor.WHITE),
+            Player("Charlie", color = PlayerColor.RED)
+        )
+        val networkPlayerList = testGame.networkMappingService.toNetworkPlayer()
+        assertEquals(networkPlayerListResult, networkPlayerList)
+
     }
 }
