@@ -227,4 +227,27 @@ class NetworkMappingServiceTest {
         assertEquals(routeTilesResult,routeTileList)
     }
 
+    /**
+     * The test function[toEntityPlayerTest] test the correct
+     * translation from player list from the network model
+     * to the player list from the entity model
+     */
+    @Test
+    fun toEntityPlayerTest(){
+        val testGame = RootService()
+        val networkPlayerList = listOf(
+            Player(name = "John", color = PlayerColor.PURPLE),
+            Player(name = "Alice", color = PlayerColor.BLUE),
+            Player(name = "Bob", color = PlayerColor.WHITE),
+            Player("Charlie", color = PlayerColor.RED)
+        )
+        val entityPlayersResult = players.toMutableList()
+        entityPlayersResult.add(Player("Charlie", color = TokenColor.RED))
+        val entityPlayersActual = testGame.networkMappingService.toEntityPlayer(networkPlayerList)
+        assertEquals(entityPlayersResult.size,entityPlayersActual.size)
+        for(i in entityPlayersResult.indices) {
+            assertEquals(entityPlayersResult[i].name,entityPlayersResult[i].name)
+            assertEquals(entityPlayersResult[i].color,entityPlayersResult[i].color)
+        }
+    }
 }
