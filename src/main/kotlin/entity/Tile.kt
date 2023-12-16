@@ -7,6 +7,6 @@ package entity
  * The key is the position (0-5), and the value is the gem at that position.
  * @property edges List of edges on the tile.
  */
-class Tile(val paths: List<Pair<Edge,Edge>>,val gemEndPosition: Map<Int, Gem>) {
+data class Tile(val paths: List<Pair<Edge,Edge>>,val gemEndPosition: Map<Int, Gem>) {
     val edges: List<Edge> = listOf(Edge.ZERO, Edge.ONE, Edge.TWO, Edge.THREE, Edge.FOUR, Edge.FIVE)
 }
