@@ -29,7 +29,7 @@ class NetworkMappingService(private val rootService: RootService) {
         val gateTokens = game.gameBoard.gateTokens
         val players = game.players
         var sharedGateWays = false
-        for (i in 0 until gateTokens.size step 2) {
+        for (i in gateTokens.indices step 2) {
             if (gateTokens[i].color != gateTokens[i + 1].color) {
                 sharedGateWays = true
             }
