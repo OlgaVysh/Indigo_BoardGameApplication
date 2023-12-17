@@ -17,4 +17,7 @@ class RootService {
     val networkService = NetworkService(this)
 
     val networkMappingService = NetworkMappingService(this)
+
+    val playerTurnService = PlayerTurnService(this)
+    val gameService = GameService(this)
 }
