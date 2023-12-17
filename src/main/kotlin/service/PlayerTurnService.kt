@@ -3,7 +3,7 @@ package service
 import entity.*
 import java.lang.Exception
 
-class PlayerTurnService(val rootService: RootService) {
+class PlayerTurnService(private val rootService: RootService) {
 
     fun placeRouteTile(tile: Tile, space: Coordinate) {
         val currentGame = rootService.currentGame
@@ -26,8 +26,8 @@ class PlayerTurnService(val rootService: RootService) {
     fun undo() {
         var currentGame = rootService.currentGame
         checkNotNull(currentGame)
-        if (currentGame?.previousGameState != null) {
-            currentGame?.nextGameState = currentGame
+        if (currentGame.previousGameState != null) {
+            currentGame.nextGameState = currentGame
             currentGame = currentGame.previousGameState
 
         } else {
@@ -42,7 +42,7 @@ class PlayerTurnService(val rootService: RootService) {
     fun redo() {
         var currentGame = rootService.currentGame
         checkNotNull(currentGame)
-        if (currentGame?.nextGameState != null) {
+        if (currentGame.nextGameState != null) {
             currentGame.previousGameState = currentGame
             currentGame = currentGame.nextGameState
         } else {
