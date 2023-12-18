@@ -17,6 +17,8 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     private val networkScene = NetworkMenuScene()
     private val saveGameScene = SaveGameMenuScene()
     private val gameSavedMenuScene = GameSavedMenuScene()
+    private val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
+    private val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
 
     init {
         //das ladet unser IrishGrover Font
