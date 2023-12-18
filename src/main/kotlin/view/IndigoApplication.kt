@@ -1,5 +1,6 @@
 package view
 
+import service.RootService
 import tools.aqua.bgw.core.BoardGameApplication
 import java.io.File
 import java.io.FileNotFoundException
@@ -10,6 +11,10 @@ import java.io.FileNotFoundException
 
 class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
 {
+    // Central service from which all others are created/accessed
+    // also holds the currently active game
+    private val rootService = RootService()
+
     private val helloScene = HelloScene()
     private val startScene = NewGameMenuScene()
     private val modusScene = ModusMenuScene()
@@ -17,6 +22,9 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     private val networkScene = NetworkMenuScene()
     private val saveGameScene = SaveGameMenuScene()
     private val gameSavedMenuScene = GameSavedMenuScene()
+    private val newPlayerMenuScene = NewPlayerMenuScene(rootService)
+    private val configurePlayerXScene = ConfigurePlayerXScene(rootService)
+    private val joinGameScene = JoinGameScene(rootService)
 
     init {
         //das ladet unser IrishGrover Font
