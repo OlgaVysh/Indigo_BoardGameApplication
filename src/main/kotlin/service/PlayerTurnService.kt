@@ -37,6 +37,7 @@ class PlayerTurnService(private val rootService: RootService) {
         }
     }
 
+
     /**
      * Redoes one game move and returns to the next game state,
      * it is possible to redo moves from the beginning until the last made move
