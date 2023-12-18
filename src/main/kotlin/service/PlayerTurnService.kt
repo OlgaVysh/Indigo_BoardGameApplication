@@ -8,6 +8,7 @@ class PlayerTurnService(private val rootService: RootService) {
     fun placeRouteTile(tile: Tile, space: Coordinate) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame) { "The game has not started yet" }
+
         if (chooseSpace(space)) {
             currentGame.gameBoard.gameBoardTiles[space] = tile
             rootService.gameService.checkPlacement()
@@ -17,6 +18,25 @@ class PlayerTurnService(private val rootService: RootService) {
         } else {
             throw Exception("Invalid space, can not place tile")
         }
+    }
+
+
+    private fun chooseSpace(space: Coordinate): Boolean {
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        if (currentGame.gameBoard.gameBoardTiles[space] != null) {
+            throw Exception("this place is occupied")
+        }
+        if (!coordinateHasExit()) {
+            placeTile(space)
+        } else {
+            if (!tileBlocksExit(space, tile:Tile)) {
+                placeTile(space)
+            }
+            else{ throw Exception("tile blocks exit")}
+        }
+        //in progress
+        return true
     }
 
     /**
@@ -50,11 +70,6 @@ class PlayerTurnService(private val rootService: RootService) {
         }
     }
 
-    private fun chooseSpace(space: Coordinate): Boolean {
-        val currentGame = rootService.currentGame
-        //in progress
-        return true
-    }
 
     fun rotateTileRight(tile: Tile): Tile {
         if (tile.paths == listOf(
