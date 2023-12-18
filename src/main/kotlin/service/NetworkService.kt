@@ -49,7 +49,7 @@ class NetworkService(private val rootService: RootService) {
      *  @param name Name of the host
      *  @param  sessionID Write a sessionID if you want else  you get one from the server
      */
-    fun hostGame(secret: String, name: String, sessionID: String?) {
+    fun hostGame(secret: String = "game23d", name: String, sessionID: String?) {
         if (!connect(secret, name)) {
             error("Connection failed")
         }
@@ -70,7 +70,7 @@ class NetworkService(private val rootService: RootService) {
      *  @param name Name of the host
      *  @param  sessionID The sessionID of the Game you want to join
      */
-    fun joinGame(secret: String, name: String, sessionID: String) {
+    fun joinGame(secret: String = "game23d", name: String, sessionID: String) {
         if (!connect(secret, name)) {
             error("Connection failed")
         }
@@ -91,8 +91,13 @@ class NetworkService(private val rootService: RootService) {
         check(connectionState == ConnectionState.WAITING_FOR_GUEST)
         { "currently not prepared to start a new hosted game." }
         guestPlayerNames.add(0, hostPlayer)
+        /*val players = mutableListOf<Player>()
+        for (networkPlayer in guestPlayerNames) {
+
+        }
+         */
         // comment until the Service for startNewGame are implemented
-        // rootService.gameService.startNewGame(players)
+        rootService.gameService.startGame()
         val networkPlayers = rootService.networkMappingService.toNetworkPlayer()
         val gameMode = rootService.networkMappingService.toGameMode()
         val tileList = rootService.networkMappingService.toTileTypeList()
@@ -118,10 +123,9 @@ class NetworkService(private val rootService: RootService) {
         { "not waiting for game init message. " }
         val routeTiles = rootService.networkMappingService.toRouteTiles(message.tileList)
         val players = rootService.networkMappingService.toEntityPlayer(message.players)
-        if(players[0].name==playerName) {
+        if (players[0].name == playerName) {
             updateConnectionState(ConnectionState.PLAYING_MY_TURN)
-        }
-        else{
+        } else {
             updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
         }
     }
@@ -161,9 +165,11 @@ class NetworkService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val rotation = message.rotation
-        for (i in 0..rotation) {
-            // TODO:
+        for (i in 0 until rotation) {
+            rootService.playerTurnService.rotateTileRight()
         }
+        val space = Coordinate(message.qCoordinate, message.rCoordinate)
+        rootService.playerTurnService.placeRouteTile(currentGame.routeTiles[0], space)
     }
 
     /**
