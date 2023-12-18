@@ -6,4 +6,4 @@ package entity
  * @param [row] for the row of the tile
  *
  */
-class Coordinate(val column: Int, val row : Int)
+data class Coordinate(val column: Int, val row : Int)
