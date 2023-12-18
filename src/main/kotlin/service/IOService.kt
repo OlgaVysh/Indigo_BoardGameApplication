@@ -13,12 +13,13 @@ import java.io.File
  * @param root [RootService] the IOService belongs to
  */
 class IOService(private val root: RootService) {
-    val mapper = jacksonObjectMapper()
+    private val mapper = jacksonObjectMapper()
     /**
      * function for saving a game of Indigo to a file
      */
-    fun saveGameToFile(){
-
+    fun saveGameToFile(indigo: Indigo, path: String){
+        val json = mapper.writeValueAsString(indigo)
+        File(path).writeText(json)
     }
 
     /**
