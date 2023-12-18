@@ -8,5 +8,5 @@ package entity
  * @property edges List of edges on the tile.
  */
 data class Tile(var paths: List<Pair<Edge,Edge>>,var gemEndPosition: Map<Int, Gem>) {
-    val edges: List<Edge> = listOf(Edge.ZERO, Edge.ONE, Edge.TWO, Edge.THREE, Edge.FOUR, Edge.FIVE)
+    val edges: MutableList<Edge> = mutableListOf(Edge.ZERO, Edge.ONE, Edge.TWO, Edge.THREE, Edge.FOUR, Edge.FIVE)
 }

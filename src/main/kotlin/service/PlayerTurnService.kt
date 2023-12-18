@@ -53,124 +53,14 @@ class PlayerTurnService(private val rootService: RootService) {
         }
     }
 
+    fun rotateTileLeft(tile:Tile) : Tile
+    {tile.edges.addAll(tile.edges.subList(0, 1))
+        tile.edges.removeAll(tile.edges.subList(0, 1))
+    return tile}
 
-    fun rotateTileRight(tile: Tile): Tile {
-        if (tile.paths == listOf(
-                Pair(Edge.ZERO, Edge.TWO),
-                Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.THREE, Edge.FIVE)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.ONE, Edge.THREE),
-                Pair(Edge.TWO, Edge.FIVE),
-                Pair(Edge.FOUR, Edge.ONE)
-            )
-        } else if (tile.paths == listOf(
-                Pair(Edge.TWO, Edge.FIVE),
-                Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.ZERO, Edge.THREE)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.THREE, Edge.ZERO),
-                Pair(Edge.TWO, Edge.FIVE),
-                Pair(Edge.ONE, Edge.FOUR)
-            )
-        } else if (tile.paths == listOf(
-                Pair(Edge.ZERO, Edge.FIVE),
-                Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.TWO, Edge.THREE)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.ZERO, Edge.ONE),
-                Pair(Edge.TWO, Edge.FIVE),
-                Pair(Edge.THREE, Edge.FOUR)
-            )
-        } else if (tile.paths == listOf(
-                Pair(Edge.ZERO, Edge.FIVE),
-                Pair(Edge.ONE, Edge.THREE),
-                Pair(Edge.TWO, Edge.FOUR)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.ZERO, Edge.ONE),
-                Pair(Edge.TWO, Edge.FOUR),
-                Pair(Edge.THREE, Edge.FIVE)
-            )
-        } else if (tile.paths == listOf(
-                Pair(Edge.ZERO, Edge.FIVE),
-                Pair(Edge.ONE, Edge.TWO),
-                Pair(Edge.THREE, Edge.FOUR)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.ZERO, Edge.ONE),
-                Pair(Edge.TWO, Edge.THREE),
-                Pair(Edge.FOUR, Edge.FIVE)
-            )
-        }
-        return tile
-    }
+    fun rotateTileRight(tile:Tile) : Tile
+    {tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
+        tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
+        return tile}
 
-    fun rotateTileLeft(tile: Tile): Tile {
-        if (tile.paths == listOf(
-                Pair(Edge.ZERO, Edge.TWO),
-                Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.THREE, Edge.FIVE)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.FIVE, Edge.ONE),
-                Pair(Edge.ZERO, Edge.THREE),
-                Pair(Edge.TWO, Edge.FOUR)
-            )
-        } else if (tile.paths == listOf(
-                Pair(Edge.TWO, Edge.FIVE),
-                Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.ZERO, Edge.THREE)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.FOUR, Edge.ONE),
-                Pair(Edge.ZERO, Edge.THREE),
-                Pair(Edge.TWO, Edge.FIVE)
-            )
-        } else if (tile.paths == listOf(
-                Pair(Edge.ZERO, Edge.FIVE),
-                Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.TWO, Edge.THREE)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.FIVE, Edge.FOUR),
-                Pair(Edge.ZERO, Edge.THREE),
-                Pair(Edge.ONE, Edge.TWO)
-            )
-        } else if (tile.paths == listOf(
-                Pair(Edge.ZERO, Edge.FIVE),
-                Pair(Edge.ONE, Edge.THREE),
-                Pair(Edge.TWO, Edge.FOUR)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.FIVE, Edge.FOUR),
-                Pair(Edge.ZERO, Edge.TWO),
-                Pair(Edge.ONE, Edge.THREE)
-            )
-        } else if (tile.paths == listOf(
-                Pair(Edge.ZERO, Edge.FIVE),
-                Pair(Edge.ONE, Edge.TWO),
-                Pair(Edge.THREE, Edge.FOUR)
-            )
-        ) {
-            tile.paths = listOf(
-                Pair(Edge.FIVE, Edge.FOUR),
-                Pair(Edge.ZERO, Edge.ONE),
-                Pair(Edge.THREE, Edge.TWO)
-            )
-        }
-        return tile
-    }
 }

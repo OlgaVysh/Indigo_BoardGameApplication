@@ -37,7 +37,7 @@ class GameService(private val rootService: RootService) {
                 || space == Coordinate(-2, 4) || space == Coordinate(-3, 4)
                 || space == Coordinate(-4, 3) || space == Coordinate(-4, 2)
                 || space == Coordinate(-4, 1) || space == Coordinate(-3, -1)
-                || space == Coordinate(-2, -2) || space == Coordinate(-3, -1))
+                || space == Coordinate(-2, -2) || space == Coordinate(-1, -3))
     }
 
     private fun placeTile(space: Coordinate, tile: Tile) {
