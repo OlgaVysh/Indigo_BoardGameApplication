@@ -28,17 +28,16 @@ class GameService(private val rootService: RootService) {
     }
 
     private fun coordinateHasExit(space: Coordinate): Boolean {
-        val currentGame = rootService.currentGame
-        checkNotNull(currentGame)
-        return (space == Coordinate(3, 0) || space == Coordinate(3, -1)
-                || space == Coordinate(3, -2) || space == Coordinate(3, -3)
-                || space == Coordinate(2, -3) || space == Coordinate(1, -3)
-                || space == Coordinate(0, -3) || space == Coordinate(-1, -2)
-                || space == Coordinate(2, -1) || space == Coordinate(-3, 0)
-                || space == Coordinate(-3, 1) || space == Coordinate(-3, 2)
-                || space == Coordinate(-3, 3) || space == Coordinate(-2, 3)
-                || space == Coordinate(-1, 3) || space == Coordinate(0, 3)
-                || space == Coordinate(1, 2) || space == Coordinate(2, 1))
+
+        return (space == Coordinate(1, -4) || space == Coordinate(2, -4)
+                || space == Coordinate(3, -4) || space == Coordinate(4, -3)
+                || space == Coordinate(4, -2) || space == Coordinate(4, -1)
+                || space == Coordinate(3, 1) || space == Coordinate(2, 2)
+                || space == Coordinate(1, 3) || space == Coordinate(-1, 4)
+                || space == Coordinate(-2, 4) || space == Coordinate(-3, 4)
+                || space == Coordinate(-4, 3) || space == Coordinate(-4, 2)
+                || space == Coordinate(-4, 1) || space == Coordinate(-3, -1)
+                || space == Coordinate(-2, -2) || space == Coordinate(-3, -1))
     }
 
     private fun placeTile(space: Coordinate, tile: Tile) {
