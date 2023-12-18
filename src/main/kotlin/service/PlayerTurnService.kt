@@ -5,39 +5,21 @@ import java.lang.Exception
 
 class PlayerTurnService(private val rootService: RootService) {
 
-    fun placeRouteTile(tile: Tile, space: Coordinate) {
+    fun placeRouteTile(space: Coordinate, tile: Tile) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame) { "The game has not started yet" }
 
-        if (chooseSpace(space)) {
-            currentGame.gameBoard.gameBoardTiles[space] = tile
-            rootService.gameService.checkPlacement()
+        if (rootService.gameService.checkPlacement(space, tile)) {
+            rootService.gameService.moveGems()
+            rootService.gameService.checkCollision()
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
             //in progress
         } else {
-            throw Exception("Invalid space, can not place tile")
+            throw Exception("Invalid space, choose another space please")
         }
     }
 
-
-    private fun chooseSpace(space: Coordinate): Boolean {
-        val currentGame = rootService.currentGame
-        checkNotNull(currentGame)
-        if (currentGame.gameBoard.gameBoardTiles[space] != null) {
-            throw Exception("this place is occupied")
-        }
-        if (!coordinateHasExit()) {
-            placeTile(space)
-        } else {
-            if (!tileBlocksExit(space, tile:Tile)) {
-                placeTile(space)
-            }
-            else{ throw Exception("tile blocks exit")}
-        }
-        //in progress
-        return true
-    }
 
     /**
      * Undoes one game move and returns to the previous game state,
