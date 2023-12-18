@@ -5,38 +5,65 @@ import java.lang.Exception
 
 class PlayerTurnService(private val rootService: RootService) {
 
-    fun placeRouteTile(tile: Tile, space: Coordinate) {
+    fun placeRouteTile(space: Coordinate, tile: Tile) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame) { "The game has not started yet" }
 
-        if (chooseSpace(space)) {
-            currentGame.gameBoard.gameBoardTiles[space] = tile
-            rootService.gameService.checkPlacement()
+        if (chooseSpace(space, tile)) {
+            //currentGame.gameBoard.gameBoardTiles[space] = tile
+            // rootService.gameService.checkPlacement()
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
             //in progress
         } else {
-            throw Exception("Invalid space, can not place tile")
+            throw Exception("Invalid space, choose another space please")
         }
     }
 
 
-    private fun chooseSpace(space: Coordinate): Boolean {
+    private fun chooseSpace(space: Coordinate, tile: Tile): Boolean {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
             throw Exception("this place is occupied")
         }
-        if (!coordinateHasExit()) {
-            placeTile(space)
+        if (!coordinateHasExit(space)) {
+            placeTile(space, tile)
         } else {
-            if (!tileBlocksExit(space, tile:Tile)) {
-                placeTile(space)
+            if (!tileBlocksExit(space, tile)) {
+                placeTile(space, tile)
+            } else {
+                throw Exception("tile blocks exit")
             }
-            else{ throw Exception("tile blocks exit")}
         }
         //in progress
         return true
+    }
+
+    private fun coordinateHasExit(space: Coordinate): Boolean {
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        return (space == Coordinate(3, 0) || space == Coordinate(3, -1)
+                || space == Coordinate(3, -2) || space == Coordinate(3, -3)
+                || space == Coordinate(2, -3) || space == Coordinate(1, -3)
+                || space == Coordinate(0, -3) || space == Coordinate(-1, -2)
+                || space == Coordinate(2, -1) || space == Coordinate(-3, 0)
+                || space == Coordinate(-3, 1) || space == Coordinate(-3, 2)
+                || space == Coordinate(-3, 3) || space == Coordinate(-2, 3)
+                || space == Coordinate(-1, 3) || space == Coordinate(0, 3)
+                || space == Coordinate(1, 2) || space == Coordinate(2, 1))
+    }
+
+    private fun placeTile(space: Coordinate, tile: Tile) {
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        currentGame.gameBoard.gameBoardTiles[space] = tile
+    }
+
+    private fun tileBlocksExit(space: Coordinate, tile: Tile): Boolean
+    {val currentGame =rootService.currentGame
+    checkNotNull(currentGame)
+
     }
 
     /**
