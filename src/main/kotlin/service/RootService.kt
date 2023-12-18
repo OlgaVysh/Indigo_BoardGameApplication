@@ -16,8 +16,18 @@ class RootService {
      */
     val networkService = NetworkService(this)
 
+    /**
+     *  @property networkMappingService The NetworkMappingService
+     */
     val networkMappingService = NetworkMappingService(this)
 
+    /**
+     * @property playerTurnService to get all function of the [PlayerTurnService]
+     */
     val playerTurnService = PlayerTurnService(this)
+
+    /**
+     * @property gameService to get all function of the [GameService]
+     */
     val gameService = GameService(this)
 }
