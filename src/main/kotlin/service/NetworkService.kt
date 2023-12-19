@@ -166,10 +166,10 @@ class NetworkService(private val rootService: RootService) {
         checkNotNull(currentGame)
         val rotation = message.rotation
         for (i in 0 until rotation) {
-            rootService.playerTurnService.rotateTileRight()
+            //rootService.playerTurnService.rotateTileRight()
         }
         val space = Coordinate(message.qCoordinate, message.rCoordinate)
-        rootService.playerTurnService.placeRouteTile(currentGame.routeTiles[0], space)
+        //rootService.playerTurnService.placeRouteTile(currentGame.routeTiles[0], space)
     }
 
     /**

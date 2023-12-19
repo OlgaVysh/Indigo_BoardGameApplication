@@ -104,6 +104,7 @@ class GameService(private val rootService: RootService) {
 
 
     private fun getAnotherEdge(egde: Edge, tile: Tile): Int {
+        /*
         val paths = tile.paths
         val edges = tile.edges
         for (i in 0 until paths.size) {
@@ -113,6 +114,8 @@ class GameService(private val rootService: RootService) {
                 return edges.indexOf(anotherEdge)
             }
         }
+       */
+        return 0
     }
 
     fun checkCollision() {}//:Unit
