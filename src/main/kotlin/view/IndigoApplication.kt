@@ -15,7 +15,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     // also holds the currently active game
     private val rootService = RootService()
 
-    private val helloScene = HelloScene()
+
     private val startScene = NewGameMenuScene()
     private val modusScene = ModusMenuScene()
     private val gatesScene = GateMenuScene()
@@ -40,7 +40,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
         val fontFile = File(resource.toURI())
         loadFont(fontFile)
 
-        this.showMenuScene(startScene)
+        this.showMenuScene(joinGameScene)
     }
 
 
