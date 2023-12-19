@@ -2,14 +2,25 @@ package service
 
 import entity.*
 import java.lang.Exception
-
+/**
+ * Service class for managing player turns and actions.
+ * @param rootService The root service providing access to the current game state.
+ */
 class PlayerTurnService(private val rootService: RootService) {
+    /**
+     * Places a route tile at the specified coordinate.
+     * @param space The coordinate where the tile is to be placed.
+     * @param tile The tile to be placed.
+     * @throws Exception if the placement is invalid.
+     */
 
     fun placeRouteTile(space: Coordinate, tile: Tile) {
         val currentGame = rootService.currentGame
+        // Check if the game has started
         checkNotNull(currentGame) { "The game has not started yet" }
-
+        // Check if the tile placement is valid
         if (rootService.gameService.checkPlacement(space, tile)) {
+            // Move gems, check collisions, distribute new tiles, and change the player
             rootService.gameService.moveGems()
             rootService.gameService.checkCollision()
             rootService.gameService.distributeNewTile()
@@ -52,17 +63,27 @@ class PlayerTurnService(private val rootService: RootService) {
             println("Next game state doesn't exist, cannot redo the move")
         }
     }
-
-    fun rotateTileLeft(tile: Tile): Tile {
+    /**
+     * Rotates the tile to the left.
+     * @param tile The tile to be rotated.
+     * @return The rotated tile.
+     */
+    fun rotateTileLeft(tile:Tile) : Tile
+    {    // Add the first edge to the end of the list
         tile.edges.addAll(tile.edges.subList(0, 1))
+        // Remove the original first edge
         tile.edges.removeAll(tile.edges.subList(0, 1))
-        return tile
-    }
-
-    fun rotateTileRight(tile: Tile): Tile {
+    return tile}
+    /**
+     * Rotates the tile to the right.
+     * @param tile The tile to be rotated.
+     * @return The rotated tile.
+     */
+    fun rotateTileRight(tile:Tile) : Tile
+    {    // Add the last edge to the beginning of the list
         tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
+        // Remove the original last edge
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
-        return tile
-    }
+        return tile}
 
 }
