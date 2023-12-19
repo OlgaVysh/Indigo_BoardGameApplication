@@ -3,6 +3,8 @@ package view
 import service.RootService
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
+import view.components.Button
+import view.components.Label
 
 class EndGameMenuScene (private val rootService: RootService) : MenuScene(1920, 1080) {
     private val game = rootService.currentGame

@@ -1,8 +1,10 @@
 package view
 import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.visual.ImageVisual
+import view.components.Button
+import view.components.Label
 
-class HelloScene : BoardGameScene(1920, 1080) {
+class HelloScene : BoardGameScene(1920, 1080,  background =  ImageVisual("SevenGems1Background.png")) {
 
     private val button = Button(555,664, 810,207, fontSize = 50)
 
@@ -10,7 +12,6 @@ class HelloScene : BoardGameScene(1920, 1080) {
 
 
     init {
-        background =  ImageVisual("SevenGems1Background.png")
         addComponents(helloLabel)
         addComponents(button)
     }

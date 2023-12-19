@@ -4,6 +4,8 @@ import tools.aqua.bgw.visual.ImageVisual
 import service.RootService
 import tools.aqua.bgw.components.layoutviews.GridPane
 import tools.aqua.bgw.core.Alignment
+import view.components.Button
+import view.components.Label
 
 class NewPlayerMenuScene(private val rootService: RootService) : MenuScene(1920, 1080){
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)

@@ -1,8 +1,10 @@
 package view
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
+import view.components.Button
+import view.components.Label
 
-class NewGameMenuScene : MenuScene(1920, 1080) {
+class NewGameMenuScene : MenuScene(1920, 1080, background =  ImageVisual("NewGameMenuBackground.png")) {
 
     private val startButton = Button(696, 337,528,207,"Start new game",48)
 
@@ -10,11 +12,8 @@ class NewGameMenuScene : MenuScene(1920, 1080) {
     private val indigoLabel = Label(775, 62, 370,155,"Indigo",120)
 
     init{
-        background =  ImageVisual("NewGameMenuBackground.png")
         opacity = 1.0
-        addComponents(indigoLabel)
-        addComponents(startButton)
-        addComponents(continueButton)
+        addComponents(indigoLabel, startButton, continueButton)
     }
 
 }

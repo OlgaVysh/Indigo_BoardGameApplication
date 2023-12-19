@@ -3,6 +3,8 @@ package view
 import service.RootService
 import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.core.MenuScene
+import view.components.Button
+import view.components.Label
 
 class ConfigurePlayerXScene(private val rootService: RootService) : MenuScene(990, 1080) {
     private val game = rootService.currentGame
