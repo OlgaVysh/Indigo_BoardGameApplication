@@ -28,6 +28,9 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     private val endGameMenuScene = EndGameMenuScene(rootService)
     private val aiMenuScene = AIMenuScene(rootService)
     private val hostGameScene = HostGameScene(rootService)
+    private val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
+    private val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
+
 
 
     init {
