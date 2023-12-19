@@ -1,8 +1,9 @@
-package service
+package service.Network
 
 import edu.udo.cs.sopra.ntf.GameInitMessage
 import edu.udo.cs.sopra.ntf.TilePlacedMessage
 import entity.*
+import service.RootService
 
 /**
  *  The class [NetworkService] is to have all function  with the network for online gaming.
@@ -91,26 +92,9 @@ class NetworkService(private val rootService: RootService) {
         check(connectionState == ConnectionState.WAITING_FOR_GUEST)
         { "currently not prepared to start a new hosted game." }
         guestPlayerNames.add(0, hostPlayer)
-        /*val players = mutableListOf<Player>()
-        for (networkPlayer in guestPlayerNames) {
-
-        }
-         */
-        // comment until the Service for startNewGame are implemented
-        rootService.gameService.startGame()
-        val networkPlayers = rootService.networkMappingService.toNetworkPlayer()
-        val gameMode = rootService.networkMappingService.toGameMode()
-        val tileList = rootService.networkMappingService.toTileTypeList()
-        val message = GameInitMessage(
-            networkPlayers, gameMode, tileList
-        )
-        if (networkPlayers[0].name == hostPlayer) {
-            updateConnectionState(ConnectionState.PLAYING_MY_TURN)
-        } else {
-            updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
-        }
-        client?.sendGameActionMessage(message)
+        TODO("Refresh to the Gui that the GUI gets all player")
     }
+
 
     /**
      * The function [startNewJoinedGame] start a new game by joining it.
@@ -128,6 +112,29 @@ class NetworkService(private val rootService: RootService) {
         } else {
             updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
         }
+    }
+
+    /**
+     *  The class [sendGameMessage] the class send an initMessage
+     *  from the currentGame after initialized a new game.
+     *
+     */
+    fun sendGameInitMessage() {
+        val networkPlayers = rootService.networkMappingService.toNetworkPlayer()
+        val gameMode = rootService.networkMappingService.toGameMode()
+        val tileList = rootService.networkMappingService.toTileTypeList()
+        val message = GameInitMessage(
+            networkPlayers,
+            gameMode,
+            tileList
+        )
+        for(otherPlayer in client?.otherPlayers!!){
+          if(networkPlayers[0].name == otherPlayer) {
+              updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+          }
+      }
+        updateConnectionState(ConnectionState.PLAYING_MY_TURN)
+        client?.sendGameActionMessage(message)
     }
 
 
@@ -166,9 +173,11 @@ class NetworkService(private val rootService: RootService) {
         checkNotNull(currentGame)
         val rotation = message.rotation
         for (i in 0 until rotation) {
+            TODO()
             //rootService.playerTurnService.rotateTileRight()
         }
         val space = Coordinate(message.qCoordinate, message.rCoordinate)
+        TODO()
         //rootService.playerTurnService.placeRouteTile(currentGame.routeTiles[0], space)
     }
 

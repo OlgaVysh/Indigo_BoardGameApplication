@@ -1,4 +1,4 @@
-package service
+package service.Network
 
 /**
  *  The enum class [ConnectionState] represented our state for the state machine

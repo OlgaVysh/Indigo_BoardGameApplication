@@ -53,14 +53,16 @@ class PlayerTurnService(private val rootService: RootService) {
         }
     }
 
-    fun rotateTileLeft(tile:Tile) : Tile
-    {tile.edges.addAll(tile.edges.subList(0, 1))
+    fun rotateTileLeft(tile: Tile): Tile {
+        tile.edges.addAll(tile.edges.subList(0, 1))
         tile.edges.removeAll(tile.edges.subList(0, 1))
-    return tile}
+        return tile
+    }
 
-    fun rotateTileRight(tile:Tile) : Tile
-    {tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
+    fun rotateTileRight(tile: Tile): Tile {
+        tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
-        return tile}
+        return tile
+    }
 
 }

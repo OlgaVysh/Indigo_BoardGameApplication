@@ -1,6 +1,7 @@
 package service
 
 import entity.Indigo
+import service.Network.NetworkService
 
 /**
  *  The class [RootService] is the service class which connect the service layer
