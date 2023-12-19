@@ -17,4 +17,5 @@ import java.util.Date
 open class Player(val name: String, val age: Date = Date(0), val color: TokenColor, val isAI: Boolean = false) {
     var score = 0
     var gemCounter = 0
+    var handTile: Tile? = null
 }
