@@ -1,4 +1,4 @@
-package view
+package view.components
 import tools.aqua.bgw.components.uicomponents.Button
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ImageVisual

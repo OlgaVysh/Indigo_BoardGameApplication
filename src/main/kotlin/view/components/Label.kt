@@ -1,4 +1,4 @@
-package view
+package view.components
 import tools.aqua.bgw.components.uicomponents.Label
 import tools.aqua.bgw.util.Font
 
