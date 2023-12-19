@@ -1,4 +1,4 @@
-package service
+package service.network
 
 import edu.udo.cs.sopra.ntf.GameMode
 import edu.udo.cs.sopra.ntf.Player
@@ -7,6 +7,7 @@ import edu.udo.cs.sopra.ntf.TileType
 import entity.Edge
 import entity.Tile
 import entity.TokenColor
+import service.RootService
 
 /**
  * The class [NetworkMappingService] is for the translating

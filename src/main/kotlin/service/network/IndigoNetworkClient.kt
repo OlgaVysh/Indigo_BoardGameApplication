@@ -1,4 +1,4 @@
-package service.Network
+package service.network
 
 import edu.udo.cs.sopra.ntf.GameInitMessage
 import edu.udo.cs.sopra.ntf.TilePlacedMessage

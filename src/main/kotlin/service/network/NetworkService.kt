@@ -1,4 +1,4 @@
-package service.Network
+package service.network
 
 import edu.udo.cs.sopra.ntf.GameInitMessage
 import edu.udo.cs.sopra.ntf.TilePlacedMessage
@@ -112,6 +112,12 @@ class NetworkService(private val rootService: RootService) {
         } else {
             updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
         }
+        val setting = GameSettings(players)
+        TODO("Need extra information to use ")
+        //val alltiles =
+       // rootService.currentGame = Indigo(
+
+        //)
     }
 
     /**
@@ -128,12 +134,12 @@ class NetworkService(private val rootService: RootService) {
             gameMode,
             tileList
         )
+        updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         for(otherPlayer in client?.otherPlayers!!){
           if(networkPlayers[0].name == otherPlayer) {
               updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
           }
       }
-        updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         client?.sendGameActionMessage(message)
     }
 
