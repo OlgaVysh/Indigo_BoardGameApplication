@@ -6,6 +6,7 @@ import edu.udo.cs.sopra.ntf.PlayerColor
 import edu.udo.cs.sopra.ntf.TileType
 import entity.Edge
 import entity.Tile
+import entity.Token
 import entity.TokenColor
 import service.RootService
 
@@ -40,7 +41,9 @@ class NetworkMappingService(private val rootService: RootService) {
             gameMode = if (sharedGateWays) GameMode.THREE_SHARED_GATEWAYS
             else GameMode.THREE_NOT_SHARED_GATEWAYS
         }
-        if (players.size == 4) {gameMode = GameMode.FOUR_SHARED_GATEWAYS}
+        if (players.size == 4) {
+            gameMode = GameMode.FOUR_SHARED_GATEWAYS
+        }
         return gameMode
     }
 
@@ -233,4 +236,78 @@ class NetworkMappingService(private val rootService: RootService) {
         return entityPlayers
     }
 
+    /**
+     *  The function []
+     * @param players The players which are participate the game
+     * @param notSharedGates  The [notSharedGates] is two decide which you have
+     *
+     * @return A mutable list of token as gateTokens
+     */
+    fun toGateTokens(players: List<entity.Player>, gameMode: GameMode): MutableList<Token> {
+        var notSharedGates = false
+        when (gameMode) {
+            GameMode.TWO_NOT_SHARED_GATEWAYS -> {
+                notSharedGates = true
+            }
+
+            GameMode.THREE_NOT_SHARED_GATEWAYS -> {
+                notSharedGates = true
+            }
+
+            else -> {}
+        }
+        return createGateTokens(players, notSharedGates)
+    }
+
+    /**
+     * The private function [createGateTokens]
+     * create from the upcoming information of the network
+     * to make the gate tokens
+     *
+     * @param players The players which are participate the game
+     * @param notSharedGates  The [notSharedGates] is two decide which mode the gates are
+     * initialize
+     *
+     * @return A mutable list of token as gateTokens
+     */
+    private fun createGateTokens(players: List<entity.Player>, notSharedGates: Boolean): MutableList<Token> {
+        val gateTokens = mutableListOf<Token>()
+        val playerSize = players.size
+        if (notSharedGates) {
+            for (i in 0 until 6) {
+                gateTokens.add(Token(players[i % playerSize].color))
+                gateTokens.add(Token(players[i % playerSize].color))
+            }
+        } else {
+            if (playerSize == 4) {
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[3].color))
+                gateTokens.add(Token(players[3].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[4].color))
+            }
+            if (playerSize == 3) {
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[2].color))
+            }
+        }
+        return gateTokens
+    }
 }
