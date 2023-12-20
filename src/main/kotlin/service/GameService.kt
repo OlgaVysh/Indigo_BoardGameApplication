@@ -240,6 +240,16 @@ class GameService(private val rootService: RootService) {
         }
         return allTiles.toList()
     }
-    fun initializeGems() {}//:Unit
+
+    /**
+     * @return list of all [Gem]s not on the board at the start of a game (6 Amber, 5 Emerald, 1 Sapphire)
+     */
+    fun initializeGems():MutableList<Gem> {
+        val gems:MutableList<Gem> = mutableListOf()
+        for (i in 0 until 6) gems.add(Gem(GemColor.AMBER))
+        for (i in 0 until 5) gems.add(Gem(GemColor.EMERALD))
+        gems.add(Gem(GemColor.SAPPHIRE))
+        return gems
+    }
     private fun removeGems() {}//(gems:List<Gem>):Unit
 }
