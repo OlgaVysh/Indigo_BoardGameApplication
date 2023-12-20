@@ -3,6 +3,7 @@ import entity.Tile
 
 /**
  * the function create a  test list of route tiles
+ *
  *  @return A mutable List of route tiles
  */
 fun createTestRouteTile() : MutableList<Tile>{
@@ -32,19 +33,19 @@ fun createTestRouteTile() : MutableList<Tile>{
         Pair(Edge.THREE, Edge.FOUR)
     )
     val routeTiles = mutableListOf<Tile>()
-    for (i in 0 until 14){
+    repeat(14){
         routeTiles.add(Tile(tile0, mutableMapOf()))
     }
-    for (i in 0 until 6){
+    repeat(6){
         routeTiles.add(Tile(tile1, mutableMapOf()))
     }
-    for (i in 0 until 14){
+    repeat(14){
         routeTiles.add(Tile(tile2, mutableMapOf()))
     }
-    for (i in 0 until 14){
+    repeat(14){
         routeTiles.add(Tile(tile3, mutableMapOf()))
     }
-    for (i in 0 until 6){
+    repeat(6){
         routeTiles.add(Tile(tile4, mutableMapOf()))
     }
     return routeTiles
