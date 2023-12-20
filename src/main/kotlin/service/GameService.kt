@@ -186,7 +186,17 @@ class GameService(private val rootService: RootService) {
     fun checkCollision() {}//:Unit
     fun saveGame() {}
     fun loadGame() {}
-    fun assignGems() {}//gem:Gem, player: Player
+
+    /**
+     * function to assign a [Gem] to a given [Player]
+     * @param gem [Gem] to be assigned
+     * @param player [Player] to receive the [Gem]
+     */
+    fun assignGem(gem: Gem,player: Player) {
+        player.score += gem.gemColor.ordinal+1
+        player.gemCounter++
+        TODO(/*refresh*/)
+    }
     fun changePlayer() {}//Unit
     fun moveGems() {}//(gem: Gem) :Unit
     fun addPoints() {}//(player: Player, amount: Int) : Unit
