@@ -7,29 +7,18 @@ import service.network.NetworkService
 /**
  *  The class [RootService] is the service class which connect the service layer
  *  with the entity layer
+ *  @property currentGame The property currentGame have saved the current Indigo Game
+ *  @property networkService The NetworkService
+ *  @property networkMappingService The NetworkMappingService
+ *  @property playerTurnService to get all function of the [PlayerTurnService]
+ *  @property gameService to get all function of the [GameService]
+ *  @property ioService to get all function of the [IOService]
  */
 class RootService {
-    /**
-     * @property currentGame The property currentGame have saved the current Indigo Game
-     */
     var currentGame: Indigo? = null
-    /**
-     *  @property networkService The NetworkService
-     */
     val networkService = NetworkService(this)
-
-    /**
-     *  @property networkMappingService The NetworkMappingService
-     */
     val networkMappingService = NetworkMappingService(this)
-
-    /**
-     * @property playerTurnService to get all function of the [PlayerTurnService]
-     */
     val playerTurnService = PlayerTurnService(this)
-
-    /**
-     * @property gameService to get all function of the [GameService]
-     */
     val gameService = GameService(this)
+    val ioService = IOService(this)
 }
