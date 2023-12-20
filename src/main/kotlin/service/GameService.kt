@@ -184,7 +184,19 @@ class GameService(private val rootService: RootService) {
     }
 
     fun checkCollision() {}//:Unit
-    fun saveGame() {}
+
+    /**
+     * saved the current [Indigo] gameState as a JSON at a given location using the [IOService]
+     *
+     * @param path location to be given to [IOService] for saving
+     * @throws IllegalStateException if currentGame is null
+     */
+    fun saveGame(path: String) {
+        val game = rootService.currentGame
+        checkNotNull(game)
+        rootService.ioService.saveGameToFile(game,path)
+        TODO(/*refresh*/)
+    }
     fun loadGame() {}
 
     /**
