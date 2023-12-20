@@ -191,7 +191,55 @@ class GameService(private val rootService: RootService) {
     fun moveGems() {}//(gem: Gem) :Unit
     fun addPoints() {}//(player: Player, amount: Int) : Unit
     fun distributeNewTile() {}//:Unit
-    fun initializeTiles() {}//:Unit
+
+    /**
+     * @return [List] of [Tile]s, first 6 are treasure tiles starting at the top right of the board going clockwise
+     */
+    fun initializeTiles():List<Tile> {
+        val allTiles: MutableList<Tile> = mutableListOf()
+        //Position of gem is determined, path starts and ends on the adjacent sides
+        for (i in 0 until 6){
+            val gemPos = (i+3)%6
+            allTiles.add(Tile(listOf(Pair(Edge.values()[gemPos-1],Edge.values()[gemPos+1])),
+                mapOf(Pair(gemPos,Gem(GemColor.AMBER)))))
+        }
+        //TypeID 0 Route Tiles are added
+        var path1 = Pair(Edge.ZERO,Edge.TWO)
+        var path2 = Pair(Edge.ONE,Edge.FOUR)
+        var path3 = Pair(Edge.THREE,Edge.FIVE)
+        for (i in 0 until 14){
+            allTiles.add(Tile(listOf(path1,path2,path3)))
+        }
+        //TypeID 1 Route Tiles are added
+        path1 = Pair(Edge.TWO,Edge.FIVE)
+        path2 = Pair(Edge.ONE,Edge.FOUR)
+        path3 = Pair(Edge.ZERO,Edge.THREE)
+        for (i in 0 until 6){
+            allTiles.add(Tile(listOf(path1,path2,path3)))
+        }
+        //TypeID 2 Route Tiles are added
+        path1 = Pair(Edge.ZERO,Edge.FIVE)
+        path2 = Pair(Edge.ONE,Edge.FOUR)
+        path3 = Pair(Edge.TWO,Edge.THREE)
+        for (i in 0 until 14){
+            allTiles.add(Tile(listOf(path1,path2,path3)))
+        }
+        //TypeID 3 Route Tiles are added
+        path1 = Pair(Edge.ZERO,Edge.FIVE)
+        path2 = Pair(Edge.ONE,Edge.THREE)
+        path3 = Pair(Edge.TWO,Edge.FOUR)
+        for (i in 0 until 14){
+            allTiles.add(Tile(listOf(path1,path2,path3)))
+        }
+        //TypeID 4 Route Tiles are added
+        path1 = Pair(Edge.ZERO,Edge.FIVE)
+        path2 = Pair(Edge.ONE,Edge.TWO)
+        path3 = Pair(Edge.THREE,Edge.FOUR)
+        for (i in 0 until 6){
+            allTiles.add(Tile(listOf(path1,path2,path3)))
+        }
+        return allTiles.toList()
+    }
     fun initializeGems() {}//:Unit
     private fun removeGems() {}//(gems:List<Gem>):Unit
 }
