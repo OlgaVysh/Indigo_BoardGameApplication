@@ -16,7 +16,7 @@ import service.network.NetworkService
  */
 class RootService {
     var currentGame: Indigo? = null
-    val networkService = NetworkService(this)
+    var networkService = NetworkService(this)
     val networkMappingService = NetworkMappingService(this)
     val playerTurnService = PlayerTurnService(this)
     val gameService = GameService(this)
