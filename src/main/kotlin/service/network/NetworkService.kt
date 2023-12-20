@@ -10,7 +10,7 @@ import service.RootService
  *
  *  @property rootService the rootService to have the information of the current game
  */
-class NetworkService(private val rootService: RootService) {
+open class NetworkService(private val rootService: RootService) {
     companion object {
         /** URL of the BGW Net to play at SoPra23d */
         const val SERVER_ADDRESS = "sopra.cs.tu-dortmund.de:80/bgw-net/connect"
@@ -23,7 +23,6 @@ class NetworkService(private val rootService: RootService) {
      *  The connection begins with disconnected
      */
     var connectionState: ConnectionState = ConnectionState.DISCONNECTED
-        private set
 
     /**
      *  The client if we are the client
@@ -50,7 +49,7 @@ class NetworkService(private val rootService: RootService) {
      *  @param name Name of the host
      *  @param  sessionID Write a sessionID if you want else  you get one from the server
      */
-    fun hostGame(secret: String = "game23d", name: String, sessionID: String?) {
+    fun hostGame(secret: String = "game23d", name: String, sessionID: String? = null) {
         if (!connect(secret, name)) {
             error("Connection failed")
         }
@@ -84,14 +83,17 @@ class NetworkService(private val rootService: RootService) {
 
     /**
      * The function [startNewHostedGame] start a new HostGame
+     * and configure all other player
      *
-     * @param hostPlayer The host
-     * @param guestPlayerNames all other joined players
      */
-    fun startNewHostedGame(hostPlayer: String, guestPlayerNames: MutableList<String>) {
+    fun startNewHostedGame() {
+        val client = client
+        checkNotNull(client)
+        val hostPlayer = client.playerName
+        val playerNames = client.otherPlayers.subList(0, 4)
         check(connectionState == ConnectionState.WAITING_FOR_GUEST)
         { "currently not prepared to start a new hosted game." }
-        guestPlayerNames.add(0, hostPlayer)
+        playerNames.add(0, hostPlayer)
         TODO("Refresh to the Gui that the GUI gets all player")
     }
 
@@ -113,15 +115,27 @@ class NetworkService(private val rootService: RootService) {
             updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
         }
         val setting = GameSettings(players)
-        TODO("Need extra information to use ")
-        //val alltiles =
-       // rootService.currentGame = Indigo(
 
-        //)
+        val allTiles = mutableListOf(
+            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3,Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4,Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5,Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3,Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4,Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5,Gem(GemColor.AMBER)))),
+        )
+        allTiles.addAll(routeTiles)
+        rootService.currentGame = Indigo(
+            setting,
+            GameBoard(),
+            allTiles.toList(),
+            rootService.gameService.initializeGems(),
+            rootService.networkMappingService.toGateTokens(players, message.gameMode)
+        )
     }
 
     /**
-     *  The class [sendGameMessage] the class send an initMessage
+     *  The class [sendGameInitMessage] the class send an initMessage
      *  from the currentGame after initialized a new game.
      *
      */
@@ -135,11 +149,11 @@ class NetworkService(private val rootService: RootService) {
             tileList
         )
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
-        for(otherPlayer in client?.otherPlayers!!){
-          if(networkPlayers[0].name == otherPlayer) {
-              updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
-          }
-      }
+        for (otherPlayer in client?.otherPlayers!!) {
+            if (networkPlayers[0].name == otherPlayer) {
+                updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+            }
+        }
         client?.sendGameActionMessage(message)
     }
 
@@ -160,6 +174,15 @@ class NetworkService(private val rootService: RootService) {
             rotation, qCoordinate, rCoordinate
         )
         client?.sendGameActionMessage(message)
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+        (ConnectionState.PLAYING_MY_TURN)
+        for (otherPlayer in client?.otherPlayers!!) {
+            if (currentGame.players[currentPlayerIndex].name == otherPlayer) {
+                updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+            }
+        }
     }
 
     /**
@@ -179,12 +202,17 @@ class NetworkService(private val rootService: RootService) {
         checkNotNull(currentGame)
         val rotation = message.rotation
         for (i in 0 until rotation) {
-            TODO()
-            //rootService.playerTurnService.rotateTileRight()
+            rootService.playerTurnService.rotateTileRight(currentGame.routeTiles[0])
         }
         val space = Coordinate(message.qCoordinate, message.rCoordinate)
-        TODO()
-        //rootService.playerTurnService.placeRouteTile(currentGame.routeTiles[0], space)
+        rootService.playerTurnService.placeRouteTile(space, currentGame.routeTiles[0])
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+        updateConnectionState(ConnectionState.PLAYING_MY_TURN)
+        for (otherPlayer in client?.otherPlayers!!) {
+            if (currentGame.players[currentPlayerIndex].name == otherPlayer) {
+                updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+            }
+        }
     }
 
     /**
@@ -193,7 +221,7 @@ class NetworkService(private val rootService: RootService) {
      *  @param secret The secret to make a secure connection  to the Server
      *  @param name The name of the player
      */
-    private fun connect(secret: String = "game23d", name: String): Boolean {
+    open fun connect(secret: String = "game23d", name: String): Boolean {
         require(connectionState == ConnectionState.DISCONNECTED && client == null)
         { "already connected to another game" }
         require(name.isNotBlank()) { "player name must be given" }
@@ -206,6 +234,7 @@ class NetworkService(private val rootService: RootService) {
             )
         return if (newClient.connect()) {
             this.client = newClient
+            updateConnectionState(ConnectionState.CONNECTED)
             true
         } else {
             false
@@ -220,4 +249,5 @@ class NetworkService(private val rootService: RootService) {
     fun updateConnectionState(newState: ConnectionState) {
         this.connectionState = newState
     }
+
 }
