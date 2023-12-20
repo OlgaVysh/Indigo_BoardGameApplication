@@ -220,7 +220,16 @@ class GameService(private val rootService: RootService) {
         player.gemCounter++
         TODO(/*refresh*/)
     }
-    fun changePlayer() {}//Unit
+    fun changePlayer() {
+        if(rootService.currentGame?.currentPlayerIndex  == 3){
+            rootService.currentGame!!.currentPlayerIndex == 0
+        }
+        else
+        {
+            rootService.currentGame?.currentPlayerIndex?.plus(1)
+        }
+        TODO(/*refresh*/)
+    }
     fun moveGems() {}//(gem: Gem) :Unit
     fun addPoints() {}//(player: Player, amount: Int) : Unit
 
