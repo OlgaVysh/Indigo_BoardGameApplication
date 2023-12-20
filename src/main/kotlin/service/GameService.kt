@@ -190,7 +190,19 @@ class GameService(private val rootService: RootService) {
     fun changePlayer() {}//Unit
     fun moveGems() {}//(gem: Gem) :Unit
     fun addPoints() {}//(player: Player, amount: Int) : Unit
-    fun distributeNewTile() {}//:Unit
+
+    /**
+     * function to give the current [Player] a new route [Tile] at the end of their turn (last in list)
+     *
+     * @throws IllegalStateException if currentGame in [rootService] is null or no route [Tile]s remain
+     */
+    fun distributeNewTile() {
+        val game = rootService.currentGame
+        checkNotNull(game)
+        check(game.routeTiles.size > 0)
+        game.players[game.currentPlayerIndex].handTile = game.routeTiles.removeLast()
+        TODO(/*refresh*/)
+    }
 
     /**
      * @return [List] of [Tile]s, first 6 are treasure tiles starting at the top right of the board going clockwise
