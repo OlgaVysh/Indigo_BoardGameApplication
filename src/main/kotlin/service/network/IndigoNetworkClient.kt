@@ -14,11 +14,11 @@ import tools.aqua.bgw.net.common.notification.PlayerJoinedNotification
  *
  *  @property playerName The player Name is the name of the player
  *  @property host The name of the host
- *  @property  secret The secret for the project to make a secure connection
+ *  @property secret The secret for the project to make a secure connection
  *  @property networkService The networkService of the game
  *  to use the functions of the class
  */
-class IndigoNetworkClient(
+open class IndigoNetworkClient(
     playerName: String,
     host: String,
     secret: String,
@@ -41,6 +41,7 @@ class IndigoNetworkClient(
                     networkService.updateConnectionState(ConnectionState.WAITING_FOR_GUEST)
                     sessionID = response.sessionID
                 }
+
                 else -> {}
             }
         }
@@ -57,7 +58,6 @@ class IndigoNetworkClient(
                     sessionID = response.sessionID
                     networkService.updateConnectionState(ConnectionState.WAITING_FOR_INIT)
                 }
-
                 else -> {}
             }
         }
@@ -69,13 +69,12 @@ class IndigoNetworkClient(
             { "not awaiting any guests." }
 
             otherPlayers.add(notification.sender)
-            networkService.startNewHostedGame(playerName,otherPlayers)
         }
     }
 
     @Suppress("UNUSED_PARAMETER", "unused")
     @GameActionReceiver
-    fun onTilePlacedReceived(message: TilePlacedMessage, sender: String) {
+   open fun onTilePlacedReceived(message: TilePlacedMessage, sender: String) {
         BoardGameApplication.runOnGUIThread {
             networkService.receivedTilePLacedMessage(message)
         }
@@ -93,7 +92,7 @@ class IndigoNetworkClient(
 
     @Suppress("UNUSED_PARAMETER", "unused")
     @GameActionReceiver
-    fun onInitReceivedMessage(message: GameInitMessage, sender: String) {
+   open fun onInitReceivedMessage(message: GameInitMessage, sender: String) {
         BoardGameApplication.runOnGUIThread {
             networkService.startNewJoinedGame(
                 message = message,
