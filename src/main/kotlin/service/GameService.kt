@@ -1,7 +1,6 @@
 package service
 
 import entity.*
-import java.awt.Color
 import java.lang.Exception
 
 /**
@@ -216,7 +215,7 @@ class GameService(private val rootService: RootService) {
      * @param gem [Gem] to be assigned
      * @param player [Player] to receive the [Gem]
      */
-    fun assignGem(gem: Gem, player: Player) {
+    private fun assignGem(gem: Gem, player: Player) {
         player.score += gem.gemColor.ordinal + 1
         player.gemCounter++
         TODO(/*refresh*/)
