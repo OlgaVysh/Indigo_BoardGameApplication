@@ -194,7 +194,7 @@ class GameService(private val rootService: RootService) {
     fun saveGame(path: String) {
         val game = rootService.currentGame
         checkNotNull(game)
-        rootService.ioService.saveGameToFile(game,path)
+        rootService.ioService.saveGameToFile(game, path)
         TODO(/*refresh*/)
     }
 
@@ -215,23 +215,50 @@ class GameService(private val rootService: RootService) {
      * @param gem [Gem] to be assigned
      * @param player [Player] to receive the [Gem]
      */
-    fun assignGem(gem: Gem,player: Player) {
-        player.score += gem.gemColor.ordinal+1
+    fun assignGem(gem: Gem, player: Player) {
+        player.score += gem.gemColor.ordinal + 1
         player.gemCounter++
         TODO(/*refresh*/)
     }
+
     fun changePlayer() {
-        if(rootService.currentGame?.currentPlayerIndex  == 3){
+        if (rootService.currentGame?.currentPlayerIndex == 3) {
             rootService.currentGame!!.currentPlayerIndex == 0
-        }
-        else
-        {
+        } else {
             rootService.currentGame?.currentPlayerIndex?.plus(1)
         }
         TODO(/*refresh*/)
     }
-    fun moveGems() {}//(gem: Gem) :Unit
-    fun addPoints() {}//(player: Player, amount: Int) : Unit
+    /**
+     * Moves gems from one tile to another based on the specified edge indices.
+     * @param tile The tile from which gems are moved.
+     * @param neighbourTile The tile to which gems are moved.
+     * @param tileEnd The index of the edge in the tile where the gems are located.
+     * @param neighbourStart The index of the edge in the neighbourTile where gems are moved.
+     */
+    fun moveGems(tile: Tile, neighbourTile: Tile, tileEnd: Int, neighbourStart: Int) {
+        val tileGems = tile.gemEndPosition
+        val neighbourGems = neighbourTile.gemEndPosition
+        if (tileGems.contains(tileEnd)) {
+            if (neighbourGems.contains(neighbourStart)) {
+                tileGems.remove(tileEnd)
+                neighbourGems.remove(neighbourStart)
+                return
+            }
+
+            val neighbourEdge = neighbourTile.edges[neighbourStart]
+            val neighbourEnd = getAnotherEdge(neighbourEdge, neighbourTile)
+
+            if (neighbourGems.contains(neighbourEnd)) {
+                tileGems.remove(tileEnd)
+                neighbourGems.remove(neighbourEnd)
+                return
+            }
+            val tileGem = tileGems[tileEnd]
+            tileGems.remove(tileEnd)
+            neighbourGems[neighbourEnd] = tileGem!!
+        }
+    }
 
     /**
      * function to give the current [Player] a new route [Tile] at the end of their turn (last in list)
@@ -249,48 +276,52 @@ class GameService(private val rootService: RootService) {
     /**
      * @return [List] of [Tile]s, first 6 are treasure tiles starting at the top right of the board going clockwise
      */
-    fun initializeTiles():List<Tile> {
+    fun initializeTiles(): List<Tile> {
         val allTiles: MutableList<Tile> = mutableListOf()
         //Position of gem is determined, path starts and ends on the adjacent sides
-        for (i in 0 until 6){
-            val gemPos = (i+3)%6
-            allTiles.add(Tile(listOf(Pair(Edge.values()[gemPos-1],Edge.values()[gemPos+1])),
-                mapOf(Pair(gemPos,Gem(GemColor.AMBER)))))
+        for (i in 0 until 6) {
+            val gemPos = (i + 3) % 6
+            allTiles.add(
+                Tile(
+                    listOf(Pair(Edge.values()[gemPos - 1], Edge.values()[gemPos + 1])),
+                    mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
+                )
+            )
         }
         //TypeID 0 Route Tiles are added
-        var path1 = Pair(Edge.ZERO,Edge.TWO)
-        var path2 = Pair(Edge.ONE,Edge.FOUR)
-        var path3 = Pair(Edge.THREE,Edge.FIVE)
-        for (i in 0 until 14){
-            allTiles.add(Tile(listOf(path1,path2,path3)))
+        var path1 = Pair(Edge.ZERO, Edge.TWO)
+        var path2 = Pair(Edge.ONE, Edge.FOUR)
+        var path3 = Pair(Edge.THREE, Edge.FIVE)
+        for (i in 0 until 14) {
+            allTiles.add(Tile(listOf(path1, path2, path3)))
         }
         //TypeID 1 Route Tiles are added
-        path1 = Pair(Edge.TWO,Edge.FIVE)
-        path2 = Pair(Edge.ONE,Edge.FOUR)
-        path3 = Pair(Edge.ZERO,Edge.THREE)
-        for (i in 0 until 6){
-            allTiles.add(Tile(listOf(path1,path2,path3)))
+        path1 = Pair(Edge.TWO, Edge.FIVE)
+        path2 = Pair(Edge.ONE, Edge.FOUR)
+        path3 = Pair(Edge.ZERO, Edge.THREE)
+        for (i in 0 until 6) {
+            allTiles.add(Tile(listOf(path1, path2, path3)))
         }
         //TypeID 2 Route Tiles are added
-        path1 = Pair(Edge.ZERO,Edge.FIVE)
-        path2 = Pair(Edge.ONE,Edge.FOUR)
-        path3 = Pair(Edge.TWO,Edge.THREE)
-        for (i in 0 until 14){
-            allTiles.add(Tile(listOf(path1,path2,path3)))
+        path1 = Pair(Edge.ZERO, Edge.FIVE)
+        path2 = Pair(Edge.ONE, Edge.FOUR)
+        path3 = Pair(Edge.TWO, Edge.THREE)
+        for (i in 0 until 14) {
+            allTiles.add(Tile(listOf(path1, path2, path3)))
         }
         //TypeID 3 Route Tiles are added
-        path1 = Pair(Edge.ZERO,Edge.FIVE)
-        path2 = Pair(Edge.ONE,Edge.THREE)
-        path3 = Pair(Edge.TWO,Edge.FOUR)
-        for (i in 0 until 14){
-            allTiles.add(Tile(listOf(path1,path2,path3)))
+        path1 = Pair(Edge.ZERO, Edge.FIVE)
+        path2 = Pair(Edge.ONE, Edge.THREE)
+        path3 = Pair(Edge.TWO, Edge.FOUR)
+        for (i in 0 until 14) {
+            allTiles.add(Tile(listOf(path1, path2, path3)))
         }
         //TypeID 4 Route Tiles are added
-        path1 = Pair(Edge.ZERO,Edge.FIVE)
-        path2 = Pair(Edge.ONE,Edge.TWO)
-        path3 = Pair(Edge.THREE,Edge.FOUR)
-        for (i in 0 until 6){
-            allTiles.add(Tile(listOf(path1,path2,path3)))
+        path1 = Pair(Edge.ZERO, Edge.FIVE)
+        path2 = Pair(Edge.ONE, Edge.TWO)
+        path3 = Pair(Edge.THREE, Edge.FOUR)
+        for (i in 0 until 6) {
+            allTiles.add(Tile(listOf(path1, path2, path3)))
         }
         return allTiles.toList()
     }
@@ -298,12 +329,13 @@ class GameService(private val rootService: RootService) {
     /**
      * @return list of all [Gem]s not on the board at the start of a game (6 Amber, 5 Emerald, 1 Sapphire)
      */
-    fun initializeGems():MutableList<Gem> {
-        val gems:MutableList<Gem> = mutableListOf()
+    fun initializeGems(): MutableList<Gem> {
+        val gems: MutableList<Gem> = mutableListOf()
         for (i in 0 until 6) gems.add(Gem(GemColor.AMBER))
         for (i in 0 until 5) gems.add(Gem(GemColor.EMERALD))
         gems.add(Gem(GemColor.SAPPHIRE))
         return gems
     }
-    private fun removeGems() {}//(gems:List<Gem>):Unit
+
+    fun removeGems() {}//(gems:List<Gem>):Unit
 }

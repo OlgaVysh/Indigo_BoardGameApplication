@@ -14,14 +14,14 @@ class PlayerTurnService(private val rootService: RootService) {
      * @throws Exception if the placement is invalid.
      */
 
-    fun placeRouteTile(space: Coordinate, tile: Tile) {
+    fun placeRouteTile(space: Coordinate, tile: Tile,neighbourtile: Tile, tileEnd:Int, neighbourtilestart: Int) {
         val currentGame = rootService.currentGame
         // Check if the game has started
         checkNotNull(currentGame) { "The game has not started yet" }
         // Check if the tile placement is valid
         if (rootService.gameService.checkPlacement(space, tile)) {
             // Move gems, check collisions, distribute new tiles, and change the player
-            rootService.gameService.moveGems()
+            rootService.gameService.moveGems(tile,neighbourtile,tileEnd,neighbourtilestart )
             rootService.gameService.checkCollision()
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
