@@ -291,7 +291,7 @@ class NetworkMappingService(private val rootService: RootService) {
                 gateTokens.add(Token(players[2].color))
                 gateTokens.add(Token(players[0].color))
                 gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[4].color))
+                gateTokens.add(Token(players[3].color))
             }
             if (playerSize == 3) {
                 gateTokens.add(Token(players[0].color))
