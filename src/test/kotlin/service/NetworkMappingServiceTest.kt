@@ -62,7 +62,7 @@ class NetworkMappingServiceTest {
         Tile(tile4, mapOf())
     )
     private val allTiles = placeTiles.addAll(routeTiles)
-    private val tokens = mutableListOf(
+    private val threeNotSharedTokens = mutableListOf(
         Token(TokenColor.PURPLE),
         Token(TokenColor.PURPLE),
         Token(TokenColor.BLUE),
@@ -75,6 +75,51 @@ class NetworkMappingServiceTest {
         Token(TokenColor.BLUE),
         Token(TokenColor.WHITE),
         Token(TokenColor.WHITE)
+    )
+
+    private val threeSharedTokens = mutableListOf(
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.WHITE),
+        Token(TokenColor.WHITE),
+        Token(TokenColor.WHITE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.WHITE)
+    )
+
+    private val twoNotSharedTokens = mutableListOf(
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.BLUE)
+    )
+
+    private val fourSharedTokens = mutableListOf(
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.WHITE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.RED),
+        Token(TokenColor.RED),
+        Token(TokenColor.BLUE),
+        Token(TokenColor.WHITE),
+        Token(TokenColor.PURPLE),
+        Token(TokenColor.WHITE),
+        Token(TokenColor.RED)
     )
 
     private val gems = mutableListOf(
@@ -98,33 +143,19 @@ class NetworkMappingServiceTest {
             allTiles = placeTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
-            tokens = tokens
+            tokens = threeSharedTokens
         )
-        testGame.currentGame!!.gameBoard.gateTokens = tokens
+        testGame.currentGame!!.gameBoard.gateTokens = threeSharedTokens
         var gameMode = testGame.networkMappingService.toGameMode()
         assertEquals(GameMode.THREE_NOT_SHARED_GATEWAYS, gameMode)
-        val notSharedTokens = mutableListOf(
-            Token(TokenColor.PURPLE),
-            Token(TokenColor.PURPLE),
-            Token(TokenColor.PURPLE),
-            Token(TokenColor.BLUE),
-            Token(TokenColor.WHITE),
-            Token(TokenColor.WHITE),
-            Token(TokenColor.WHITE),
-            Token(TokenColor.PURPLE),
-            Token(TokenColor.BLUE),
-            Token(TokenColor.BLUE),
-            Token(TokenColor.BLUE),
-            Token(TokenColor.WHITE)
-        )
         testGame.currentGame = Indigo(
             gameSetting,
             allTiles = placeTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
-            tokens = notSharedTokens
+            tokens = threeNotSharedTokens
         )
-        testGame.currentGame!!.gameBoard.gateTokens = notSharedTokens
+        testGame.currentGame!!.gameBoard.gateTokens = threeNotSharedTokens
         gameMode = testGame.networkMappingService.toGameMode()
         assertEquals(GameMode.THREE_SHARED_GATEWAYS, gameMode)
         val fourPlayers = players.toMutableList()
@@ -136,7 +167,7 @@ class NetworkMappingServiceTest {
             allTiles = placeTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
-            tokens = notSharedTokens
+            tokens = fourSharedTokens
         )
         gameMode = testGame.networkMappingService.toGameMode()
         assertEquals(GameMode.FOUR_SHARED_GATEWAYS, gameMode)
@@ -147,7 +178,7 @@ class NetworkMappingServiceTest {
             allTiles = placeTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
-            tokens = notSharedTokens
+            tokens = twoNotSharedTokens
         )
         gameMode = testGame.networkMappingService.toGameMode()
         assertEquals(GameMode.TWO_NOT_SHARED_GATEWAYS, gameMode)
@@ -165,7 +196,7 @@ class NetworkMappingServiceTest {
             allTiles = placeTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
-            tokens = tokens
+            tokens = threeSharedTokens
         )
         val testTileList = listOf(
             TileType.TYPE_0,
@@ -195,7 +226,7 @@ class NetworkMappingServiceTest {
             allTiles = placeTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
-            tokens = tokens
+            tokens = threeSharedTokens
         )
         val networkPlayerListResult = listOf(
             Player(name = "John", color = PlayerColor.PURPLE),
@@ -213,7 +244,7 @@ class NetworkMappingServiceTest {
      * from the netWork model to the entity model
      */
     @Test
-    fun toRouteTilesTest(){
+    fun toRouteTilesTest() {
         val testGame = RootService()
         val tileList = listOf(
             TileType.TYPE_0,
@@ -221,10 +252,10 @@ class NetworkMappingServiceTest {
             TileType.TYPE_2,
             TileType.TYPE_3,
             TileType.TYPE_4
-            )
+        )
         val routeTilesResult = routeTiles
         val routeTileList = testGame.networkMappingService.toRouteTiles(tileList)
-        assertEquals(routeTilesResult,routeTileList)
+        assertEquals(routeTilesResult, routeTileList)
     }
 
     /**
@@ -233,7 +264,7 @@ class NetworkMappingServiceTest {
      * to the player list from the entity model
      */
     @Test
-    fun toEntityPlayerTest(){
+    fun toEntityPlayerTest() {
         val testGame = RootService()
         val networkPlayerList = listOf(
             Player(name = "John", color = PlayerColor.PURPLE),
@@ -244,10 +275,31 @@ class NetworkMappingServiceTest {
         val entityPlayersResult = players.toMutableList()
         entityPlayersResult.add(Player("Charlie", color = TokenColor.RED))
         val entityPlayersActual = testGame.networkMappingService.toEntityPlayer(networkPlayerList)
-        assertEquals(entityPlayersResult.size,entityPlayersActual.size)
-        for(i in entityPlayersResult.indices) {
-            assertEquals(entityPlayersResult[i].name,entityPlayersResult[i].name)
-            assertEquals(entityPlayersResult[i].color,entityPlayersResult[i].color)
+        assertEquals(entityPlayersResult.size, entityPlayersActual.size)
+        for (i in entityPlayersResult.indices) {
+            assertEquals(entityPlayersResult[i].name, entityPlayersResult[i].name)
+            assertEquals(entityPlayersResult[i].color, entityPlayersResult[i].color)
         }
+    }
+
+    /**
+     *  The [toGateTokensTest] test the mapping from the network game mode
+     *  to the correct gateTokens
+     */
+    @Test
+    fun toGateTokensTest() {
+        val testGame = RootService()
+        val twoPlayers = players.subList(0, 2).toList()
+        var resultGateToken = testGame.networkMappingService.toGateTokens(twoPlayers, GameMode.TWO_NOT_SHARED_GATEWAYS)
+        assertEquals(twoNotSharedTokens, resultGateToken)
+        val fourPlayers = players.toMutableList()
+        fourPlayers.add(Player("Charlie", color = TokenColor.RED))
+        resultGateToken =
+            testGame.networkMappingService.toGateTokens(fourPlayers.toList(), GameMode.FOUR_SHARED_GATEWAYS)
+        assertEquals(fourSharedTokens, resultGateToken)
+        resultGateToken = testGame.networkMappingService.toGateTokens(players, GameMode.THREE_NOT_SHARED_GATEWAYS)
+        assertEquals(threeNotSharedTokens, resultGateToken)
+        resultGateToken = testGame.networkMappingService.toGateTokens(players, GameMode.THREE_SHARED_GATEWAYS)
+        assertEquals(threeSharedTokens, resultGateToken)
     }
 }
