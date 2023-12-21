@@ -207,7 +207,7 @@ open class NetworkService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val rotation = message.rotation
-        for (i in 0 until rotation) {
+        repeat(rotation) {
             rootService.playerTurnService.rotateTileRight(currentGame.routeTiles[0])
         }
         val space = Coordinate(message.qCoordinate, message.rCoordinate)
