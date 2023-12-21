@@ -16,8 +16,9 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     private val rootService = RootService()
 
     //auskommentiert wegen Warnings
-    /*private val startScene = NewGameMenuScene()
-    private val modusScene = ModusMenuScene()
+    private val startScene = NewGameMenuScene()
+    //auskommentiert wegen Warnings
+    /*private val modusScene = ModusMenuScene()
     private val gatesScene = GateMenuScene()
     private val networkScene = NetworkMenuScene()
     private val saveGameScene = SaveGameMenuScene()
