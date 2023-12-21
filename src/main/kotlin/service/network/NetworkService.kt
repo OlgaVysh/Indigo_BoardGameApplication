@@ -134,10 +134,9 @@ open class NetworkService(private val rootService: RootService) {
             GameBoard(),
             allTiles.toList(),
             rootService.gameService.initializeGems(),
-            rootService.networkMappingService.toGateTokens(players, message.gameMode)
+            gateTokens
         )
-        rootService.currentGame?.gameBoard?.gateTokens =
-            rootService.networkMappingService.toGateTokens(players, message.gameMode)
+        rootService.currentGame?.gameBoard?.gateTokens = gateTokens
     }
 
     /**
