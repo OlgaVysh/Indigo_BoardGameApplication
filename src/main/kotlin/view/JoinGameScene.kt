@@ -16,7 +16,7 @@ import view.components.Label
  * @property rootService An instance of RootService to access game-related functionalities.
  */
 class JoinGameScene(private val rootService: RootService) : MenuScene(990, 1080) {
-    private val game = rootService.currentGame
+    //private val game = rootService.currentGame
     //iregendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player X", 96)
     private val joinButton = Button(247,800,528,207, "Save changes", 48)

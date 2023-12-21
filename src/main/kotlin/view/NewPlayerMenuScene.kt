@@ -21,7 +21,7 @@ class NewPlayerMenuScene(private val rootService: RootService) : MenuScene(1920,
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)
     private val startGameButton = Button(1047,755,528,207, "Start game", 48)
     private val addNewPlayerButton = Button(340,755,528,207, "Add new player", 48)
-    private val game = rootService.currentGame
+    //private val game = rootService.currentGame
     init {
         background = ImageVisual("ThreeGemsBackground.png")
         opacity = 1.0

@@ -18,7 +18,7 @@ import view.components.Label
  * @property rootService An instance of RootService to access game-related functionalities.
  */
 class ConfigurePlayerXScene(private val rootService: RootService) : MenuScene(990, 1080) {
-    private val game = rootService.currentGame
+    //private val game = rootService.currentGame
     //irgendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     //ich hab die Box noch nicht durch tokens geändert ist etwas komplizierter
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player X", 96)
