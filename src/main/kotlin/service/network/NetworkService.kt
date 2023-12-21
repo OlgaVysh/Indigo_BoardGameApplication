@@ -39,11 +39,12 @@ open class NetworkService(private val rootService: RootService) {
             if (isOpen) disconnect()
         }
         client = null
+
         updateConnectionState(ConnectionState.DISCONNECTED)
     }
 
     /**
-     *  The function[hostGame] is to start a Game as a Host
+     *  The function[JoinGame] is to start a Game as a Host
      *
      *  @param secret The secret to make a secure connection
      *  @param name Name of the host
