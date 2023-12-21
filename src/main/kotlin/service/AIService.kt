@@ -26,7 +26,7 @@ class AIService(val rootService: RootService) {
 
             // Place the tile randomly
             rootService.gameService.checkPlacement(randomSpace, randomTile)
-            rootService.gameService.moveGems()
+           // rootService.gameService.moveGems()
             rootService.gameService.checkCollision()
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
