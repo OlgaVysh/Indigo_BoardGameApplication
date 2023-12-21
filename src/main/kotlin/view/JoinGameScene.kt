@@ -6,7 +6,15 @@ import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.core.MenuScene
 import view.components.Button
 import view.components.Label
-
+/**
+ * Represents the join game menu scene.
+ *
+ * This scene when a player enters the option to join a game in the scene before ("Szenenname").
+ *
+ * The layout and design of these components are defined in this class.
+ *
+ * @property rootService An instance of RootService to access game-related functionalities.
+ */
 class JoinGameScene(private val rootService: RootService) : MenuScene(990, 1080) {
     private val game = rootService.currentGame
     //iregendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X

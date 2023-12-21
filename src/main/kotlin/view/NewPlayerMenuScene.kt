@@ -6,7 +6,17 @@ import tools.aqua.bgw.components.layoutviews.GridPane
 import tools.aqua.bgw.core.Alignment
 import view.components.Button
 import view.components.Label
-
+/**
+ * Represents the new player menu scene.
+ *
+ * This scene shows a list of all actual players, their token and turn.
+ * It is possible to add players if less than four players are actually in the player list
+ * and start the game which leads to the game scene (?)
+ *
+ * The layout and design of these components are defined in this class.
+ *
+ * @property rootService An instance of RootService to access game-related functionalities.
+ */
 class NewPlayerMenuScene(private val rootService: RootService) : MenuScene(1920, 1080){
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)
     private val startGameButton = Button(1047,755,528,207, "Start game", 48)

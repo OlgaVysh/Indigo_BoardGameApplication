@@ -5,7 +5,18 @@ import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.core.MenuScene
 import view.components.Button
 import view.components.Label
-
+/**
+ * Represents the game menu scene in which a player can choose his Tokencolor and his turn.
+ *
+ * This scene is displayed when a player is chosen to be configured. It includes
+ * a label indicating the title,
+ * two comboboxes with matching labels for tokencolor and turn to choose from
+ * and a button for saving the configurations.
+ *
+ * The layout and design of these components are defined in this class.
+ *
+ * @property rootService An instance of RootService to access game-related functionalities.
+ */
 class ConfigurePlayerXScene(private val rootService: RootService) : MenuScene(990, 1080) {
     private val game = rootService.currentGame
     //irgendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
