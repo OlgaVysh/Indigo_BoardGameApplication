@@ -6,14 +6,27 @@ import tools.aqua.bgw.visual.ImageVisual
 import view.components.Button
 import view.components.Label
 
+/**
+ * Represents the end game menu scene.
+ *
+ * This scene is displayed when a game reaches its conclusion. It includes a label indicating the game is over,
+ * and buttons for exiting the game or starting a new game.
+ *
+ * The layout and design of these components are defined in this class.
+ *
+ * @property rootService An instance of RootService to access game-related functionalities.
+ */
 class EndGameMenuScene (private val rootService: RootService) : MenuScene(1920, 1080) {
     private val game = rootService.currentGame
 
+    // Label to display the "Game Over" Header.
     private val gameOverLabel = Label(650, 48, 620, 155, "Game Over", 120)
 
+    // Button for exiting and starting a new game.
     private val exitButton = Button(185, 780, 532, 207, "Exit", 48)
     private val newGameButton = Button(1180, 780, 532, 207, "Start new game", 48)
 
+    // Setting the background and adding components to the scene.
     init {
         background = ImageVisual("FiveGemsBackGround.png")
         opacity = 1.0
@@ -21,7 +34,5 @@ class EndGameMenuScene (private val rootService: RootService) : MenuScene(1920, 
             gameOverLabel,
             exitButton,
             newGameButton)
-
     }
-
 }
