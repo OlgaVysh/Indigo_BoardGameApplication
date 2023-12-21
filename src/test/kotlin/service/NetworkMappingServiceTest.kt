@@ -143,9 +143,8 @@ class NetworkMappingServiceTest {
             allTiles = placeTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
-            tokens = threeSharedTokens
+            tokens = threeNotSharedTokens
         )
-        testGame.currentGame!!.gameBoard.gateTokens = threeSharedTokens
         var gameMode = testGame.networkMappingService.toGameMode()
         assertEquals(GameMode.THREE_NOT_SHARED_GATEWAYS, gameMode)
         testGame.currentGame = Indigo(
@@ -153,9 +152,8 @@ class NetworkMappingServiceTest {
             allTiles = placeTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
-            tokens = threeNotSharedTokens
+            tokens = threeSharedTokens
         )
-        testGame.currentGame!!.gameBoard.gateTokens = threeNotSharedTokens
         gameMode = testGame.networkMappingService.toGameMode()
         assertEquals(GameMode.THREE_SHARED_GATEWAYS, gameMode)
         val fourPlayers = players.toMutableList()
