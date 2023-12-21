@@ -117,14 +117,16 @@ open class NetworkService(private val rootService: RootService) {
         val setting = GameSettings(players)
 
         val allTiles = mutableListOf(
-            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3,Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4,Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5,Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3,Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4,Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5,Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
         )
         allTiles.addAll(routeTiles)
+
+        val gateTokens = rootService.networkMappingService.toGateTokens(players, message.gameMode)
         rootService.currentGame = Indigo(
             setting,
             GameBoard(),
@@ -132,6 +134,8 @@ open class NetworkService(private val rootService: RootService) {
             rootService.gameService.initializeGems(),
             rootService.networkMappingService.toGateTokens(players, message.gameMode)
         )
+        rootService.currentGame?.gameBoard?.gateTokens =
+            rootService.networkMappingService.toGateTokens(players, message.gameMode)
     }
 
     /**
@@ -205,7 +209,8 @@ open class NetworkService(private val rootService: RootService) {
             rootService.playerTurnService.rotateTileRight(currentGame.routeTiles[0])
         }
         val space = Coordinate(message.qCoordinate, message.rCoordinate)
-        rootService.playerTurnService.placeRouteTile(space, currentGame.routeTiles[0])
+
+        //rootService.playerTurnService.placeRouteTile(space, currentGame.routeTiles[0])
         val currentPlayerIndex = currentGame.currentPlayerIndex
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         for (otherPlayer in client?.otherPlayers!!) {
