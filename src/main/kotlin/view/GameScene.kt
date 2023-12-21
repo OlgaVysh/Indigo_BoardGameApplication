@@ -1,9 +1,7 @@
 package view
 
 import service.RootService
-import tools.aqua.bgw.components.container.Area
 import tools.aqua.bgw.components.container.HexagonGrid
-import tools.aqua.bgw.components.gamecomponentviews.CardView
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.visual.ColorVisual
@@ -11,7 +9,7 @@ import tools.aqua.bgw.visual.ImageVisual
 import java.awt.Color
 
 //Stand der GameTableScene
-class GameScene(private val rootService: RootService) : BoardGameScene(1920, 1080, background =  ImageVisual("PlainBackground_FCE6BD.png")) {
+class GameScene(/*private val rootService: RootService*/) : BoardGameScene(1920, 1080, background =  ImageVisual("PlainBackground_FCE6BD.png")) {
     private val hexagonGrid: HexagonGrid<HexagonView> = HexagonGrid(
         coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL,
         posX = 820,
