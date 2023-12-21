@@ -259,6 +259,128 @@ class GameService(private val rootService: RootService) {
             neighbourGems[neighbourEnd] = tileGem!!
         }
     }
+    /**
+     * Removes gems from the specified tile and updates scores based on the gate coordinates.
+     * @param tile The tile containing the gems.
+     * @param coordinate The coordinate of the tile.
+     */
+
+    fun removeGems(tile: Tile, coordinate: Coordinate) {
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+
+        val gateTokens = currentGame.gameBoard.gateTokens
+        val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
+        val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
+        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 3))
+        val gate4 = listOf(Coordinate(4, -1), Coordinate(4, -2), Coordinate(4, -3))
+        val gate5 = listOf(Coordinate(1, -4), Coordinate(2, -4), Coordinate(3, -4))
+        val gate6 = listOf(Coordinate(-1, -3), Coordinate(-2, -2), Coordinate(-3, -1))
+
+        if (gate1.contains(coordinate)) {
+            val gem1 = tile.gemEndPosition[0]
+            val gem2 = tile.gemEndPosition[5]
+            if (gem2 != null) {
+                addPoints(gateTokens[0].color, gateTokens[1].color, gem2)
+                tile.gemEndPosition.remove(5)
+            }
+            if (gem1 != null) {
+                addPoints(gateTokens[0].color, gateTokens[1].color, gem1)
+                tile.gemEndPosition.remove(0)
+            }
+        }
+        if (gate2.contains(coordinate)) {
+            val gem1 = tile.gemEndPosition[0]
+            val gem2 = tile.gemEndPosition[1]
+            if (gem2 != null) {
+                addPoints(gateTokens[2].color, gateTokens[3].color, gem2)
+                tile.gemEndPosition.remove(1)
+            }
+            if (gem1 != null) {
+                addPoints(gateTokens[2].color, gateTokens[3].color, gem1)
+                tile.gemEndPosition.remove(0)
+            }
+        }
+        if (gate3.contains(coordinate)) {
+            val gem1 = tile.gemEndPosition[1]
+            val gem2 = tile.gemEndPosition[2]
+            if (gem2 != null) {
+                addPoints(gateTokens[4].color, gateTokens[5].color, gem2)
+                tile.gemEndPosition.remove(2)
+            }
+            if (gem1 != null) {
+                addPoints(gateTokens[4].color, gateTokens[5].color, gem1)
+                tile.gemEndPosition.remove(1)
+            }
+        }
+        if (gate4.contains(coordinate)) {
+            val gem1 = tile.gemEndPosition[2]
+            val gem2 = tile.gemEndPosition[3]
+            if (gem2 != null) {
+                addPoints(gateTokens[6].color, gateTokens[7].color, gem2)
+                tile.gemEndPosition.remove(3)
+            }
+            if (gem1 != null) {
+                addPoints(gateTokens[6].color, gateTokens[7].color, gem1)
+                tile.gemEndPosition.remove(2)
+            }
+        }
+        if (gate5.contains(coordinate)) {
+            val gem1 = tile.gemEndPosition[3]
+            val gem2 = tile.gemEndPosition[4]
+            if (gem2 != null) {
+                addPoints(gateTokens[8].color, gateTokens[9].color, gem2)
+                tile.gemEndPosition.remove(4)
+            }
+            if (gem1 != null) {
+                addPoints(gateTokens[8].color, gateTokens[9].color, gem1)
+                tile.gemEndPosition.remove(3)
+            }
+        }
+        if (gate6.contains(coordinate)) {
+            val gem1 = tile.gemEndPosition[4]
+            val gem2 = tile.gemEndPosition[5]
+            if (gem2 != null) {
+                addPoints(gateTokens[10].color, gateTokens[11].color, gem2)
+                tile.gemEndPosition.remove(5)
+            }
+            if (gem1 != null) {
+                addPoints(gateTokens[10].color, gateTokens[11].color, gem1)
+                tile.gemEndPosition.remove(4)
+            }
+        }
+
+    }
+    /**
+     * Adds points to players based on the provided token colors and gem.
+     * @param token1 The color of the first token.
+     * @param token2 The color of the second token.
+     * @param gem The gem associated with the points.
+     */
+    fun addPoints(token1: TokenColor, token2: TokenColor, gem: Gem) {
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        val players = currentGame.players
+        // If both tokens have the same color, award points to the corresponding player
+        if (token1 == token2) {
+            for (i in players.indices) {
+                if (players[i].color == token1) {
+                    players[i].score += 1
+                }
+            }        // If tokens have different colors, award points to the corresponding players for each token
+        } else {
+            for (i in players.indices) {
+                if (players[i].color == token1) {
+                    players[i].score += 1
+                }
+                if (players[i].color == token2) {
+                    players[i].score += 1
+                }
+
+            }
+        }
+    }
+
 
     /**
      * function to give the current [Player] a new route [Tile] at the end of their turn (last in list)
