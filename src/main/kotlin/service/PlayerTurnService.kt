@@ -25,7 +25,7 @@ class PlayerTurnService(private val rootService: RootService) {
             rootService.gameService.checkCollision()
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
-            //in progress
+            
         } else {
             throw Exception("Invalid space, choose another space please")
         }
