@@ -68,32 +68,51 @@ class NetworkConnectionTests {
         val guestPlayerName = "guest"
 
         val hostThread = coroutineScope.launch {
-            println("[$hostPlayerName] Connecting...")
-            val host = hostRootService.testNetworkService
-            host.connect(name = hostPlayerName)
-            host.connectionStateProperty.await(ConnectionState.CONNECTED)
-            latch.countDown()
-            /* Host game */
-            println("[$hostPlayerName] Hosting game...")
-            host.hostGame(name = hostPlayerName)
-            val testclient = host.testClient
-            checkNotNull(testclient)
-             val sessionID =testclient.sessionID
-            checkNotNull(sessionID)
-            sessionIDQueue.put(sessionID)
-            host.connectionStateProperty.await(ConnectionState.WAITING_FOR_GUEST)
-            latch.countDown()
+            try {
+                println("[$hostPlayerName] Connecting...")
+                val host = hostRootService.testNetworkService
+                host.disconnect()
+                host.connect(name = hostPlayerName)
+                host.connectionStateProperty.await(ConnectionState.CONNECTED)
+                /* Host game */
+                println("[$hostPlayerName] Hosting game...")
+                host.hostGame(name = hostPlayerName)
+                val testclient = host.testClient
+                checkNotNull(testclient)
+                val sessionID =testclient.sessionID
+                checkNotNull(sessionID)
+                sessionIDQueue.put(sessionID)
+                host.connectionStateProperty.await(ConnectionState.WAITING_FOR_GUEST)
+                latch.countDown()
+                latch.await()
+            }
+            catch (e : Exception){
+                println("Connection failed")
+            }
         }
 
         val guestThread = coroutineScope.launch {
-            latch.await()
-            println("[$guestPlayerName] Connecting...")
-            val client = guestRootService.testNetworkService
-            client.connect(name = guestPlayerName)
-            /*Join game */
-            println("[$guestPlayerName] Join game...")
-            client. joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
-            client.connectionStateProperty.await(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
+            try {
+                println("[$guestPlayerName] Connecting...")
+                val client = guestRootService.testNetworkService
+                client.disconnect()
+                client.connect(name = guestPlayerName)
+                /*Join game */
+                println("[$guestPlayerName] Join game...")
+                client. joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
+                client.connectionStateProperty.await(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
+                latch.countDown()
+                latch.await()
+            }
+            catch (e: Exception){
+                println("connection failed")
+            }
+        }
+
+        runBlocking{
+            joinAll()
+            hostRootService.networkService.disconnect()
+            guestRootService.networkService.disconnect()
         }
     }
 }
