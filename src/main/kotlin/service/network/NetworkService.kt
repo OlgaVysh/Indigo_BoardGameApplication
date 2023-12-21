@@ -94,7 +94,9 @@ open class NetworkService(private val rootService: RootService) {
         check(connectionState == ConnectionState.WAITING_FOR_GUEST)
         { "currently not prepared to start a new hosted game." }
         playerNames.add(0, hostPlayer)
-        TODO("Refresh to the Gui that the GUI gets all player")
+        TODO("Update the class until startGame is implemented with parameters for startGame")
+        //rootService.gameService.startGame()
+        //sendGameInitMessage()
     }
 
 
