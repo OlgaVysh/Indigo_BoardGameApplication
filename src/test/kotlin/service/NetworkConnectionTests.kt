@@ -95,6 +95,5 @@ class NetworkConnectionTests {
             client. joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
             client.connectionStateProperty.await(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
         }
-
     }
 }
