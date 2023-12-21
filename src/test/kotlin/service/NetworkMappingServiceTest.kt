@@ -46,22 +46,22 @@ class NetworkMappingServiceTest {
         Pair(Edge.ONE, Edge.TWO),
         Pair(Edge.THREE, Edge.FOUR)
     )
-    private val placeTiles = mutableListOf(
-        Tile(listOf(), mapOf()),
-        Tile(listOf(), mapOf()),
-        Tile(listOf(), mapOf()),
-        Tile(listOf(), mapOf()),
-        Tile(listOf(), mapOf()),
-        Tile(listOf(), mapOf()),
+    private val treasureTiles = mutableListOf(
+        Tile(listOf()),
+        Tile(listOf()),
+        Tile(listOf()),
+        Tile(listOf()),
+        Tile(listOf()),
+        Tile(listOf()),
     )
     private val routeTiles = mutableListOf(
-        Tile(tile0, mapOf()),
-        Tile(tile1, mapOf()),
-        Tile(tile2, mapOf()),
-        Tile(tile3, mapOf()),
-        Tile(tile4, mapOf())
+        Tile(tile0),
+        Tile(tile1),
+        Tile(tile2),
+        Tile(tile3),
+        Tile(tile4)
     )
-    private val allTiles = placeTiles.addAll(routeTiles)
+    private val allTiles = treasureTiles.addAll(routeTiles)
     private val threeNotSharedTokens = mutableListOf(
         Token(TokenColor.PURPLE),
         Token(TokenColor.PURPLE),
@@ -140,7 +140,7 @@ class NetworkMappingServiceTest {
         assertThrows<IllegalStateException> { (testGame.networkMappingService.toGameMode()) }
         testGame.currentGame = Indigo(
             gameSetting,
-            allTiles = placeTiles.toList(),
+            allTiles = treasureTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
             tokens = threeNotSharedTokens
@@ -150,7 +150,7 @@ class NetworkMappingServiceTest {
         assertEquals(GameMode.THREE_NOT_SHARED_GATEWAYS, gameMode)
         testGame.currentGame = Indigo(
             gameSetting,
-            allTiles = placeTiles.toList(),
+            allTiles = treasureTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
             tokens = threeSharedTokens
@@ -164,7 +164,7 @@ class NetworkMappingServiceTest {
         val twoPlayers = players.subList(0, 2)
         testGame.currentGame = Indigo(
             gameSettings,
-            allTiles = placeTiles.toList(),
+            allTiles = treasureTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
             tokens = fourSharedTokens
@@ -176,7 +176,7 @@ class NetworkMappingServiceTest {
         gameSettings = GameSettings(twoPlayers)
         testGame.currentGame = Indigo(
             gameSettings,
-            allTiles = placeTiles.toList(),
+            allTiles = treasureTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
             tokens = twoNotSharedTokens
@@ -195,7 +195,7 @@ class NetworkMappingServiceTest {
         assertThrows<IllegalStateException> { (testGame.networkMappingService.toGameMode()) }
         testGame.currentGame = Indigo(
             gameSetting,
-            allTiles = placeTiles.toList(),
+            allTiles = treasureTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
             tokens = threeSharedTokens
@@ -225,7 +225,7 @@ class NetworkMappingServiceTest {
         val gameSettings = GameSettings(fourPlayers.toList())
         testGame.currentGame = Indigo(
             gameSettings,
-            allTiles = placeTiles.toList(),
+            allTiles = treasureTiles.toList(),
             gameBoard = GameBoard(),
             gems = gems,
             tokens = threeSharedTokens
