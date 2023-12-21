@@ -8,6 +8,7 @@ import tools.aqua.bgw.net.client.NetworkLogging
 import tools.aqua.bgw.net.common.response.*
 import tools.aqua.bgw.net.common.annotations.GameActionReceiver
 import tools.aqua.bgw.net.common.notification.PlayerJoinedNotification
+import tools.aqua.bgw.net.common.notification.PlayerLeftNotification
 
 /**
  *  The class [IndigoNetworkClient] describe the Interaction with bgw net as a client
@@ -58,6 +59,7 @@ open class IndigoNetworkClient(
                     sessionID = response.sessionID
                     networkService.updateConnectionState(ConnectionState.WAITING_FOR_INIT)
                 }
+
                 else -> {}
             }
         }
@@ -72,9 +74,17 @@ open class IndigoNetworkClient(
         }
     }
 
+    override fun onPlayerLeft(notification: PlayerLeftNotification) {
+        check(networkService.connectionState == ConnectionState.WAITING_FOR_GUEST)
+        { "not awaiting any guests." }
+
+        otherPlayers.remove(notification.sender)
+    }
+
+
     @Suppress("UNUSED_PARAMETER", "unused")
     @GameActionReceiver
-   open fun onTilePlacedReceived(message: TilePlacedMessage, sender: String) {
+    open fun onTilePlacedReceived(message: TilePlacedMessage, sender: String) {
         BoardGameApplication.runOnGUIThread {
             networkService.receivedTilePLacedMessage(message)
         }
@@ -92,7 +102,7 @@ open class IndigoNetworkClient(
 
     @Suppress("UNUSED_PARAMETER", "unused")
     @GameActionReceiver
-   open fun onInitReceivedMessage(message: GameInitMessage, sender: String) {
+    open fun onInitReceivedMessage(message: GameInitMessage, sender: String) {
         BoardGameApplication.runOnGUIThread {
             networkService.startNewJoinedGame(
                 message = message,
