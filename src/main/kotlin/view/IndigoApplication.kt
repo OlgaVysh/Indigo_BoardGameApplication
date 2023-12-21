@@ -15,8 +15,8 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     // also holds the currently active game
     private val rootService = RootService()
 
-
-    private val startScene = NewGameMenuScene()
+    //auskommentiert wegen Warnings
+    /*private val startScene = NewGameMenuScene()
     private val modusScene = ModusMenuScene()
     private val gatesScene = GateMenuScene()
     private val networkScene = NetworkMenuScene()
@@ -30,7 +30,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     private val hostGameScene = HostGameScene(rootService)
     private val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
     private val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
-    private val gameScene = GameScene(/*rootService*/)
+    private val gameScene = GameScene(/*rootService*/)*/
 
 
 
