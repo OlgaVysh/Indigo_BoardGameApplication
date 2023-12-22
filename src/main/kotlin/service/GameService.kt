@@ -11,7 +11,14 @@ class GameService(private val rootService: RootService) {
     /**
      * Starts a new game.
      */
-    fun startGame() {} //players: List<Player> :Indigo
+    fun startGame(players: List<Player>) {
+        //val gameBoard = GameBoard()
+        //val allTiles = initializeTiles()
+        //val gems = initializeGems()//has 12 gems
+        //val tokens = initializeTokens
+        //val settings: GameSettings
+        //rootService.currentGame = Indigo(settings,gameBoard,allTiles,gems)
+    }
 
     /**
      * Restarts the current game.
@@ -182,8 +189,24 @@ class GameService(private val rootService: RootService) {
         }
         return indexInEdges
     }
-
-    fun checkCollision() {}//:Unit
+    /**
+     *Function for checking if the moving gems are colliding
+     *@param tile: Route tiles on the game board
+     *@param coordinate: The coordinate of the tile
+     */
+    fun checkCollision(tile: Tile,coordinate:Coordinate):Boolean {
+     for (path in tile.paths){
+         val gemAtBeginning = tile.gemEndPosition[path.first.ordinal]
+         val gemAtEnd = tile.gemEndPosition[path.second.ordinal]
+            //Checks if the beginning and the end of the path gave gems
+         if(gemAtBeginning != null && gemAtEnd != null && gemAtBeginning !=gemAtEnd){
+             //Two gems are colliding
+             removeGems(tile,coordinate)
+             return true
+         }
+     }
+        return false
+    }
 
     /**
      * saves the current [Indigo] gameState as a JSON file at a given location using the [IOService]
@@ -220,7 +243,9 @@ class GameService(private val rootService: RootService) {
         player.gemCounter++
         TODO(/*refresh*/)
     }
-
+    /**
+     * Function to change to the next player after a player has made a move
+     */
     fun changePlayer() {
         if (rootService.currentGame?.currentPlayerIndex == 3) {
             rootService.currentGame!!.currentPlayerIndex == 0
@@ -459,5 +484,4 @@ class GameService(private val rootService: RootService) {
         return gems
     }
 
-    fun removeGems() {}//(gems:List<Gem>):Unit
 }
