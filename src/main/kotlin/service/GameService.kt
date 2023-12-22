@@ -225,7 +225,7 @@ class GameService(private val rootService: RootService) {
      */
     fun changePlayer() {
         if (rootService.currentGame?.currentPlayerIndex == 3) {
-            rootService.currentGame!!.currentPlayerIndex == 0
+            rootService.currentGame!!.currentPlayerIndex = 0
         } else {
             rootService.currentGame?.currentPlayerIndex?.plus(1)
         }
