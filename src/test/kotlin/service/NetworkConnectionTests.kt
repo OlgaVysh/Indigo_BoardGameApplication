@@ -4,7 +4,6 @@ import entity.Edge
 import entity.Indigo
 import entity.Tile
 import kotlinx.coroutines.*
-import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.time.withTimeout
 import org.junit.jupiter.api.Test
 import service.network.ConnectionState
@@ -15,7 +14,6 @@ import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeoutException
-import kotlin.concurrent.thread
 import kotlin.test.BeforeTest
 import kotlin.test.assertTrue
 
