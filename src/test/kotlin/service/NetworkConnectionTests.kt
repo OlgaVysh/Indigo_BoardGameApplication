@@ -4,16 +4,20 @@ import entity.Edge
 import entity.Indigo
 import entity.Tile
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.time.withTimeout
 import org.junit.jupiter.api.Test
 import service.network.ConnectionState
+import tools.aqua.bgw.net.common.response.GameActionResponseStatus
 import tools.aqua.bgw.observable.properties.Property
 import java.time.Duration
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeoutException
+import kotlin.concurrent.thread
 import kotlin.test.BeforeTest
+import kotlin.test.assertTrue
 
 class NetworkConnectionTests {
     private lateinit var hostRootService: RootService
@@ -38,7 +42,7 @@ class NetworkConnectionTests {
 
     lateinit var gameInitMessage: Indigo
 
-  private fun <T> Property<T>.await(state: T, timeout: Duration = Duration.ofSeconds(5)) {
+    private fun <T> Property<T>.await(state: T, timeout: Duration = Duration.ofSeconds(5)) {
         runBlocking {
             var running = true
             val listener: ((T, T) -> Unit) = { _, nV -> running = nV != state }
@@ -46,7 +50,11 @@ class NetworkConnectionTests {
             try {
                 withTimeout(timeout) { while (running) delay(100) }
             } catch (e: TimeoutCancellationException) {
-                throw TimeoutException("Property ${this@await} with value ${this@await.value} did not reach the expected state $state within the specified timeout.")
+                throw TimeoutException(
+                    "Property ${this@await} with value ${this@await.value}" +
+                            " did not reach the expected state" +
+                            " $state within the specified timeout."
+                )
             } finally {
                 this@await.removeListener(listener)
             }
@@ -67,44 +75,61 @@ class NetworkConnectionTests {
         val hostPlayerName = "host"
         val guestPlayerName = "guest"
 
-        val hostThread = coroutineScope.launch {
-                println("[$hostPlayerName] Connecting...")
-                val host = hostRootService.testNetworkService
-            /*
-                host.disconnect()
-                host.connect(name = hostPlayerName)
-                host.connectionStateProperty.await(ConnectionState.CONNECTED)
-                */
 
-                /* Host game */
-                println("[$hostPlayerName] Hosting game...")
-                host.hostGame(name = hostPlayerName)
-                val testclient = host.testClient
-                checkNotNull(testclient)
-                val sessionID =testclient.sessionID
-                checkNotNull(sessionID)
-                sessionIDQueue.put(sessionID)
-                host.connectionStateProperty.await(ConnectionState.WAITING_FOR_GUEST)
-                latch.countDown()
-                latch.await()
+        val hostThread = coroutineScope.launch {
+            println("[$hostPlayerName] Connecting...")
+            val host = hostRootService.testNetworkService
+            assertTrue(host.connect(name = hostPlayerName))
+            host.connectionStateProperty = Property(host.connectionState)
+            host.connectionStateProperty.await(ConnectionState.CONNECTED)
+            host.disconnect()
+            host.connectionStateProperty = Property(host.connectionState)
+            host.connectionStateProperty.await(ConnectionState.DISCONNECTED)
+            /* Host game */
+            println("[$hostPlayerName] Hosting game...")
+            host.hostGame(name = hostPlayerName)
+            host.testClient?.apply {
+                onGameActionResponse = {
+                    println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
+                    when (it.status) {
+                        GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+                        else -> {}
+                    }
+                }
+                onCreateGameResponse =
+                    {
+                        println("[$hostPlayerName] Received CreateGameResponse with status ${it.status}") }
             }
 
+            host.connectionStateProperty = Property(host.connectionState)
+            host.connectionStateProperty.await(ConnectionState.WAITING_FOR_GUEST)
+
+            val testclient = host.testClient
+            checkNotNull(testclient)
+            val sessionID = testclient.sessionID
+            checkNotNull(sessionID)
+            sessionIDQueue.put(sessionID)
+            latch.countDown()
+            latch.await()
+        }
+
         val guestThread = coroutineScope.launch {
-                println("[$guestPlayerName] Connecting...")
-                val client = guestRootService.testNetworkService
-            //client.disconnect()
-                //client.connect(name = guestPlayerName)
-                /*Join game */
-                println("[$guestPlayerName] Join game...")
-                client. joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
-                client.connectionStateProperty.await(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
-                latch.countDown()
-                latch.await()
+            println("[$guestPlayerName] Connecting...")
+            val client = guestRootService.testNetworkService
+            client.disconnect()
+            client.connect(name = guestPlayerName)
+            /*Join game */
+            println("[$guestPlayerName] Join game...")
+            client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
+            client.connectionStateProperty.await(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
+            latch.countDown()
+            latch.await()
 
         }
 
-        runBlocking{
-            joinAll()
+        runBlocking {
+            hostThread.join()
+            guestThread.start()
             hostRootService.networkService.disconnect()
             guestRootService.networkService.disconnect()
         }
