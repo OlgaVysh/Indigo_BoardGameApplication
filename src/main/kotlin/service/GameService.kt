@@ -11,14 +11,7 @@ class GameService(private val rootService: RootService) {
     /**
      * Starts a new game.
      */
-    fun startGame(players: List<Player>) {
-        //val gameBoard = GameBoard()
-        //val allTiles = initializeTiles()
-        //val gems = initializeGems()//has 12 gems
-        //val tokens = initializeTokens
-        //val settings: GameSettings
-        //rootService.currentGame = Indigo(settings,gameBoard,allTiles,gems)
-    }
+    fun startGame() {} //players: List<Player> :Indigo
 
     /**
      * Restarts the current game.
@@ -189,24 +182,8 @@ class GameService(private val rootService: RootService) {
         }
         return indexInEdges
     }
-    /**
-     *Function for checking if the moving gems are colliding
-     *@param tile: Route tiles on the game board
-     *@param coordinate: The coordinate of the tile
-     */
-    fun checkCollision(tile: Tile,coordinate:Coordinate):Boolean {
-     for (path in tile.paths){
-         val gemAtBeginning = tile.gemEndPosition[path.first.ordinal]
-         val gemAtEnd = tile.gemEndPosition[path.second.ordinal]
-            //Checks if the beginning and the end of the path gave gems
-         if(gemAtBeginning != null && gemAtEnd != null && gemAtBeginning !=gemAtEnd){
-             //Two gems are colliding
-             removeGems(tile,coordinate)
-             return true
-         }
-     }
-        return false
-    }
+
+    fun checkCollision() {}//:Unit
 
     /**
      * saves the current [Indigo] gameState as a JSON file at a given location using the [IOService]
@@ -238,22 +215,23 @@ class GameService(private val rootService: RootService) {
      * @param gem [Gem] to be assigned
      * @param player [Player] to receive the [Gem]
      */
-    fun assignGem(gem: Gem, player: Player) {
+    private fun assignGem(gem: Gem, player: Player) {
         player.score += gem.gemColor.ordinal + 1
         player.gemCounter++
         TODO(/*refresh*/)
     }
     /**
-     * Function to change to the next player after a player has made a move
+     * Changes the current player to the next player in the list.
      */
     fun changePlayer() {
         if (rootService.currentGame?.currentPlayerIndex == 3) {
-            rootService.currentGame!!.currentPlayerIndex == 0
+            rootService.currentGame!!.currentPlayerIndex = 0
         } else {
             rootService.currentGame?.currentPlayerIndex?.plus(1)
         }
         TODO(/*refresh*/)
     }
+
     /**
      * Moves gems from one tile to another based on the specified edge indices.
      * @param tile The tile from which gems are moved.
@@ -284,6 +262,7 @@ class GameService(private val rootService: RootService) {
             neighbourGems[neighbourEnd] = tileGem!!
         }
     }
+
     /**
      * Removes gems from the specified tile and updates scores based on the gate coordinates.
      * @param tile The tile containing the gems.
@@ -293,6 +272,7 @@ class GameService(private val rootService: RootService) {
     fun removeGems(tile: Tile, coordinate: Coordinate) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
+        val players = currentGame.players
 
         val gateTokens = currentGame.gameBoard.gateTokens
         val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
@@ -302,108 +282,60 @@ class GameService(private val rootService: RootService) {
         val gate5 = listOf(Coordinate(1, -4), Coordinate(2, -4), Coordinate(3, -4))
         val gate6 = listOf(Coordinate(-1, -3), Coordinate(-2, -2), Coordinate(-3, -1))
 
-        if (gate1.contains(coordinate)) {
-            val gem1 = tile.gemEndPosition[0]
-            val gem2 = tile.gemEndPosition[5]
-            if (gem2 != null) {
-                addPoints(gateTokens[0].color, gateTokens[1].color, gem2)
-                tile.gemEndPosition.remove(5)
+        val gatesListe = mutableListOf(gate1, gate2, gate3, gate4, gate5, gate6)
+        for (i in 0 until 6) {
+            if (gatesListe[i].contains(coordinate)) {
+                val gem1 = tile.gemEndPosition[(0 + i) % 6]
+                val gem2 = tile.gemEndPosition[(5 + i) % 6]
+                if (gem2 != null) {
+
+                    if (gateTokens[(i * 2)].color == gateTokens[(i * 2) + 1].color) {
+                        for (player in players) {
+                            if (player.color == gateTokens[(i * 2)].color) {
+                                assignGem(gem2, player)
+                                tile.gemEndPosition.remove((5 + i) % 6)
+                            }
+                        }
+
+                    } else {
+                        for (player in players) {
+                            if (player.color == gateTokens[(i * 2)].color) {
+                                assignGem(gem2, player)
+                            }
+                            if (player.color == gateTokens[(i * 2) + 1].color) {
+                                assignGem(gem2, player)
+                            }
+                            tile.gemEndPosition.remove((5 + i) % 6)
+                        }
+                    }
+                }
+                if (gem1 != null) {
+
+                    if (gateTokens[(i * 2)].color == gateTokens[(i * 2) + 1].color) {
+                        for (player in players) {
+                            if (player.color == gateTokens[(i * 2)].color) {
+                                assignGem(gem1, player)
+                                tile.gemEndPosition.remove((0 + i) % 6)
+                            }
+                        }
+
+                    } else {
+                        for (player in players) {
+                            if (player.color == gateTokens[(i * 2)].color) {
+                                assignGem(gem1, player)
+                            }
+                            if (player.color == gateTokens[(i * 2) + 1].color) {
+                                assignGem(gem1, player)
+                            }
+                            tile.gemEndPosition.remove((0 + i) % 6)
+                        }
+                    }
+                }
             }
-            if (gem1 != null) {
-                addPoints(gateTokens[0].color, gateTokens[1].color, gem1)
-                tile.gemEndPosition.remove(0)
-            }
-        }
-        if (gate2.contains(coordinate)) {
-            val gem1 = tile.gemEndPosition[0]
-            val gem2 = tile.gemEndPosition[1]
-            if (gem2 != null) {
-                addPoints(gateTokens[2].color, gateTokens[3].color, gem2)
-                tile.gemEndPosition.remove(1)
-            }
-            if (gem1 != null) {
-                addPoints(gateTokens[2].color, gateTokens[3].color, gem1)
-                tile.gemEndPosition.remove(0)
-            }
-        }
-        if (gate3.contains(coordinate)) {
-            val gem1 = tile.gemEndPosition[1]
-            val gem2 = tile.gemEndPosition[2]
-            if (gem2 != null) {
-                addPoints(gateTokens[4].color, gateTokens[5].color, gem2)
-                tile.gemEndPosition.remove(2)
-            }
-            if (gem1 != null) {
-                addPoints(gateTokens[4].color, gateTokens[5].color, gem1)
-                tile.gemEndPosition.remove(1)
-            }
-        }
-        if (gate4.contains(coordinate)) {
-            val gem1 = tile.gemEndPosition[2]
-            val gem2 = tile.gemEndPosition[3]
-            if (gem2 != null) {
-                addPoints(gateTokens[6].color, gateTokens[7].color, gem2)
-                tile.gemEndPosition.remove(3)
-            }
-            if (gem1 != null) {
-                addPoints(gateTokens[6].color, gateTokens[7].color, gem1)
-                tile.gemEndPosition.remove(2)
-            }
-        }
-        if (gate5.contains(coordinate)) {
-            val gem1 = tile.gemEndPosition[3]
-            val gem2 = tile.gemEndPosition[4]
-            if (gem2 != null) {
-                addPoints(gateTokens[8].color, gateTokens[9].color, gem2)
-                tile.gemEndPosition.remove(4)
-            }
-            if (gem1 != null) {
-                addPoints(gateTokens[8].color, gateTokens[9].color, gem1)
-                tile.gemEndPosition.remove(3)
-            }
-        }
-        if (gate6.contains(coordinate)) {
-            val gem1 = tile.gemEndPosition[4]
-            val gem2 = tile.gemEndPosition[5]
-            if (gem2 != null) {
-                addPoints(gateTokens[10].color, gateTokens[11].color, gem2)
-                tile.gemEndPosition.remove(5)
-            }
-            if (gem1 != null) {
-                addPoints(gateTokens[10].color, gateTokens[11].color, gem1)
-                tile.gemEndPosition.remove(4)
-            }
+
+
         }
 
-    }
-    /**
-     * Adds points to players based on the provided token colors and gem.
-     * @param token1 The color of the first token.
-     * @param token2 The color of the second token.
-     * @param gem The gem associated with the points.
-     */
-    fun addPoints(token1: TokenColor, token2: TokenColor, gem: Gem) {
-        val currentGame = rootService.currentGame
-        checkNotNull(currentGame)
-        val players = currentGame.players
-        // If both tokens have the same color, award points to the corresponding player
-        if (token1 == token2) {
-            for (i in players.indices) {
-                if (players[i].color == token1) {
-                    players[i].score += 1
-                }
-            }        // If tokens have different colors, award points to the corresponding players for each token
-        } else {
-            for (i in players.indices) {
-                if (players[i].color == token1) {
-                    players[i].score += 1
-                }
-                if (players[i].color == token2) {
-                    players[i].score += 1
-                }
-
-            }
-        }
     }
 
 

@@ -5,6 +5,12 @@ import service.network.NetworkService
 import tools.aqua.bgw.observable.lists.ObservableArrayList
 import tools.aqua.bgw.observable.properties.Property
 
+/**
+ *  The [TestNetworkService] creates is a [NetworkService]
+ *  for test proposes
+ *
+ *  @property rootService to get all information
+ */
 class TestNetworkService(rootService: RootService) : NetworkService(rootService) {
 
     var opponentsProperty: ObservableArrayList<String> = ObservableArrayList()
@@ -15,10 +21,17 @@ class TestNetworkService(rootService: RootService) : NetworkService(rootService)
         const val gameID = "Indigo"
     }
 
+
     override fun connect(secret: String, name: String): Boolean {
-        check(this.client?.isOpen == true) {
-            "client is already connected"
-        }
+        this.client = TestNetworkClient(
+            name,
+            serverAdress,
+            secret,
+            networkService = this
+        )
+      //  check(this.client?.isOpen == true ) {
+        //    "client is already connected"
+        //}
         val client = this.client ?: return false
         val isConnected = client.connect()
         if (isConnected) {

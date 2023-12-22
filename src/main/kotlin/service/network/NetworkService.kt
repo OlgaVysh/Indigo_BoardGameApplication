@@ -39,11 +39,12 @@ open class NetworkService(private val rootService: RootService) {
             if (isOpen) disconnect()
         }
         client = null
+
         updateConnectionState(ConnectionState.DISCONNECTED)
     }
 
     /**
-     *  The function[hostGame] is to start a Game as a Host
+     *  The function[JoinGame] is to start a Game as a Host
      *
      *  @param secret The secret to make a secure connection
      *  @param name Name of the host
@@ -134,10 +135,9 @@ open class NetworkService(private val rootService: RootService) {
             GameBoard(),
             allTiles.toList(),
             rootService.gameService.initializeGems(),
-            rootService.networkMappingService.toGateTokens(players, message.gameMode)
+            gateTokens
         )
-        rootService.currentGame?.gameBoard?.gateTokens =
-            rootService.networkMappingService.toGateTokens(players, message.gameMode)
+        rootService.currentGame?.gameBoard?.gateTokens = gateTokens
     }
 
     /**
@@ -207,7 +207,7 @@ open class NetworkService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val rotation = message.rotation
-        for (i in 0 until rotation) {
+        repeat(rotation) {
             rootService.playerTurnService.rotateTileRight(currentGame.routeTiles[0])
         }
         val space = Coordinate(message.qCoordinate, message.rCoordinate)
