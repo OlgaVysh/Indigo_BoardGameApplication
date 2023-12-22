@@ -182,8 +182,24 @@ class GameService(private val rootService: RootService) {
         }
         return indexInEdges
     }
-
-    fun checkCollision() {}//:Unit
+    /**
+     *Function for checking if the moving gems are colliding
+     *@param tile: Route tiles on the game board
+     *@param coordinate: The coordinate of the tile
+     */
+    fun checkCollision(tile: Tile,coordinate:Coordinate):Boolean {
+        for (path in tile.paths){
+            val gemAtBeginning = tile.gemEndPosition[path.first.ordinal]
+            val gemAtEnd = tile.gemEndPosition[path.second.ordinal]
+            //Checks if the beginning and the end of the path gave gems
+            if(gemAtBeginning != null && gemAtEnd != null && gemAtBeginning !=gemAtEnd){
+                //Two gems are colliding
+                removeGems(tile,coordinate)
+                return true
+            }
+        }
+        return false
+    }
 
     /**
      * saves the current [Indigo] gameState as a JSON file at a given location using the [IOService]
