@@ -54,8 +54,6 @@ open class NetworkService(private val rootService: RootService) {
         if (!connect(secret, name)) {
             error("Connection failed")
         }
-        updateConnectionState(ConnectionState.CONNECTED)
-
         if (sessionID.isNullOrBlank()) {
             client?.createGame(GAME_ID, "Welcome!")
         } else {
@@ -65,7 +63,7 @@ open class NetworkService(private val rootService: RootService) {
     }
 
     /**
-     *  The function[hostGame] join a Game as a client
+     *  The function[joinGame] join a Game as a client
      *
      *  @param secret The secret to make a secure connection
      *  @param name Name of the host
@@ -75,10 +73,7 @@ open class NetworkService(private val rootService: RootService) {
         if (!connect(secret, name)) {
             error("Connection failed")
         }
-        updateConnectionState(ConnectionState.CONNECTED)
-
         client?.joinGame(sessionID, "Hello!")
-
         updateConnectionState(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
     }
 
