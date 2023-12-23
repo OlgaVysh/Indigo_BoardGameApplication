@@ -2,6 +2,7 @@ package service
 
 import entity.*
 import java.lang.Exception
+import java.util.*
 
 /**
  * Service class for managing the game logic.
@@ -11,7 +12,21 @@ class GameService(private val rootService: RootService) {
     /**
      * Starts a new game.
      */
-    fun startGame() {} //players: List<Player> :Indigo
+    fun startGame(players: List<Player>) {
+        val gameBoard = GameBoard()
+        val allTiles = initializeTiles()
+        val gems = initializeGems()
+        val tokens = initializeTokens()
+
+        val player1 = Player("player1Name", Date(0),TokenColor.WHITE,false)
+        val player2 = Player("player2Name", Date(0),TokenColor.PURPLE,false)
+        val player3 = Player("player3Name", Date(0),TokenColor.BLUE,false)
+        val player4 = Player("player4Name", Date(0),TokenColor.RED,false)
+        val players = listOf(player1,player2,player3,player4)
+        val settings = GameSettings(players,0,false)
+
+        rootService.currentGame = Indigo(settings,gameBoard,allTiles,gems,tokens)
+    }
 
     /**
      * Restarts the current game.
@@ -21,7 +36,9 @@ class GameService(private val rootService: RootService) {
     /**
      * Ends the current game.
      */
-    fun endGame() {}
+    fun endGame() {
+        TODO(/*refresh*/)
+    }
 
     /**
      * Checks if placing a tile at the specified coordinate is valid.
@@ -431,5 +448,16 @@ class GameService(private val rootService: RootService) {
         gems.add(Gem(GemColor.SAPPHIRE))
         return gems
     }
+
+
+    fun initializeTokens():MutableList<Token>{
+        val tokens: MutableList<Token> = mutableListOf()
+        for (i in 0 until 6) tokens.add(Token(TokenColor.WHITE))
+        for (i in 0 until 6) tokens.add(Token(TokenColor.PURPLE))
+        for (i in 0 until 6) tokens.add(Token(TokenColor.BLUE))
+        for (i in 0 until 6) tokens.add(Token(TokenColor.RED))
+        return tokens
+    }
+
 
 }
