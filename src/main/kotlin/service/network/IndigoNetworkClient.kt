@@ -46,7 +46,8 @@ open class IndigoNetworkClient(
 
             when (response.status) {
                 CreateGameResponseStatus.SUCCESS -> {
-                    networkService.updateConnectionState(ConnectionState.WAITING_FOR_GUEST)
+                    println("Success")
+                    networkService.connectionState = ConnectionState.WAITING_FOR_GUEST
                     sessionID = response.sessionID
                 }
 
@@ -68,6 +69,7 @@ open class IndigoNetworkClient(
 
             when (response.status) {
                 JoinGameResponseStatus.SUCCESS -> {
+                    println("Join Game Success")
                     otherPlayers = response.opponents.toMutableList()
                     sessionID = response.sessionID
                     networkService.updateConnectionState(ConnectionState.WAITING_FOR_INIT)
@@ -129,6 +131,14 @@ open class IndigoNetworkClient(
                         networkService.connectionState == ConnectionState.WAITING_FOR_OPPONENTS_TURN
             )
             { "not currently playing in a network game." }
+        }
+        when(response.status){
+            GameActionResponseStatus.SUCCESS->{
+                println("SUCCESS")
+            }
+            else->{
+                println("Fail")
+            }
         }
     }
 
