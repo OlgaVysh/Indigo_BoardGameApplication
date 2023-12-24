@@ -15,6 +15,7 @@ import java.util.concurrent.BlockingQueue
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeoutException
 import kotlin.test.BeforeTest
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class NetworkConnectionTests {
@@ -22,6 +23,10 @@ class NetworkConnectionTests {
     private lateinit var guestRootService: RootService
 
     private lateinit var coroutineScope: CoroutineScope
+
+    companion object {
+        const val SESSIONID = "Test123 "
+    }
 
     private val RootService.testNetworkService: TestNetworkService
         get() = this.networkService as TestNetworkService
@@ -83,6 +88,7 @@ class NetworkConnectionTests {
             host.disconnect()
             host.connectionStateProperty = Property(host.connectionState)
             host.connectionStateProperty.await(ConnectionState.DISCONNECTED)
+            assertNull(host.testClient)
             /* Host game */
             println("[$hostPlayerName] Hosting game...")
             host.hostGame(name = hostPlayerName)
@@ -96,12 +102,12 @@ class NetworkConnectionTests {
                 }
                 onCreateGameResponse =
                     {
-                        println("[$hostPlayerName] Received CreateGameResponse with status ${it.status}") }
+                        println("[$hostPlayerName] Received CreateGameResponse with status ${it.status}")
+                    }
             }
-
+            Thread.sleep(5000)
             host.connectionStateProperty = Property(host.connectionState)
             host.connectionStateProperty.await(ConnectionState.WAITING_FOR_GUEST)
-
             val testclient = host.testClient
             checkNotNull(testclient)
             val sessionID = testclient.sessionID
@@ -119,17 +125,24 @@ class NetworkConnectionTests {
             /*Join game */
             println("[$guestPlayerName] Join game...")
             client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
-            client.connectionStateProperty.await(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
+            Thread.sleep(500)
+            client.connectionStateProperty = Property(client.connectionState)
+            client.connectionStateProperty.await(ConnectionState.WAITING_FOR_INIT)
             latch.countDown()
             latch.await()
 
         }
 
         runBlocking {
-            hostThread.join()
-            guestThread.start()
+            joinAll(
+                hostThread,
+                guestThread
+            )
             hostRootService.networkService.disconnect()
             guestRootService.networkService.disconnect()
         }
     }
+
+
+
 }
