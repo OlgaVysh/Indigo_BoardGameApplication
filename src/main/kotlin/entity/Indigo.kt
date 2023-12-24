@@ -22,12 +22,12 @@ package entity
  */
 
 class Indigo(
-    settings: GameSettings,
+    val settings: GameSettings,
     val gameBoard: GameBoard,
     val allTiles: List<Tile>,
     var gems: MutableList<Gem>,
     var tokens: MutableList<Token>
-){
+) {
     val players = settings.players
     var currentPlayerIndex = 0
     val middleTile = MiddleTile()
@@ -35,6 +35,7 @@ class Indigo(
     var routeTiles: MutableList<Tile> = allTiles.drop(6).toMutableList()
     var previousGameState: Indigo? = null
     var nextGameState: Indigo? = null
+
     init {
         currentPlayerIndex = if (settings.isRandom) (0 until settings.players.size).random()
         else settings.playerIndex
