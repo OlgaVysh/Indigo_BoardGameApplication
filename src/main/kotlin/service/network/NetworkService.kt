@@ -130,7 +130,7 @@ open class NetworkService(private val rootService: RootService) {
             GameBoard(),
             allTiles.toList(),
             rootService.gameService.initializeGems(),
-            gateTokens
+            rootService.gameService.initializeTokens()
         )
         rootService.currentGame?.gameBoard?.gateTokens = gateTokens
     }
