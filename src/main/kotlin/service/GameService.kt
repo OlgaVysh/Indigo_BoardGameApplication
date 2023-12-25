@@ -12,26 +12,30 @@ class GameService(private val rootService: RootService) {
     /**
      * Starts a new game.
      */
-    fun startGame(players: List<Player>) {
+    fun startGame(
+        player1: Player = Player("player1Name", Date(0), TokenColor.WHITE, false),
+        player2: Player = Player("player2Name", Date(0), TokenColor.PURPLE, false),
+        player3: Player = Player("player3Name", Date(0), TokenColor.BLUE, false),
+        player4: Player = Player("player4Name", Date(0), TokenColor.RED, false)
+    ) {
         val gameBoard = GameBoard()
         val allTiles = initializeTiles()
         val gems = initializeGems()
         val tokens = initializeTokens()
 
-        val player1 = Player("player1Name", Date(0),TokenColor.WHITE,false)
-        val player2 = Player("player2Name", Date(0),TokenColor.PURPLE,false)
-        val player3 = Player("player3Name", Date(0),TokenColor.BLUE,false)
-        val player4 = Player("player4Name", Date(0),TokenColor.RED,false)
-        val players = listOf(player1,player2,player3,player4)
-        val settings = GameSettings(players,0,false)
 
-        rootService.currentGame = Indigo(settings,gameBoard,allTiles,gems,tokens)
+        val players = listOf(player1, player2, player3, player4)
+        val settings = GameSettings(players, 0, false)
+
+        rootService.currentGame = Indigo(settings, gameBoard, allTiles, gems, tokens)
     }
 
     /**
      * Restarts the current game.
      */
-    fun restartGame() {}//players: List<Player> :Indigo
+    fun restartGame() {
+       return  this.startGame()
+    }
 
     /**
      * Ends the current game.
@@ -199,19 +203,20 @@ class GameService(private val rootService: RootService) {
         }
         return indexInEdges
     }
+
     /**
      *Function for checking if the moving gems are colliding
      *@param tile: Route tiles on the game board
      *@param coordinate: The coordinate of the tile
      */
-    fun checkCollision(tile: Tile,coordinate:Coordinate):Boolean {
-        for (path in tile.paths){
+    fun checkCollision(tile: Tile, coordinate: Coordinate): Boolean {
+        for (path in tile.paths) {
             val gemAtBeginning = tile.gemEndPosition[path.first.ordinal]
             val gemAtEnd = tile.gemEndPosition[path.second.ordinal]
             //Checks if the beginning and the end of the path gave gems
-            if(gemAtBeginning != null && gemAtEnd != null && gemAtBeginning !=gemAtEnd){
+            if (gemAtBeginning != null && gemAtEnd != null && gemAtBeginning != gemAtEnd) {
                 //Two gems are colliding
-                removeGems(tile,coordinate)
+                removeGems(tile, coordinate)
                 return true
             }
         }
@@ -253,6 +258,7 @@ class GameService(private val rootService: RootService) {
         player.gemCounter++
         TODO(/*refresh*/)
     }
+
     /**
      * Changes the current player to the next player in the list.
      */
@@ -302,7 +308,7 @@ class GameService(private val rootService: RootService) {
      * @param coordinate The coordinate of the tile.
      */
 
-    fun removeGems(tile: Tile, coordinate: Coordinate) {
+    private fun removeGems(tile: Tile, coordinate: Coordinate) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
@@ -388,7 +394,7 @@ class GameService(private val rootService: RootService) {
     /**
      * @return [List] of [Tile]s, first 6 are treasure tiles starting at the top right of the board going clockwise
      */
-    fun initializeTiles(): List<Tile> {
+    private fun initializeTiles(): List<Tile> {
         val allTiles: MutableList<Tile> = mutableListOf()
         //Position of gem is determined, path starts and ends on the adjacent sides
         for (i in 0 until 6) {
@@ -450,7 +456,7 @@ class GameService(private val rootService: RootService) {
     }
 
 
-    fun initializeTokens():MutableList<Token>{
+    fun initializeTokens(): MutableList<Token> {
         val tokens: MutableList<Token> = mutableListOf()
         for (i in 0 until 6) tokens.add(Token(TokenColor.WHITE))
         for (i in 0 until 6) tokens.add(Token(TokenColor.PURPLE))

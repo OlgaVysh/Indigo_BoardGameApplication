@@ -7,7 +7,7 @@ package entity
  *
  * @param players [List] of [Player] entities involved in the game
  * @param playerIndex [Int] serving as an indicator of whose turn it is, defaults to 0
- * @param isRandom [Boolean] which, when true overrides the [currentPlayerIndex] with a random value on init,
+ * @param isRandom [Boolean] which, when true overrides the [Indigo.currentPlayerIndex] with a random value on init,
  * defaults to false
  */
 class GameSettings(
