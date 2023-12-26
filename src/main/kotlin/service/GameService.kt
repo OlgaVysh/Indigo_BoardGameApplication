@@ -65,16 +65,16 @@ class GameService(private val rootService: RootService) {
             //throw Exception("this place is occupied")
         }
         // Check if the space has an exit
-        if (!coordinateHasExit(space)) {
+        return if (!coordinateHasExit(space)) {
             placeTile(space, tile)
-            return true
+            true
         } else {
             // Check if the tile blocks an exit
-            if (!tileBlocksExit(space, tile)) {
+            return if (!tileBlocksExit(space, tile)) {
                 placeTile(space, tile)
-                return true
+                true
             } else {
-                return false
+                false
                 // throw Exception("tile blocks exit")
             }
         }
@@ -279,10 +279,11 @@ class GameService(private val rootService: RootService) {
      * Changes the current player to the next player in the list.
      */
     fun changePlayer() {
-        val currentGame = rootService.currentGame
-        checkNotNull(currentGame)
-        val playerSize = currentGame.players.size
-        rootService.currentGame?.currentPlayerIndex =+ 1 % playerSize
+        if (rootService.currentGame?.currentPlayerIndex == 3) {
+            rootService.currentGame!!.currentPlayerIndex = 0
+        } else {
+            rootService.currentGame?.currentPlayerIndex?.plus(1)
+        }
         TODO(/*refresh*/)
     }
 
