@@ -53,6 +53,9 @@ class NetworkConnectionTests {
 
     lateinit var gameInitMessage: Indigo
 
+    /**
+     *  The function await wait of a Time, if a specific connection state are reached.
+     */
     private fun <T> Property<T>.await(state: T, timeout: Duration = Duration.ofSeconds(5)) {
         runBlocking {
             var running = true
@@ -155,6 +158,10 @@ class NetworkConnectionTests {
         }
     }
 
+    /**
+     *  The [GameInitTest] test function test if the correct game init is sended and
+     *  if the guest get the same [Indigo]
+     */
     @Test
     fun GameInitTest() {
         val latch = CountDownLatch(2)
@@ -212,6 +219,87 @@ class NetworkConnectionTests {
             assertEquals(testGame.gameBoard.gateTokens, gameInitMessage.gameBoard.gateTokens)
             assertEquals(testGame.tokens, gameInitMessage.tokens)
             Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+            latch.countDown()
+            latch.await()
+
+        }
+
+        runBlocking {
+            joinAll(
+                hostThread,
+                guestThread
+            )
+            guestRootService.networkService.disconnect()
+            hostRootService.networkService.disconnect()
+        }
+    }
+
+    /**
+     *  The function [ReceivingAndSendingPlaceTileTest] are to test, if the sending
+     *  of a Route Tile are correct
+     */
+    @Test
+    fun ReceivingAndSendingPlaceTileTest(){
+        val latch = CountDownLatch(2)
+        val sessionIDQueue: BlockingQueue<String> = ArrayBlockingQueue(1)
+        val hostPlayerName = "host"
+        val guestPlayerName = "guest"
+        val coordinate = Coordinate(1,1)
+        val hostThread = coroutineScope.launch {
+            val host = hostRootService.testNetworkService
+            /* Host game */
+            println("[$hostPlayerName] Hosting game...")
+            host.hostGame(name = hostPlayerName)
+            host.testClient?.apply {
+                onGameActionResponse = {
+                    println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
+                    when (it.status) {
+                        GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+                        else -> {}
+                    }
+                }
+                onCreateGameResponse = {
+                    println("[$hostPlayerName] Received CreateGameResponse with status ${it.status}")
+                }
+            }
+            Thread.sleep(5000)
+            val testclient = host.testClient
+            checkNotNull(testclient)
+            val sessionID = testclient.sessionID
+            checkNotNull(sessionID)
+            sessionIDQueue.put(sessionID)
+            hostRootService.currentGame = gameInitMessage
+
+            Thread.sleep(1500)
+            host.sendGameInitMessage()
+            Thread.sleep(500)
+            /*host.sendPlacedTile(Tile,coordinate)
+                Property(host.ConnectionState).await()
+             */
+            latch.countDown()
+            latch.await()
+        }
+
+        val guestThread = coroutineScope.launch {
+            println("[$guestPlayerName] Connecting...")
+            val client = guestRootService.testNetworkService
+            client.disconnect()
+            client.connect(name = guestPlayerName)
+            /*Join game */
+            println("[$guestPlayerName] Join game...")
+            client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
+            Thread.sleep(6000)
+            val testGame = guestRootService.currentGame
+            assertEquals(testGame!!.players.size ,gameInitMessage.players.size)
+            for (i in gameInitMessage.players.indices) {
+                assertEquals(testGame.players[i].name, gameInitMessage.players[i].name)
+                assertEquals(testGame.players[i].color, gameInitMessage.players[i].color)
+            }
+            assertEquals(testGame.routeTiles, gameInitMessage.routeTiles)
+            assertEquals(testGame.gameBoard.gateTokens, gameInitMessage.gameBoard.gateTokens)
+            assertEquals(testGame.tokens, gameInitMessage.tokens)
+            Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+
             latch.countDown()
             latch.await()
 
