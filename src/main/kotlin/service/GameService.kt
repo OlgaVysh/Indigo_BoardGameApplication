@@ -13,7 +13,7 @@ class GameService(private val rootService: RootService) {
      *
      * @param players A mutable list of players. Defaults to an empty list if none is provided.
      */
-    fun startGame( players: MutableList<Player> = mutableListOf()) {
+    fun startGame(players: MutableList<Player> = mutableListOf()) {
         val gameBoard = GameBoard()
         val allTiles = initializeTiles()
         val gems = initializeGems()
@@ -50,8 +50,8 @@ class GameService(private val rootService: RootService) {
         checkNotNull(currentGame)
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
-            return false
-            //throw Exception("this place is occupied")
+            //return false
+            throw Exception("this place is occupied")
         }
         // Check if the space has an exit
         return if (!coordinateHasExit(space)) {
@@ -63,8 +63,8 @@ class GameService(private val rootService: RootService) {
                 placeTile(space, tile)
                 true
             } else {
-                false
-                // throw Exception("tile blocks exit")
+               // false
+                 throw Exception("tile blocks exit")
             }
         }
         //return true
@@ -79,20 +79,15 @@ class GameService(private val rootService: RootService) {
         // List of  gates with exits
 
         return (space == Coordinate(1, -4) || space == Coordinate(2, -4) || space == Coordinate(
-            3,
-            -4
+            3, -4
         ) || space == Coordinate(4, -3) || space == Coordinate(4, -2) || space == Coordinate(
-            4,
-            -1
+            4, -1
         ) || space == Coordinate(3, 1) || space == Coordinate(2, 2) || space == Coordinate(1, 3) || space == Coordinate(
-            -1,
-            4
+            -1, 4
         ) || space == Coordinate(-2, 4) || space == Coordinate(-3, 4) || space == Coordinate(
-            -4,
-            3
+            -4, 3
         ) || space == Coordinate(-4, 2) || space == Coordinate(-4, 1) || space == Coordinate(
-            -3,
-            -1
+            -3, -1
         ) || space == Coordinate(-2, -2) || space == Coordinate(-1, -3))
     }
 
@@ -272,7 +267,7 @@ class GameService(private val rootService: RootService) {
         checkNotNull(currentGame)
         val playerSize = currentGame.players.size
         val currentPlayerIndex = currentGame.currentPlayerIndex
-        rootService.currentGame?.currentPlayerIndex = (currentPlayerIndex+1) % playerSize
+        rootService.currentGame?.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
 
     }
 
