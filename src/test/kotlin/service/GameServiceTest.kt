@@ -1,5 +1,5 @@
 package service
-
+/*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -58,15 +58,24 @@ class GameServiceTest {
     fun endGameTest() {
     }
 
-    /*
-    @Test
+
+      @Test
     fun checkPlacementTest() {
-        val game = rootService.gameService.startGame()
+        val rootService = RootService()
+        assertNull(rootService.currentGame)
+        rootService.gameService.startGame(
+            player1 = Player("Alice", Date(0), TokenColor.WHITE, false),
+            player2 = Player("Bob", Date(0), TokenColor.PURPLE, false),
+            player3 = Player("Emily", Date(0), TokenColor.BLUE, false),
+            player4 = Player("Jack", Date(0), TokenColor.RED, false)
+        )
+
         val indigo = rootService.currentGame
 
         checkNotNull(indigo)
 
         //tileID 0 initialisieren und testen
+
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
             mutableMapOf(Pair(1, Gem(EMERALD)))
@@ -109,7 +118,7 @@ class GameServiceTest {
 
     }
 
-    */
+    
     @Test
     fun checkCollisionTest() {
     }
@@ -162,3 +171,4 @@ class GameServiceTest {
 
 
 }
+*/

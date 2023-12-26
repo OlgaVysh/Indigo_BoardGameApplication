@@ -2,7 +2,6 @@ package service
 
 import entity.*
 import java.lang.Exception
-import java.util.*
 
 /**
  * Service class for managing the game logic.
@@ -12,24 +11,13 @@ class GameService(private val rootService: RootService) {
     /**
      * Starts a new game with the specified players or default players if none are provided.
      *
-     * @param player1 The first player. Defaults to a player named "player1Name" with a birth date of January 1, 1970, token color WHITE, and not KI player.
-     * @param player2 The second player. Defaults to a player named "player2Name" with a birth date of January 1, 1970, token color PURPLE, and not KI player.
-     * @param player3 The third player. Defaults to a player named "player3Name" with a birth date of January 1, 1970, token color BLUE, and not KI player.
-     * @param player4 The fourth player. Defaults to a player named "player4Name" with a birth date of January 1, 1970, token color RED, and not KI player.
      */
-    fun startGame(
-        player1: Player = Player("player1Name", Date(0), TokenColor.WHITE, false),
-        player2: Player = Player("player2Name", Date(0), TokenColor.PURPLE, false),
-        player3: Player = Player("player3Name", Date(0), TokenColor.BLUE, false),
-        player4: Player = Player("player4Name", Date(0), TokenColor.RED, false)
-    ) {
+    fun startGame( players: MutableList<Player> = mutableListOf()) {
         val gameBoard = GameBoard()
         val allTiles = initializeTiles()
         val gems = initializeGems()
         val tokens = initializeTokens()
 
-
-        val players = listOf(player1, player2, player3, player4)
         val settings = GameSettings(players, 0, false)
 
         rootService.currentGame = Indigo(settings, gameBoard, allTiles, gems, tokens)
@@ -39,7 +27,7 @@ class GameService(private val rootService: RootService) {
      * Restarts the current game.
      */
     fun restartGame() {
-        return this.startGame()
+        return this.startGame(players = mutableListOf())
     }
 
     /**
