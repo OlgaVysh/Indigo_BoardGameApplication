@@ -67,7 +67,6 @@ class PlayerTurnService(private val rootService: RootService) {
     /**
      * Rotates the tile to the left.
      * @param tile The tile to be rotated.
-     * @return The rotated tile.
      */
     fun rotateTileLeft(tile:Tile)
     {    // Add the first edge to the end of the list
@@ -78,7 +77,6 @@ class PlayerTurnService(private val rootService: RootService) {
     /**
      * Rotates the tile to the right.
      * @param tile The tile to be rotated.
-     * @return The rotated tile.
      */
     fun rotateTileRight(tile:Tile)
     {    // Add the last edge to the beginning of the list

@@ -17,24 +17,30 @@ class GameServiceTest {
     private var rootService: RootService = RootService()
     private var gameService: GameService = rootService.gameService
 
-  private val fourPlayers = listOf(
+    private val fourPlayers = listOf(
         Player("Alice", Date(0), TokenColor.WHITE, false),
         Player("Bob", Date(0), TokenColor.PURPLE, false),
         Player("Emily", Date(0), TokenColor.BLUE, false),
         Player("Jack", Date(0), TokenColor.RED, false)
     )
 
+    /**
+     * Set up method executed before each test.
+     */
     @BeforeEach
     fun setUp() {
         rootService = RootService()
         gameService = GameService(rootService)
     }
 
+    /**
+     * Test the startGame function to ensure a new game is correctly initialized.
+     */
     @Test
     fun startGameTest() {
         assertNull(rootService.currentGame)
         rootService.gameService.startGame(
-         fourPlayers.toMutableList()
+            fourPlayers.toMutableList()
         )
 
         val player1 = Player("Alice", Date(0), TokenColor.WHITE, false)
@@ -53,16 +59,23 @@ class GameServiceTest {
         }
     }
 
-
+    /**
+     * Test the restartGame function.
+     */
     @Test
     fun restartGameTest() {
     }
 
+    /**
+     * Test the endGame function.
+     */
     @Test
     fun endGameTest() {
     }
 
-
+    /**
+     * Test the checkPlacement function.
+     */
     @Test
     fun checkPlacementTest() {
         val rootService = RootService()
@@ -95,7 +108,7 @@ class GameServiceTest {
         )
         assertFalse(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
         rootService.playerTurnService.rotateTileLeft(tile2)
- //       assertTrue(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
+        //       assertTrue(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
         rootService.playerTurnService.rotateTileLeft(tile2)
         rootService.playerTurnService.rotateTileLeft(tile2)
         assertFalse(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
@@ -113,23 +126,36 @@ class GameServiceTest {
 
         assertFalse(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile4))
         rootService.playerTurnService.rotateTileRight(tile4)
-       assertFalse(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile4))
+        assertFalse(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile4))
 
 
     }
 
-
+    /**
+     * Test the checkCollision function.
+     */
     @Test
     fun checkCollisionTest() {
     }
+
+    /**
+     * Test the saveGame function.
+     */
 
     @Test
     fun saveGameTest() {
     }
 
+    /**
+     * Test the loadGame function.
+     */
     @Test
     fun loadGameTest() {
     }
+
+    /**
+     * Test the changePlayer function.
+     */
 
     @Test
     fun changePlayerTest() {
@@ -149,21 +175,37 @@ class GameServiceTest {
         assertEquals(0, currentPlayerIndex)
     }
 
+    /**
+     * Test the moveGems function.
+     */
     @Test
     fun moveGemsTest() {
     }
 
+    /**
+     * Test the removeGems function.
+     */
     @Test
     fun removeGemsTest() {
     }
 
+    /**
+     * Test the distributeNewTile function.
+     */
     @Test
     fun distributeNewTileTest() {
     }
 
+    /**
+     * Test the initializeTiles function.
+     */
     @Test
     fun initializeTilesTest() {
     }
+
+    /**
+     * Test the initializeGems function.
+     */
 
     @Test
     fun initializeGemsTest() {
