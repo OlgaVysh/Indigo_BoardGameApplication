@@ -279,12 +279,12 @@ class GameService(private val rootService: RootService) {
      * Changes the current player to the next player in the list.
      */
     fun changePlayer() {
-        if (rootService.currentGame?.currentPlayerIndex == 3) {
-            rootService.currentGame!!.currentPlayerIndex = 0
-        } else {
-            rootService.currentGame?.currentPlayerIndex?.plus(1)
-        }
-        TODO(/*refresh*/)
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        val playerSize = currentGame.players.size
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+        rootService.currentGame?.currentPlayerIndex = (currentPlayerIndex+1) % playerSize
+
     }
 
     /**
