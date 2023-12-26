@@ -69,22 +69,22 @@ class PlayerTurnService(private val rootService: RootService) {
      * @param tile The tile to be rotated.
      * @return The rotated tile.
      */
-    fun rotateTileLeft(tile:Tile) : Tile
+    fun rotateTileLeft(tile:Tile)
     {    // Add the first edge to the end of the list
         tile.edges.addAll(tile.edges.subList(0, 1))
         // Remove the original first edge
         tile.edges.removeAll(tile.edges.subList(0, 1))
-    return tile}
+    }
     /**
      * Rotates the tile to the right.
      * @param tile The tile to be rotated.
      * @return The rotated tile.
      */
-    fun rotateTileRight(tile:Tile) : Tile
+    fun rotateTileRight(tile:Tile)
     {    // Add the last edge to the beginning of the list
         tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
         // Remove the original last edge
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
-        return tile}
+        }
 
 }
