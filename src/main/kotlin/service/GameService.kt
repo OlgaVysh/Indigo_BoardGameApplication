@@ -74,8 +74,8 @@ class GameService(private val rootService: RootService) {
                 placeTile(space, tile)
                 return true
             } else {
-               return false
-               // throw Exception("tile blocks exit")
+                return false
+                // throw Exception("tile blocks exit")
             }
         }
         //return true
@@ -279,11 +279,10 @@ class GameService(private val rootService: RootService) {
      * Changes the current player to the next player in the list.
      */
     fun changePlayer() {
-        if (rootService.currentGame?.currentPlayerIndex == 3) {
-            rootService.currentGame!!.currentPlayerIndex = 0
-        } else {
-            rootService.currentGame?.currentPlayerIndex?.plus(1)
-        }
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        val playerSize = currentGame.players.size
+        rootService.currentGame?.currentPlayerIndex =+ 1 % playerSize
         TODO(/*refresh*/)
     }
 
