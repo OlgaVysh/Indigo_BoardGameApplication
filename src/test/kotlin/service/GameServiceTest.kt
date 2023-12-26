@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import java.util.*
 import entity.*
 import entity.GemColor.EMERALD
+import org.junit.jupiter.api.*
 
 
 /**
@@ -47,102 +48,117 @@ class GameServiceTest {
             assertEquals(playerListe[i].color, testGame.players[i].color)
         }
     }
+
+
+    @Test
+    fun restartGameTest() {
+    }
+
+    @Test
+    fun endGameTest() {
+    }
+
+    /*
+    @Test
+    fun checkPlacementTest() {
+        val game = rootService.gameService.startGame()
+        val indigo = rootService.currentGame
+
+        checkNotNull(indigo)
+
+        //tileID 0 initialisieren und testen
+        val tile0 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            mutableMapOf(Pair(1, Gem(EMERALD)))
+        )
+        rootService.playerTurnService.rotateTileRight(tile0)
+        rootService.playerTurnService.rotateTileRight(tile0)
+        assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
+        rootService.playerTurnService.rotateTileLeft(tile0)
+        assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
+        assertTrue(rootService.gameService.checkPlacement(Coordinate(1, -4), tile0))
+
+        //tileID 2 initialisieren und testen
+
+        val tile2 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
+            mutableMapOf(Pair(1, Gem(EMERALD)))
+        )
+        assertFalse(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
+        rootService.playerTurnService.rotateTileLeft(tile2)
+        assertTrue(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
+        rootService.playerTurnService.rotateTileLeft(tile2)
+        rootService.playerTurnService.rotateTileLeft(tile2)
+        assertFalse(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
+        assertTrue(rootService.gameService.checkPlacement(Coordinate(4, -2), tile2))
+        assertTrue(rootService.gameService.checkPlacement(Coordinate(2, 2), tile2))
+
+        //tileID 4 initialisieren und testen
+        val tile4 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
+            mutableMapOf(Pair(1, Gem(EMERALD)))
+        )
+        assertFalse(rootService.gameService.checkPlacement(Coordinate(1, -4), tile4))
+        rootService.playerTurnService.rotateTileLeft(tile4)
+        assertTrue(rootService.gameService.checkPlacement(Coordinate(1, -4), tile4))
+
+        assertFalse(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile4))
+        rootService.playerTurnService.rotateTileRight(tile4)
+        assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile4))
+
+
+    }
+
+    */
+    @Test
+    fun checkCollisionTest() {
+    }
+
+    @Test
+    fun saveGameTest() {
+    }
+
+    @Test
+    fun loadGameTest() {
+    }
+
+    @Test
+    fun changePlayerTest() {
+        assertThrows<IllegalStateException> {
+            rootService.gameService.changePlayer()
+        }
+        rootService.gameService.startGame()
+        val testGame = rootService.currentGame
+        checkNotNull(testGame)
+        rootService.gameService.changePlayer()
+        var currentPlayerIndex = testGame.currentPlayerIndex
+        assertEquals(1, currentPlayerIndex)
+        repeat(3) {
+            rootService.gameService.changePlayer()
+        }
+        currentPlayerIndex = testGame.currentPlayerIndex
+        assertEquals(0, currentPlayerIndex)
+    }
+
+    @Test
+    fun moveGemsTest() {
+    }
+
+    @Test
+    fun removeGemsTest() {
+    }
+
+    @Test
+    fun distributeNewTileTest() {
+    }
+
+    @Test
+    fun initializeTilesTest() {
+    }
+
+    @Test
+    fun initializeGemsTest() {
+    }
+
+
 }
-/*
-
-@Test
-fun restartGameTest() {
-}
-
-@Test
-fun endGameTest() {
-}
-
-@Test
-fun checkPlacementTest() {
-    val game = rootService.gameService.startGame()
-    val indigo = rootService.currentGame
-
-    checkNotNull(indigo)
-
-    //tileID 0 initialisieren und testen
-    val tile0 = Tile(
-        listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-        mutableMapOf(Pair(1, Gem(EMERALD)))
-    )
-    rootService.playerTurnService.rotateTileRight(tile0)
-    rootService.playerTurnService.rotateTileRight(tile0)
-    assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
-    rootService.playerTurnService.rotateTileLeft(tile0)
-    assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
-    assertTrue(rootService.gameService.checkPlacement(Coordinate(1, -4), tile0))
-
-    //tileID 2 initialisieren und testen
-
-    val tile2 = Tile(
-        listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
-        mutableMapOf(Pair(1, Gem(EMERALD)))
-    )
-    assertFalse(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
-    rootService.playerTurnService.rotateTileLeft(tile2)
-    assertTrue(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
-    rootService.playerTurnService.rotateTileLeft(tile2)
-    rootService.playerTurnService.rotateTileLeft(tile2)
-    assertFalse(rootService.gameService.checkPlacement(Coordinate(1, -4), tile2))
-    assertTrue(rootService.gameService.checkPlacement(Coordinate(4, -2), tile2))
-    assertTrue(rootService.gameService.checkPlacement(Coordinate(2, 2), tile2))
-
-    //tileID 4 initialisieren und testen
-    val tile4 = Tile(
-        listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
-        mutableMapOf(Pair(1, Gem(EMERALD)))
-    )
-    assertFalse(rootService.gameService.checkPlacement(Coordinate(1, -4), tile4))
-    rootService.playerTurnService.rotateTileLeft(tile4)
-    assertTrue(rootService.gameService.checkPlacement(Coordinate(1, -4), tile4))
-
-    assertFalse(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile4))
-    rootService.playerTurnService.rotateTileRight(tile4)
-    assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile4))
-
-
-}
-
-@Test
-fun checkCollisionTest() {
-}
-
-@Test
-fun saveGameTest() {
-}
-
-@Test
-fun loadGameTest() {
-}
-
-@Test
-fun changePlayerTest() {
-}
-
-@Test
-fun moveGemsTest() {
-}
-
-@Test
-fun removeGemsTest() {
-}
-
-@Test
-fun distributeNewTileTest() {
-}
-
-@Test
-fun initializeTilesTest() {
-}
-
-@Test
-fun initializeGemsTest() {
-}
-
-
-}*/
