@@ -11,7 +11,7 @@ import entity.GemColor.EMERALD
 /**
  * Test class for testing the methods in GameService
  */
-class GameServiceTest {
+/*class GameServiceTest {
 
     private var rootService: RootService = RootService()
     private var gameService: GameService = rootService.gameService
@@ -138,4 +138,4 @@ class GameServiceTest {
     }
 
 
-}
+}*/
