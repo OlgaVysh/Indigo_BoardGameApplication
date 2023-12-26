@@ -9,8 +9,9 @@ import java.lang.Exception
  */
 class GameService(private val rootService: RootService) {
     /**
-     * Starts a new game with the specified players or default players if none are provided.
+     * Starts a new game with the specified list of players or an empty list if none is provided.
      *
+     * @param players A mutable list of players. Defaults to an empty list if none is provided.
      */
     fun startGame( players: MutableList<Player> = mutableListOf()) {
         val gameBoard = GameBoard()
@@ -131,7 +132,7 @@ class GameService(private val rootService: RootService) {
                 edge1 = tile.edges[0]
                 edge2 = getAnotherEdge(edge1, tile)
                 if (edge2 == 5) {
-                    return false
+                    return true
                 }
             }
 
@@ -139,7 +140,7 @@ class GameService(private val rootService: RootService) {
                 edge1 = tile.edges[0]
                 edge2 = getAnotherEdge(edge1, tile)
                 if (edge2 == 1) {
-                    return false
+                    return true
                 }
             }
 
@@ -147,7 +148,7 @@ class GameService(private val rootService: RootService) {
                 edge1 = tile.edges[1]
                 edge2 = getAnotherEdge(edge1, tile)
                 if (edge2 == 2) {
-                    return false
+                    return true
                 }
             }
 
@@ -155,7 +156,7 @@ class GameService(private val rootService: RootService) {
                 edge1 = tile.edges[2]
                 edge2 = getAnotherEdge(edge1, tile)
                 if (edge2 == 3) {
-                    return false
+                    return true
                 }
             }
 
@@ -163,7 +164,7 @@ class GameService(private val rootService: RootService) {
                 edge1 = tile.edges[3]
                 edge2 = getAnotherEdge(edge1, tile)
                 if (edge2 == 4) {
-                    return false
+                    return true
                 }
             }
 
@@ -171,14 +172,14 @@ class GameService(private val rootService: RootService) {
                 edge1 = tile.edges[4]
                 edge2 = getAnotherEdge(edge1, tile)
                 if (edge2 == 5) {
-                    return false
+                    return true
                 }
             }
 
-            else -> return true
+            else -> return false
         }
 
-        return true
+        return false
     }
 
     /**
