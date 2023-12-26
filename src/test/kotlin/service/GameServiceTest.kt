@@ -1,5 +1,5 @@
 package service
-/*
+
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -17,6 +17,13 @@ class GameServiceTest {
     private var rootService: RootService = RootService()
     private var gameService: GameService = rootService.gameService
 
+  private val fourPlayers = listOf(
+        Player("Alice", Date(0), TokenColor.WHITE, false),
+        Player("Bob", Date(0), TokenColor.PURPLE, false),
+        Player("Emily", Date(0), TokenColor.BLUE, false),
+        Player("Jack", Date(0), TokenColor.RED, false)
+    )
+
     @BeforeEach
     fun setUp() {
         rootService = RootService()
@@ -27,10 +34,7 @@ class GameServiceTest {
     fun startGameTest() {
         assertNull(rootService.currentGame)
         rootService.gameService.startGame(
-            player1 = Player("Alice", Date(0), TokenColor.WHITE, false),
-            player2 = Player("Bob", Date(0), TokenColor.PURPLE, false),
-            player3 = Player("Emily", Date(0), TokenColor.BLUE, false),
-            player4 = Player("Jack", Date(0), TokenColor.RED, false)
+         fourPlayers.toMutableList()
         )
 
         val player1 = Player("Alice", Date(0), TokenColor.WHITE, false)
@@ -59,15 +63,11 @@ class GameServiceTest {
     }
 
 
-      @Test
+    @Test
     fun checkPlacementTest() {
         val rootService = RootService()
         assertNull(rootService.currentGame)
         rootService.gameService.startGame(
-            player1 = Player("Alice", Date(0), TokenColor.WHITE, false),
-            player2 = Player("Bob", Date(0), TokenColor.PURPLE, false),
-            player3 = Player("Emily", Date(0), TokenColor.BLUE, false),
-            player4 = Player("Jack", Date(0), TokenColor.RED, false)
         )
 
         val indigo = rootService.currentGame
@@ -84,7 +84,7 @@ class GameServiceTest {
         rootService.playerTurnService.rotateTileRight(tile0)
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
         rootService.playerTurnService.rotateTileLeft(tile0)
-        assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
+        assertFalse(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
         assertTrue(rootService.gameService.checkPlacement(Coordinate(1, -4), tile0))
 
         //tileID 2 initialisieren und testen
@@ -118,7 +118,7 @@ class GameServiceTest {
 
     }
 
-    
+
     @Test
     fun checkCollisionTest() {
     }
@@ -136,7 +136,7 @@ class GameServiceTest {
         assertThrows<IllegalStateException> {
             rootService.gameService.changePlayer()
         }
-        rootService.gameService.startGame()
+        rootService.gameService.startGame(fourPlayers.toMutableList())
         val testGame = rootService.currentGame
         checkNotNull(testGame)
         rootService.gameService.changePlayer()
@@ -171,4 +171,3 @@ class GameServiceTest {
 
 
 }
-*/
