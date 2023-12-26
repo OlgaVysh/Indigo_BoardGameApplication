@@ -10,7 +10,12 @@ import java.util.*
  */
 class GameService(private val rootService: RootService) {
     /**
-     * Starts a new game.
+     * Starts a new game with the specified players or default players if none are provided.
+     *
+     * @param player1 The first player. Defaults to a player named "player1Name" with a birth date of January 1, 1970, token color WHITE, and not KI player.
+     * @param player2 The second player. Defaults to a player named "player2Name" with a birth date of January 1, 1970, token color PURPLE, and not KI player.
+     * @param player3 The third player. Defaults to a player named "player3Name" with a birth date of January 1, 1970, token color BLUE, and not KI player.
+     * @param player4 The fourth player. Defaults to a player named "player4Name" with a birth date of January 1, 1970, token color RED, and not KI player.
      */
     fun startGame(
         player1: Player = Player("player1Name", Date(0), TokenColor.WHITE, false),
@@ -34,7 +39,7 @@ class GameService(private val rootService: RootService) {
      * Restarts the current game.
      */
     fun restartGame() {
-       return  this.startGame()
+        return this.startGame()
     }
 
     /**
@@ -56,20 +61,24 @@ class GameService(private val rootService: RootService) {
         checkNotNull(currentGame)
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
-            throw Exception("this place is occupied")
+            return false
+            //throw Exception("this place is occupied")
         }
         // Check if the space has an exit
         if (!coordinateHasExit(space)) {
             placeTile(space, tile)
+            return true
         } else {
             // Check if the tile blocks an exit
             if (!tileBlocksExit(space, tile)) {
                 placeTile(space, tile)
+                return true
             } else {
-                throw Exception("tile blocks exit")
+               return false
+               // throw Exception("tile blocks exit")
             }
         }
-        return true
+        //return true
     }
 
     /**
@@ -80,15 +89,22 @@ class GameService(private val rootService: RootService) {
     private fun coordinateHasExit(space: Coordinate): Boolean {
         // List of  gates with exits
 
-        return (space == Coordinate(1, -4) || space == Coordinate(2, -4)
-                || space == Coordinate(3, -4) || space == Coordinate(4, -3)
-                || space == Coordinate(4, -2) || space == Coordinate(4, -1)
-                || space == Coordinate(3, 1) || space == Coordinate(2, 2)
-                || space == Coordinate(1, 3) || space == Coordinate(-1, 4)
-                || space == Coordinate(-2, 4) || space == Coordinate(-3, 4)
-                || space == Coordinate(-4, 3) || space == Coordinate(-4, 2)
-                || space == Coordinate(-4, 1) || space == Coordinate(-3, -1)
-                || space == Coordinate(-2, -2) || space == Coordinate(-1, -3))
+        return (space == Coordinate(1, -4) || space == Coordinate(2, -4) || space == Coordinate(
+            3,
+            -4
+        ) || space == Coordinate(4, -3) || space == Coordinate(4, -2) || space == Coordinate(
+            4,
+            -1
+        ) || space == Coordinate(3, 1) || space == Coordinate(2, 2) || space == Coordinate(1, 3) || space == Coordinate(
+            -1,
+            4
+        ) || space == Coordinate(-2, 4) || space == Coordinate(-3, 4) || space == Coordinate(
+            -4,
+            3
+        ) || space == Coordinate(-4, 2) || space == Coordinate(-4, 1) || space == Coordinate(
+            -3,
+            -1
+        ) || space == Coordinate(-2, -2) || space == Coordinate(-1, -3))
     }
 
     /**
@@ -112,12 +128,12 @@ class GameService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         // Define coordinates for each gate
-        val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
-        val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
-        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 1))
-        val gate4 = listOf(Coordinate(4, -1), Coordinate(4, -2), Coordinate(4, -3))
-        val gate5 = listOf(Coordinate(1, -4), Coordinate(2, -4), Coordinate(3, -4))
-        val gate6 = listOf(Coordinate(-1, -3), Coordinate(-2, -2), Coordinate(-3, -1))
+        val gate1 = listOf(Coordinate(1, -4), Coordinate(2, -4), Coordinate(3, -4))
+        val gate2 = listOf(Coordinate(4, -3), Coordinate(4, -2), Coordinate(4, -1))
+        val gate3 = listOf(Coordinate(3, 1), Coordinate(2, 2), Coordinate(1, 3))
+        val gate4 = listOf(Coordinate(-1, 4), Coordinate(-2, 4), Coordinate(-3, 4))
+        val gate5 = listOf(Coordinate(-4, 3), Coordinate(-4, 2), Coordinate(-4, 1))
+        val gate6 = listOf(Coordinate(-3, -1), Coordinate(-2, -2), Coordinate(-1, -3))
 
         val edge1: Edge
         val edge2: Int
@@ -401,8 +417,12 @@ class GameService(private val rootService: RootService) {
             val gemPos = (i + 3) % 6
             allTiles.add(
                 Tile(
-                    listOf(Pair(Edge.values()[gemPos - 1], Edge.values()[gemPos + 1])),
-                    mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
+                    listOf(
+                        Pair(
+                            Edge.values()[(Edge.values().size + gemPos - 1) % 6],
+                            Edge.values()[(Edge.values().size + gemPos + 1) % 6]
+                        )
+                    ), mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
                 )
             )
         }
