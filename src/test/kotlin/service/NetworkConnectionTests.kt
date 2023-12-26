@@ -150,8 +150,8 @@ class NetworkConnectionTests {
             joinAll(
                 hostThread, guestThread
             )
-            hostRootService.networkService.disconnect()
             guestRootService.networkService.disconnect()
+            hostRootService.networkService.disconnect()
         }
     }
 
@@ -222,8 +222,8 @@ class NetworkConnectionTests {
                 hostThread,
                 guestThread
             )
-            hostRootService.networkService.disconnect()
             guestRootService.networkService.disconnect()
+            hostRootService.networkService.disconnect()
         }
     }
 }
