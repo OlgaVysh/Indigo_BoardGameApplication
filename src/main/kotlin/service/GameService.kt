@@ -65,17 +65,17 @@ class GameService(private val rootService: RootService) {
             //throw Exception("this place is occupied")
         }
         // Check if the space has an exit
-        if (!coordinateHasExit(space)) {
+        return if (!coordinateHasExit(space)) {
             placeTile(space, tile)
-            return true
+            true
         } else {
             // Check if the tile blocks an exit
-            if (!tileBlocksExit(space, tile)) {
+            return if (!tileBlocksExit(space, tile)) {
                 placeTile(space, tile)
-                return true
+                true
             } else {
-               return false
-               // throw Exception("tile blocks exit")
+                false
+                // throw Exception("tile blocks exit")
             }
         }
         //return true
