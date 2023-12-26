@@ -167,7 +167,7 @@ open class NetworkService(private val rootService: RootService) {
      * @param coordinate Coordinate is where the tile placed
      */
     fun sendPlacedTile(placedTile: Tile, coordinate: Coordinate) {
-        require(connectionState == ConnectionState.PLAYING_MY_TURN) { "not my turn" }
+        check(connectionState == ConnectionState.PLAYING_MY_TURN) { "not my turn" }
         val rotation = placedTile.edges.indexOf(Edge.ZERO)
         val qCoordinate = coordinate.column
         val rCoordinate = coordinate.row
@@ -178,7 +178,7 @@ open class NetworkService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val currentPlayerIndex = currentGame.currentPlayerIndex
-        (ConnectionState.PLAYING_MY_TURN)
+        updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         for (otherPlayer in client?.otherPlayers!!) {
             if (currentGame.players[currentPlayerIndex].name == otherPlayer) {
                 updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
@@ -195,17 +195,16 @@ open class NetworkService(private val rootService: RootService) {
      */
     fun receivedTilePLacedMessage(message: TilePlacedMessage) {
         check(
-            connectionState in listOf(
-                ConnectionState.PLAYING_MY_TURN, ConnectionState.WAITING_FOR_OPPONENTS_TURN
-            )
-        ) { "currently not expecting an opponent's turn." }
+            connectionState == ConnectionState.WAITING_FOR_OPPONENTS_TURN
+        )
+        { "currently not expecting an opponent's turn." }
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val rotation = message.rotation
         repeat(rotation) {
             rootService.playerTurnService.rotateTileRight(currentGame.routeTiles[0])
         }
-        val space = Coordinate(message.qCoordinate, message.rCoordinate)
+        val space = Coordinate(message.rCoordinate, message.rCoordinate)
 
         //rootService.playerTurnService.placeRouteTile(space, currentGame.routeTiles[0])
         val currentPlayerIndex = currentGame.currentPlayerIndex
