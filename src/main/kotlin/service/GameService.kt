@@ -474,4 +474,43 @@ class GameService(private val rootService: RootService) {
     }
 
 
+    /**
+     * Gets the neighboring coordinates for a given coordinate
+     * @param coordinate The coordinate for which to find neighboring coordinates
+     * @return List of neighboring coordinates
+     */
+    private fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
+        val neighbors = mutableListOf<Coordinate>()
+
+        //hexagonal grid
+        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
+        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column + 1))  // Top-right
+        neighbors.add(Coordinate(coordinate.row , coordinate.column + 1))      // Bottom-right
+        neighbors.add(Coordinate(coordinate.row + 1, coordinate.column))      // Below
+        neighbors.add(Coordinate(coordinate.row + 1, coordinate.column - 1))  // Bottom-left
+        neighbors.add(Coordinate(coordinate.row, coordinate.column - 1))      // Top-left
+
+        return neighbors
+    }
+
+    /**
+     * Gets the neighboring tiles for a given coordinate
+     * @param coordinate The coordinate for which to find neighboring tiles
+     * @return List of neighboring tiles
+     */
+    fun getNeighboringTiles(coordinate: Coordinate): List<Tile> {
+        val neighboringTiles = mutableListOf<Tile>()
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+
+        for (neighborCoordinate in getNeighboringCoordinates(coordinate)) {
+            currentGame.gameBoard.gameBoardTiles[neighborCoordinate]?.let {
+                neighboringTiles.add(it)
+            }
+        }
+        return neighboringTiles
+    }
+
+
+
 }
