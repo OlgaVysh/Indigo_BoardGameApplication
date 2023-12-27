@@ -9,6 +9,7 @@ import entity.Tile
 import entity.Token
 import entity.TokenColor
 import service.RootService
+import kotlin.math.abs
 
 /**
  * The class [NetworkMappingService] is for the translating
@@ -56,8 +57,14 @@ class NetworkMappingService(private val rootService: RootService) {
     fun toTileTypeList(): List<TileType> {
         val game = rootService.currentGame
         checkNotNull(game) { "game should not be null right after starting it." }
+
         val tileList = mutableListOf<TileType>()
-        val routeTiles = game.allTiles.drop(6)
+        val players = game.players
+        val currentPlayerIndex = game.currentPlayerIndex
+        val routeTiles = game.routeTiles
+        for(i in players.indices.reversed()){
+            routeTiles.add(0,players[abs(currentPlayerIndex-i) % players.size].handTile!!)
+        }
         val tile0 = listOf(
             Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),
