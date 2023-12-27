@@ -3,8 +3,8 @@ package service
 import org.junit.jupiter.api.Test
 import entity.*
 import org.junit.jupiter.api.assertThrows
-import service.*
 import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class PlayerTurnServiceTest {
@@ -13,9 +13,18 @@ class PlayerTurnServiceTest {
     private lateinit var gameService: GameService
     private lateinit var playerTurnService: PlayerTurnService
 
-    val players = mutableListOf(
+    private val players = mutableListOf(
         Player(name = "ALice", color = TokenColor.RED),
         Player(name = "Bob", color = TokenColor.BLUE)
+    )
+
+    private val testTile = Tile(
+        listOf(
+            Pair(Edge.ZERO, Edge.TWO),
+            Pair(Edge.ONE, Edge.FOUR),
+            Pair(Edge.THREE, Edge.FIVE)
+        ),
+        mutableMapOf()
     )
 
     @BeforeTest
@@ -45,7 +54,10 @@ class PlayerTurnServiceTest {
         }
     }
     */
-
+    /**
+     *  The function [testUndoRedo] test the correctness of undo und redo
+     *
+     */
     @Test
     fun testUndoRedo() {
         assertThrows<IllegalStateException> { playerTurnService.redo() }
@@ -65,4 +77,17 @@ class PlayerTurnServiceTest {
 
     }
 
+    /**
+     *  The function [rotateTileTest] the function rotate
+     */
+    @Test
+    fun rotateTileTest() {
+        val expectedTile = testTile
+        val expectedTileRightRotated = testTile
+        expectedTile.edges.add(0,expectedTile.edges.removeAt(expectedTile.edges.size-1))
+        playerTurnService.rotateTileRight(testTile)
+        assertEquals(expectedTileRightRotated,testTile)
+        playerTurnService.rotateTileLeft(testTile)
+        assertEquals(expectedTile,testTile)
+    }
 }
