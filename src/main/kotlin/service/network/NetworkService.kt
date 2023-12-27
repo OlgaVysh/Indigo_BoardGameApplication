@@ -118,21 +118,38 @@ open class NetworkService(private val rootService: RootService) {
             Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
             Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
             Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ONE, Edge.FIVE)), mutableMapOf(Pair(0, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ZERO, Edge.TWO)), mutableMapOf(Pair(1, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ONE, Edge.THREE)), mutableMapOf(Pair(2, Gem(GemColor.AMBER)))),
         )
         allTiles.addAll(routeTiles)
 
         val gateTokens = rootService.networkMappingService.toGateTokens(players, message.gameMode)
+        val gameService = rootService.gameService
         rootService.currentGame = Indigo(
             setting,
             GameBoard(),
             allTiles.toList(),
-            rootService.gameService.initializeGems(),
-            rootService.gameService.initializeTokens()
+            gameService.initializeGems(),
+            gameService.initializeTokens()
         )
         rootService.currentGame?.gameBoard?.gateTokens = gateTokens
+        val listCoordinate = listOf(
+            Coordinate(-4, 4),
+            Coordinate(0, 4),
+            Coordinate(4, 0),
+            Coordinate(4, -4),
+            Coordinate(0, -4),
+            Coordinate(-4, 0)
+        )
+        for (i in listCoordinate.indices) {
+            val coordinate = listCoordinate[i]
+            rootService.currentGame!!.gameBoard.gameBoardTiles[coordinate] = allTiles[i]
+        }
+        repeat(players.size) {
+            gameService.distributeNewTile()
+            gameService.changePlayer()
+        }
     }
 
     /**
