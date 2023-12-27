@@ -207,6 +207,10 @@ class NetworkMappingServiceTest {
             TileType.TYPE_3,
             TileType.TYPE_4
         )
+        repeat(players.size){
+            testGame.gameService.distributeNewTile()
+            testGame.gameService.changePlayer()
+        }
         val tileList = testGame.networkMappingService.toTileTypeList()
         assertEquals(testTileList, tileList)
     }
@@ -238,7 +242,6 @@ class NetworkMappingServiceTest {
         )
         val networkPlayerList = testGame.networkMappingService.toNetworkPlayer()
         assertEquals(networkPlayerListResult, networkPlayerList)
-
     }
 
     /**
