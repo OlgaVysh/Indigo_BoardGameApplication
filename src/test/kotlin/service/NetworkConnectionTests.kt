@@ -27,7 +27,7 @@ class NetworkConnectionTests {
     private lateinit var coroutineScope: CoroutineScope
 
     companion object {
-        const val SESSIONID = "Test345"
+        const val SESSIONID = "Test123"
     }
 
     private val RootService.testNetworkService: TestNetworkService
