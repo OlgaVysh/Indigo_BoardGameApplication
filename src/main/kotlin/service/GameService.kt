@@ -13,7 +13,7 @@ class GameService(private val rootService: RootService) {
      *
      * @param players A mutable list of players. Defaults to an empty list if none is provided.
      */
-    fun startGame( players: MutableList<Player> = mutableListOf()) {
+    fun startGame(players: MutableList<Player> = mutableListOf()) {
         val gameBoard = GameBoard()
         val allTiles = initializeTiles()
         val gems = initializeGems()
@@ -50,8 +50,7 @@ class GameService(private val rootService: RootService) {
         checkNotNull(currentGame)
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
-            return false
-            //throw Exception("this place is occupied")
+            throw Exception("this place is occupied")
         }
         // Check if the space has an exit
         return if (!coordinateHasExit(space)) {
@@ -63,11 +62,9 @@ class GameService(private val rootService: RootService) {
                 placeTile(space, tile)
                 true
             } else {
-                false
-                // throw Exception("tile blocks exit")
+                throw Exception("tile blocks exit")
             }
         }
-        //return true
     }
 
     /**
@@ -211,99 +208,20 @@ class GameService(private val rootService: RootService) {
     /**
      *Function for checking if the moving gems are colliding
      *@param tile: Route tiles on the game board
-     *@param coordinate: The coordinate of the tile
      */
-    fun checkCollision(tile: Tile, coordinate: Coordinate): Boolean {
+    fun checkCollision(tile: Tile): Boolean {
         for (path in tile.paths) {
             val gemAtBeginning = tile.gemEndPosition[path.first.ordinal]
             val gemAtEnd = tile.gemEndPosition[path.second.ordinal]
             //Checks if the beginning and the end of the path gave gems
             if (gemAtBeginning != null && gemAtEnd != null && gemAtBeginning != gemAtEnd) {
                 //Two gems are colliding
-                removeGems(tile, coordinate)
+                tile.gemEndPosition.remove(path.first.ordinal)
+                tile.gemEndPosition.remove(path.second.ordinal)
                 return true
             }
         }
         return false
-    }
-
-    /**
-     * saves the current [Indigo] gameState as a JSON file at a given location using the [IOService]
-     *
-     * @param path location to be given to [IOService] for saving
-     * @throws IllegalStateException if currentGame is null
-     */
-    fun saveGame(path: String) {
-        val game = rootService.currentGame
-        checkNotNull(game)
-        rootService.ioService.saveGameToFile(game, path)
-        TODO(/*refresh*/)
-    }
-
-    /**
-     * loads an [Indigo] gameState from a JSON file at a given location using the [IOService]
-     *
-     * @param path location to be given to [IOService] for reading JSON file
-     * @throws IllegalStateException if currentGame is null after loading
-     */
-    fun loadGame(path: String) {
-        rootService.currentGame = rootService.ioService.readGameFromFile(path)
-        checkNotNull(rootService.currentGame)
-        TODO(/*refresh*/)
-    }
-
-    /**
-     * function to assign a [Gem] to a given [Player]
-     * @param gem [Gem] to be assigned
-     * @param player [Player] to receive the [Gem]
-     */
-    private fun assignGem(gem: Gem, player: Player) {
-        player.score += gem.gemColor.ordinal + 1
-        player.gemCounter++
-        TODO(/*refresh*/)
-    }
-
-    /**
-     * Changes the current player to the next player in the list.
-     */
-    fun changePlayer() {
-        val currentGame = rootService.currentGame
-        checkNotNull(currentGame)
-        val playerSize = currentGame.players.size
-        val currentPlayerIndex = currentGame.currentPlayerIndex
-        rootService.currentGame?.currentPlayerIndex = (currentPlayerIndex+1) % playerSize
-
-    }
-
-    /**
-     * Moves gems from one tile to another based on the specified edge indices.
-     * @param tile The tile from which gems are moved.
-     * @param neighbourTile The tile to which gems are moved.
-     * @param tileEnd The index of the edge in the tile where the gems are located.
-     * @param neighbourStart The index of the edge in the neighbourTile where gems are moved.
-     */
-    fun moveGems(tile: Tile, neighbourTile: Tile, tileEnd: Int, neighbourStart: Int) {
-        val tileGems = tile.gemEndPosition
-        val neighbourGems = neighbourTile.gemEndPosition
-        if (tileGems.contains(tileEnd)) {
-            if (neighbourGems.contains(neighbourStart)) {
-                tileGems.remove(tileEnd)
-                neighbourGems.remove(neighbourStart)
-                return
-            }
-
-            val neighbourEdge = neighbourTile.edges[neighbourStart]
-            val neighbourEnd = getAnotherEdge(neighbourEdge, neighbourTile)
-
-            if (neighbourGems.contains(neighbourEnd)) {
-                tileGems.remove(tileEnd)
-                neighbourGems.remove(neighbourEnd)
-                return
-            }
-            val tileGem = tileGems[tileEnd]
-            tileGems.remove(tileEnd)
-            neighbourGems[neighbourEnd] = tileGem!!
-        }
     }
 
     /**
@@ -312,7 +230,7 @@ class GameService(private val rootService: RootService) {
      * @param coordinate The coordinate of the tile.
      */
 
-    private fun removeGems(tile: Tile, coordinate: Coordinate) {
+    private fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
@@ -328,6 +246,7 @@ class GameService(private val rootService: RootService) {
         val gatesListe = mutableListOf(gate1, gate2, gate3, gate4, gate5, gate6)
         for (i in 0 until 6) {
             if (gatesListe[i].contains(coordinate)) {
+                //check existenz of two gems not of the same path of tile, but on the two edges beyond the gate.
                 val gem1 = tile.gemEndPosition[(0 + i) % 6]
                 val gem2 = tile.gemEndPosition[(5 + i) % 6]
                 if (gem2 != null) {
@@ -379,6 +298,85 @@ class GameService(private val rootService: RootService) {
 
         }
 
+    }
+
+    /**
+     * saves the current [Indigo] gameState as a JSON file at a given location using the [IOService]
+     *
+     * @param path location to be given to [IOService] for saving
+     * @throws IllegalStateException if currentGame is null
+     */
+    fun saveGame(path: String) {
+        val game = rootService.currentGame
+        checkNotNull(game)
+        rootService.ioService.saveGameToFile(game, path)
+        TODO(/*refresh*/)
+    }
+
+    /**
+     * loads an [Indigo] gameState from a JSON file at a given location using the [IOService]
+     *
+     * @param path location to be given to [IOService] for reading JSON file
+     * @throws IllegalStateException if currentGame is null after loading
+     */
+    fun loadGame(path: String) {
+        rootService.currentGame = rootService.ioService.readGameFromFile(path)
+        checkNotNull(rootService.currentGame)
+        TODO(/*refresh*/)
+    }
+
+    /**
+     * function to assign a [Gem] to a given [Player]
+     * @param gem [Gem] to be assigned
+     * @param player [Player] to receive the [Gem]
+     */
+    private fun assignGem(gem: Gem, player: Player) {
+        player.score += gem.gemColor.ordinal + 1
+        player.gemCounter++
+        TODO(/*refresh*/)
+    }
+
+    /**
+     * Changes the current player to the next player in the list.
+     */
+    fun changePlayer() {
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        val playerSize = currentGame.players.size
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+        rootService.currentGame?.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
+
+    }
+
+    /**
+     * Moves gems from one tile to another based on the specified edge indices.
+     * @param tile The tile from which gems are moved.
+     * @param neighbourTile The tile to which gems are moved.
+     * @param tileEnd The index of the edge in the tile where the gems are located.
+     * @param neighbourStart The index of the edge in the neighbourTile where gems are moved.
+     */
+    fun moveGems(tile: Tile, neighbourTile: Tile, tileEnd: Int, neighbourStart: Int) {
+        val tileGems = tile.gemEndPosition
+        val neighbourGems = neighbourTile.gemEndPosition
+        if (tileGems.contains(tileEnd)) {
+            if (neighbourGems.contains(neighbourStart)) {
+                tileGems.remove(tileEnd)
+                neighbourGems.remove(neighbourStart)
+                return
+            }
+
+            val neighbourEdge = neighbourTile.edges[neighbourStart]
+            val neighbourEnd = getAnotherEdge(neighbourEdge, neighbourTile)
+
+            if (neighbourGems.contains(neighbourEnd)) {
+                tileGems.remove(tileEnd)
+                neighbourGems.remove(neighbourEnd)
+                return
+            }
+            val tileGem = tileGems[tileEnd]
+            tileGems.remove(tileEnd)
+            neighbourGems[neighbourEnd] = tileGem!!
+        }
     }
 
 
