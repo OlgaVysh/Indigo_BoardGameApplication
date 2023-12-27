@@ -44,7 +44,7 @@ open class NetworkService(private val rootService: RootService) {
     }
 
     /**
-     *  The function[JoinGame] is to start a Game as a Host
+     *  The function[hostGame] is to start a Game as a Host
      *
      *  @param secret The secret to make a secure connection
      *  @param name Name of the host
@@ -200,14 +200,16 @@ open class NetworkService(private val rootService: RootService) {
         { "currently not expecting an opponent's turn." }
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
+        val players = currentGame.players
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+        val handTile = players[currentPlayerIndex].handTile
+        checkNotNull(handTile)
         val rotation = message.rotation
         repeat(rotation) {
-            rootService.playerTurnService.rotateTileRight(currentGame.routeTiles[0])
+            rootService.playerTurnService.rotateTileRight(handTile)
         }
         val space = Coordinate(message.rCoordinate, message.rCoordinate)
-
-        //rootService.playerTurnService.placeRouteTile(space, currentGame.routeTiles[0])
-        val currentPlayerIndex = currentGame.currentPlayerIndex
+        //rootService.playerTurnService.placeRouteTile(space,handTile)
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         for (otherPlayer in client?.otherPlayers!!) {
             if (currentGame.players[currentPlayerIndex].name == otherPlayer) {
