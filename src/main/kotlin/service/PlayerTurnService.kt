@@ -23,7 +23,7 @@ class PlayerTurnService(private val rootService: RootService) {
         if (rootService.gameService.checkPlacement(space, tile)) {
             // Move gems, check collisions, distribute new tiles, and change the player
             rootService.gameService.moveGems(tile,neighbourTile,tileEnd,neighbourTileStart )
-            rootService.gameService.checkCollision(tile, space)// change rows with moveGems?
+            rootService.gameService.checkCollision(tile)// change rows with moveGems?
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
             

@@ -1,12 +1,11 @@
 package service
-/*
+
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 import entity.*
-import entity.GemColor.AMBER
-import entity.GemColor.EMERALD
+import entity.GemColor.*
 import org.junit.jupiter.api.*
 
 
@@ -138,16 +137,23 @@ class GameServiceTest {
         )
 
         val indigo = rootService.currentGame
-
         checkNotNull(indigo)
 
-        //tileID 0 initialisieren
+        //tileID 0 initialisieren and check collision.
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
             mutableMapOf(Pair(1, Gem(EMERALD)),Pair(4, Gem(AMBER)))
         )
+        assertTrue(rootService.gameService.checkCollision(tile0))
+        //checkCollision for tile0 after removeGems
+        assertFalse(rootService.gameService.checkCollision(tile0))
 
-
+        //tileID 3 initialisieren and check collision.
+        val tile3 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.THREE), Pair(Edge.TWO, Edge.FOUR)),
+            mutableMapOf(Pair(1, Gem(EMERALD)),Pair(5,Gem(SAPPHIRE)))
+        )
+        assertFalse(rootService.gameService.checkCollision(tile3))
     }
 
     /**
@@ -198,7 +204,20 @@ class GameServiceTest {
      * Test the removeGems function.
      */
     @Test
-    fun removeGemsTest() {
+    fun removeGemsReachedGateTest() {
+       /* val rootService = RootService()
+        assertNull(rootService.currentGame)
+        rootService.gameService.startGame(
+        )
+
+        val indigo = rootService.currentGame
+        checkNotNull(indigo)
+
+        //tileID 0 initialisieren and check collision.
+        val tile0 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            mutableMapOf(Pair(1, Gem(EMERALD)))
+        )*/
     }
 
     /**
@@ -225,4 +244,4 @@ class GameServiceTest {
 
 
 }
-*/
+

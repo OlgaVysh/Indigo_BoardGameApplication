@@ -230,7 +230,7 @@ class GameService(private val rootService: RootService) {
      * @param coordinate The coordinate of the tile.
      */
 
-    private fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {
+     fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
