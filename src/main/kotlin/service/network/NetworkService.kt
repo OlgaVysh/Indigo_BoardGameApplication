@@ -82,17 +82,17 @@ open class NetworkService(private val rootService: RootService) {
      * and configure all other player
      *
      */
-    fun startNewHostedGame() {
+    fun startNewHostedGame(
+        players: MutableList<Player>,
+        notSharedGates: Boolean = false,
+        random: Boolean = false
+    ) {
         val client = client
         checkNotNull(client)
-        val hostPlayer = client.playerName
-        val playerNames = client.otherPlayers.subList(0, 4)
         check(connectionState == ConnectionState.WAITING_FOR_GUEST)
         { "currently not prepared to start a new hosted game." }
-        playerNames.add(0, hostPlayer)
-        TODO("Update the class until startGame is implemented with parameters for startGame")
-        //rootService.gameService.startGame()
-        //sendGameInitMessage()
+        rootService.gameService.startGame(players, notSharedGates, random)
+        sendGameInitMessage()
     }
 
 
@@ -103,8 +103,7 @@ open class NetworkService(private val rootService: RootService) {
      * to initialize the game from your game
      */
     fun startNewJoinedGame(message: GameInitMessage, playerName: String) {
-        check(connectionState == ConnectionState.WAITING_FOR_INIT)
-        { "not waiting for game init message. " }
+        check(connectionState == ConnectionState.WAITING_FOR_INIT) { "not waiting for game init message. " }
         val routeTiles = rootService.networkMappingService.toRouteTiles(message.tileList)
         val players = rootService.networkMappingService.toEntityPlayer(message.players)
         if (players[0].name == playerName) {
@@ -127,11 +126,7 @@ open class NetworkService(private val rootService: RootService) {
         val gateTokens = rootService.networkMappingService.toGateTokens(players, message.gameMode)
         val gameService = rootService.gameService
         rootService.currentGame = Indigo(
-            setting,
-            GameBoard(),
-            allTiles.toList(),
-            gameService.initializeGems(),
-            gameService.initializeTokens()
+            setting, GameBoard(), allTiles.toList(), gameService.initializeGems(), gameService.initializeTokens()
         )
         rootService.currentGame?.gameBoard?.gateTokens = gateTokens
         val listCoordinate = listOf(
@@ -162,9 +157,7 @@ open class NetworkService(private val rootService: RootService) {
         val gameMode = rootService.networkMappingService.toGameMode()
         val tileList = rootService.networkMappingService.toTileTypeList()
         val message = GameInitMessage(
-            networkPlayers,
-            gameMode,
-            tileList
+            networkPlayers, gameMode, tileList
         )
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         for (otherPlayer in client?.otherPlayers!!) {
@@ -213,8 +206,7 @@ open class NetworkService(private val rootService: RootService) {
     fun receivedTilePLacedMessage(message: TilePlacedMessage) {
         check(
             connectionState == ConnectionState.WAITING_FOR_OPPONENTS_TURN
-        )
-        { "currently not expecting an opponent's turn." }
+        ) { "currently not expecting an opponent's turn." }
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
@@ -242,16 +234,11 @@ open class NetworkService(private val rootService: RootService) {
      *  @param name The name of the player
      */
     open fun connect(secret: String = "game23d", name: String): Boolean {
-        require(connectionState == ConnectionState.DISCONNECTED && client == null)
-        { "already connected to another game" }
+        require(connectionState == ConnectionState.DISCONNECTED && client == null) { "already connected to another game" }
         require(name.isNotBlank()) { "player name must be given" }
-        val newClient =
-            IndigoNetworkClient(
-                playerName = name,
-                host = SERVER_ADDRESS,
-                secret = secret,
-                networkService = this
-            )
+        val newClient = IndigoNetworkClient(
+            playerName = name, host = SERVER_ADDRESS, secret = secret, networkService = this
+        )
         return if (newClient.connect()) {
             this.client = newClient
             updateConnectionState(ConnectionState.CONNECTED)
