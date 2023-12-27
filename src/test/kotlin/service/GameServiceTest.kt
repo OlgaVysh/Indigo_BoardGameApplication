@@ -108,21 +108,32 @@ class GameServiceTest {
         //rotate tile0 and place it in (-1,-3) ,dann check that the place is ocuppied for other tile.
         rootService.playerTurnService.rotateTileRight(tile0)
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
-       // assertFalse(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile2))
+        assertThrows<Exception> {
+            rootService.gameService.checkPlacement(Coordinate(-1, -3), tile2)
+        }
+
 
         //rotate tile2 and place it in (-2,-2) ,dann check that the gate is blocked, then rotate right und the place is ocuppied for other tile.
         rootService.playerTurnService.rotateTileLeft(tile2)
-        assertFalse(rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2))
+        assertThrows<Exception> {
+            rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2)
+        }
         rootService.playerTurnService.rotateTileRight(tile2)
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2))
-        //assertFalse(rootService.gameService.checkPlacement(Coordinate(-2, -2), tile4))
+        assertThrows<Exception> {
+            rootService.gameService.checkPlacement(Coordinate(-2, -2), tile4)
+        }
 
         //rotate tile4 and place it in (-3,-1) ,dann check that the gate is blocked, then rotate right und the place is ocuppied for other tile.
         rootService.playerTurnService.rotateTileLeft(tile4)
-        assertFalse(rootService.gameService.checkPlacement(Coordinate(-3, -1), tile4))
+        assertThrows<Exception> {
+            rootService.gameService.checkPlacement(Coordinate(-3, -1), tile4)
+        }
         rootService.playerTurnService.rotateTileRight(tile4)
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-3, -1), tile4))
-        //assertFalse(rootService.gameService.checkPlacement(Coordinate(-2, -2), tile0))
+        assertThrows<Exception> {
+            rootService.gameService.checkPlacement(Coordinate(-3, -1), tile0)
+        }
 
     }
 
@@ -142,7 +153,7 @@ class GameServiceTest {
         //tileID 0 initialisieren and check collision.
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-            mutableMapOf(Pair(1, Gem(EMERALD)),Pair(4, Gem(AMBER)))
+            mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(AMBER)))
         )
         assertTrue(rootService.gameService.checkCollision(tile0))
         //checkCollision for tile0 after removeGems
@@ -151,7 +162,7 @@ class GameServiceTest {
         //tileID 3 initialisieren and check collision.
         val tile3 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.THREE), Pair(Edge.TWO, Edge.FOUR)),
-            mutableMapOf(Pair(1, Gem(EMERALD)),Pair(5,Gem(SAPPHIRE)))
+            mutableMapOf(Pair(1, Gem(EMERALD)), Pair(5, Gem(SAPPHIRE)))
         )
         assertFalse(rootService.gameService.checkCollision(tile3))
     }
@@ -205,19 +216,19 @@ class GameServiceTest {
      */
     @Test
     fun removeGemsReachedGateTest() {
-       /* val rootService = RootService()
-        assertNull(rootService.currentGame)
-        rootService.gameService.startGame(
-        )
+        /* val rootService = RootService()
+         assertNull(rootService.currentGame)
+         rootService.gameService.startGame(
+         )
 
-        val indigo = rootService.currentGame
-        checkNotNull(indigo)
+         val indigo = rootService.currentGame
+         checkNotNull(indigo)
 
-        //tileID 0 initialisieren and check collision.
-        val tile0 = Tile(
-            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-            mutableMapOf(Pair(1, Gem(EMERALD)))
-        )*/
+         //tileID 0 initialisieren and check collision.
+         val tile0 = Tile(
+             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+             mutableMapOf(Pair(1, Gem(EMERALD)))
+         )*/
     }
 
     /**
