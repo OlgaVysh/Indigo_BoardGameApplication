@@ -57,7 +57,7 @@ class NetworkMappingService(private val rootService: RootService) {
         val game = rootService.currentGame
         checkNotNull(game) { "game should not be null right after starting it." }
         val tileList = mutableListOf<TileType>()
-        val routeTiles = game.routeTiles
+        val routeTiles = game.allTiles.drop(6)
         val tile0 = listOf(
             Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),
@@ -237,7 +237,7 @@ class NetworkMappingService(private val rootService: RootService) {
     }
 
     /**
-     *  The function []
+     *  The function [toGateTokens] make the GameMode to the entity GateTokens
      * @param players The players which are participate the game
      * @param notSharedGates  The [notSharedGates] is two decide which you have
      *
@@ -256,58 +256,7 @@ class NetworkMappingService(private val rootService: RootService) {
 
             else -> {}
         }
-        return createGateTokens(players, notSharedGates)
+        return rootService.gameService.createGateTokens(players, notSharedGates)
     }
 
-    /**
-     * The private function [createGateTokens]
-     * create from the upcoming information of the network
-     * to make the gate tokens
-     *
-     * @param players The players which are participate the game
-     * @param notSharedGates  The [notSharedGates] is two decide which mode the gates are
-     * initialize
-     *
-     * @return A mutable list of token as gateTokens
-     */
-    private fun createGateTokens(players: List<entity.Player>, notSharedGates: Boolean): MutableList<Token> {
-        val gateTokens = mutableListOf<Token>()
-        val playerSize = players.size
-        if (notSharedGates) {
-            for (i in 0 until 6) {
-                gateTokens.add(Token(players[i % playerSize].color))
-                gateTokens.add(Token(players[i % playerSize].color))
-            }
-        } else {
-            if (playerSize == 4) {
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[3].color))
-                gateTokens.add(Token(players[3].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[3].color))
-            }
-            if (playerSize == 3) {
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[2].color))
-            }
-        }
-        return gateTokens
-    }
 }
