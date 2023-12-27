@@ -13,39 +13,41 @@ class GameService(private val rootService: RootService) {
      *
      * @param players A mutable list of players. Defaults to an empty list if none is provided.
      */
-    fun startGame(players: MutableList<Player> = mutableListOf()) {
+    fun startGame(
+        players: MutableList<Player> = mutableListOf(),
+        notSharedGate: Boolean = false,
+        random: Boolean = false
+    ) {
+        if (random) {
+            players.shuffle()
+        }
+
         val gameBoard = GameBoard()
         val allTiles = initializeTiles()
         val gems = initializeGems()
         val tokens = initializeTokens()
 
         val settings = GameSettings(players, 0, false)
-        var middleTile = Tile(
-            listOf(Pair(Edge.ZERO, Edge.ZERO)),
-            mutableMapOf(
-                Pair(0, Gem(GemColor.SAPPHIRE)),
-                Pair(1, Gem(GemColor.AMBER)),
-                Pair(2, Gem(GemColor.AMBER)),
-                Pair(3, Gem(GemColor.AMBER)),
-                Pair(4, Gem(GemColor.AMBER)),
-                Pair(5, Gem(GemColor.AMBER))
-            )
-        )
-        gameBoard.gameBoardTiles[Coordinate(0, 0)] = middleTile
-        gameBoard.gameBoardTiles[Coordinate(4, -4)] = allTiles[0]
-        allTiles.removeFirst()
-        gameBoard.gameBoardTiles[Coordinate(4, 0)] = allTiles[0]
-        allTiles.removeFirst()
-        gameBoard.gameBoardTiles[Coordinate(0, 4)] = allTiles[0]
-        allTiles.removeFirst()
-        gameBoard.gameBoardTiles[Coordinate(-4, 4)] = allTiles[0]
-        allTiles.removeFirst()
-        gameBoard.gameBoardTiles[Coordinate(-4, 0)] = allTiles[0]
-        allTiles.removeFirst()
-        gameBoard.gameBoardTiles[Coordinate(0, -4)] = allTiles[0]
-        allTiles.removeFirst()
-
         rootService.currentGame = Indigo(settings, gameBoard, allTiles, gems, tokens)
+        rootService.currentGame!!.gameBoard.gateTokens = createGateTokens(players, notSharedGate)
+        val treasureTiles = rootService.currentGame!!.treasureTiles
+        val listCoordinate = listOf(
+            Coordinate(-4, 4),
+            Coordinate(0, 4),
+            Coordinate(4, 0),
+            Coordinate(4, -4),
+            Coordinate(0, -4),
+            Coordinate(-4, 0)
+        )
+        for (i in listCoordinate.indices) {
+            val coordinate = listCoordinate[i]
+            rootService.currentGame!!.gameBoard.gameBoardTiles[coordinate] = treasureTiles[i]
+        }
+        rootService.currentGame!!.routeTiles.shuffle()
+        repeat(players.size) {
+            distributeNewTile()
+            changePlayer()
+        }
     }
 
     /**
@@ -370,7 +372,7 @@ class GameService(private val rootService: RootService) {
 
 
     /**
-     * function to give the current [Player] a new route [Tile] at the end of their turn (last in list)
+     * function to give the current [Player] a new route [Tile] at the end of their turn (first in list)
      *
      * @throws IllegalStateException if currentGame in [rootService] is null or no route [Tile]s remain
      */
@@ -378,8 +380,8 @@ class GameService(private val rootService: RootService) {
         val game = rootService.currentGame
         checkNotNull(game)
         check(game.routeTiles.size > 0)
-        game.players[game.currentPlayerIndex].handTile = game.routeTiles.removeLast()
-        TODO(/*refresh*/)
+        game.players[game.currentPlayerIndex].handTile = game.routeTiles.removeFirst()
+        //Refresh
     }
 
     /**
@@ -400,7 +402,6 @@ class GameService(private val rootService: RootService) {
                     ), mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
                 )
             )
-
         }
         //TypeID 0 Route Tiles are added
         var path1 = Pair(Edge.ZERO, Edge.TWO)
@@ -463,24 +464,6 @@ class GameService(private val rootService: RootService) {
 
 
     /**
-     * Gets the neighboring tiles for a given coordinate
-     * @param coordinate The coordinate for which to find neighboring tiles
-     * @return List of neighboring tiles
-     */
-    fun getNeighboringTiles(coordinate: Coordinate): List<Tile> {
-        val neighboringTiles = mutableListOf<Tile>()
-        val currentGame = rootService.currentGame
-        checkNotNull(currentGame)
-
-        for (neighborCoordinate in getNeighboringCoordinates(coordinate)) {
-            currentGame.gameBoard.gameBoardTiles[neighborCoordinate]?.let {
-                neighboringTiles.add(it)
-            }
-        }
-        return neighboringTiles
-    }
-
-    /**
      * Gets the neighboring coordinates for a given coordinate
      * @param coordinate The coordinate for which to find neighboring coordinates
      * @return List of neighboring coordinates
@@ -499,4 +482,73 @@ class GameService(private val rootService: RootService) {
         return neighbors
     }
 
+    /**
+     * Gets the neighboring tiles for a given coordinate
+     * @param coordinate The coordinate for which to find neighboring tiles
+     * @return List of neighboring tiles
+     */
+    fun getNeighboringTiles(coordinate: Coordinate): List<Tile> {
+        val neighboringTiles = mutableListOf<Tile>()
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+
+        for (neighborCoordinate in getNeighboringCoordinates(coordinate)) {
+            currentGame.gameBoard.gameBoardTiles[neighborCoordinate]?.let {
+                neighboringTiles.add(it)
+            }
+        }
+        return neighboringTiles
+    }
+
+    /**
+     * The private function [createGateTokens]
+     * create from the upcoming information of the network
+     * to make the gate tokens
+     *
+     * @param players The players which are participate the game
+     * @param notSharedGates  The [notSharedGates] is two decide which mode the gates are
+     * initialize
+     *
+     * @return A mutable list of token as gateTokens
+     */
+    fun createGateTokens(players: List<entity.Player>, notSharedGates: Boolean): MutableList<Token> {
+        val gateTokens = mutableListOf<Token>()
+        val playerSize = players.size
+        if (notSharedGates) {
+            for (i in 0 until 6) {
+                gateTokens.add(Token(players[i % playerSize].color))
+                gateTokens.add(Token(players[i % playerSize].color))
+            }
+        } else {
+            if (playerSize == 4) {
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[3].color))
+                gateTokens.add(Token(players[3].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[3].color))
+            }
+            if (playerSize == 3) {
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[2].color))
+                gateTokens.add(Token(players[0].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[1].color))
+                gateTokens.add(Token(players[2].color))
+            }
+        }
+        return gateTokens
+    }
 }
