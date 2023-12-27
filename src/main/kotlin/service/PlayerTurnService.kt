@@ -74,6 +74,7 @@ class PlayerTurnService(private val rootService: RootService) {
         // Remove the original first edge
         tile.edges.removeAll(tile.edges.subList(0, 1))
     }
+
     /**
      * Rotates the tile to the right.
      * @param tile The tile to be rotated.
