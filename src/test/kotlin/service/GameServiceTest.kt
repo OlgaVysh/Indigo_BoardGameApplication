@@ -108,150 +108,158 @@ class GameServiceTest {
         //rotate tile0 and place it in (-1,-3) ,dann check that the place is ocuppied for other tile.
         rootService.playerTurnService.rotateTileRight(tile0)
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
-        assertThrows<Exception> {
+        val exception1 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-1, -3), tile2)
         }
+        assertEquals(exception1.message, "this place is occupied")
 
-
-        //rotate tile2 and place it in (-2,-2) ,dann check that the gate is blocked, then rotate right und the place is ocuppied for other tile.
+        //rotate tile2 and place it in (-2,-2) ,dann check that the gate is blocked, then rotate right and place it,then the place is ocuppied for other tile.
         rootService.playerTurnService.rotateTileLeft(tile2)
-        assertThrows<Exception> {
+        val exception2 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2)
         }
+        assertEquals(exception2.message, "tile blocks exit, please rotate Tile")
         rootService.playerTurnService.rotateTileRight(tile2)
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2))
-        assertThrows<Exception> {
+        val exception3 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-2, -2), tile4)
         }
+        assertEquals(exception3.message, "this place is occupied")
 
         //rotate tile4 and place it in (-3,-1) ,dann check that the gate is blocked, then rotate right und the place is ocuppied for other tile.
         rootService.playerTurnService.rotateTileLeft(tile4)
-        assertThrows<Exception> {
+        val exception4 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-3, -1), tile4)
         }
+        assertEquals(exception4.message, "tile blocks exit, please rotate Tile")
+
         rootService.playerTurnService.rotateTileRight(tile4)
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-3, -1), tile4))
-        assertThrows<Exception> {
+        val exception5 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-3, -1), tile0)
         }
+        assertEquals(exception5.message, "this place is occupied")
 
     }
 
-    /**
-     * Test the checkCollision function.
-     */
-    @Test
-    fun checkCollisionTest() {
-        val rootService = RootService()
-        assertNull(rootService.currentGame)
-        rootService.gameService.startGame(
-        )
 
-        val indigo = rootService.currentGame
-        checkNotNull(indigo)
 
-        //tileID 0 initialisieren and check collision.
-        val tile0 = Tile(
-            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-            mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(AMBER)))
-        )
-        assertTrue(rootService.gameService.checkCollision(tile0))
-        //checkCollision for tile0 after removeGems
-        assertFalse(rootService.gameService.checkCollision(tile0))
 
-        //tileID 3 initialisieren and check collision.
-        val tile3 = Tile(
-            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.THREE), Pair(Edge.TWO, Edge.FOUR)),
-            mutableMapOf(Pair(1, Gem(EMERALD)), Pair(5, Gem(SAPPHIRE)))
-        )
-        assertFalse(rootService.gameService.checkCollision(tile3))
-    }
+/**
+ * Test the checkCollision function.
+ */
+@Test
+fun checkCollisionTest() {
+    val rootService = RootService()
+    assertNull(rootService.currentGame)
+    rootService.gameService.startGame(
+    )
 
-    /**
-     * Test the saveGame function.
-     */
+    val indigo = rootService.currentGame
+    checkNotNull(indigo)
 
-    @Test
-    fun saveGameTest() {
-    }
+    //tileID 0 initialisieren and check collision.
+    val tile0 = Tile(
+        listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+        mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(AMBER)))
+    )
+    assertTrue(rootService.gameService.checkCollision(tile0))
+    //checkCollision for tile0 after removeGems
+    assertFalse(rootService.gameService.checkCollision(tile0))
 
-    /**
-     * Test the loadGame function.
-     */
-    @Test
-    fun loadGameTest() {
-    }
+    //tileID 3 initialisieren and check collision.
+    val tile3 = Tile(
+        listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.THREE), Pair(Edge.TWO, Edge.FOUR)),
+        mutableMapOf(Pair(1, Gem(EMERALD)), Pair(5, Gem(SAPPHIRE)))
+    )
+    assertFalse(rootService.gameService.checkCollision(tile3))
+}
 
-    /**
-     * Test the changePlayer function.
-     */
+/**
+ * Test the saveGame function.
+ */
 
-    @Test
-    fun changePlayerTest() {
-        assertThrows<IllegalStateException> {
-            rootService.gameService.changePlayer()
-        }
-        rootService.gameService.startGame(fourPlayers.toMutableList())
-        val testGame = rootService.currentGame
-        checkNotNull(testGame)
+@Test
+fun saveGameTest() {
+}
+
+/**
+ * Test the loadGame function.
+ */
+@Test
+fun loadGameTest() {
+}
+
+/**
+ * Test the changePlayer function.
+ */
+
+@Test
+fun changePlayerTest() {
+    assertThrows<IllegalStateException> {
         rootService.gameService.changePlayer()
-        var currentPlayerIndex = testGame.currentPlayerIndex
-        assertEquals(1, currentPlayerIndex)
-        repeat(3) {
-            rootService.gameService.changePlayer()
-        }
-        currentPlayerIndex = testGame.currentPlayerIndex
-        assertEquals(0, currentPlayerIndex)
     }
-
-    /**
-     * Test the moveGems function.
-     */
-    @Test
-    fun moveGemsTest() {
+    rootService.gameService.startGame(fourPlayers.toMutableList())
+    val testGame = rootService.currentGame
+    checkNotNull(testGame)
+    rootService.gameService.changePlayer()
+    var currentPlayerIndex = testGame.currentPlayerIndex
+    assertEquals(1, currentPlayerIndex)
+    repeat(3) {
+        rootService.gameService.changePlayer()
     }
+    currentPlayerIndex = testGame.currentPlayerIndex
+    assertEquals(0, currentPlayerIndex)
+}
 
-    /**
-     * Test the removeGems function.
-     */
-    @Test
-    fun removeGemsReachedGateTest() {
-        /* val rootService = RootService()
-         assertNull(rootService.currentGame)
-         rootService.gameService.startGame(
-         )
+/**
+ * Test the moveGems function.
+ */
+@Test
+fun moveGemsTest() {
+}
 
-         val indigo = rootService.currentGame
-         checkNotNull(indigo)
+/**
+ * Test the removeGems function.
+ */
+@Test
+fun removeGemsReachedGateTest() {
+    /* val rootService = RootService()
+     assertNull(rootService.currentGame)
+     rootService.gameService.startGame(
+     )
 
-         //tileID 0 initialisieren and check collision.
-         val tile0 = Tile(
-             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-             mutableMapOf(Pair(1, Gem(EMERALD)))
-         )*/
-    }
+     val indigo = rootService.currentGame
+     checkNotNull(indigo)
 
-    /**
-     * Test the distributeNewTile function.
-     */
-    @Test
-    fun distributeNewTileTest() {
-    }
+     //tileID 0 initialisieren and check collision.
+     val tile0 = Tile(
+         listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+         mutableMapOf(Pair(1, Gem(EMERALD)))
+     )*/
+}
 
-    /**
-     * Test the initializeTiles function.
-     */
-    @Test
-    fun initializeTilesTest() {
-    }
+/**
+ * Test the distributeNewTile function.
+ */
+@Test
+fun distributeNewTileTest() {
+}
 
-    /**
-     * Test the initializeGems function.
-     */
+/**
+ * Test the initializeTiles function.
+ */
+@Test
+fun initializeTilesTest() {
+}
 
-    @Test
-    fun initializeGemsTest() {
-    }
+/**
+ * Test the initializeGems function.
+ */
+
+@Test
+fun initializeGemsTest() {
+}
 
 
 }
