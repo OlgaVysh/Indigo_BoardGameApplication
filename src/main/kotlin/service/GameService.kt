@@ -50,8 +50,8 @@ class GameService(private val rootService: RootService) {
         checkNotNull(currentGame)
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
-            false
-        // throw Exception("this place is occupied")
+            return false
+            // throw Exception("this place is occupied")
         }
         // Check if the space has an exit
         return if (!coordinateHasExit(space)) {
@@ -122,60 +122,23 @@ class GameService(private val rootService: RootService) {
         val gate4 = listOf(Coordinate(-1, 4), Coordinate(-2, 4), Coordinate(-3, 4))
         val gate5 = listOf(Coordinate(-4, 3), Coordinate(-4, 2), Coordinate(-4, 1))
         val gate6 = listOf(Coordinate(-3, -1), Coordinate(-2, -2), Coordinate(-1, -3))
+        val gates = listOf(gate1, gate2, gate3, gate4, gate5, gate6)
 
-        val edge1: Edge
-        val edge2: Int
+        var position1 = 5
+        var position2 = 0
         // Check which gate the space belongs to
-        when {
-            gate1.contains(space) -> {
-                edge1 = tile.edges[0]
-                edge2 = getAnotherEdge(edge1, tile)
-                if (edge2 == 5) {
+        for (i in gates.indices) {
+            if (gates[i].contains(space)) {
+                val edge1 = tile.edges[position1]
+                val edge2 = getAnotherEdge(edge1, tile)
+                if (edge2 == position2) {
                     return true
                 }
             }
-
-            gate2.contains(space) -> {
-                edge1 = tile.edges[0]
-                edge2 = getAnotherEdge(edge1, tile)
-                if (edge2 == 1) {
-                    return true
-                }
-            }
-
-            gate3.contains(space) -> {
-                edge1 = tile.edges[1]
-                edge2 = getAnotherEdge(edge1, tile)
-                if (edge2 == 2) {
-                    return true
-                }
-            }
-
-            gate4.contains(space) -> {
-                edge1 = tile.edges[2]
-                edge2 = getAnotherEdge(edge1, tile)
-                if (edge2 == 3) {
-                    return true
-                }
-            }
-
-            gate5.contains(space) -> {
-                edge1 = tile.edges[3]
-                edge2 = getAnotherEdge(edge1, tile)
-                if (edge2 == 4) {
-                    return true
-                }
-            }
-
-            gate6.contains(space) -> {
-                edge1 = tile.edges[4]
-                edge2 = getAnotherEdge(edge1, tile)
-                if (edge2 == 5) {
-                    return true
-                }
-            }
-
-            else -> return false
+            position1 += 1
+            position2 += 1
+            position1 %= 6
+            position2 %= 6
         }
 
         return false
@@ -232,7 +195,7 @@ class GameService(private val rootService: RootService) {
      * @param coordinate The coordinate of the tile.
      */
 
-     fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {
+    fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
@@ -485,7 +448,7 @@ class GameService(private val rootService: RootService) {
         //hexagonal grid
         neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
         neighbors.add(Coordinate(coordinate.row - 1, coordinate.column + 1))  // Top-right
-        neighbors.add(Coordinate(coordinate.row , coordinate.column + 1))      // Bottom-right
+        neighbors.add(Coordinate(coordinate.row, coordinate.column + 1))      // Bottom-right
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column))      // Below
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column - 1))  // Bottom-left
         neighbors.add(Coordinate(coordinate.row, coordinate.column - 1))      // Top-left
@@ -510,7 +473,6 @@ class GameService(private val rootService: RootService) {
         }
         return neighboringTiles
     }
-
 
 
 }
