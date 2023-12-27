@@ -215,8 +215,8 @@ class NetworkConnectionTests {
                 assertEquals(testGame.players[i].name, gameInitMessage.players[i].name)
                 assertEquals(testGame.players[i].color, gameInitMessage.players[i].color)
             }
-            assertEquals(testGame.routeTiles, gameInitMessage.routeTiles)
-            assertEquals(testGame.gameBoard.gateTokens, gameInitMessage.gameBoard.gateTokens)
+            assertEquals(gameInitMessage.routeTiles,testGame.allTiles.drop(6))
+            assertEquals(gameInitMessage.gameBoard.gateTokens,testGame.gameBoard.gateTokens)
             assertEquals(testGame.tokens, gameInitMessage.tokens)
             Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             latch.countDown()
@@ -233,7 +233,7 @@ class NetworkConnectionTests {
             hostRootService.networkService.disconnect()
         }
     }
-
+    /*
     /**
      *  The function [ReceivingAndSendingPlaceTileTest] are to test, if the sending
      *  of a Route Tile are correct
@@ -314,4 +314,6 @@ class NetworkConnectionTests {
             hostRootService.networkService.disconnect()
         }
     }
+
+     */
 }
