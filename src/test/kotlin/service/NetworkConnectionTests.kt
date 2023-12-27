@@ -4,11 +4,9 @@ import createTestRouteTile
 import entity.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.time.withTimeout
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import service.network.ConnectionState
 import tools.aqua.bgw.net.common.response.GameActionResponseStatus
-import tools.aqua.bgw.net.common.response.Response
 import tools.aqua.bgw.observable.properties.Property
 import java.time.Duration
 import java.util.concurrent.ArrayBlockingQueue
@@ -36,7 +34,7 @@ class NetworkConnectionTests {
     private val TestNetworkService.testClient: TestNetworkClient?
         get() = this.client as? TestNetworkClient
 
-    val treasureTiles = listOf(
+    private val treasureTiles = listOf(
         Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
         Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
         Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
@@ -45,13 +43,14 @@ class NetworkConnectionTests {
         Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
     )
 
-    val testSettings = GameSettings(
+    private val testSettings = GameSettings(
         listOf(
             Player("host", color = TokenColor.RED), Player("guest", color = TokenColor.BLUE)
         )
     )
 
-    lateinit var gameInitMessage: Indigo
+
+    private lateinit var gameInitMessage: Indigo
 
     /**
      *  The function await wait of a Time, if a specific connection state are reached.
@@ -73,6 +72,7 @@ class NetworkConnectionTests {
         }
     }
 
+
     @BeforeTest
     fun setup() {
         hostRootService = RootService().apply { networkService = TestNetworkService(this) }
@@ -88,6 +88,7 @@ class NetworkConnectionTests {
             RootService().gameService.initializeTokens()
         )
         gameInitMessage.gameBoard.gateTokens = createTestGateTokens(gameInitMessage, true)
+
     }
 
     @Test
@@ -159,11 +160,11 @@ class NetworkConnectionTests {
     }
 
     /**
-     *  The [GameInitTest] test function test if the correct game init is sended and
+     *  The [gameInitTest] test function test if the correct game init is sended and
      *  if the guest get the same [Indigo]
      */
     @Test
-    fun GameInitTest() {
+    fun gameInitTest() {
         val latch = CountDownLatch(2)
         val sessionIDQueue: BlockingQueue<String> = ArrayBlockingQueue(1)
         val hostPlayerName = "host"
@@ -193,6 +194,10 @@ class NetworkConnectionTests {
             checkNotNull(sessionID)
             sessionIDQueue.put(sessionID)
             hostRootService.currentGame = gameInitMessage
+            repeat(testSettings.players.size) {
+                hostRootService.gameService.distributeNewTile()
+                hostRootService.gameService.changePlayer()
+            }
             Thread.sleep(1500)
             host.sendGameInitMessage()
             Property(host.connectionState).await(ConnectionState.PLAYING_MY_TURN)
@@ -210,13 +215,13 @@ class NetworkConnectionTests {
             client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
             Thread.sleep(6000)
             val testGame = guestRootService.currentGame
-            assertEquals(testGame!!.players.size ,gameInitMessage.players.size)
+            assertEquals(testGame!!.players.size, gameInitMessage.players.size)
             for (i in gameInitMessage.players.indices) {
                 assertEquals(testGame.players[i].name, gameInitMessage.players[i].name)
                 assertEquals(testGame.players[i].color, gameInitMessage.players[i].color)
             }
-            assertEquals(gameInitMessage.routeTiles,testGame.allTiles.drop(6))
-            assertEquals(gameInitMessage.gameBoard.gateTokens,testGame.gameBoard.gateTokens)
+            assertEquals(gameInitMessage.routeTiles, testGame.allTiles.drop(6))
+            assertEquals(gameInitMessage.gameBoard.gateTokens, testGame.gameBoard.gateTokens)
             assertEquals(testGame.tokens, gameInitMessage.tokens)
             Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             latch.countDown()
@@ -233,18 +238,18 @@ class NetworkConnectionTests {
             hostRootService.networkService.disconnect()
         }
     }
-    /*
+
+
     /**
-     *  The function [ReceivingAndSendingPlaceTileTest] are to test, if the sending
+     *  The function [newHostGameStartTest] are to test, if the sending
      *  of a Route Tile are correct
      */
     @Test
-    fun ReceivingAndSendingPlaceTileTest(){
+    fun newHostGameStartTest() {
         val latch = CountDownLatch(2)
         val sessionIDQueue: BlockingQueue<String> = ArrayBlockingQueue(1)
         val hostPlayerName = "host"
         val guestPlayerName = "guest"
-        val coordinate = Coordinate(1,1)
         val hostThread = coroutineScope.launch {
             val host = hostRootService.testNetworkService
             /* Host game */
@@ -254,7 +259,9 @@ class NetworkConnectionTests {
                 onGameActionResponse = {
                     println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
                     when (it.status) {
-                        GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+                        GameActionResponseStatus.INVALID_JSON ->
+                            println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+
                         else -> {}
                     }
                 }
@@ -268,14 +275,14 @@ class NetworkConnectionTests {
             val sessionID = testclient.sessionID
             checkNotNull(sessionID)
             sessionIDQueue.put(sessionID)
-            hostRootService.currentGame = gameInitMessage
-
             Thread.sleep(1500)
-            host.sendGameInitMessage()
+            val players = mutableListOf(
+                Player("guest", color = TokenColor.RED),
+                Player("host", color = TokenColor.BLUE)
+            )
+            host.startNewHostedGame(players, notSharedGates = true)
             Thread.sleep(500)
-            /*host.sendPlacedTile(Tile,coordinate)
-                Property(host.ConnectionState).await()
-             */
+            Property(host.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             latch.countDown()
             latch.await()
         }
@@ -290,15 +297,14 @@ class NetworkConnectionTests {
             client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
             Thread.sleep(6000)
             val testGame = guestRootService.currentGame
-            assertEquals(testGame!!.players.size ,gameInitMessage.players.size)
+            assertEquals(hostRootService.currentGame!!.players.size, testGame!!.players.size)
             for (i in gameInitMessage.players.indices) {
-                assertEquals(testGame.players[i].name, gameInitMessage.players[i].name)
-                assertEquals(testGame.players[i].color, gameInitMessage.players[i].color)
+                assertEquals(hostRootService.currentGame!!.players[i].name, testGame.players[i].name)
+                assertEquals(hostRootService.currentGame!!.players[i].color, testGame.players[i].color)
             }
-            assertEquals(testGame.routeTiles, gameInitMessage.routeTiles)
-            assertEquals(testGame.gameBoard.gateTokens, gameInitMessage.gameBoard.gateTokens)
-            assertEquals(testGame.tokens, gameInitMessage.tokens)
-            Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+            assertEquals(hostRootService.currentGame!!.gameBoard.gateTokens,testGame.gameBoard.gateTokens)
+            //assertEquals(hostRootService.currentGame!!.routeTiles, testGame.routeTiles)
+            Property(client.connectionState).await(ConnectionState.PLAYING_MY_TURN)
 
             latch.countDown()
             latch.await()
@@ -315,5 +321,4 @@ class NetworkConnectionTests {
         }
     }
 
-     */
 }
