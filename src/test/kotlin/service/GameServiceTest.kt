@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 import entity.*
+import entity.GemColor.*
 import org.junit.jupiter.api.*
 
 
@@ -89,19 +90,19 @@ class GameServiceTest {
         //tileID 0 initialisieren
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)))
+            mutableMapOf(Pair(1, Gem(EMERALD)))
         )
 
         //tileID 2 initialisieren
         val tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
-            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)))
+            mutableMapOf(Pair(1, Gem(EMERALD)))
         )
 
         //tileID 4 initialisieren
         val tile4 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
-            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)))
+            mutableMapOf(Pair(1, Gem(EMERALD)))
         )
 
         //rotate tile0 and place it in (-1,-3) ,dann check that the place is ocuppied for other tile.
@@ -191,23 +192,23 @@ class GameServiceTest {
      * Test the changePlayer function.
      */
 
-    @Test
-    fun changePlayerTest() {
-        assertThrows<IllegalStateException> {
-            rootService.gameService.changePlayer()
-        }
-        rootService.gameService.startGame(fourPlayers.toMutableList())
-        val testGame = rootService.currentGame
-        checkNotNull(testGame)
-        rootService.gameService.changePlayer()
-        var currentPlayerIndex = testGame.currentPlayerIndex
-        assertEquals(1, currentPlayerIndex)
-        repeat(3) {
-            rootService.gameService.changePlayer()
-        }
-        currentPlayerIndex = testGame.currentPlayerIndex
-        assertEquals(0, currentPlayerIndex)
+@Test
+fun changePlayerTest() {
+    assertThrows<IllegalStateException> {
+        rootService.gameService.changePlayer( )
     }
+    rootService.gameService.startGame(fourPlayers.toMutableList())
+    val testGame = rootService.currentGame
+    checkNotNull(testGame)
+    rootService.gameService.changePlayer()
+    var currentPlayerIndex = testGame.currentPlayerIndex
+    assertEquals(1, currentPlayerIndex)
+    repeat(3) {
+        rootService.gameService.changePlayer()
+    }
+    currentPlayerIndex = testGame.currentPlayerIndex
+    assertEquals(0, currentPlayerIndex)
+}
 
     /**
      * Test the moveGems function.
