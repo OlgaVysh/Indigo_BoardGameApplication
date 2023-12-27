@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.util.*
 import entity.*
-import entity.GemColor.*
 import org.junit.jupiter.api.*
 
 
@@ -90,19 +89,19 @@ class GameServiceTest {
         //tileID 0 initialisieren
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-            mutableMapOf(Pair(1, Gem(EMERALD)))
+            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)))
         )
 
         //tileID 2 initialisieren
         val tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
-            mutableMapOf(Pair(1, Gem(EMERALD)))
+            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)))
         )
 
         //tileID 4 initialisieren
         val tile4 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
-            mutableMapOf(Pair(1, Gem(EMERALD)))
+            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)))
         )
 
         //rotate tile0 and place it in (-1,-3) ,dann check that the place is ocuppied for other tile.
@@ -143,124 +142,162 @@ class GameServiceTest {
     }
 
 
+    /**
+     * Test the checkCollision function.
+     */
+    @Test
+    fun checkCollisionTest() {
+        val rootService = RootService()
+        assertNull(rootService.currentGame)
+        rootService.gameService.startGame(
+        )
 
+        val indigo = rootService.currentGame
+        checkNotNull(indigo)
 
-/**
- * Test the checkCollision function.
- */
-@Test
-fun checkCollisionTest() {
-    val rootService = RootService()
-    assertNull(rootService.currentGame)
-    rootService.gameService.startGame(
-    )
+        //tileID 0 initialisieren and check collision.
+        val tile0 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)), Pair(4, Gem(GemColor.AMBER)))
+        )
+        assertTrue(rootService.gameService.checkCollision(tile0))
+        //checkCollision for tile0 after removeGems
+        assertFalse(rootService.gameService.checkCollision(tile0))
 
-    val indigo = rootService.currentGame
-    checkNotNull(indigo)
-
-    //tileID 0 initialisieren and check collision.
-    val tile0 = Tile(
-        listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-        mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(AMBER)))
-    )
-    assertTrue(rootService.gameService.checkCollision(tile0))
-    //checkCollision for tile0 after removeGems
-    assertFalse(rootService.gameService.checkCollision(tile0))
-
-    //tileID 3 initialisieren and check collision.
-    val tile3 = Tile(
-        listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.THREE), Pair(Edge.TWO, Edge.FOUR)),
-        mutableMapOf(Pair(1, Gem(EMERALD)), Pair(5, Gem(SAPPHIRE)))
-    )
-    assertFalse(rootService.gameService.checkCollision(tile3))
-}
-
-/**
- * Test the saveGame function.
- */
-
-@Test
-fun saveGameTest() {
-}
-
-/**
- * Test the loadGame function.
- */
-@Test
-fun loadGameTest() {
-}
-
-/**
- * Test the changePlayer function.
- */
-
-@Test
-fun changePlayerTest() {
-    assertThrows<IllegalStateException> {
-        rootService.gameService.changePlayer()
+        //tileID 3 initialisieren and check collision.
+        val tile3 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.THREE), Pair(Edge.TWO, Edge.FOUR)),
+            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)), Pair(5, Gem(GemColor.SAPPHIRE)))
+        )
+        assertFalse(rootService.gameService.checkCollision(tile3))
     }
-    rootService.gameService.startGame(fourPlayers.toMutableList())
-    val testGame = rootService.currentGame
-    checkNotNull(testGame)
-    rootService.gameService.changePlayer()
-    var currentPlayerIndex = testGame.currentPlayerIndex
-    assertEquals(1, currentPlayerIndex)
-    repeat(3) {
-        rootService.gameService.changePlayer()
+
+    /**
+     * Test the saveGame function.
+     */
+
+    @Test
+    fun saveGameTest() {
     }
-    currentPlayerIndex = testGame.currentPlayerIndex
-    assertEquals(0, currentPlayerIndex)
-}
 
-/**
- * Test the moveGems function.
- */
-@Test
-fun moveGemsTest() {
-}
+    /**
+     * Test the loadGame function.
+     */
+    @Test
+    fun loadGameTest() {
+    }
 
-/**
- * Test the removeGems function.
- */
-@Test
-fun removeGemsReachedGateTest() {
-    /* val rootService = RootService()
-     assertNull(rootService.currentGame)
-     rootService.gameService.startGame(
-     )
+    /**
+     * Test the changePlayer function.
+     */
 
-     val indigo = rootService.currentGame
-     checkNotNull(indigo)
+    @Test
+    fun changePlayerTest() {
+        assertThrows<IllegalStateException> {
+            rootService.gameService.changePlayer()
+        }
+        rootService.gameService.startGame(fourPlayers.toMutableList())
+        val testGame = rootService.currentGame
+        checkNotNull(testGame)
+        rootService.gameService.changePlayer()
+        var currentPlayerIndex = testGame.currentPlayerIndex
+        assertEquals(1, currentPlayerIndex)
+        repeat(3) {
+            rootService.gameService.changePlayer()
+        }
+        currentPlayerIndex = testGame.currentPlayerIndex
+        assertEquals(0, currentPlayerIndex)
+    }
 
-     //tileID 0 initialisieren and check collision.
-     val tile0 = Tile(
-         listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-         mutableMapOf(Pair(1, Gem(EMERALD)))
-     )*/
-}
+    /**
+     * Test the moveGems function.
+     */
+    @Test
+    fun moveGemsTest() {
+    }
 
-/**
- * Test the distributeNewTile function.
- */
-@Test
-fun distributeNewTileTest() {
-}
+    /**
+     * Test the removeGems function.
+     */
+    @Test
+    fun removeGemsReachedGateTest() {
+        /* val rootService = RootService()
+         assertNull(rootService.currentGame)
+         rootService.gameService.startGame(
+         )
 
-/**
- * Test the initializeTiles function.
- */
-@Test
-fun initializeTilesTest() {
-}
+         val indigo = rootService.currentGame
+         checkNotNull(indigo)
 
-/**
- * Test the initializeGems function.
- */
+         //tileID 0 initialisieren and check collision.
+         val tile0 = Tile(
+             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+             mutableMapOf(Pair(1, Gem(EMERALD)))
+         )*/
+    }
 
-@Test
-fun initializeGemsTest() {
-}
+    /**
+     * Test the distributeNewTile function.
+     */
+    @Test
+    fun distributeNewTileTest() {
+    }
 
+    /**
+     * Test the initializeGems function.
+     */
+
+    @Test
+    fun initializeGemsTest() {
+        assertNull(rootService.currentGame)
+        rootService.gameService.startGame(
+            fourPlayers.toMutableList()
+        )
+        val game = rootService.currentGame
+        checkNotNull(game)
+        val amber = GemColor.AMBER
+        val emerald = GemColor.EMERALD
+        val sapphire = GemColor.SAPPHIRE
+
+        for (i in game.gems.indices) {
+            if (i in 0 until 6) {
+                assertEquals(amber, game.gems[i].gemColor)
+            }
+            if (i in 6 until 11) {
+                assertEquals(emerald, game.gems[i].gemColor)
+            }
+            assertEquals(sapphire, game.gems[game.gems.size - 1].gemColor)
+        }
+    }
+
+    @Test
+    fun initializeTokenTest() {
+        assertNull(rootService.currentGame)
+        rootService.gameService.startGame(
+            fourPlayers.toMutableList()
+        )
+        val game = rootService.currentGame
+        checkNotNull(game)
+        val white = TokenColor.WHITE
+        val purple = TokenColor.PURPLE
+        val blue = TokenColor.BLUE
+        val red = TokenColor.RED
+
+        for (i in game.tokens.indices) {
+            if (i in 0 until 6) {
+                assertEquals(white, game.tokens[i].color)
+            }
+            if (i in 6 until 12) {
+                assertEquals(purple, game.tokens[i].color)
+            }
+            if (i in 12 until 18) {
+                assertEquals(blue, game.tokens[i].color)
+            }
+            if (i in 18 until 24) {
+                assertEquals(red, game.tokens[i].color)
+            }
+        }
+    }
 
 }
 

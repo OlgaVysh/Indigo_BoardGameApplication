@@ -20,6 +20,30 @@ class GameService(private val rootService: RootService) {
         val tokens = initializeTokens()
 
         val settings = GameSettings(players, 0, false)
+        var middleTile = Tile(
+            listOf(Pair(Edge.ZERO, Edge.ZERO)),
+            mutableMapOf(
+                Pair(0, Gem(GemColor.SAPPHIRE)),
+                Pair(1, Gem(GemColor.AMBER)),
+                Pair(2, Gem(GemColor.AMBER)),
+                Pair(3, Gem(GemColor.AMBER)),
+                Pair(4, Gem(GemColor.AMBER)),
+                Pair(5, Gem(GemColor.AMBER))
+            )
+        )
+        gameBoard.gameBoardTiles[Coordinate(0, 0)] = middleTile
+        gameBoard.gameBoardTiles[Coordinate(4, -4)] = allTiles[0]
+        allTiles.removeFirst()
+        gameBoard.gameBoardTiles[Coordinate(4, 0)] = allTiles[0]
+        allTiles.removeFirst()
+        gameBoard.gameBoardTiles[Coordinate(0, 4)] = allTiles[0]
+        allTiles.removeFirst()
+        gameBoard.gameBoardTiles[Coordinate(-4, 4)] = allTiles[0]
+        allTiles.removeFirst()
+        gameBoard.gameBoardTiles[Coordinate(-4, 0)] = allTiles[0]
+        allTiles.removeFirst()
+        gameBoard.gameBoardTiles[Coordinate(0, -4)] = allTiles[0]
+        allTiles.removeFirst()
 
         rootService.currentGame = Indigo(settings, gameBoard, allTiles, gems, tokens)
     }
@@ -361,7 +385,7 @@ class GameService(private val rootService: RootService) {
     /**
      * @return [List] of [Tile]s, first 6 are treasure tiles starting at the top right of the board going clockwise
      */
-    private fun initializeTiles(): List<Tile> {
+    private fun initializeTiles(): MutableList<Tile> {
         val allTiles: MutableList<Tile> = mutableListOf()
         //Position of gem is determined, path starts and ends on the adjacent sides
         for (i in 0 until 6) {
@@ -376,6 +400,7 @@ class GameService(private val rootService: RootService) {
                     ), mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
                 )
             )
+
         }
         //TypeID 0 Route Tiles are added
         var path1 = Pair(Edge.ZERO, Edge.TWO)
@@ -412,7 +437,7 @@ class GameService(private val rootService: RootService) {
         for (i in 0 until 6) {
             allTiles.add(Tile(listOf(path1, path2, path3)))
         }
-        return allTiles.toList()
+        return allTiles
     }
 
     /**
@@ -438,25 +463,6 @@ class GameService(private val rootService: RootService) {
 
 
     /**
-     * Gets the neighboring coordinates for a given coordinate
-     * @param coordinate The coordinate for which to find neighboring coordinates
-     * @return List of neighboring coordinates
-     */
-    private fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
-        val neighbors = mutableListOf<Coordinate>()
-
-        //hexagonal grid
-        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
-        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column + 1))  // Top-right
-        neighbors.add(Coordinate(coordinate.row, coordinate.column + 1))      // Bottom-right
-        neighbors.add(Coordinate(coordinate.row + 1, coordinate.column))      // Below
-        neighbors.add(Coordinate(coordinate.row + 1, coordinate.column - 1))  // Bottom-left
-        neighbors.add(Coordinate(coordinate.row, coordinate.column - 1))      // Top-left
-
-        return neighbors
-    }
-
-    /**
      * Gets the neighboring tiles for a given coordinate
      * @param coordinate The coordinate for which to find neighboring tiles
      * @return List of neighboring tiles
@@ -474,5 +480,23 @@ class GameService(private val rootService: RootService) {
         return neighboringTiles
     }
 
+    /**
+     * Gets the neighboring coordinates for a given coordinate
+     * @param coordinate The coordinate for which to find neighboring coordinates
+     * @return List of neighboring coordinates
+     */
+    private fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
+        val neighbors = mutableListOf<Coordinate>()
+
+        //hexagonal grid
+        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
+        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column + 1))  // Top-right
+        neighbors.add(Coordinate(coordinate.row, coordinate.column + 1))      // Bottom-right
+        neighbors.add(Coordinate(coordinate.row + 1, coordinate.column))      // Below
+        neighbors.add(Coordinate(coordinate.row + 1, coordinate.column - 1))  // Bottom-left
+        neighbors.add(Coordinate(coordinate.row, coordinate.column - 1))      // Top-left
+
+        return neighbors
+    }
 
 }
