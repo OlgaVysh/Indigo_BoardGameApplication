@@ -331,7 +331,7 @@ class GameService(private val rootService: RootService) {
         checkNotNull(currentGame)
         val playerSize = currentGame.players.size
         val currentPlayerIndex = currentGame.currentPlayerIndex
-        rootService.currentGame?.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
+        currentGame.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
 
     }
 
