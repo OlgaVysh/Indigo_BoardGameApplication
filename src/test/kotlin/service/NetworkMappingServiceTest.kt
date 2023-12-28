@@ -200,19 +200,49 @@ class NetworkMappingServiceTest {
             gems = gems,
             tokens = threeSharedTokens
         )
-        val testTileList = listOf(
+        var testTileList = listOf(
             TileType.TYPE_0,
             TileType.TYPE_1,
             TileType.TYPE_2,
             TileType.TYPE_3,
             TileType.TYPE_4
         )
-        repeat(players.size){
+        repeat(players.size) {
             testGame.gameService.distributeNewTile()
             testGame.gameService.changePlayer()
         }
-        val tileList = testGame.networkMappingService.toTileTypeList()
+        var tileList = testGame.networkMappingService.toTileTypeList()
         assertEquals(testTileList, tileList)
+        testTileList = listOf(
+            TileType.TYPE_1,
+            TileType.TYPE_2,
+            TileType.TYPE_4,
+            TileType.TYPE_3,
+            TileType.TYPE_0
+        )
+        val testRoutetiles = listOf(
+            Tile(tile1, mutableMapOf()),
+            Tile(tile2, mutableMapOf()),
+            Tile(tile4, mutableMapOf()),
+            Tile(tile3, mutableMapOf()),
+            Tile(tile0, mutableMapOf())
+        )
+        val allTiles = treasureTiles.take(6).toMutableList()
+        allTiles.addAll(testRoutetiles)
+        testGame.currentGame = Indigo(
+            gameSetting,
+            allTiles = allTiles,
+            gameBoard = GameBoard(),
+            gems = gems,
+            tokens = threeSharedTokens
+        )
+        repeat(players.size) {
+            testGame.gameService.distributeNewTile()
+            testGame.gameService.changePlayer()
+        }
+        tileList = testGame.networkMappingService.toTileTypeList()
+        assertEquals(testTileList, tileList)
+        assertEquals(2 , testGame.currentGame!!.routeTiles.size)
     }
 
     /**
