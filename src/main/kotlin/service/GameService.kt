@@ -226,7 +226,7 @@ class GameService(private val rootService: RootService) {
         checkNotNull(currentGame)
         val players = currentGame.players
 
-        val gateTokens = currentGame.gameBoard.gateTokens
+        val gateTokens = createGateTokens(players, true)
         val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
         val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
         val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 3))
@@ -452,7 +452,14 @@ class GameService(private val rootService: RootService) {
         return gems
     }
 
-
+    /**
+     * Initializes and returns a MutableList of Token objects.
+     *
+     * This function creates a list of tokens with predefined colors and quantities.
+     * The list includes six tokens of each color: WHITE, PURPLE, BLUE, and RED.
+     *
+     * @return A MutableList containing the initialized Token objects.
+     */
     fun initializeTokens(): MutableList<Token> {
         val tokens: MutableList<Token> = mutableListOf()
         for (i in 0 until 6) tokens.add(Token(TokenColor.WHITE))
@@ -511,7 +518,7 @@ class GameService(private val rootService: RootService) {
      *
      * @return A mutable list of token as gateTokens
      */
-    fun createGateTokens(players: List<entity.Player>, notSharedGates: Boolean): MutableList<Token> {
+    fun createGateTokens(players: List<Player>, notSharedGates: Boolean): MutableList<Token> {
         val gateTokens = mutableListOf<Token>()
         val playerSize = players.size
         if (notSharedGates) {

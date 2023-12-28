@@ -193,23 +193,23 @@ class GameServiceTest {
      * Test the changePlayer function.
      */
 
-@Test
-fun changePlayerTest() {
-    assertThrows<IllegalStateException> {
-        rootService.gameService.changePlayer( )
-    }
-    rootService.gameService.startGame(fourPlayers.toMutableList())
-    val testGame = rootService.currentGame
-    checkNotNull(testGame)
-    rootService.gameService.changePlayer()
-    var currentPlayerIndex = testGame.currentPlayerIndex
-    assertEquals(1, currentPlayerIndex)
-    repeat(3) {
+    @Test
+    fun changePlayerTest() {
+        assertThrows<IllegalStateException> {
+            rootService.gameService.changePlayer()
+        }
+        rootService.gameService.startGame(fourPlayers.toMutableList())
+        val testGame = rootService.currentGame
+        checkNotNull(testGame)
         rootService.gameService.changePlayer()
+        var currentPlayerIndex = testGame.currentPlayerIndex
+        assertEquals(1, currentPlayerIndex)
+        repeat(3) {
+            rootService.gameService.changePlayer()
+        }
+        currentPlayerIndex = testGame.currentPlayerIndex
+        assertEquals(0, currentPlayerIndex)
     }
-    currentPlayerIndex = testGame.currentPlayerIndex
-    assertEquals(0, currentPlayerIndex)
-}
 
     /**
      * Test the moveGems function.
@@ -221,22 +221,40 @@ fun changePlayerTest() {
     /**
      * Test the removeGems function.
      */
-    @Test
+   /* @Test
     fun removeGemsReachedGateTest() {
-        /* val rootService = RootService()
-         assertNull(rootService.currentGame)
-         rootService.gameService.startGame(
-         )
+        val rootService = RootService()
+        assertNull(rootService.currentGame)
+        rootService.gameService.startGame(
+        )
 
-         val indigo = rootService.currentGame
-         checkNotNull(indigo)
+        val indigo = rootService.currentGame
+        checkNotNull(indigo)
 
-         //tileID 0 initialisieren and check collision.
-         val tile0 = Tile(
-             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-             mutableMapOf(Pair(1, Gem(EMERALD)))
-         )*/
-    }
+        //tileID 0 initialisieren
+        val tile0 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            mutableMapOf(Pair(0, Gem(EMERALD)), Pair(1, Gem(AMBER)))
+        )
+        //tileID 2 initialisieren
+        val tile2 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
+            mutableMapOf(Pair(1, Gem(EMERALD)), Pair(2, Gem(SAPPHIRE)))
+        )
+
+        //tileID 4 initialisieren
+        val tile4 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
+            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
+        )
+        rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
+        assertEquals(2,tile0.gemEndPosition.size)
+
+        rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
+        assertEquals(2,tile2.gemEndPosition.size)
+
+        rootService.gameService.removeGemsReachedGate(tile4, Coordinate(-2, 4))
+        assertEquals(2,tile4.gemEndPosition.size)    }*
 
     /**
      * Test the distributeNewTile function.
