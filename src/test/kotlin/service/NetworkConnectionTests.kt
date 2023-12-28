@@ -301,9 +301,11 @@ class NetworkConnectionTests {
             for (i in gameInitMessage.players.indices) {
                 assertEquals(hostRootService.currentGame!!.players[i].name, testGame.players[i].name)
                 assertEquals(hostRootService.currentGame!!.players[i].color, testGame.players[i].color)
+                assertEquals(hostRootService.currentGame!!.players[i].handTile, testGame.players[i].handTile)
             }
-            assertEquals(hostRootService.currentGame!!.gameBoard.gateTokens,testGame.gameBoard.gateTokens)
-            //assertEquals(hostRootService.currentGame!!.routeTiles, testGame.routeTiles)
+            assertEquals(hostRootService.currentGame!!.gameBoard.gateTokens, testGame.gameBoard.gateTokens)
+            assertEquals(52, testGame.routeTiles.size)
+            assertEquals(hostRootService.currentGame!!.routeTiles, testGame.routeTiles)
             Property(client.connectionState).await(ConnectionState.PLAYING_MY_TURN)
 
             latch.countDown()
