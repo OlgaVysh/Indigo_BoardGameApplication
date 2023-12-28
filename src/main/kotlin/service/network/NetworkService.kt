@@ -225,7 +225,7 @@ open class NetworkService(private val rootService: RootService) {
         //rootService.playerTurnService.placeRouteTile(space,handTile)
         //after player placeRouteTile is complete implemented,
         rootService.gameService.changePlayer()
-        currentPlayerIndex = currentGame.currentPlayerIndex
+        currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         for (otherPlayer in client?.otherPlayers!!) {
             if (currentGame.players[currentPlayerIndex].name == otherPlayer) {
