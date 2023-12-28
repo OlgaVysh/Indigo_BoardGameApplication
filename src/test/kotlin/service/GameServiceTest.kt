@@ -160,7 +160,7 @@ class GameServiceTest {
         //tileID 0 initialisieren and check collision.
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)), Pair(4, Gem(GemColor.AMBER)))
+            mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(AMBER)))
         )
         assertTrue(rootService.gameService.checkCollision(tile0))
         //checkCollision for tile0 after removeGems
@@ -169,7 +169,7 @@ class GameServiceTest {
         //tileID 3 initialisieren and check collision.
         val tile3 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.THREE), Pair(Edge.TWO, Edge.FOUR)),
-            mutableMapOf(Pair(1, Gem(GemColor.EMERALD)), Pair(5, Gem(GemColor.SAPPHIRE)))
+            mutableMapOf(Pair(1, Gem(EMERALD)), Pair(5, Gem(SAPPHIRE)))
         )
         assertFalse(rootService.gameService.checkCollision(tile3))
     }
@@ -281,9 +281,9 @@ class GameServiceTest {
         )
         val game = rootService.currentGame
         checkNotNull(game)
-        val amber = GemColor.AMBER
-        val emerald = GemColor.EMERALD
-        val sapphire = GemColor.SAPPHIRE
+        val amber = AMBER
+        val emerald = EMERALD
+        val sapphire = SAPPHIRE
 
         for (i in game.gems.indices) {
             if (i in 0 until 6) {
