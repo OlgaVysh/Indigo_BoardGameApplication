@@ -3,9 +3,9 @@ package service
 import org.junit.jupiter.api.Test
 import entity.*
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.*
 import kotlin.test.BeforeTest
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 class PlayerTurnServiceTest {
 
