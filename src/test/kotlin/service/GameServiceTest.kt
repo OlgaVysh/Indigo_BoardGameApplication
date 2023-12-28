@@ -220,11 +220,13 @@ class GameServiceTest {
     /**
      * Test the removeGems function.
      */
-   /* @Test
+
+   @Test
     fun removeGemsReachedGateTest() {
         val rootService = RootService()
         assertNull(rootService.currentGame)
         rootService.gameService.startGame(
+            fourPlayers.toMutableList()
         )
 
         val indigo = rootService.currentGame
@@ -233,12 +235,13 @@ class GameServiceTest {
         //tileID 0 initialisieren
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-            mutableMapOf(Pair(0, Gem(EMERALD)), Pair(1, Gem(AMBER)))
+            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
         )
+
         //tileID 2 initialisieren
         val tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
-            mutableMapOf(Pair(1, Gem(EMERALD)), Pair(2, Gem(SAPPHIRE)))
+            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(SAPPHIRE)))
         )
 
         //tileID 4 initialisieren
@@ -246,14 +249,18 @@ class GameServiceTest {
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
         )
+
+        //gate4 no gems after the method because is removed
         rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
-        assertEquals(2,tile0.gemEndPosition.size)
+        assertEquals(0,tile0.gemEndPosition.size)
 
+        //gate3 only on Gem is there
         rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
-        assertEquals(2,tile2.gemEndPosition.size)
+        assertEquals(1,tile2.gemEndPosition.size)
 
+        //gate2 both gems are in the tile
         rootService.gameService.removeGemsReachedGate(tile4, Coordinate(-2, 4))
-        assertEquals(2,tile4.gemEndPosition.size)    }*/
+        assertEquals(2,tile4.gemEndPosition.size)    }
 
     /**
      * Test the distributeNewTile function.

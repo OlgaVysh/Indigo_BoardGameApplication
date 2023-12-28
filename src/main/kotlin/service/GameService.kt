@@ -241,7 +241,6 @@ class GameService(private val rootService: RootService) {
                 val gem1 = tile.gemEndPosition[(0 + i) % 6]
                 val gem2 = tile.gemEndPosition[(5 + i) % 6]
                 if (gem2 != null) {
-
                     if (gateTokens[(i * 2)].color == gateTokens[(i * 2) + 1].color) {
                         for (player in players) {
                             if (player.color == gateTokens[(i * 2)].color) {
@@ -263,7 +262,6 @@ class GameService(private val rootService: RootService) {
                     }
                 }
                 if (gem1 != null) {
-
                     if (gateTokens[(i * 2)].color == gateTokens[(i * 2) + 1].color) {
                         for (player in players) {
                             if (player.color == gateTokens[(i * 2)].color) {
@@ -285,8 +283,6 @@ class GameService(private val rootService: RootService) {
                     }
                 }
             }
-
-
         }
 
     }
@@ -324,7 +320,7 @@ class GameService(private val rootService: RootService) {
     private fun assignGem(gem: Gem, player: Player) {
         player.score += gem.gemColor.ordinal + 1
         player.gemCounter++
-        TODO(/*refresh*/)
+        //refresh
     }
 
     /**
