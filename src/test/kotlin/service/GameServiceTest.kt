@@ -217,7 +217,6 @@ class GameServiceTest {
     @Test
     fun moveGemsTest() {
     }
-
     /**
      * Test the removeGems function.
      */
