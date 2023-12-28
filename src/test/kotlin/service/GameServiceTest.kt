@@ -57,6 +57,7 @@ class GameServiceTest {
             assertEquals(playerListe[i].name, testGame.players[i].name)
             assertEquals(playerListe[i].color, testGame.players[i].color)
         }
+        assertEquals(50,testGame.routeTiles.size)
     }
 
     /**
