@@ -254,7 +254,7 @@ class GameServiceTest {
         assertEquals(2,tile2.gemEndPosition.size)
 
         rootService.gameService.removeGemsReachedGate(tile4, Coordinate(-2, 4))
-        assertEquals(2,tile4.gemEndPosition.size)    }*
+        assertEquals(2,tile4.gemEndPosition.size)    }*/
 
     /**
      * Test the distributeNewTile function.
