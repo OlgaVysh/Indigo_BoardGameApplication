@@ -3,6 +3,13 @@ package service
 import entity.Indigo
 import entity.Token
 
+/**
+ *  the function [createTestGateTokens] is a function a test set of gateTokens.
+ *
+ *  @param game The indigo game which you want to create gateTokens
+ *  @param notSharedGates The notSharedGates is to if the gateTokens have
+ *  sharedGates or notSharedGates
+ */
 fun createTestGateTokens(game: Indigo, notSharedGates: Boolean): MutableList<Token> {
     val players = game.players
     val playerSize = players.size

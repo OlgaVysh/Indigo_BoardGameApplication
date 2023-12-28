@@ -18,6 +18,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
+/**
+ *  The [NetworkConnectionTests] class test all functionality from the online gaming, like build
+ *  connection,sending and receiving necessary Game Messages.
+ */
 class NetworkConnectionTests {
     private lateinit var hostRootService: RootService
     private lateinit var guestRootService: RootService
@@ -368,12 +372,12 @@ class NetworkConnectionTests {
             val coordinate = Coordinate(1, 1)
             hostRootService.gameService.changePlayer()
             host.sendPlacedTile(testTile!!, coordinate)
-            Thread.sleep(500)
+            Thread.sleep(1000)
             Property(host.connectionState).await(ConnectionState.PLAYING_MY_TURN)
             hostRootService.playerTurnService.rotateTileLeft(testTile)
             hostRootService.gameService.changePlayer()
-            host.sendPlacedTile(testTile,coordinate)
-            Thread.sleep(500)
+            host.sendPlacedTile(testTile, coordinate)
+            Thread.sleep(1000)
             Property(host.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             latch.countDown()
             latch.await()
@@ -385,10 +389,10 @@ class NetworkConnectionTests {
             println("[$guestPlayerName] Join game...")
             client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
             Thread.sleep(6000)
-            Thread.sleep(1000)
+            Thread.sleep(1500)
             Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
-            Thread.sleep(1000)
-            //Property(client.connectionState).await(ConnectionState.PLAYING_MY_TURN)
+            Thread.sleep(1500)
+            //  Property(client.connectionState).await(ConnectionState.PLAYING_MY_TURN)
             latch.countDown()
             latch.await()
 
