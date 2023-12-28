@@ -61,7 +61,7 @@ class NetworkMappingService(private val rootService: RootService) {
         val tileList = mutableListOf<TileType>()
         val players = game.players
         val currentPlayerIndex = game.currentPlayerIndex
-        val routeTiles = game.routeTiles
+        val routeTiles = game.routeTiles.toMutableList()
         for(i in players.indices.reversed()){
             routeTiles.add(0,players[abs(currentPlayerIndex-i) % players.size].handTile!!)
         }
