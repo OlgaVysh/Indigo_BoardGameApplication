@@ -25,7 +25,7 @@ class NetworkConnectionTests {
     private lateinit var coroutineScope: CoroutineScope
 
     companion object {
-        const val SESSIONID = "Test123"
+        const val SESSIONID = "Test234"
     }
 
     private val RootService.testNetworkService: TestNetworkService
@@ -220,7 +220,7 @@ class NetworkConnectionTests {
                 assertEquals(testGame.players[i].name, gameInitMessage.players[i].name)
                 assertEquals(testGame.players[i].color, gameInitMessage.players[i].color)
             }
-            assertEquals(gameInitMessage.routeTiles, testGame.allTiles.drop(6))
+            assertEquals(gameInitMessage.routeTiles, testGame.routeTiles)
             assertEquals(gameInitMessage.gameBoard.gateTokens, testGame.gameBoard.gateTokens)
             assertEquals(testGame.tokens, gameInitMessage.tokens)
             Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
