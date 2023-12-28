@@ -126,7 +126,11 @@ open class NetworkService(private val rootService: RootService) {
         val gateTokens = rootService.networkMappingService.toGateTokens(players, message.gameMode)
         val gameService = rootService.gameService
         rootService.currentGame = Indigo(
-            setting, GameBoard(), allTiles.toList(), gameService.initializeGems(), gameService.initializeTokens()
+            setting,
+            GameBoard(),
+            allTiles.toList(),
+            gameService.initializeGems(),
+            gameService.initializeTokens()
         )
         rootService.currentGame?.gameBoard?.gateTokens = gateTokens
         val listCoordinate = listOf(
