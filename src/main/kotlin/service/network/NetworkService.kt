@@ -214,7 +214,7 @@ open class NetworkService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
-        val currentPlayerIndex = currentGame.currentPlayerIndex
+        var currentPlayerIndex = currentGame.currentPlayerIndex
         val handTile = players[currentPlayerIndex].handTile
         checkNotNull(handTile)
         val rotation = message.rotation
@@ -223,6 +223,9 @@ open class NetworkService(private val rootService: RootService) {
         }
         val space = Coordinate(message.rCoordinate, message.rCoordinate)
         //rootService.playerTurnService.placeRouteTile(space,handTile)
+        //after player placeRouteTile is complete implemented,
+        rootService.gameService.changePlayer()
+        currentPlayerIndex = currentGame.currentPlayerIndex
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         for (otherPlayer in client?.otherPlayers!!) {
             if (currentGame.players[currentPlayerIndex].name == otherPlayer) {

@@ -132,11 +132,12 @@ open class IndigoNetworkClient(
             )
             { "not currently playing in a network game." }
         }
-        when(response.status){
-            GameActionResponseStatus.SUCCESS->{
+        when (response.status) {
+            GameActionResponseStatus.SUCCESS -> {
                 println("SUCCESS")
             }
-            else->{
+
+            else -> {
                 println("Fail")
             }
         }
@@ -149,7 +150,13 @@ open class IndigoNetworkClient(
     @Suppress("UNUSED_PARAMETER", "unused")
     @GameActionReceiver
     open fun onInitReceivedMessage(message: GameInitMessage, sender: String) {
+
         BoardGameApplication.runOnGUIThread {
+            for (player in message.players) {
+                if ((!otherPlayers.contains(player.name)) && (player.name != playerName)) {
+                    otherPlayers.add(player.name)
+                }
+            }
             networkService.startNewJoinedGame(
                 message = message,
                 playerName

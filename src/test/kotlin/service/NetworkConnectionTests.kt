@@ -72,7 +72,10 @@ class NetworkConnectionTests {
         }
     }
 
-
+    /**
+     *  The [setup] function is a setup before the tests start with initializing
+     *  types.
+     */
     @BeforeTest
     fun setup() {
         hostRootService = RootService().apply { networkService = TestNetworkService(this) }
@@ -91,6 +94,10 @@ class NetworkConnectionTests {
 
     }
 
+    /**
+     *   The [exampleNetworkConnectionTest] is a test function tested the connection,
+     *   disconnection and by the host the hostGame and by the guest joinGame functions.
+     */
     @Test
     fun exampleNetworkConnectionTest() {
         val latch = CountDownLatch(2)
@@ -171,8 +178,7 @@ class NetworkConnectionTests {
         val guestPlayerName = "guest"
 
         val hostThread = coroutineScope.launch {
-            val host = hostRootService.testNetworkService
-            /* Host game */
+            val host = hostRootService.testNetworkService/* Host game */
             println("[$hostPlayerName] Hosting game...")
             host.hostGame(name = hostPlayerName, sessionID = SESSIONID)
             host.testClient?.apply {
@@ -209,8 +215,7 @@ class NetworkConnectionTests {
             println("[$guestPlayerName] Connecting...")
             val client = guestRootService.testNetworkService
             client.disconnect()
-            client.connect(name = guestPlayerName)
-            /*Join game */
+            client.connect(name = guestPlayerName)/*Join game */
             println("[$guestPlayerName] Join game...")
             client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
             Thread.sleep(6000)
@@ -231,8 +236,7 @@ class NetworkConnectionTests {
 
         runBlocking {
             joinAll(
-                hostThread,
-                guestThread
+                hostThread, guestThread
             )
             guestRootService.networkService.disconnect()
             hostRootService.networkService.disconnect()
@@ -251,16 +255,14 @@ class NetworkConnectionTests {
         val hostPlayerName = "host"
         val guestPlayerName = "guest"
         val hostThread = coroutineScope.launch {
-            val host = hostRootService.testNetworkService
-            /* Host game */
+            val host = hostRootService.testNetworkService/* Host game */
             println("[$hostPlayerName] Hosting game...")
             host.hostGame(name = hostPlayerName)
             host.testClient?.apply {
                 onGameActionResponse = {
                     println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
                     when (it.status) {
-                        GameActionResponseStatus.INVALID_JSON ->
-                            println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+                        GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
 
                         else -> {}
                     }
@@ -277,8 +279,7 @@ class NetworkConnectionTests {
             sessionIDQueue.put(sessionID)
             Thread.sleep(1500)
             val players = mutableListOf(
-                Player("guest", color = TokenColor.RED),
-                Player("host", color = TokenColor.BLUE)
+                Player("guest", color = TokenColor.RED), Player("host", color = TokenColor.BLUE)
             )
             host.startNewHostedGame(players, notSharedGates = true)
             Thread.sleep(500)
@@ -291,8 +292,7 @@ class NetworkConnectionTests {
             println("[$guestPlayerName] Connecting...")
             val client = guestRootService.testNetworkService
             client.disconnect()
-            client.connect(name = guestPlayerName)
-            /*Join game */
+            client.connect(name = guestPlayerName)/*Join game */
             println("[$guestPlayerName] Join game...")
             client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
             Thread.sleep(6000)
@@ -315,12 +315,90 @@ class NetworkConnectionTests {
 
         runBlocking {
             joinAll(
-                hostThread,
-                guestThread
+                hostThread, guestThread
             )
             guestRootService.networkService.disconnect()
             hostRootService.networkService.disconnect()
         }
     }
 
+    /**
+     *  The function [receiveAndSendTilePlaceTest] are to test, if the sending
+     *  of the received Tile are correct and in teh correct position
+     */
+    @Test
+    fun receiveAndSendTilePlaceTest() {
+        val latch = CountDownLatch(2)
+        val sessionIDQueue: BlockingQueue<String> = ArrayBlockingQueue(1)
+        val hostPlayerName = "host"
+        val guestPlayerName = "guest"
+        val hostThread = coroutineScope.launch {
+            val host = hostRootService.testNetworkService/* Host game */
+            println("[$hostPlayerName] Hosting game...")
+            host.hostGame(name = hostPlayerName)
+            host.testClient?.apply {
+                onGameActionResponse = {
+                    println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
+                    when (it.status) {
+                        GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+
+                        else -> {}
+                    }
+                }
+                onCreateGameResponse = {
+                    println("[$hostPlayerName] Received CreateGameResponse with status ${it.status}")
+                }
+            }
+            Thread.sleep(5000)
+            val testclient = host.testClient
+            checkNotNull(testclient)
+            val sessionID = testclient.sessionID
+            checkNotNull(sessionID)
+            sessionIDQueue.put(sessionID)
+            Thread.sleep(1500)
+            val players = mutableListOf(
+                Player("host", color = TokenColor.RED),
+                Player("Alice", color = TokenColor.WHITE),
+                Player("guest", color = TokenColor.BLUE)
+            )
+            host.startNewHostedGame(players, notSharedGates = true)
+            Thread.sleep(500)
+            val currentPlayerIndex = hostRootService.currentGame!!.currentPlayerIndex
+            val testTile = hostRootService.currentGame!!.players[currentPlayerIndex].handTile
+            val coordinate = Coordinate(1, 1)
+            hostRootService.gameService.changePlayer()
+            host.sendPlacedTile(testTile!!, coordinate)
+            Thread.sleep(500)
+            Property(host.connectionState).await(ConnectionState.PLAYING_MY_TURN)
+            hostRootService.playerTurnService.rotateTileLeft(testTile)
+            hostRootService.gameService.changePlayer()
+            host.sendPlacedTile(testTile,coordinate)
+            Thread.sleep(500)
+            Property(host.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+            latch.countDown()
+            latch.await()
+        }
+
+        val guestThread = coroutineScope.launch {
+            println("[$guestPlayerName] Connecting...")
+            val client = guestRootService.testNetworkService/*Join game */
+            println("[$guestPlayerName] Join game...")
+            client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
+            Thread.sleep(6000)
+            Thread.sleep(1000)
+            Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+            Thread.sleep(1000)
+            Property(client.connectionState).await(ConnectionState.PLAYING_MY_TURN)
+            latch.countDown()
+            latch.await()
+
+        }
+        runBlocking {
+            joinAll(
+                hostThread, guestThread
+            )
+            guestRootService.networkService.disconnect()
+            hostRootService.networkService.disconnect()
+        }
+    }
 }
