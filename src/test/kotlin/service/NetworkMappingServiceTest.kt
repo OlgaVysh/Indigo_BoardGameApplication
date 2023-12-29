@@ -192,7 +192,7 @@ class NetworkMappingServiceTest {
     @Test
     fun toTileTypeListTest() {
         val testGame = RootService()
-        assertThrows<IllegalStateException> { (testGame.networkMappingService.toGameMode()) }
+        assertThrows<IllegalStateException> { (testGame.networkMappingService.toTileTypeList()) }
         testGame.currentGame = Indigo(
             gameSetting,
             allTiles = treasureTiles.toList(),
@@ -253,7 +253,7 @@ class NetworkMappingServiceTest {
     @Test
     fun toNetworkPlayerTest() {
         val testGame = RootService()
-        assertThrows<IllegalStateException> { (testGame.networkMappingService.toGameMode()) }
+        assertThrows<IllegalStateException> { (testGame.networkMappingService.toNetworkPlayer()) }
         val fourPlayers = players.toMutableList()
         fourPlayers.add(Player("Charlie", color = TokenColor.RED))
         val gameSettings = GameSettings(fourPlayers.toList())
