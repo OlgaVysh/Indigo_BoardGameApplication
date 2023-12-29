@@ -1,5 +1,6 @@
 package service
 
+import createTestRouteTile
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -23,6 +24,32 @@ class GameServiceTest {
         Player("Emily", Date(0), TokenColor.BLUE, false),
         Player("Jack", Date(0), TokenColor.RED, false)
     )
+
+    val tile0 = Tile(listOf(
+        Pair(Edge.ZERO, Edge.TWO),
+        Pair(Edge.ONE, Edge.FOUR),
+        Pair(Edge.THREE, Edge.FIVE)
+    ))
+    val tile1 = Tile(listOf(
+        Pair(Edge.TWO, Edge.FIVE),
+        Pair(Edge.ONE, Edge.FOUR),
+        Pair(Edge.ZERO, Edge.THREE)
+    ))
+    val tile2 =Tile(listOf(
+        Pair(Edge.ZERO, Edge.FIVE),
+        Pair(Edge.ONE, Edge.FOUR),
+        Pair(Edge.TWO, Edge.THREE)
+    ))
+    val tile3 = Tile(listOf(
+        Pair(Edge.ZERO, Edge.FIVE),
+        Pair(Edge.ONE, Edge.THREE),
+        Pair(Edge.TWO, Edge.FOUR)
+    ))
+    val tile4 =Tile(listOf(
+        Pair(Edge.ZERO, Edge.FIVE),
+        Pair(Edge.ONE, Edge.TWO),
+        Pair(Edge.THREE, Edge.FOUR)
+    ))
 
     /**
      * Set up method executed before each test.
@@ -312,6 +339,39 @@ class GameServiceTest {
      */
     @Test
     fun distributeNewTileTest() {
+        assertThrows<IllegalStateException> {rootService.gameService.distributeNewTile()  }
+        val allTiles = mutableListOf<Tile>()
+        for (i in 0 until 6) {
+            val gemPos = (i + 3) % 6
+            allTiles.add(
+                Tile(
+                    listOf(
+                        Pair(
+                            Edge.values()[(Edge.values().size + gemPos - 1) % 6],
+                            Edge.values()[(Edge.values().size + gemPos + 1) % 6]
+                        )
+                    ), mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
+                )
+            )
+        }
+        val routeTiles = createTestRouteTile()
+        allTiles.addAll(routeTiles)
+        val testSettings = GameSettings(fourPlayers)
+       rootService.currentGame = Indigo(
+           testSettings,
+           GameBoard(),
+           allTiles,
+           RootService().gameService.initializeGems(),
+           RootService().gameService.initializeTokens()
+       )
+           val testGame = rootService.currentGame
+        testGame!!.gameBoard.gateTokens = createTestGateTokens(testGame, false)
+        rootService.gameService.distributeNewTile()
+        val testTile = testGame.players[0].handTile
+        assertNotNull(testTile)
+        assertEquals(tile0,testTile)
+        testGame.routeTiles.clear()
+        assertThrows<IllegalStateException> {gameService.distributeNewTile()}
     }
 
     /**
