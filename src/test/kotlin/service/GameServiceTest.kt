@@ -25,11 +25,13 @@ class GameServiceTest {
         Player("Jack", Date(0), TokenColor.RED, false)
     )
 
-    private val tile0 = Tile(listOf(
-        Pair(Edge.ZERO, Edge.TWO),
-        Pair(Edge.ONE, Edge.FOUR),
-        Pair(Edge.THREE, Edge.FIVE)
-    ))
+    private val tile0 = Tile(
+        listOf(
+            Pair(Edge.ZERO, Edge.TWO),
+            Pair(Edge.ONE, Edge.FOUR),
+            Pair(Edge.THREE, Edge.FIVE)
+        )
+    )
 
     /**
      * Set up method executed before each test.
@@ -63,8 +65,15 @@ class GameServiceTest {
         for (i in playerListe.indices) {
             assertEquals(playerListe[i].name, testGame.players[i].name)
             assertEquals(playerListe[i].color, testGame.players[i].color)
+            assertNotNull(testGame.players[i].handTile)
         }
+        assertEquals(0, testGame.currentPlayerIndex)
         assertEquals(50, testGame.routeTiles.size)
+        rootService.gameService.startGame(fourPlayers.toMutableList(), random = true)
+        assertEquals(playerListe.size, testGame.players.size)
+        for (i in playerListe.indices) {
+            assertNotNull(testGame.players[i].handTile)
+        }
     }
 
     /**
@@ -115,7 +124,7 @@ class GameServiceTest {
 
         //rotate tile0 and place it in (-1,-3) ,dann check that the place is ocuppied for other tile.
         rootService.playerTurnService.rotateTileRight(tile0)
-        assertFalse(rootService.gameService.checkPlacement(Coordinate(0,0),tile4))
+        assertFalse(rootService.gameService.checkPlacement(Coordinate(0, 0), tile4))
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
         val exception1 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-1, -3), tile2)
@@ -266,27 +275,27 @@ class GameServiceTest {
         //gate4 no gems after the method because is removed
         rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
         assertEquals(0, tile0.gemEndPosition.size)
-        assertEquals(2 ,players[3].gemCounter)
-        assertEquals(3 ,players[3].score)
-        assertEquals(2 ,players[1].gemCounter)
-        assertEquals( 3,players[1].score)
+        assertEquals(2, players[3].gemCounter)
+        assertEquals(3, players[3].score)
+        assertEquals(2, players[1].gemCounter)
+        assertEquals(3, players[1].score)
 
         //gate3 only on Gem is there
         rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
         assertEquals(1, tile2.gemEndPosition.size)
-        assertEquals(3 ,players[3].gemCounter)
-        assertEquals(5 ,players[3].score)
-        assertEquals(1 ,players[0].gemCounter)
-        assertEquals( 2,players[0].score)
+        assertEquals(3, players[3].gemCounter)
+        assertEquals(5, players[3].score)
+        assertEquals(1, players[0].gemCounter)
+        assertEquals(2, players[0].score)
 
         //gate2 both gems are in the tile
         rootService.gameService.removeGemsReachedGate(tile4, Coordinate(-2, 4))
         assertEquals(2, tile4.gemEndPosition.size)
         assertEquals(0, players[2].gemCounter)
-        assertEquals(0,players[2].score)
+        assertEquals(0, players[2].score)
 
         rootService.gameService.startGame(
-            players.subList(0,2).toMutableList(),true
+            players.subList(0, 2).toMutableList(), true
         )
 
         indigo = rootService.currentGame
@@ -297,20 +306,20 @@ class GameServiceTest {
         //gate4 no gems after the method because is removed
         rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
         assertEquals(0, tile0.gemEndPosition.size)
-        assertEquals(2 ,players[1].gemCounter)
-        assertEquals( 3,players[1].score)
+        assertEquals(2, players[1].gemCounter)
+        assertEquals(3, players[1].score)
 
         //gate3 only on Gem is there
         rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
         assertEquals(1, tile2.gemEndPosition.size)
-        assertEquals(1 ,players[0].gemCounter)
-        assertEquals( 2,players[0].score)
+        assertEquals(1, players[0].gemCounter)
+        assertEquals(2, players[0].score)
 
         //gate2 both gems are in the tile
         rootService.gameService.removeGemsReachedGate(tile4, Coordinate(-2, 4))
         assertEquals(2, tile4.gemEndPosition.size)
         assertEquals(2, players[1].gemCounter)
-        assertEquals(3,players[1].score)
+        assertEquals(3, players[1].score)
 
     }
 
@@ -319,7 +328,7 @@ class GameServiceTest {
      */
     @Test
     fun distributeNewTileTest() {
-        assertThrows<IllegalStateException> {rootService.gameService.distributeNewTile()  }
+        assertThrows<IllegalStateException> { rootService.gameService.distributeNewTile() }
         val allTiles = mutableListOf<Tile>()
         for (i in 0 until 6) {
             val gemPos = (i + 3) % 6
@@ -337,21 +346,21 @@ class GameServiceTest {
         val routeTiles = createTestRouteTile()
         allTiles.addAll(routeTiles)
         val testSettings = GameSettings(fourPlayers)
-       rootService.currentGame = Indigo(
-           testSettings,
-           GameBoard(),
-           allTiles,
-           RootService().gameService.initializeGems(),
-           RootService().gameService.initializeTokens()
-       )
-           val testGame = rootService.currentGame
+        rootService.currentGame = Indigo(
+            testSettings,
+            GameBoard(),
+            allTiles,
+            RootService().gameService.initializeGems(),
+            RootService().gameService.initializeTokens()
+        )
+        val testGame = rootService.currentGame
         testGame!!.gameBoard.gateTokens = createTestGateTokens(testGame, false)
         rootService.gameService.distributeNewTile()
         val testTile = testGame.players[0].handTile
         assertNotNull(testTile)
-        assertEquals(tile0,testTile)
+        assertEquals(tile0, testTile)
         testGame.routeTiles.clear()
-        assertThrows<IllegalStateException> {gameService.distributeNewTile()}
+        assertThrows<IllegalStateException> { gameService.distributeNewTile() }
     }
 
     /**
@@ -394,6 +403,14 @@ class GameServiceTest {
         val blue = TokenColor.BLUE
         val red = TokenColor.RED
 
+        val amountBlue = game.tokens.count { it == Token(blue) }
+        val amountPurple = game.tokens.count { it == Token(purple) }
+        val amountWhite = game.tokens.count { it == Token(white) }
+        val amountRed = game.tokens.count {it == Token(red) }
+        assertEquals(6,amountRed)
+        assertEquals(6,amountWhite)
+        assertEquals(6,amountBlue)
+        assertEquals(6,amountPurple)
         for (i in game.tokens.indices) {
             if (i in 0 until 6) {
                 assertEquals(white, game.tokens[i].color)
