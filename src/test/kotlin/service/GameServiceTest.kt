@@ -58,7 +58,7 @@ class GameServiceTest {
         val player4 = Player("Jack", Date(0), TokenColor.RED, false)
         val playerListe = mutableListOf(player1, player2, player3, player4)
         playerListe.toList()
-        val testGame = rootService.currentGame
+        var testGame = rootService.currentGame
         assertNotNull(rootService.currentGame)
 
         assertEquals(playerListe.size, testGame!!.players.size)
@@ -69,8 +69,12 @@ class GameServiceTest {
         }
         assertEquals(0, testGame.currentPlayerIndex)
         assertEquals(50, testGame.routeTiles.size)
+
+
         rootService.gameService.startGame(fourPlayers.toMutableList(), random = true)
-        assertEquals(playerListe.size, testGame.players.size)
+        testGame = rootService.currentGame
+        assertEquals(playerListe.size, testGame!!.players.size)
+        assertNotEquals(fourPlayers.toMutableList(),testGame.players)
         for (i in playerListe.indices) {
             assertNotNull(testGame.players[i].handTile)
         }
