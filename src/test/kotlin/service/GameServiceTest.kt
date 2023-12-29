@@ -108,6 +108,7 @@ class GameServiceTest {
 
         //rotate tile0 and place it in (-1,-3) ,dann check that the place is ocuppied for other tile.
         rootService.playerTurnService.rotateTileRight(tile0)
+        assertFalse(rootService.gameService.checkPlacement(Coordinate(0,0),tile4))
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
         val exception1 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-1, -3), tile2)
