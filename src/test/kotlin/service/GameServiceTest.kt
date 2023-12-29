@@ -25,30 +25,10 @@ class GameServiceTest {
         Player("Jack", Date(0), TokenColor.RED, false)
     )
 
-    val tile0 = Tile(listOf(
+    private val tile0 = Tile(listOf(
         Pair(Edge.ZERO, Edge.TWO),
         Pair(Edge.ONE, Edge.FOUR),
         Pair(Edge.THREE, Edge.FIVE)
-    ))
-    val tile1 = Tile(listOf(
-        Pair(Edge.TWO, Edge.FIVE),
-        Pair(Edge.ONE, Edge.FOUR),
-        Pair(Edge.ZERO, Edge.THREE)
-    ))
-    val tile2 =Tile(listOf(
-        Pair(Edge.ZERO, Edge.FIVE),
-        Pair(Edge.ONE, Edge.FOUR),
-        Pair(Edge.TWO, Edge.THREE)
-    ))
-    val tile3 = Tile(listOf(
-        Pair(Edge.ZERO, Edge.FIVE),
-        Pair(Edge.ONE, Edge.THREE),
-        Pair(Edge.TWO, Edge.FOUR)
-    ))
-    val tile4 =Tile(listOf(
-        Pair(Edge.ZERO, Edge.FIVE),
-        Pair(Edge.ONE, Edge.TWO),
-        Pair(Edge.THREE, Edge.FOUR)
     ))
 
     /**
@@ -350,7 +330,7 @@ class GameServiceTest {
                             Edge.values()[(Edge.values().size + gemPos - 1) % 6],
                             Edge.values()[(Edge.values().size + gemPos + 1) % 6]
                         )
-                    ), mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
+                    ), mutableMapOf(Pair(gemPos, Gem(AMBER)))
                 )
             )
         }
