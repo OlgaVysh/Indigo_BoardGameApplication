@@ -368,7 +368,7 @@ class GameService(private val rootService: RootService) {
             }
             val middleTileGem = middleTile.gemPosition[amountOfGems - 1]
             val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
-            middleTile.gemPosition.toMutableMap().remove(amountOfGems - 1)
+            middleTile.gemPosition.remove(amountOfGems - 1)
             if (currentTile.gemEndPosition[lastGemPosition] != null) {
                 currentTile.gemEndPosition.remove(lastGemPosition)
                 return
