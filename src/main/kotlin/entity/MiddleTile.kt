@@ -8,7 +8,7 @@ package entity
  * @property gemPosition [Map] relating positions (0 for middle, >0 for outside) of the [Gem]s on the MiddleTile
  */
 class MiddleTile {
-    val gemPosition: Map<Int,Gem> = mapOf(
+    val gemPosition: MutableMap<Int,Gem> = mutableMapOf(
         0 to Gem(GemColor.SAPPHIRE),
         1 to Gem(GemColor.AMBER),
         2 to Gem(GemColor.AMBER),
