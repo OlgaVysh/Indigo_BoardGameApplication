@@ -242,7 +242,7 @@ class NetworkMappingServiceTest {
         }
         tileList = testGame.networkMappingService.toTileTypeList()
         assertEquals(testTileList, tileList)
-        assertEquals(2 , testGame.currentGame!!.routeTiles.size)
+        assertEquals(2, testGame.currentGame!!.routeTiles.size)
     }
 
     /**

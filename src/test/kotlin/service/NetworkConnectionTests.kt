@@ -380,7 +380,7 @@ class NetworkConnectionTests {
             hostRootService.playerTurnService.placeRouteTile(coordinate,testTile)
             host.sendPlacedTile(testTile, coordinate)
             Thread.sleep(1000)
-            //Property(host.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
+            Property(host.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             latch.countDown()
             latch.await()
         }

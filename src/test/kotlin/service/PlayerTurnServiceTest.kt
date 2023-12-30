@@ -50,7 +50,7 @@ class PlayerTurnServiceTest {
         playerTurnService.rotateTileLeft(tile)
         playerTurnService.placeRouteTile(Coordinate(-1, 0), tile)
         var middleTileGem = rootService.currentGame!!.middleTile.gemPosition
-        //assertEquals(5, middleTileGem.size)
+        assertEquals(5, middleTileGem.size)
         var placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, 0)]
         assertNotNull(placedTile)
         assertEquals(0, placedTile!!.gemEndPosition.size)
@@ -59,7 +59,7 @@ class PlayerTurnServiceTest {
         tile.gemEndPosition[5] = Gem(GemColor.AMBER)
         playerTurnService.placeRouteTile(Coordinate(0, -1), tile)
         middleTileGem = rootService.currentGame!!.middleTile.gemPosition
-        //assertEquals(4, middleTileGem.size)
+        assertEquals(4, middleTileGem.size)
         placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, -1)]
         assertNotNull(placedTile)
         assertEquals(0, placedTile!!.gemEndPosition.size)
