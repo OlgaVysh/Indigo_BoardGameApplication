@@ -15,7 +15,7 @@ class PlayerTurnService(private val rootService: RootService) {
      * @throws Exception if the placement is invalid.
      */
 
-    fun placeRouteTile(space: Coordinate, tile: Tile, neighbourTile: Tile, tileEnd: Int, neighbourTileStart: Int) {
+    fun placeRouteTile(space: Coordinate, tile: Tile) {
         val currentGame = rootService.currentGame
 
         // Check if the game has started
