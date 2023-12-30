@@ -46,23 +46,23 @@ class PlayerTurnServiceTest {
         var coordinate = Coordinate(-1, 1)
         assertThrows<IllegalStateException> { playerTurnService.placeRouteTile(coordinate, testTile) }
         rootService.gameService.startGame(players)
-        assertThrows<Exception> { playerTurnService.placeRouteTile(Coordinate(0,0),tile) }
+        assertThrows<Exception> { playerTurnService.placeRouteTile(Coordinate(0, 0), tile) }
         playerTurnService.rotateTileLeft(tile)
-        playerTurnService.placeRouteTile(Coordinate(-1 ,0),tile)
+        playerTurnService.placeRouteTile(Coordinate(-1, 0), tile)
         var middleTileGem = rootService.currentGame!!.middleTile.gemPosition
-        assertEquals(5,middleTileGem.size)
-        var placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1 ,0)]
+        assertEquals(5, middleTileGem.size)
+        var placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, 0)]
         assertNotNull(placedTile)
-        assertEquals(0,placedTile!!.gemEndPosition.size)
-        repeat(2){playerTurnService.rotateTileRight(tile)}
+        assertEquals(0, placedTile!!.gemEndPosition.size)
+        repeat(2) { playerTurnService.rotateTileRight(tile) }
         tile.gemEndPosition.clear()
         tile.gemEndPosition[5] = Gem(GemColor.AMBER)
-        playerTurnService.placeRouteTile(Coordinate(0 ,-1),tile)
+        playerTurnService.placeRouteTile(Coordinate(0, -1), tile)
         middleTileGem = rootService.currentGame!!.middleTile.gemPosition
-        assertEquals(4,middleTileGem.size)
-        placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0 ,-1)]
+        assertEquals(4, middleTileGem.size)
+        placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, -1)]
         assertNotNull(placedTile)
-        assertEquals(0,placedTile!!.gemEndPosition.size)
+        assertEquals(0, placedTile!!.gemEndPosition.size)
     }
 
     /**
@@ -82,8 +82,15 @@ class PlayerTurnServiceTest {
         // Führen Sie undo und redo durch
         playerTurnService.undo()
         playerTurnService.redo()
-
-
+        playerTurnService.placeRouteTile(Coordinate(0, -1), testTile)
+        var actualGame = rootService.currentGame
+       // assertNull(actualGame!!.nextGameState)
+        assertNotNull(actualGame!!.previousGameState)
+        assertEquals(testGame, actualGame)
+        playerTurnService.undo()
+        //assertNull(actualGame.previousGameState)
+        playerTurnService.redo()
+        assertEquals(actualGame, rootService.currentGame)
         // Fügen Sie weitere Tests für andere Methoden hinzu
 
     }
