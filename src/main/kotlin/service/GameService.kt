@@ -338,10 +338,11 @@ class GameService(private val rootService: RootService) {
 
     /**
      * Moves gems from one tile to another based on the specified edge indices.
-     * @param tile The tile from which gems are moved.
-     * @param neighbourTile The tile to which gems are moved.
-     * @param tileEnd The index of the edge in the tile where the gems are located.
-     * @param neighbourStart The index of the edge in the neighbourTile where gems are moved.
+     * @param currentCoordinate The tile coordinate  to which gems are moved.
+     * @param neighborCoordinate The tile coordinate from which gems are moved.
+     * @param currentGemPosition is the Position of the current tile which is used to check for collision
+     * if both are on the Edge
+
      */
     fun moveGems(currentCoordinate: Coordinate, neighborCoordinate: Coordinate, currentGemPosition: Int) {
         val currentGame = rootService.currentGame
@@ -354,7 +355,7 @@ class GameService(private val rootService: RootService) {
         if (currentTile == null) {
             return
         }
-        if (neighborCoordinate.row ==0 && neighborCoordinate.column == 0) {
+        if (neighborCoordinate.row == 0 && neighborCoordinate.column == 0) {
             val amountOfGems = middleTile.gemPosition.size
             if (amountOfGems <= 0) {
                 return
