@@ -19,7 +19,7 @@ class PlayerTurnService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         // Check if the game has started
         checkNotNull(currentGame) { "The game has not started yet" }
-        val firstAppearance=rootService.currentGame!!.copy()
+        val firstAppearance = rootService.currentGame!!.copyTo()
         // Check if the tile placement is valid
         if (rootService.gameService.checkPlacement(space, tile)) {
             // Move gems, check collisions, distribute new tiles, and change the player
@@ -31,11 +31,11 @@ class PlayerTurnService(private val rootService: RootService) {
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
 
-            val lastGame = rootService.currentGame!!.copy()
-            rootService.currentGame!!.nextGameState = lastGame
-            lastGame.previousGameState = firstAppearance
+            val lastGame = rootService.currentGame?.copyTo()
+            firstAppearance.nextGameState = lastGame
+            lastGame?.previousGameState = firstAppearance
+            rootService.currentGame?.nextGameState = lastGame
             rootService.currentGame = rootService.currentGame!!.nextGameState
-
         } else {
             throw Exception("Invalid space, choose another space please")
         }
@@ -47,10 +47,10 @@ class PlayerTurnService(private val rootService: RootService) {
      * it is possible to undo moves until the beginning of the game
      */
     fun undo() {
-        var currentGame = rootService.currentGame
+        val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (currentGame.previousGameState != null) {
-           //currentGame.nextGameState = currentGame
+            currentGame.nextGameState = currentGame
             rootService.currentGame = currentGame.previousGameState
 
         } else {
@@ -64,10 +64,10 @@ class PlayerTurnService(private val rootService: RootService) {
      * it is possible to redo moves from the beginning until the last made move
      */
     fun redo() {
-        var currentGame = rootService.currentGame
+        val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (currentGame.nextGameState != null) {
-            //currentGame.previousGameState = currentGame
+            currentGame.previousGameState = currentGame
             rootService.currentGame = currentGame.nextGameState
         } else {
             println("Next game state doesn't exist, cannot redo the move")
@@ -94,4 +94,30 @@ class PlayerTurnService(private val rootService: RootService) {
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
     }
 
+    fun Indigo.copyTo(): Indigo {
+
+        val copiedIndigo = Indigo(
+            this.settings,
+            this.gameBoard,
+            this.allTiles,
+            this.gems,
+            this.tokens
+        )
+        for (i in players.indices){
+            copiedIndigo.players[i].gemCounter  = this.players[i].gemCounter
+            copiedIndigo.players[i].handTile = this.players[i].handTile
+            copiedIndigo.players[i].score = this.players[i].score
+        }
+        copiedIndigo.currentPlayerIndex = this.currentPlayerIndex
+        copiedIndigo.nextGameState = this.nextGameState
+        copiedIndigo.previousGameState = this.previousGameState
+        copiedIndigo.middleTile.gemPosition.clear()
+        for(i in 0 until this.middleTile.gemPosition.size) {
+            val gem = this.middleTile.gemPosition[i]
+            copiedIndigo.middleTile.gemPosition[i]=gem!!
+        }
+        copiedIndigo.routeTiles = this.routeTiles
+        return copiedIndigo
+    }
 }
+
