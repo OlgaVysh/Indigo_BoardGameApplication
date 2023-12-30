@@ -343,30 +343,53 @@ class GameService(private val rootService: RootService) {
      * @param tileEnd The index of the edge in the tile where the gems are located.
      * @param neighbourStart The index of the edge in the neighbourTile where gems are moved.
      */
-    fun moveGems(tile: Tile, neighbourTile: Tile, tileEnd: Int, neighbourStart: Int) {
+    fun moveGems(currentCoordinate: Coordinate, neighborCoordinate: Coordinate, currentGemPosition: Int) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
-
-        val tileGems = tile.gemEndPosition
+        val middleTile = currentGame.middleTile
+        val currentTile = currentGame.gameBoard.gameBoardTiles[currentCoordinate]
+        val neighbourTile = currentGame.gameBoard.gameBoardTiles[neighborCoordinate]
+        val neighbourStart = currentGemPosition + 3 % 6
+        val neighborCoordinates = getNeighboringCoordinates(currentCoordinate)
+        if (currentTile == null) {
+            return
+        }
+        if (neighborCoordinate == Coordinate(0, 0)) {
+            val amountOfGems = middleTile.gemPosition.size
+            if (amountOfGems <= 0) {
+                return
+            }
+            val middleTileGem = middleTile.gemPosition[amountOfGems - 1]
+            val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
+            middleTile.gemPosition.toMutableMap().remove(amountOfGems - 1)
+            currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
+            moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, (lastGemPosition + 3 % 6))
+        }
+        if (neighbourTile == null) {
+            return
+        }
+        if (!neighbourTile.gemEndPosition.containsKey(neighbourStart)) {
+            return
+        }
+        val tileGems = currentTile.gemEndPosition
         val neighbourGems = neighbourTile.gemEndPosition
-        if (tileGems.contains(tileEnd)) {
+        if (tileGems.contains(currentGemPosition)) {
             if (neighbourGems.contains(neighbourStart)) {
-                tileGems.remove(tileEnd)
+                tileGems.remove(currentGemPosition)
                 neighbourGems.remove(neighbourStart)
                 return
             }
+            val currentEdge = currentTile.edges[currentGemPosition]
+            val currentEnd = getAnotherEdge(currentEdge, currentTile)
 
-            val neighbourEdge = neighbourTile.edges[neighbourStart]
-            val neighbourEnd = getAnotherEdge(neighbourEdge, neighbourTile)
-
-            if (neighbourGems.contains(neighbourEnd)) {
-                tileGems.remove(tileEnd)
-                neighbourGems.remove(neighbourEnd)
+            if (neighbourGems.contains(neighbourStart) && tileGems.containsKey(currentEnd)) {
+                tileGems.remove(currentEnd)
+                neighbourGems.remove(neighbourStart)
                 return
             }
-            val tileGem = tileGems[tileEnd]
-            tileGems.remove(tileEnd)
-            neighbourGems[neighbourEnd] = tileGem!!
+            tileGems.remove(currentGemPosition)
+            neighbourGems[currentEnd] = neighbourGems[neighbourStart]!!
+            moveGems(neighborCoordinates[currentEnd], currentCoordinate, (currentEnd + 3 % 6))
         }
     }
 
@@ -475,8 +498,7 @@ class GameService(private val rootService: RootService) {
      * @param coordinate The coordinate for which to find neighboring coordinates
      * @return List of neighboring coordinates
      */
-    private fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
-        val existNeighbors = mutableListOf<Coordinate>()
+    fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
         val neighbors = mutableListOf<Coordinate>()
         //hexagonal grid
         neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
@@ -485,15 +507,7 @@ class GameService(private val rootService: RootService) {
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column))      // Below
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column - 1))  // Bottom-left
         neighbors.add(Coordinate(coordinate.row, coordinate.column - 1)) // Top-left
-        val currentGame = rootService.currentGame
-        checkNotNull(currentGame)
-        val gameBoardTiles = currentGame.gameBoard.gameBoardTiles
-        for (neighbor in neighbors) {
-            if (neighbor == Coordinate(0, 0) || gameBoardTiles.containsKey(neighbor)) {
-                existNeighbors.add(neighbor)
-            }
-        }
-        return existNeighbors
+        return neighbors
     }
 
     /**
