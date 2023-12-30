@@ -16,7 +16,7 @@ class PlayerTurnService(private val rootService: RootService) {
      */
 
     fun placeRouteTile(space: Coordinate, tile: Tile) {
-        val currentGame = rootService.currentGame
+        var currentGame = rootService.currentGame
 
         // Check if the game has started
         checkNotNull(currentGame) { "The game has not started yet" }
@@ -31,6 +31,9 @@ class PlayerTurnService(private val rootService: RootService) {
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
 
+            rootService.currentGame!!.nextGameState = currentGame
+            currentGame.nextGameState!!.previousGameState = currentGame
+            rootService.currentGame = currentGame.nextGameState
         } else {
             throw Exception("Invalid space, choose another space please")
         }
