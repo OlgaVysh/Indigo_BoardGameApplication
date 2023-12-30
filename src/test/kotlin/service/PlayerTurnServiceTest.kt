@@ -91,6 +91,8 @@ class PlayerTurnServiceTest {
         assertNull(rootService.currentGame!!.previousGameState)
         playerTurnService.redo()
         assertEquals(actualGame, rootService.currentGame)
+        assertNull(rootService.currentGame!!.nextGameState)
+        assertNotNull(rootService.currentGame!!.previousGameState)
         // Fügen Sie weitere Tests für andere Methoden hinzu
 
     }
