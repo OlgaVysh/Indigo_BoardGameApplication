@@ -389,6 +389,7 @@ class GameService(private val rootService: RootService) {
             }
             tileGems.remove(currentGemPosition)
             neighbourGems[currentEnd] = neighbourGems[neighbourStart]!!
+            removeGemsReachedGate(currentTile,currentCoordinate)
             moveGems(neighborCoordinates[currentEnd], currentCoordinate, (currentEnd + 3 % 6))
         }
     }
