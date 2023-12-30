@@ -43,15 +43,24 @@ class PlayerTurnServiceTest {
         val tile = testTile
         testTile.gemEndPosition[3] = Gem(GemColor.AMBER)
         /* Initialisierung Ihrer Kachel für den Test*/
-        val coordinate = Coordinate(-1, 1)
+        var coordinate = Coordinate(-1, 1)
         assertThrows<IllegalStateException> { playerTurnService.placeRouteTile(coordinate, testTile) }
         rootService.gameService.startGame(players)
         assertThrows<Exception> { playerTurnService.placeRouteTile(Coordinate(0,0),tile) }
         playerTurnService.rotateTileLeft(tile)
         playerTurnService.placeRouteTile(Coordinate(-1 ,0),tile)
-        val middleTileGem = rootService.currentGame!!.middleTile.gemPosition
+        var middleTileGem = rootService.currentGame!!.middleTile.gemPosition
         assertEquals(5,middleTileGem.size)
-        val placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1 ,0)]
+        var placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1 ,0)]
+        assertNotNull(placedTile)
+        assertEquals(0,placedTile!!.gemEndPosition.size)
+        repeat(2){playerTurnService.rotateTileRight(tile)}
+        tile.gemEndPosition.clear()
+        tile.gemEndPosition[5] = Gem(GemColor.AMBER)
+        playerTurnService.placeRouteTile(Coordinate(0 ,-1),tile)
+        middleTileGem = rootService.currentGame!!.middleTile.gemPosition
+        assertEquals(4,middleTileGem.size)
+        placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0 ,-1)]
         assertNotNull(placedTile)
         assertEquals(0,placedTile!!.gemEndPosition.size)
     }
