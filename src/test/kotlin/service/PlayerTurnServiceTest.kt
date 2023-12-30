@@ -34,26 +34,21 @@ class PlayerTurnServiceTest {
         gameService = GameService(rootService)
         playerTurnService = PlayerTurnService(rootService)
     }
-    /*
+
     @Test
     fun testPlaceRouteTile() {
         // Hier können Sie Ihre Testlogik für placeRouteTile implementieren
         // Zum Beispiel: Überprüfen Sie, ob das Platzieren eines gültigen Kacheln an einer gültigen Stelle funktioniert.
 
         // Beispiel:
-        val tile = Tile
-        /* Initialisierung Ihrer Kachel für den Test*/)
-        val coordinate = Coordinate(-1,1 )
-
-        try {
-            playerTurnService.placeRouteTile(coordinate, tile, 3,0)
-            // Hier können Sie Assertions platzieren, um sicherzustellen, dass die Operation erfolgreich war.
-        } catch (e: Exception) {
-            // Wenn Sie erwarten, dass eine Ausnahme geworfen wird, können Sie sie hier erfassen.
-            // Beispiel: fail("Erwartete keine Ausnahme, aber es wurde eine geworfen.")
-        }
+        val tile = testTile
+        /* Initialisierung Ihrer Kachel für den Test*/
+        val coordinate = Coordinate(-1, 1)
+        assertThrows<IllegalStateException> { playerTurnService.placeRouteTile(coordinate, testTile) }
+        rootService.gameService.startGame(players)
+        assertThrows<Exception> { playerTurnService.placeRouteTile(Coordinate(0,0),tile) }
     }
-    */
+
     /**
      *  The function [testUndoRedo] test the correctness of undo und redo
      *
@@ -84,10 +79,10 @@ class PlayerTurnServiceTest {
     fun rotateTileTest() {
         val expectedTile = testTile
         val expectedTileRightRotated = testTile
-        expectedTile.edges.add(0,expectedTile.edges.removeAt(expectedTile.edges.size-1))
+        expectedTile.edges.add(0, expectedTile.edges.removeAt(expectedTile.edges.size - 1))
         playerTurnService.rotateTileRight(testTile)
-        assertEquals(expectedTileRightRotated,testTile)
+        assertEquals(expectedTileRightRotated, testTile)
         playerTurnService.rotateTileLeft(testTile)
-        assertEquals(expectedTile,testTile)
+        assertEquals(expectedTile, testTile)
     }
 }
