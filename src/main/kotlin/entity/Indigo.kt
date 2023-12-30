@@ -40,4 +40,8 @@ data class Indigo(
         currentPlayerIndex = if (settings.isRandom) (0 until settings.players.size).random()
         else settings.playerIndex
     }
+
+    fun copy() : Indigo {
+        return this
+    }
 }
