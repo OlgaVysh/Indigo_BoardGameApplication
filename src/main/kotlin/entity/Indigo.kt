@@ -41,7 +41,4 @@ data class Indigo(
         else settings.playerIndex
     }
 
-    fun copy() : Indigo {
-        return this
-    }
 }
