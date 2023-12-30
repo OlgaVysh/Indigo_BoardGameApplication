@@ -74,7 +74,7 @@ class GameService(private val rootService: RootService) {
     fun checkPlacement(space: Coordinate, tile: Tile): Boolean {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
-        if(space== Coordinate(0,0))return false
+        if (space == Coordinate(0, 0)) return false
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
 
@@ -344,6 +344,9 @@ class GameService(private val rootService: RootService) {
      * @param neighbourStart The index of the edge in the neighbourTile where gems are moved.
      */
     fun moveGems(tile: Tile, neighbourTile: Tile, tileEnd: Int, neighbourStart: Int) {
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+
         val tileGems = tile.gemEndPosition
         val neighbourGems = neighbourTile.gemEndPosition
         if (tileGems.contains(tileEnd)) {
@@ -468,22 +471,29 @@ class GameService(private val rootService: RootService) {
 
 
     /**
-     * Gets the neighboring coordinates for a given coordinate
+     * Gets the neighboring coordinates for a given coordinate, which the contains a tile
      * @param coordinate The coordinate for which to find neighboring coordinates
      * @return List of neighboring coordinates
      */
     private fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
+        val existNeighbors = mutableListOf<Coordinate>()
         val neighbors = mutableListOf<Coordinate>()
-
         //hexagonal grid
         neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
         neighbors.add(Coordinate(coordinate.row - 1, coordinate.column + 1))  // Top-right
         neighbors.add(Coordinate(coordinate.row, coordinate.column + 1))      // Bottom-right
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column))      // Below
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column - 1))  // Bottom-left
-        neighbors.add(Coordinate(coordinate.row, coordinate.column - 1))      // Top-left
-
-        return neighbors
+        neighbors.add(Coordinate(coordinate.row, coordinate.column - 1)) // Top-left
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        val gameBoardTiles = currentGame.gameBoard.gameBoardTiles
+        for (neighbor in neighbors) {
+            if (neighbor == Coordinate(0, 0) || gameBoardTiles.containsKey(neighbor)) {
+                existNeighbors.add(neighbor)
+            }
+        }
+        return existNeighbors
     }
 
     /**
