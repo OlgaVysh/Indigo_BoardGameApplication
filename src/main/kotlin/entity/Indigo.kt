@@ -21,7 +21,7 @@ package entity
  *
  */
 
-class Indigo(
+data class Indigo(
     val settings: GameSettings,
     val gameBoard: GameBoard,
     val allTiles: List<Tile>,
