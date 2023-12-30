@@ -349,19 +349,29 @@ class GameService(private val rootService: RootService) {
         val middleTile = currentGame.middleTile
         val currentTile = currentGame.gameBoard.gameBoardTiles[currentCoordinate]
         val neighbourTile = currentGame.gameBoard.gameBoardTiles[neighborCoordinate]
-        val neighbourStart = currentGemPosition + 3 % 6
+        val neighbourStart = (currentGemPosition + 3) % 6
         val neighborCoordinates = getNeighboringCoordinates(currentCoordinate)
         if (currentTile == null) {
             return
         }
-        if (neighborCoordinate == Coordinate(0, 0)) {
+        if (neighborCoordinate.row ==0 && neighborCoordinate.column == 0) {
             val amountOfGems = middleTile.gemPosition.size
             if (amountOfGems <= 0) {
+                return
+            }
+            val currentTileGem = currentTile.gemEndPosition[currentGemPosition]
+            if (currentTileGem != null) {
+                middleTile.gemPosition.remove(amountOfGems - 1)
+                currentTile.gemEndPosition.remove(currentGemPosition)
                 return
             }
             val middleTileGem = middleTile.gemPosition[amountOfGems - 1]
             val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
             middleTile.gemPosition.toMutableMap().remove(amountOfGems - 1)
+            if (currentTile.gemEndPosition[lastGemPosition] != null) {
+                currentTile.gemEndPosition.remove(lastGemPosition)
+                return
+            }
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
             moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, (lastGemPosition + 3 % 6))
         }
@@ -389,7 +399,7 @@ class GameService(private val rootService: RootService) {
             }
             tileGems.remove(currentGemPosition)
             neighbourGems[currentEnd] = neighbourGems[neighbourStart]!!
-            removeGemsReachedGate(currentTile,currentCoordinate)
+            removeGemsReachedGate(currentTile, currentCoordinate)
             moveGems(neighborCoordinates[currentEnd], currentCoordinate, (currentEnd + 3 % 6))
         }
     }
