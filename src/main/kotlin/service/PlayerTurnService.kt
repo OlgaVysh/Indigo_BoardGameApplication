@@ -2,6 +2,7 @@ package service
 
 import entity.*
 import java.lang.Exception
+
 /**
  * Service class for managing player turns and actions.
  * @param rootService The root service providing access to the current game state.
@@ -14,7 +15,7 @@ class PlayerTurnService(private val rootService: RootService) {
      * @throws Exception if the placement is invalid.
      */
 
-    fun placeRouteTile(space: Coordinate, tile: Tile, neighbourTile: Tile, tileEnd:Int, neighbourTileStart: Int) {
+    fun placeRouteTile(space: Coordinate, tile: Tile, neighbourTile: Tile, tileEnd: Int, neighbourTileStart: Int) {
         val currentGame = rootService.currentGame
 
         // Check if the game has started
@@ -22,11 +23,14 @@ class PlayerTurnService(private val rootService: RootService) {
         // Check if the tile placement is valid
         if (rootService.gameService.checkPlacement(space, tile)) {
             // Move gems, check collisions, distribute new tiles, and change the player
-            rootService.gameService.moveGems(tile,neighbourTile,tileEnd,neighbourTileStart )
-            rootService.gameService.checkCollision(tile)// change rows with moveGems?
+            val neighbors = rootService.gameService.getNeighboringCoordinates(space)
+            for (i in neighbors.indices) {
+                rootService.gameService.moveGems(space, neighbors[i], i)
+            }
+            // change rows with moveGems?
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
-            
+
         } else {
             throw Exception("Invalid space, choose another space please")
         }
@@ -64,12 +68,12 @@ class PlayerTurnService(private val rootService: RootService) {
             println("Next game state doesn't exist, cannot redo the move")
         }
     }
+
     /**
      * Rotates the tile to the left.
      * @param tile The tile to be rotated.
      */
-    fun rotateTileLeft(tile:Tile)
-    {    // Add the first edge to the end of the list
+    fun rotateTileLeft(tile: Tile) {    // Add the first edge to the end of the list
         tile.edges.addAll(tile.edges.subList(0, 1))
         // Remove the original first edge
         tile.edges.removeAll(tile.edges.subList(0, 1))
@@ -79,11 +83,10 @@ class PlayerTurnService(private val rootService: RootService) {
      * Rotates the tile to the right.
      * @param tile The tile to be rotated.
      */
-    fun rotateTileRight(tile:Tile)
-    {    // Add the last edge to the beginning of the list
+    fun rotateTileRight(tile: Tile) {    // Add the last edge to the beginning of the list
         tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
         // Remove the original last edge
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
-        }
+    }
 
 }
