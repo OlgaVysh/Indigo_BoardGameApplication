@@ -84,11 +84,11 @@ class PlayerTurnServiceTest {
         playerTurnService.redo()
         playerTurnService.placeRouteTile(Coordinate(0, -1), testTile)
         var actualGame = rootService.currentGame
-       // assertNull(actualGame!!.nextGameState)
-        assertNotNull(actualGame!!.previousGameState)
+        assertNull(actualGame!!.nextGameState)
+        assertNotNull(actualGame.previousGameState)
         assertEquals(testGame, actualGame)
         playerTurnService.undo()
-        //assertNull(actualGame.previousGameState)
+        assertNull(rootService.currentGame!!.previousGameState)
         playerTurnService.redo()
         assertEquals(actualGame, rootService.currentGame)
         // Fügen Sie weitere Tests für andere Methoden hinzu
