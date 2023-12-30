@@ -50,7 +50,7 @@ class PlayerTurnService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (currentGame.previousGameState != null) {
-            currentGame.nextGameState = currentGame
+            //currentGame.nextGameState = currentGame
             rootService.currentGame = currentGame.previousGameState
 
         } else {
@@ -67,7 +67,7 @@ class PlayerTurnService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (currentGame.nextGameState != null) {
-            currentGame.previousGameState = currentGame
+            //currentGame.previousGameState = currentGame
             rootService.currentGame = currentGame.nextGameState
         } else {
             println("Next game state doesn't exist, cannot redo the move")
