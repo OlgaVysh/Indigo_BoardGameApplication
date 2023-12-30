@@ -17,7 +17,6 @@ class PlayerTurnService(private val rootService: RootService) {
 
     fun placeRouteTile(space: Coordinate, tile: Tile) {
         var currentGame = rootService.currentGame
-
         // Check if the game has started
         checkNotNull(currentGame) { "The game has not started yet" }
         // Check if the tile placement is valid
@@ -31,9 +30,11 @@ class PlayerTurnService(private val rootService: RootService) {
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
 
-            rootService.currentGame!!.nextGameState = currentGame
-            currentGame.nextGameState!!.previousGameState = currentGame
-            rootService.currentGame = currentGame.nextGameState
+            val lastGame = rootService.currentGame
+            currentGame!!.nextGameState = lastGame
+            lastGame!!.previousGameState = currentGame
+            rootService.currentGame = currentGame!!.nextGameState
+
         } else {
             throw Exception("Invalid space, choose another space please")
         }
@@ -48,8 +49,8 @@ class PlayerTurnService(private val rootService: RootService) {
         var currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (currentGame.previousGameState != null) {
-            currentGame.nextGameState = currentGame
-            currentGame = currentGame.previousGameState
+           // currentGame.nextGameState = currentGame
+            rootService.currentGame = currentGame.previousGameState
 
         } else {
             println("Previous game state doesn't exist, cannot undo the move")
@@ -65,8 +66,8 @@ class PlayerTurnService(private val rootService: RootService) {
         var currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (currentGame.nextGameState != null) {
-            currentGame.previousGameState = currentGame
-            currentGame = currentGame.nextGameState
+            //currentGame.previousGameState = currentGame
+            rootService.currentGame = currentGame.nextGameState
         } else {
             println("Next game state doesn't exist, cannot redo the move")
         }
