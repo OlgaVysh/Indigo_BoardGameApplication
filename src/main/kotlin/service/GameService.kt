@@ -108,23 +108,27 @@ class GameService(private val rootService: RootService) {
      */
     private fun coordinateHasExit(space: Coordinate): Boolean {
         // List of  gates with exits
-
-        return (space == Coordinate(1, -4) || space == Coordinate(2, -4) || space == Coordinate(
-            3,
-            -4
-        ) || space == Coordinate(4, -3) || space == Coordinate(4, -2) || space == Coordinate(
-            4,
-            -1
-        ) || space == Coordinate(3, 1) || space == Coordinate(2, 2) || space == Coordinate(1, 3) || space == Coordinate(
-            -1,
-            4
-        ) || space == Coordinate(-2, 4) || space == Coordinate(-3, 4) || space == Coordinate(
-            -4,
-            3
-        ) || space == Coordinate(-4, 2) || space == Coordinate(-4, 1) || space == Coordinate(
-            -3,
-            -1
-        ) || space == Coordinate(-2, -2) || space == Coordinate(-1, -3))
+        val exits = listOf(
+            Coordinate(1, -4),
+            Coordinate(2, -4),
+            Coordinate(3, -4),
+            Coordinate(4, -3),
+            Coordinate(4, -2),
+            Coordinate(4, -1),
+            Coordinate(3, 1),
+            Coordinate(2, 2),
+            Coordinate(1, 3),
+            Coordinate(-1, 4),
+            Coordinate(-2, 4),
+            Coordinate(-3, 4),
+            Coordinate(-4, 3),
+            Coordinate(-4, 2),
+            Coordinate(-4, 1),
+            Coordinate(-3, -1),
+            Coordinate(-2, -2),
+            Coordinate(-1, -3)
+        )
+        return exits.contains(space)
     }
 
     /**
@@ -378,12 +382,10 @@ class GameService(private val rootService: RootService) {
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
             moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, (lastGemPosition + 3 % 6))
         }
-        if (neighbourTile == null) {
+        if (neighbourTile == null || !neighbourTile.gemEndPosition.contains(neighbourStart)) {
             return
         }
-        if (!neighbourTile.gemEndPosition.containsKey(neighbourStart)) {
-            return
-        }
+
         val tileGems = currentTile.gemEndPosition
         val neighbourGems = neighbourTile.gemEndPosition
         if (tileGems.contains(currentGemPosition)) {
