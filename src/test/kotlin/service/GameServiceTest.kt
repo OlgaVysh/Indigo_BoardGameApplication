@@ -74,7 +74,7 @@ class GameServiceTest {
         rootService.gameService.startGame(fourPlayers.toMutableList(), random = true)
         testGame = rootService.currentGame
         assertEquals(playerListe.size, testGame!!.players.size)
-        assertNotEquals(fourPlayers.toMutableList(),testGame.players)
+        assertNotEquals(fourPlayers.toMutableList(), testGame.players)
         for (i in playerListe.indices) {
             assertNotNull(testGame.players[i].handTile)
         }
@@ -248,19 +248,19 @@ class GameServiceTest {
         val rootService = RootService()
 
         //tileID 0 initialisieren
-        val tile0 = Tile(
+        var tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
         )
 
         //tileID 2 initialisieren
-        val tile2 = Tile(
+        var tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(SAPPHIRE)))
         )
 
         //tileID 4 initialisieren
-        val tile4 = Tile(
+        var tile4 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
         )
@@ -277,12 +277,12 @@ class GameServiceTest {
 
         //gate4 no gems after the method because is removed
         rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
-      assertEquals(0, tile0.gemEndPosition.size)
+        assertEquals(0, tile0.gemEndPosition.size)
         assertEquals(2, players[3].gemCounter)
         assertEquals(3, players[3].score)
         assertEquals(2, players[1].gemCounter)
         assertEquals(3, players[1].score)
-
+        assertEquals(10, rootService.currentGame!!.gems.size)
         //gate3 only on Gem is there
         rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
         assertEquals(1, tile2.gemEndPosition.size)
@@ -297,9 +297,30 @@ class GameServiceTest {
         assertEquals(0, players[2].gemCounter)
         assertEquals(0, players[2].score)
 
-        rootService.gameService.startGame(
-            players.subList(0, 2).toMutableList(), true
+        val twoPlayers = listOf(
+            Player("John", color = TokenColor.RED),
+            Player("Jack", color = TokenColor.BLUE)
         )
+        rootService.gameService.startGame(
+            twoPlayers.toMutableList(), true
+        )
+        tile0 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
+        )
+
+        //tileID 2 initialisieren
+        tile2 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
+            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(SAPPHIRE)))
+        )
+
+        //tileID 4 initialisieren
+        tile4 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
+            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
+        )
+
 
         indigo = rootService.currentGame
         checkNotNull(indigo)
@@ -411,11 +432,11 @@ class GameServiceTest {
         val amountBlue = game.tokens.count { it == Token(blue) }
         val amountPurple = game.tokens.count { it == Token(purple) }
         val amountWhite = game.tokens.count { it == Token(white) }
-        val amountRed = game.tokens.count {it == Token(red) }
-        assertEquals(6,amountRed)
-        assertEquals(6,amountWhite)
-        assertEquals(6,amountBlue)
-        assertEquals(6,amountPurple)
+        val amountRed = game.tokens.count { it == Token(red) }
+        assertEquals(6, amountRed)
+        assertEquals(6, amountWhite)
+        assertEquals(6, amountBlue)
+        assertEquals(6, amountPurple)
         for (i in game.tokens.indices) {
             if (i in 0 until 6) {
                 assertEquals(white, game.tokens[i].color)
