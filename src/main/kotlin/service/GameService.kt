@@ -61,7 +61,12 @@ class GameService(private val rootService: RootService) {
      * Ends the current game.
      */
     fun endGame():Boolean {
-        TODO(/*refresh*/)
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        val gems = currentGame.gems
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+        val currentPlayerTile = currentGame.players[currentPlayerIndex].handTile
+        return gems.isEmpty()||currentPlayerTile==null
     }
 
     /**
