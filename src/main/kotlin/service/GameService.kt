@@ -60,7 +60,7 @@ class GameService(private val rootService: RootService) {
     /**
      * Ends the current game.
      */
-    fun endGame() {
+    fun endGame():Boolean {
         TODO(/*refresh*/)
     }
 
