@@ -246,11 +246,18 @@ class GameService(private val rootService: RootService) {
                 //check existenz of two gems not of the same path of tile, but on the two edges beyond the gate.
                 val gem1 = tile.gemEndPosition[(0 + i) % 6]
                 val gem2 = tile.gemEndPosition[(5 + i) % 6]
+                val gems = mutableListOf<Gem>()
+                if (gem1 != null) {
+                    gems.add(gem1)
+                }
                 if (gem2 != null) {
+                    gems.add(gem2)
+                }
+                for (gem in gems) {
                     if (gateTokens[(i * 2)].color == gateTokens[(i * 2) + 1].color) {
                         for (player in players) {
                             if (player.color == gateTokens[(i * 2)].color) {
-                                assignGem(gem2, player)
+                                assignGem(gem, player)
                                 tile.gemEndPosition.remove((5 + i) % 6)
                             }
                         }
@@ -258,35 +265,15 @@ class GameService(private val rootService: RootService) {
                     } else {
                         for (player in players) {
                             if (player.color == gateTokens[(i * 2)].color) {
-                                assignGem(gem2, player)
+                                assignGem(gem, player)
                             }
                             if (player.color == gateTokens[(i * 2) + 1].color) {
-                                assignGem(gem2, player)
+                                assignGem(gem, player)
                             }
                             tile.gemEndPosition.remove((5 + i) % 6)
                         }
                     }
-                }
-                if (gem1 != null) {
-                    if (gateTokens[(i * 2)].color == gateTokens[(i * 2) + 1].color) {
-                        for (player in players) {
-                            if (player.color == gateTokens[(i * 2)].color) {
-                                assignGem(gem1, player)
-                                tile.gemEndPosition.remove((0 + i) % 6)
-                            }
-                        }
-
-                    } else {
-                        for (player in players) {
-                            if (player.color == gateTokens[(i * 2)].color) {
-                                assignGem(gem1, player)
-                            }
-                            if (player.color == gateTokens[(i * 2) + 1].color) {
-                                assignGem(gem1, player)
-                            }
-                            tile.gemEndPosition.remove((0 + i) % 6)
-                        }
-                    }
+                    currentGame.gems.remove(gem)
                 }
             }
         }
@@ -367,14 +354,18 @@ class GameService(private val rootService: RootService) {
             }
             val currentTileGem = currentTile.gemEndPosition[currentGemPosition]
             if (currentTileGem != null) {
+                currentGame.gems.remove(middleTile.gemPosition[amountOfGems-1])
+                currentGame.gems.remove(currentTile.gemEndPosition[currentGemPosition])
                 middleTile.gemPosition.remove(amountOfGems - 1)
                 currentTile.gemEndPosition.remove(currentGemPosition)
                 return
             }
             val middleTileGem = middleTile.gemPosition[amountOfGems - 1]
             val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
+            currentGame.gems.remove(middleTile.gemPosition[amountOfGems])
             middleTile.gemPosition.remove(amountOfGems - 1)
             if (currentTile.gemEndPosition[lastGemPosition] != null) {
+                currentGame.gems.remove(middleTile.gemPosition[lastGemPosition])
                 currentTile.gemEndPosition.remove(lastGemPosition)
                 return
             }
@@ -391,6 +382,8 @@ class GameService(private val rootService: RootService) {
         val neighbourGems = neighbourTile.gemEndPosition
         if (tileGems.contains(currentGemPosition)) {
             if (neighbourGems.contains(neighbourStart)) {
+                currentGame.gems.remove(tileGems[currentGemPosition])
+                currentGame.gems.remove(neighbourGems[neighbourStart])
                 tileGems.remove(currentGemPosition)
                 neighbourGems.remove(neighbourStart)
                 return
@@ -399,6 +392,8 @@ class GameService(private val rootService: RootService) {
             val currentEnd = getAnotherEdge(currentEdge, currentTile)
 
             if (neighbourGems.contains(neighbourStart) && tileGems.containsKey(currentEnd)) {
+                currentGame.gems.remove(tileGems[currentEnd])
+                currentGame.gems.remove(neighbourGems[neighbourStart])
                 tileGems.remove(currentEnd)
                 neighbourGems.remove(neighbourStart)
                 return
