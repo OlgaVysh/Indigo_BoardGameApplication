@@ -8,4 +8,4 @@ package entity
  *
  * @constructor Creates a new gem with the specified [gemColor].
  */
-class Gem(val gemColor: GemColor)
+data class Gem(val gemColor: GemColor)
