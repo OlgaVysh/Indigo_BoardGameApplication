@@ -247,7 +247,6 @@ class GameServiceTest {
     fun removeGemsReachedGateTest() {
         val rootService = RootService()
 
-
         //tileID 0 initialisieren
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
@@ -278,7 +277,7 @@ class GameServiceTest {
 
         //gate4 no gems after the method because is removed
         rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
-        assertEquals(0, tile0.gemEndPosition.size)
+      assertEquals(0, tile0.gemEndPosition.size)
         assertEquals(2, players[3].gemCounter)
         assertEquals(3, players[3].score)
         assertEquals(2, players[1].gemCounter)
@@ -360,11 +359,13 @@ class GameServiceTest {
         val testGame = rootService.currentGame
         testGame!!.gameBoard.gateTokens = createTestGateTokens(testGame, false)
         rootService.gameService.distributeNewTile()
-        val testTile = testGame.players[0].handTile
+        var testTile = testGame.players[0].handTile
         assertNotNull(testTile)
         assertEquals(tile0, testTile)
         testGame.routeTiles.clear()
-        assertThrows<IllegalStateException> { gameService.distributeNewTile() }
+        gameService.distributeNewTile()
+        testTile = testGame.players[0].handTile
+        assertNull(testTile)
     }
 
     /**

@@ -60,13 +60,13 @@ class GameService(private val rootService: RootService) {
     /**
      * Ends the current game.
      */
-    fun endGame():Boolean {
+    fun endGame(): Boolean {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val gems = currentGame.gems
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val currentPlayerTile = currentGame.players[currentPlayerIndex].handTile
-        return gems.isEmpty()||currentPlayerTile==null
+        return gems.isEmpty() || currentPlayerTile == null
     }
 
     /**
@@ -258,7 +258,9 @@ class GameService(private val rootService: RootService) {
                         for (player in players) {
                             if (player.color == gateTokens[(i * 2)].color) {
                                 assignGem(gem, player)
-                                tile.gemEndPosition.remove((5 + i) % 6)
+                                if (gem == gem2)
+                                    tile.gemEndPosition.remove((5 + i) % 6)
+                                if (gem1 == gem) tile.gemEndPosition.remove((0 + i) % 6)
                             }
                         }
 
@@ -270,7 +272,11 @@ class GameService(private val rootService: RootService) {
                             if (player.color == gateTokens[(i * 2) + 1].color) {
                                 assignGem(gem, player)
                             }
-                            tile.gemEndPosition.remove((5 + i) % 6)
+                            if (gem == gem2)
+                                tile.gemEndPosition.remove((5 + i) % 6)
+                            if (gem1 == gem)
+                                tile.gemEndPosition.remove((0 + i) % 6)
+
                         }
                     }
                     currentGame.gems.remove(gem)
@@ -354,7 +360,7 @@ class GameService(private val rootService: RootService) {
             }
             val currentTileGem = currentTile.gemEndPosition[currentGemPosition]
             if (currentTileGem != null) {
-                currentGame.gems.remove(middleTile.gemPosition[amountOfGems-1])
+                currentGame.gems.remove(middleTile.gemPosition[amountOfGems - 1])
                 currentGame.gems.remove(currentTile.gemEndPosition[currentGemPosition])
                 middleTile.gemPosition.remove(amountOfGems - 1)
                 currentTile.gemEndPosition.remove(currentGemPosition)
@@ -414,7 +420,7 @@ class GameService(private val rootService: RootService) {
     fun distributeNewTile() {
         val game = rootService.currentGame
         checkNotNull(game)
-        if(game.routeTiles.isEmpty()){
+        if (game.routeTiles.isEmpty()) {
             game.players[game.currentPlayerIndex].handTile = null
             return
         }
