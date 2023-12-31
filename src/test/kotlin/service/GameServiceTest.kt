@@ -92,6 +92,32 @@ class GameServiceTest {
      */
     @Test
     fun endGameTest() {
+        assertThrows<IllegalStateException> { gameService.endGame() }
+        gameService.startGame(fourPlayers.toMutableList())
+        assertFalse(gameService.endGame())
+
+        //no more gems in the field
+        rootService.currentGame!!.gems.clear()
+        assertTrue(gameService.endGame())
+
+        //no more routeTiles in the game
+        gameService.startGame(fourPlayers.toMutableList())
+        rootService.currentGame!!.routeTiles.clear()
+        repeat(4) {
+            gameService.distributeNewTile()
+            gameService.changePlayer()
+        }
+        assertTrue(gameService.endGame())
+
+        //no more gems in the game and no more
+        gameService.startGame(fourPlayers.toMutableList())
+        rootService.currentGame!!.routeTiles.clear()
+        rootService.currentGame!!.gems.clear()
+        repeat(4) {
+            gameService.distributeNewTile()
+            gameService.changePlayer()
+        }
+        assertTrue(gameService.endGame())
     }
 
     /**
@@ -237,6 +263,7 @@ class GameServiceTest {
      */
     @Test
     fun moveGemsTest() {
+
     }
 
     /**
