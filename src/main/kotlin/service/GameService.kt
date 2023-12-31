@@ -414,7 +414,10 @@ class GameService(private val rootService: RootService) {
     fun distributeNewTile() {
         val game = rootService.currentGame
         checkNotNull(game)
-        check(game.routeTiles.size > 0)
+        if(game.routeTiles.isEmpty()){
+            game.players[game.currentPlayerIndex].handTile = null
+            return
+        }
         game.players[game.currentPlayerIndex].handTile = game.routeTiles.removeFirst()
         //Refresh
     }
