@@ -65,7 +65,7 @@ class PlayerTurnServiceTest {
         placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, -1)]
         assertNotNull(placedTile)
         assertEquals(0, placedTile!!.gemEndPosition.size)
-        //assertEquals(8, rootService.currentGame!!.gems.size)
+        assertEquals(8, rootService.currentGame!!.gems.size)
     }
 
     /**
