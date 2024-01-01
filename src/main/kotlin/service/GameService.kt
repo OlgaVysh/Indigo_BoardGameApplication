@@ -59,16 +59,21 @@ class GameService(private val rootService: RootService) {
             changePlayer()
         }
     }
-
     /**
-     * Restarts the game by invoking the startGame function with default parameters.
+     * Restarts the game with the specified parameters or default values.
      *
-     * This function resets the game state by calling the startGame function with default values.
-     * It is equivalent to starting a new game with an empty list of players, a notSharedGate parameter set to false,
-     * and a random parameter set to false.
+     * This function resets the game state by invoking the startGame function with the given list
+     * of players, gate-sharing setting, and randomization option. If no parameters are provided,
+     * the game is restarted with an empty list of players, notSharedGate set to false, and random set to false.
+     *
+     * @param players The list of players participating in the restarted game.
+     * @param notSharedGate A boolean indicating whether players share the same gate token.
+     * @param random A boolean indicating whether to randomize the order of players.
      */
-    fun restartGame() {
-        return this.startGame(players = mutableListOf(), notSharedGate = false, random = false)
+    fun restartGame( players: MutableList<Player> = mutableListOf(),
+                     notSharedGate: Boolean = false,
+                     random: Boolean = false) {
+        return this.startGame(players,notSharedGate,random)
     }
 
     /**
