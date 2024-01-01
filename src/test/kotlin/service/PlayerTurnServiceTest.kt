@@ -45,7 +45,7 @@ class PlayerTurnServiceTest {
         /* Initialisierung Ihrer Kachel für den Test*/
         var coordinate = Coordinate(-1, 1)
         assertThrows<IllegalStateException> { playerTurnService.placeRouteTile(coordinate, testTile) }
-        rootService.gameService.startGame(players)
+        rootService.gameService.startGame(players,true)
         assertThrows<Exception> { playerTurnService.placeRouteTile(Coordinate(0, 0), tile) }
         playerTurnService.rotateTileLeft(tile)
         playerTurnService.placeRouteTile(Coordinate(-1, 0), tile)
@@ -54,6 +54,8 @@ class PlayerTurnServiceTest {
         var placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, 0)]
         assertNotNull(placedTile)
         assertEquals(0, placedTile!!.gemEndPosition.size)
+        assertEquals(10, rootService.currentGame!!.gems.size)
+
         repeat(2) { playerTurnService.rotateTileRight(tile) }
         tile.gemEndPosition.clear()
         tile.gemEndPosition[5] = Gem(GemColor.AMBER)
@@ -63,6 +65,7 @@ class PlayerTurnServiceTest {
         placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, -1)]
         assertNotNull(placedTile)
         assertEquals(0, placedTile!!.gemEndPosition.size)
+        //assertEquals(8, rootService.currentGame!!.gems.size)
     }
 
     /**

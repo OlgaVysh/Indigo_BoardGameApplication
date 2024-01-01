@@ -95,14 +95,23 @@ class PlayerTurnService(private val rootService: RootService) {
     }
 
     fun Indigo.copyTo(): Indigo {
-
+        val copiedGems = mutableListOf<Gem>()
+        for(gem in gems){
+            copiedGems.add(gem)
+        }
+        val copiedGameBoardTiles = gameBoard.gameBoardTiles.toMutableMap()
+        val copiedGateTokens = this.gameBoard.gateTokens.toList()
+        val copiedGameBoard = GameBoard()
+        copiedGameBoard.gameBoardTiles.putAll(copiedGameBoardTiles)
+        copiedGameBoard.gateTokens = copiedGateTokens
         val copiedIndigo = Indigo(
             this.settings,
-            this.gameBoard,
+            copiedGameBoard,
             this.allTiles,
-            this.gems,
+            copiedGems,
             this.tokens
         )
+
         for (i in players.indices){
             copiedIndigo.players[i].gemCounter  = this.players[i].gemCounter
             copiedIndigo.players[i].handTile = this.players[i].handTile
