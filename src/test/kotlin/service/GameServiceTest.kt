@@ -263,7 +263,9 @@ class GameServiceTest {
      */
     @Test
     fun moveGemsTest() {
-
+        assertThrows<IllegalStateException> {
+            gameService.moveGems(Coordinate(0, 1), Coordinate(1, 1), 2)
+        }
     }
 
     /**
