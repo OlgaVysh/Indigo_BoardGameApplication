@@ -43,7 +43,7 @@ class PlayerTurnServiceTest {
         val tile = testTile
         testTile.gemEndPosition[3] = Gem(GemColor.AMBER)
         /* Initialisierung Ihrer Kachel für den Test*/
-        var coordinate = Coordinate(-1, 1)
+        val coordinate = Coordinate(-1, 1)
         assertThrows<IllegalStateException> { playerTurnService.placeRouteTile(coordinate, testTile) }
         rootService.gameService.startGame(players,true)
         assertThrows<Exception> { playerTurnService.placeRouteTile(Coordinate(0, 0), tile) }
