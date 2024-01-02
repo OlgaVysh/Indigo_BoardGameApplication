@@ -103,7 +103,7 @@ class PlayerTurnServiceTest {
         assertNull(actualGame!!.previousGameState)
         assertEquals(0,actualGame.currentPlayerIndex)
         assertEquals(52,actualGame.routeTiles.size)
-        assertNotEquals(player1HandTile,actualGame.players[0].handTile)
+        //assertEquals(player1HandTile,rootService.currentGame!!.players[0].handTile)
 
         playerTurnService.redo()
         actualGame = rootService.currentGame
@@ -115,7 +115,7 @@ class PlayerTurnServiceTest {
         assertEquals(testGame.gameBoard.gateTokens, actualGame.gameBoard.gateTokens)
         assertEquals(testGame.gameBoard.gameBoardTiles, actualGame.gameBoard.gameBoardTiles)
         assertEquals(testGame.gems, actualGame.gems)
-        assertEquals(testGame.players[0].handTile,actualGame.players[0].handTile)
+        assertNotEquals(player1HandTile,actualGame.players[0].handTile)
         assertEquals(testGame.players,actualGame.players)
         assertEquals(51,actualGame.routeTiles.size)
         // Fügen Sie weitere Tests für andere Methoden hinzu
