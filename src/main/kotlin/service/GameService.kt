@@ -459,7 +459,7 @@ class GameService(private val rootService: RootService) {
             return
         }
         game.players[game.currentPlayerIndex].handTile = game.routeTiles.removeFirst()
-        //Refresh
+        //TODO(/*refreshables*/)
     }
 
     /**

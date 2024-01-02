@@ -37,7 +37,7 @@ class PlayerTurnServiceTest {
     @Test
     fun testPlaceRouteTile() {
         // Hier können Sie Ihre Testlogik für placeRouteTile implementieren
-        // Zum Beispiel: Überprüfen Sie, ob das Platzieren eines gültigen Kacheln an einer gültigen Stelle funktioniert.
+        // zum Beispiel: Überprüfen Sie, ob das Platzieren einem gültigen Kacheln an einer gültigen Stelle funktioniert.
 
         // Beispiel:
         val tile = testTile
@@ -77,7 +77,7 @@ class PlayerTurnServiceTest {
         assertThrows<IllegalStateException> { playerTurnService.redo() }
         assertThrows<IllegalStateException> { playerTurnService.undo() }
         // Hier können Sie Ihre Testlogik für undo und redo implementieren
-        // Zum Beispiel: Überprüfen Sie, ob das Undo und Redo wie erwartet funktioniert.
+        // zum Beispiel: Überprüfen Sie, ob das Undo und Redo wie erwartet funktioniert.
         gameService.startGame(players)
         val testGame = rootService.currentGame
         val player1HandTile = rootService.currentGame!!.players[0].handTile
