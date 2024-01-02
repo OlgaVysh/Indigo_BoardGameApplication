@@ -314,18 +314,18 @@ class GameServiceTest {
             gameService.moveGems(Coordinate(0, 1), Coordinate(1, 1), 2)
         }
         gameService.startGame(fourPlayers.toMutableList())
-        rootService.playerTurnService.placeRouteTile(Coordinate(0, 3), tile0)
+        rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), tile0)
         val treasureTile2 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
-        val firstPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]
-        assertEquals(0, treasureTile2!!.gemEndPosition.size)
-        assertNotNull(firstPlacedTile!!.gemEndPosition[4])
+        val firstPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]
+
         val testTile1 = Tile(listOf(Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),
             Pair(Edge.THREE, Edge.FIVE)))
-        rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), testTile1)
-        val secondPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]
-        assertNull(firstPlacedTile.gemEndPosition[4])
-        assertNotNull(secondPlacedTile!!.gemEndPosition[4])
+        rootService.playerTurnService.placeRouteTile(Coordinate(0, 3), testTile1)
+        val secondPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]
+        assertNotNull(firstPlacedTile!!.gemEndPosition[4])
+        assertNull(secondPlacedTile!!.gemEndPosition[4])
+        assertEquals(0, treasureTile2!!.gemEndPosition.size)
         val testTile2 = Tile(listOf(Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),
             Pair(Edge.THREE, Edge.FIVE)))
@@ -335,6 +335,25 @@ class GameServiceTest {
         val placedTile2 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,1)]
         assertNotNull(placedTile2)
         assertEquals(0,placedTile2!!.gemEndPosition.size)
+        testTile2.gemEndPosition.clear()
+        testTile1.gemEndPosition.clear()
+        testTile1.gemEndPosition[1] = Gem(AMBER)
+        testTile2.gemEndPosition[4] = Gem(AMBER)
+        rootService.playerTurnService.placeRouteTile(Coordinate(2,2),testTile1)
+        rootService.playerTurnService.placeRouteTile(Coordinate(2,3),testTile2)
+        assertEquals(0,testTile2.gemEndPosition.size)
+        assertEquals(0,testTile1.gemEndPosition.size)
+        assertEquals(8,rootService.currentGame!!.gems.size)
+
+        testTile2.gemEndPosition.clear()
+        testTile1.gemEndPosition.clear()
+        testTile1.gemEndPosition[1] = Gem(AMBER)
+        testTile2.gemEndPosition[1] = Gem(AMBER)
+        rootService.playerTurnService.placeRouteTile(Coordinate(-2,3),testTile1)
+        rootService.playerTurnService.placeRouteTile(Coordinate(-2,2),testTile2)
+        assertEquals(0,testTile2.gemEndPosition.size)
+        assertEquals(0,testTile1.gemEndPosition.size)
+        assertEquals(6,rootService.currentGame!!.gems.size)
     }
 
     /**
