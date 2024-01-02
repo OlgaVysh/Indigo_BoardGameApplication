@@ -313,6 +313,28 @@ class GameServiceTest {
         assertThrows<IllegalStateException> {
             gameService.moveGems(Coordinate(0, 1), Coordinate(1, 1), 2)
         }
+        gameService.startGame(fourPlayers.toMutableList())
+        rootService.playerTurnService.placeRouteTile(Coordinate(0, 3), tile0)
+        val treasureTile2 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
+        val firstPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]
+        assertEquals(0, treasureTile2!!.gemEndPosition.size)
+        assertNotNull(firstPlacedTile!!.gemEndPosition[4])
+        val testTile1 = Tile(listOf(Pair(Edge.ZERO, Edge.TWO),
+            Pair(Edge.ONE, Edge.FOUR),
+            Pair(Edge.THREE, Edge.FIVE)))
+        rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), testTile1)
+        val secondPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]
+        assertNull(firstPlacedTile.gemEndPosition[4])
+        assertNotNull(secondPlacedTile!!.gemEndPosition[4])
+        val testTile2 = Tile(listOf(Pair(Edge.ZERO, Edge.TWO),
+            Pair(Edge.ONE, Edge.FOUR),
+            Pair(Edge.THREE, Edge.FIVE)))
+        rootService.playerTurnService.placeRouteTile(Coordinate(0, 1), testTile2)
+        assertEquals(10,rootService.currentGame!!.gems.size)
+        assertEquals(5,rootService.currentGame!!.middleTile.gemPosition.size)
+        val placedTile2 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,1)]
+        assertNotNull(placedTile2)
+        assertEquals(0,placedTile2!!.gemEndPosition.size)
     }
 
     /**
