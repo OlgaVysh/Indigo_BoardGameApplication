@@ -51,6 +51,8 @@ class GameServiceTest {
         rootService.gameService.startGame(
             fourPlayers.toMutableList()
         )
+        var testGame = rootService.currentGame
+        assertNotNull(testGame)
 
         val player1 = Player("Alice", Date(0), TokenColor.WHITE, false)
         val player2 = Player("Bob", Date(0), TokenColor.PURPLE, false)
@@ -58,8 +60,7 @@ class GameServiceTest {
         val player4 = Player("Jack", Date(0), TokenColor.RED, false)
         val playerListe = mutableListOf(player1, player2, player3, player4)
         playerListe.toList()
-        var testGame = rootService.currentGame
-        assertNotNull(rootService.currentGame)
+
 
         assertEquals(playerListe.size, testGame!!.players.size)
         for (i in playerListe.indices) {
@@ -85,6 +86,37 @@ class GameServiceTest {
      */
     @Test
     fun restartGameTest() {
+        assertNull(rootService.currentGame)
+        rootService.gameService.restartGame(
+            fourPlayers.toMutableList(), notSharedGate = false, random = false
+        )
+        var testGame = rootService.currentGame
+        assertNotNull(rootService.currentGame)
+
+        val player1 = Player("Alice", Date(0), TokenColor.WHITE, false)
+        val player2 = Player("Bob", Date(0), TokenColor.PURPLE, false)
+        val player3 = Player("Emily", Date(0), TokenColor.BLUE, false)
+        val player4 = Player("Jack", Date(0), TokenColor.RED, false)
+        val playerListe = mutableListOf(player1, player2, player3, player4)
+        playerListe.toList()
+
+
+        assertEquals(playerListe.size, testGame!!.players.size)
+        for (i in playerListe.indices) {
+            assertEquals(playerListe[i].name, testGame.players[i].name)
+            assertEquals(playerListe[i].color, testGame.players[i].color)
+            assertNotNull(testGame.players[i].handTile)
+        }
+        assertEquals(0, testGame.currentPlayerIndex)
+        assertEquals(50, testGame.routeTiles.size)
+
+        rootService.gameService.restartGame(fourPlayers.toMutableList(), notSharedGate = true, random = true)
+        testGame = rootService.currentGame
+        assertEquals(playerListe.size, testGame!!.players.size)
+        assertNotEquals(fourPlayers.toMutableList(), testGame.players)
+        for (i in playerListe.indices) {
+            assertNotNull(testGame.players[i].handTile)
+        }
     }
 
     /**
@@ -152,7 +184,7 @@ class GameServiceTest {
             mutableMapOf(Pair(1, Gem(EMERALD)))
         )
 
-        //rotate tile0 and place it in (-1,-3) ,dann check that the place is ocuppied for other tile.
+        //rotate tile0 and place it in (-1,-3) ,dann check that the place is occupied for other tile.
         rootService.playerTurnService.rotateTileRight(tile0)
         assertFalse(rootService.gameService.checkPlacement(Coordinate(0, 0), tile4))
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0))
@@ -161,7 +193,7 @@ class GameServiceTest {
         }
         assertEquals(exception1.message, "this place is occupied")
 
-        //rotate tile2 and place it in (-2,-2) ,dann check that the gate is blocked, then rotate right and place it,then the place is ocuppied for other tile.
+        //rotate tile2 and place it in (-2,-2) ,dann check that the gate is blocked, then rotate right and place it,then the place is occupied for other tile.
         rootService.playerTurnService.rotateTileLeft(tile2)
         val exception2 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2)
@@ -174,7 +206,7 @@ class GameServiceTest {
         }
         assertEquals(exception3.message, "this place is occupied")
 
-        //rotate tile4 and place it in (-3,-1) ,dann check that the gate is blocked, then rotate right und the place is ocuppied for other tile.
+        //rotate tile4 and place it in (-3,-1) ,dann check that the gate is blocked, then rotate right und the place is occupied for other tile.
         rootService.playerTurnService.rotateTileLeft(tile4)
         val exception4 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-3, -1), tile4)
@@ -227,6 +259,16 @@ class GameServiceTest {
 
     @Test
     fun saveGameTest() {
+        /*assertNull(rootService.currentGame)
+        rootService.gameService.startGame(
+            fourPlayers.toMutableList()
+        )
+        assertNotNull(rootService.currentGame)
+        val filePath = "test/gameFile.json"
+        rootService.gameService.saveGame(filePath)
+        rootService.currentGame=null
+        rootService.gameService.loadGame(filePath)
+        assertNotNull(rootService.currentGame)*/
     }
 
     /**
@@ -234,6 +276,11 @@ class GameServiceTest {
      */
     @Test
     fun loadGameTest() {
+        /* assertNull(rootService.currentGame)
+
+         val Path = "test/gameFile1.json"
+         rootService.gameService.loadGame(Path)
+         assertNotNull(rootService.currentGame)*/
     }
 
     /**
@@ -312,7 +359,7 @@ class GameServiceTest {
         assertEquals(2, players[1].gemCounter)
         assertEquals(3, players[1].score)
         assertEquals(10, rootService.currentGame!!.gems.size)
-        //gate3 only on Gem is there
+        //gate3 only one Gem is there
         rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
         assertEquals(1, tile2.gemEndPosition.size)
         assertEquals(3, players[3].gemCounter)
@@ -333,6 +380,8 @@ class GameServiceTest {
         rootService.gameService.startGame(
             twoPlayers.toMutableList(), true
         )
+
+        //tileID 0 initialisieren
         tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))

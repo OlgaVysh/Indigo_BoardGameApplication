@@ -9,9 +9,19 @@ import java.lang.Exception
  */
 class GameService(private val rootService: RootService) {
     /**
-     * Starts a new game with the specified list of players or an empty list if none is provided.
+     * Starts a new game with the specified parameters or default values.
      *
-     * @param players A mutable list of players. Defaults to an empty list if none is provided.
+     * This function initializes a new game with the given list of players, gate-sharing setting,
+     * and randomization option. If 'random' is set to true, the order of players is shuffled.
+     *
+     * The game includes a game board, treasure tiles, gems, tokens, and other game elements.
+     * The initial positions of the treasure tiles are set on the game board. Players are then
+     * assigned initial tiles and take their turns in a shuffled order, with each player receiving
+     * a new tile and the turn being changed until all players have their initial tiles.
+     *
+     * @param players The list of players participating in the game.
+     * @param notSharedGate A boolean indicating whether players share the same gate token.
+     * @param random A boolean indicating whether to randomize the order of players.
      */
     fun startGame(
         players: MutableList<Player> = mutableListOf(),
@@ -49,16 +59,31 @@ class GameService(private val rootService: RootService) {
             changePlayer()
         }
     }
-
     /**
-     * Restarts the current game.
+     * Restarts the game with the specified parameters or default values.
+     *
+     * This function resets the game state by invoking the startGame function with the given list
+     * of players, gate-sharing setting, and randomization option. If no parameters are provided,
+     * the game is restarted with an empty list of players, notSharedGate set to false, and random set to false.
+     *
+     * @param players The list of players participating in the restarted game.
+     * @param notSharedGate A boolean indicating whether players share the same gate token.
+     * @param random A boolean indicating whether to randomize the order of players.
      */
-    fun restartGame() {
-        return this.startGame(players = mutableListOf())
+    fun restartGame( players: MutableList<Player> = mutableListOf(),
+                     notSharedGate: Boolean = false,
+                     random: Boolean = false) {
+        return this.startGame(players,notSharedGate,random)
     }
 
     /**
-     * Ends the current game.
+     * Checks whether the current game has ended.
+     *
+     * This function determines if the game has reached its conclusion based on two conditions:
+     * 1. All gems have been collected.
+     * 2. The current player has no hand tile remaining.
+     *
+     * @return `true` if the game has ended, `false` otherwise.
      */
     fun endGame(): Boolean {
         val currentGame = rootService.currentGame
@@ -207,8 +232,14 @@ class GameService(private val rootService: RootService) {
     }
 
     /**
-     *Function for checking if the moving gems are colliding
-     *@param tile: Route tiles on the game board
+     * Checks for collisions between gems at the beginning and end of paths on the given tile.
+     *
+     * This function examines each path on the provided tile to determine if gems are present at both
+     * the beginning and end of the path. If such a collision is detected, the gems are considered
+     * to be colliding, and the collision is resolved by removing the gems from their positions.
+     *
+     * @param tile The tile to check for gem collisions.
+     * @return `true` if a collision is detected and resolved, `false` otherwise.
      */
     fun checkCollision(tile: Tile): Boolean {
         for (path in tile.paths) {
@@ -431,7 +462,13 @@ class GameService(private val rootService: RootService) {
     }
 
     /**
-     * @return [List] of [Tile]s, first 6 are treasure tiles starting at the top right of the board going clockwise
+     * Initializes and returns a MutableList of Tile objects representing the game's tiles.
+     *
+     * This function creates a list of tiles with specific configurations, including paths and
+     * gem positions. The tiles include gems at the starting and ending positions of paths,
+     * and different types of route tiles with various path configurations.
+     *
+     * @return A MutableList containing the initialized Tile objects.
      */
     private fun initializeTiles(): MutableList<Tile> {
         val allTiles: MutableList<Tile> = mutableListOf()
@@ -488,7 +525,12 @@ class GameService(private val rootService: RootService) {
     }
 
     /**
-     * @return list of all [Gem]s not on the board at the start of a game (6 Amber, 5 Emerald, 1 Sapphire)
+     * Initializes and returns a MutableList of Gem objects representing the game's gems.
+     *
+     * This function creates a list of gems with specific colors and quantities. The list includes
+     * six gems of Amber color, five gems of Emerald color, and one gem of Sapphire color.
+     *
+     * @return A MutableList containing the initialized Gem objects.
      */
     fun initializeGems(): MutableList<Gem> {
         val gems: MutableList<Gem> = mutableListOf()
