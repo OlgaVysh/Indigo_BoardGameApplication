@@ -224,13 +224,7 @@ class GameService(private val rootService: RootService) {
             if (path.first == edge1) secondEdge = path.second
             if (path.second == edge1) secondEdge = path.first
         }
-        var indexInEdges = 0
-        // Find the index of the second edge in the edges list
-        for (i in edges.indices) {
-            if (secondEdge!! == edges[i]) {
-                indexInEdges = i
-            }
-        }
+        val indexInEdges = edges.indexOf(secondEdge)
         return indexInEdges
     }
 
@@ -416,14 +410,15 @@ class GameService(private val rootService: RootService) {
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
             moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, (lastGemPosition + 3 % 6))
         }
-        if (neighbourTile == null || !neighbourTile.gemEndPosition.contains(neighbourStart)) {
+        if (neighbourTile == null ) {
             return
         }
 
         val tileGems = currentTile.gemEndPosition
         val neighbourGems = neighbourTile.gemEndPosition
-        val currentEdge = currentTile.edges[currentGemPosition]
-        val currentEnd = getAnotherEdge(currentEdge, currentTile)
+        val neighborEdge = neighbourTile.edges[neighbourStart]
+        val neighborEnd = getAnotherEdge(neighborEdge,neighbourTile)
+
         if (tileGems.contains(currentGemPosition)) {
             if (neighbourGems.contains(neighbourStart)) {
                 currentGame.gems.remove(tileGems[currentGemPosition])
@@ -432,18 +427,18 @@ class GameService(private val rootService: RootService) {
                 neighbourGems.remove(neighbourStart)
                 return
             }
-            val currentEdge = currentTile.edges[currentGemPosition]
-            val currentEnd = getAnotherEdge(currentEdge, currentTile)
 
-            if (neighbourGems.contains(neighbourStart) && tileGems.containsKey(currentEnd)) {
-                currentGame.gems.remove(tileGems[currentEnd])
-                currentGame.gems.remove(neighbourGems[neighbourStart])
-                tileGems.remove(currentEnd)
-                neighbourGems.remove(neighbourStart)
+            if (neighbourGems.contains(neighborEnd)) {
+                currentGame.gems.remove(tileGems[currentGemPosition])
+                currentGame.gems.remove(neighbourGems[neighborEnd])
+                tileGems.remove(currentGemPosition)
+                neighbourGems.remove(neighborEnd)
                 return
             }
         }
-
+        if(!neighbourTile.gemEndPosition.contains(neighbourStart))return
+        val currentEdge = currentTile.edges[currentGemPosition]
+        val currentEnd = getAnotherEdge(currentEdge, currentTile)
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
         removeGemsReachedGate(currentTile, currentCoordinate)
