@@ -59,6 +59,7 @@ class GameService(private val rootService: RootService) {
             changePlayer()
         }
     }
+
     /**
      * Restarts the game with the specified parameters or default values.
      *
@@ -70,10 +71,12 @@ class GameService(private val rootService: RootService) {
      * @param notSharedGate A boolean indicating whether players share the same gate token.
      * @param random A boolean indicating whether to randomize the order of players.
      */
-    fun restartGame( players: MutableList<Player> = mutableListOf(),
-                     notSharedGate: Boolean = false,
-                     random: Boolean = false) {
-        return this.startGame(players,notSharedGate,random)
+    fun restartGame(
+        players: MutableList<Player> = mutableListOf(),
+        notSharedGate: Boolean = false,
+        random: Boolean = false
+    ) {
+        return this.startGame(players, notSharedGate, random)
     }
 
     /**
@@ -419,6 +422,8 @@ class GameService(private val rootService: RootService) {
 
         val tileGems = currentTile.gemEndPosition
         val neighbourGems = neighbourTile.gemEndPosition
+        val currentEdge = currentTile.edges[currentGemPosition]
+        val currentEnd = getAnotherEdge(currentEdge, currentTile)
         if (tileGems.contains(currentGemPosition)) {
             if (neighbourGems.contains(neighbourStart)) {
                 currentGame.gems.remove(tileGems[currentGemPosition])
@@ -437,11 +442,12 @@ class GameService(private val rootService: RootService) {
                 neighbourGems.remove(neighbourStart)
                 return
             }
-            tileGems.remove(currentGemPosition)
-            neighbourGems[currentEnd] = neighbourGems[neighbourStart]!!
-            removeGemsReachedGate(currentTile, currentCoordinate)
-            moveGems(neighborCoordinates[currentEnd], currentCoordinate, (currentEnd + 3 % 6))
         }
+
+        currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
+        neighbourGems.remove(neighbourStart)
+        removeGemsReachedGate(currentTile, currentCoordinate)
+        moveGems(neighborCoordinates[currentEnd], currentCoordinate, (currentEnd + 3) % 6)
     }
 
 
@@ -566,12 +572,13 @@ class GameService(private val rootService: RootService) {
     fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
         val neighbors = mutableListOf<Coordinate>()
         //hexagonal grid
-        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
+
         neighbors.add(Coordinate(coordinate.row - 1, coordinate.column + 1))  // Top-right
         neighbors.add(Coordinate(coordinate.row, coordinate.column + 1))      // Bottom-right
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column))      // Below
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column - 1))  // Bottom-left
         neighbors.add(Coordinate(coordinate.row, coordinate.column - 1)) // Top-left
+        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
         return neighbors
     }
 
