@@ -8,6 +8,6 @@ package entity
  * defaults to an empty map.
  * @property edges List of edges on the tile.
  */
-data class Tile(var paths: List<Pair<Edge,Edge>>,var gemEndPosition: MutableMap<Int, Gem> = mutableMapOf()) {
+data class Tile(val paths: List<Pair<Edge,Edge>>,val gemEndPosition: MutableMap<Int, Gem> = mutableMapOf()) {
     val edges: MutableList<Edge> = mutableListOf(Edge.ZERO, Edge.ONE, Edge.TWO, Edge.THREE, Edge.FOUR, Edge.FIVE)
 }
