@@ -80,6 +80,7 @@ class PlayerTurnServiceTest {
         // Zum Beispiel: Überprüfen Sie, ob das Undo und Redo wie erwartet funktioniert.
         gameService.startGame(players)
         val testGame = rootService.currentGame
+        val player1HandTile = rootService.currentGame!!.players[0].handTile
         assertNotNull(testGame)
         // Hier können Sie Aktionen ausführen, um das Spielzustand zu ändern
         // Führen Sie undo und redo durch
@@ -89,13 +90,34 @@ class PlayerTurnServiceTest {
         var actualGame = rootService.currentGame
         assertNull(actualGame!!.nextGameState)
         assertNotNull(actualGame.previousGameState)
-        assertEquals(testGame, actualGame)
+        assertEquals(testGame!!.gameBoard.gateTokens, actualGame.gameBoard.gateTokens)
+        assertEquals(testGame.gameBoard.gameBoardTiles, actualGame.gameBoard.gameBoardTiles)
+        assertEquals(testGame.gems, actualGame.gems)
+        assertEquals(testGame.players[0].handTile,actualGame.players[0].handTile)
+        assertEquals(testGame.players,actualGame.players)
+        assertEquals(testGame.routeTiles,actualGame.routeTiles)
+        assertEquals(51,actualGame.routeTiles.size)
+
         playerTurnService.undo()
-        assertNull(rootService.currentGame!!.previousGameState)
+        actualGame = rootService.currentGame
+        assertNull(actualGame!!.previousGameState)
+        assertEquals(0,actualGame.currentPlayerIndex)
+        assertEquals(52,actualGame.routeTiles.size)
+        assertNotEquals(player1HandTile,actualGame.players[0].handTile)
+
         playerTurnService.redo()
+        actualGame = rootService.currentGame
         assertEquals(actualGame, rootService.currentGame)
         assertNull(rootService.currentGame!!.nextGameState)
         assertNotNull(rootService.currentGame!!.previousGameState)
+        assertNull(actualGame!!.nextGameState)
+        assertNotNull(actualGame.previousGameState)
+        assertEquals(testGame.gameBoard.gateTokens, actualGame.gameBoard.gateTokens)
+        assertEquals(testGame.gameBoard.gameBoardTiles, actualGame.gameBoard.gameBoardTiles)
+        assertEquals(testGame.gems, actualGame.gems)
+        assertEquals(testGame.players[0].handTile,actualGame.players[0].handTile)
+        assertEquals(testGame.players,actualGame.players)
+        assertEquals(51,actualGame.routeTiles.size)
         // Fügen Sie weitere Tests für andere Methoden hinzu
 
     }
