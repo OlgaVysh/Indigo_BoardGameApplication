@@ -586,18 +586,12 @@ class GameService(private val rootService: RootService) {
                 gateTokens.add(Token(players[3].color))
             }
             if (playerSize == 3) {
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[2].color))
-                gateTokens.add(Token(players[0].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[1].color))
-                gateTokens.add(Token(players[2].color))
+                for (i in 0 until 3) {
+                    gateTokens.add(Token(players[i * 2 % 3].color))
+                    gateTokens.add(Token(players[i * 2 % 3].color))
+                    gateTokens.add(Token(players[i * 2 % 3].color))
+                    gateTokens.add(Token(players[(i * 2 + 1) % 3].color))
+                }
             }
         }
         return gateTokens
