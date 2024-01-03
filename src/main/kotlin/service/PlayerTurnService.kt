@@ -94,6 +94,12 @@ class PlayerTurnService(private val rootService: RootService) {
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
     }
 
+    /**
+     *  the extension function [copyTo] is a function wich create a deep copy of Indigo
+     *  with the necessary data
+     *
+     *  @return Returning a new [Indigo] which are independent of the current game
+     */
     private fun Indigo.copyTo(): Indigo {
         val copiedGems = mutableListOf<Gem>()
         for(gem in gems){
@@ -116,7 +122,6 @@ class PlayerTurnService(private val rootService: RootService) {
             val copiedHandTile: Tile? = players[i].handTile?.paths.let {
                 it?.let { it1 -> Tile(it1.toList()) }
             }
-
             copiedIndigo.players[i].gemCounter  = this.players[i].gemCounter
             copiedIndigo.players[i].handTile = copiedHandTile
             copiedIndigo.players[i].score = this.players[i].score
