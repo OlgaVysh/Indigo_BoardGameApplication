@@ -103,7 +103,7 @@ class PlayerTurnServiceTest {
         assertNull(actualGame!!.previousGameState)
         assertEquals(0,actualGame.currentPlayerIndex)
         assertEquals(52,actualGame.routeTiles.size)
-        //assertEquals(player1HandTile,rootService.currentGame!!.players[0].handTile)
+        assertEquals(player1HandTile,rootService.currentGame!!.players[0].handTile)
 
         playerTurnService.redo()
         actualGame = rootService.currentGame
