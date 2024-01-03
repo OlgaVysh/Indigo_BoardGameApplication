@@ -113,9 +113,10 @@ class PlayerTurnService(private val rootService: RootService) {
         )
 
         for (i in players.indices){
-            val copiedHandTile : Tile? =  players[i].handTile?.let {
-                Tile(it.paths.toList())
+            val copiedHandTile: Tile? = players[i].handTile?.paths.let {
+                it?.let { it1 -> Tile(it1.toList()) }
             }
+
             copiedIndigo.players[i].gemCounter  = this.players[i].gemCounter
             copiedIndigo.players[i].handTile = copiedHandTile
             copiedIndigo.players[i].score = this.players[i].score
