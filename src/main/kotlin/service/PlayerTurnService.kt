@@ -102,7 +102,7 @@ class PlayerTurnService(private val rootService: RootService) {
      */
     private fun Indigo.copyTo(): Indigo {
         val copiedGems = mutableListOf<Gem>()
-        for(gem in gems){
+        for (gem in gems) {
             copiedGems.add(gem)
         }
         val copiedGameBoardTiles = gameBoard.gameBoardTiles.toMutableMap()
@@ -110,33 +110,26 @@ class PlayerTurnService(private val rootService: RootService) {
         val copiedGameBoard = GameBoard()
         copiedGameBoard.gameBoardTiles.putAll(copiedGameBoardTiles)
         copiedGameBoard.gateTokens = copiedGateTokens
+        val copiedPlayers = settings.players.toList()
+        val copiedSettings = GameSettings(copiedPlayers)
         val copiedIndigo = Indigo(
-            this.settings,
+            copiedSettings,
             copiedGameBoard,
             this.allTiles,
             copiedGems,
             this.tokens
         )
-
-        for (i in players.indices){
-            val copiedHandTile: Tile? = players[i].handTile?.paths.let {
-                it?.let { it1 -> Tile(it1.toList()) }
-            }
-            copiedIndigo.players[i].gemCounter  = this.players[i].gemCounter
-            copiedIndigo.players[i].handTile = copiedHandTile
-            copiedIndigo.players[i].score = this.players[i].score
-        }
-
         copiedIndigo.currentPlayerIndex = this.currentPlayerIndex
         copiedIndigo.nextGameState = this.nextGameState
         copiedIndigo.previousGameState = this.previousGameState
         copiedIndigo.middleTile.gemPosition.clear()
-        for(i in 0 until this.middleTile.gemPosition.size) {
+        for (i in 0 until this.middleTile.gemPosition.size) {
             val gem = this.middleTile.gemPosition[i]
-            copiedIndigo.middleTile.gemPosition[i]=gem!!
+            copiedIndigo.middleTile.gemPosition[i] = gem!!
         }
         copiedIndigo.routeTiles = this.routeTiles.toMutableList()
         return copiedIndigo
     }
+
 }
 
