@@ -164,7 +164,7 @@ class GameService(private val rootService: RootService) {
      * @param space The coordinate where the tile is to be placed.
      * @param tile The tile to be placed.
      */
-    private fun placeTile(space: Coordinate, tile: Tile) {
+    fun placeTile(space: Coordinate, tile: Tile) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile

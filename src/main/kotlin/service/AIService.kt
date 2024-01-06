@@ -1,6 +1,7 @@
 package service
 
 import entity.Coordinate
+import entity.Indigo
 import entity.Tile
 
 /**
@@ -13,60 +14,53 @@ class AIService(val rootService: RootService) {
     /**
      * Makes a random turn for the AI player.
      */
-    fun randomTurn() {
+    fun makeRandomTurn() {
+
+        // Get the current game state
         val currentGame = rootService.currentGame
-        checkNotNull(currentGame) { "The game has not started yet" }
+        checkNotNull(currentGame)
 
-        // Assuming the current player is an AI player
-        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
-        if (currentPlayer.isAI) {
-            // Replace this logic with the actual AI decision-making process
-            val randomSpace = getRandomEmptySpace()
-            val randomTile = getRandomTileForAI()
+        // Get the available moves for the current player
+        val availableMoves = findAvailableMoves(currentGame)
 
-            // Place the tile randomly
-            rootService.gameService.checkPlacement(randomSpace, randomTile)
-           // rootService.gameService.moveGems()
-            //rootService.gameService.checkCollision()
+        // If there are available moves, make a random move
+        if (availableMoves.isNotEmpty()) {
+            val randomMove = availableMoves.random()
+            val (coordinate, tile) = randomMove
+
+            // Place the tile at the random coordinate
+            rootService.gameService.placeTile(coordinate, tile)
+
+            // Move gems to neighboring coordinates, check for collision and remove gems
+            val neighbors = rootService.gameService.getNeighboringCoordinates(coordinate)
+            for (i in neighbors.indices) {
+                rootService.gameService.moveGems(coordinate, neighbors[i], i)
+            }
+
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
         }
     }
 
     /**
-     * @return A random [Tile] for the AI player.
+     * Finds available moves on the game board.
      */
-    private fun getRandomTileForAI(): Tile {
-        val allTiles = rootService.currentGame?.allTiles
-        return allTiles!!.random()
-    }
+    private fun findAvailableMoves(currentGame: Indigo): List<Pair<Coordinate, Tile>> {
+        val availableMoves = mutableListOf<Pair<Coordinate, Tile>>()
 
+        // Iterate over the game board and find available moves
+        for (row in -4..4) {
+            for (col in -4..4) {
+                val coordinate = Coordinate(row, col)
+                val playerTile = currentGame.players[currentGame.currentPlayerIndex].handTile ?: continue
 
-    /**
-     * @return A random empty [Coordinate] on the game board.
-     */
-    private fun getRandomEmptySpace(): Coordinate {
-        val currentGame = rootService.currentGame
-        checkNotNull(currentGame) { "The game has not started yet" }
-
-        // Get a list of available spaces on the board
-        val availableSpaces = currentGame.gameBoard.gameBoardTiles.filter { it.value == null }.keys.toList()
-
-        if (availableSpaces.isNotEmpty()) {
-            // Choose a random space
-            return availableSpaces.random()
-        } else {
-            // If no available spaces, throw an exception or handle accordingly
-            throw IllegalStateException("No available spaces on the game board.")
+                // Check if placing the tile at the coordinate is a valid move
+                if (rootService.gameService.checkPlacement(coordinate, playerTile)) {
+                    availableMoves.add(Pair(coordinate, playerTile))
+                }
+            }
         }
+
+        return availableMoves
     }
-
-
-    fun calculatedTurn() {}
-
-    private fun calculateTurn() {}
-
-    private fun makeTurn(position: Coordinate) {}
-
-
 }
