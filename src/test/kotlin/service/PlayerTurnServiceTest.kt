@@ -67,7 +67,6 @@ class PlayerTurnServiceTest {
         assertEquals(0, placedTile!!.gemEndPosition.size)
         assertEquals(8, rootService.currentGame!!.gems.size)
     }
-/*
     /**
      *  The function [testUndoRedo] test the correctness of undo und redo
      *
@@ -98,7 +97,16 @@ class PlayerTurnServiceTest {
         assertEquals(testGame.gameBoard.gateTokens, actualGame.gameBoard.gateTokens)
         assertEquals(testGame.gameBoard.gameBoardTiles, actualGame.gameBoard.gameBoardTiles)
         assertEquals(testGame.gems, actualGame.gems)
-        assertEquals(testGame.players,actualGame.players)
+        assertEquals(testGame.players.size,actualGame.players.size)
+        for(i in testGame.players.indices){
+            assertEquals(testGame.players[i].name,actualGame.players[i].name)
+            assertEquals(testGame.players[i].handTile,actualGame.players[i].handTile)
+            assertEquals(testGame.players[i].gemCounter,actualGame.players[i].gemCounter)
+            assertEquals(testGame.players[i].color,actualGame.players[i].color)
+            assertEquals(testGame.players[i].handTile,actualGame.players[i].handTile)
+            assertEquals(testGame.players[i].gemCounter,actualGame.players[i].gemCounter)
+            assertEquals(testGame.players[i].age,actualGame.players[i].age)
+        }
         assertEquals(testGame.routeTiles,actualGame.routeTiles)
         assertEquals(51,actualGame.routeTiles.size)
 
@@ -117,19 +125,28 @@ class PlayerTurnServiceTest {
         assertEquals(testGame.gameBoard.gameBoardTiles, actualGame.gameBoard.gameBoardTiles)
         assertEquals(testGame.gems, actualGame.gems)
         assertEquals(newPlayer1handTile,actualGame.players[0].handTile)
-        assertEquals(testGame.players,actualGame.players)
+        assertEquals(testGame.players.size,actualGame.players.size)
+        for(i in testGame.players.indices){
+            assertEquals(testGame.players[i].name,actualGame.players[i].name)
+            assertEquals(testGame.players[i].handTile,actualGame.players[i].handTile)
+            assertEquals(testGame.players[i].gemCounter,actualGame.players[i].gemCounter)
+            assertEquals(testGame.players[i].color,actualGame.players[i].color)
+            assertEquals(testGame.players[i].handTile,actualGame.players[i].handTile)
+            assertEquals(testGame.players[i].gemCounter,actualGame.players[i].gemCounter)
+            assertEquals(testGame.players[i].age,actualGame.players[i].age)
+        }
         assertEquals(51,actualGame.routeTiles.size)
         // Fügen Sie weitere Tests für andere Methoden hinzu
     }
-*/
+
 
     @Test
     fun testUndo() {
 
         // Start the game and get the initial player's hand tile
         gameService.startGame(players)
-        var testGame = rootService.currentGame
-        var initialPlayer1HandTile = testGame!!.players[0].handTile
+        val testGame = rootService.currentGame
+        val initialPlayer1HandTile = testGame!!.players[0].handTile
         assertNotNull(initialPlayer1HandTile)
 
         // Print initial hand tile
@@ -149,11 +166,11 @@ class PlayerTurnServiceTest {
 
 
         // Get the updated hand tile after undo
-        var updatedPlayer1HandTile = actualGame!!.players[0].handTile
+        val updatedPlayer1HandTile = actualGame!!.players[0].handTile
 
         // Assertions after undo
         println("Player 1 Hand Tile after undo: $updatedPlayer1HandTile")
-        assertEquals(initialPlayer1HandTile?.paths, updatedPlayer1HandTile?.paths)
+        assertEquals(initialPlayer1HandTile.paths, updatedPlayer1HandTile?.paths)
 
     }
 

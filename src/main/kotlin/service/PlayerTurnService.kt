@@ -19,7 +19,7 @@ class PlayerTurnService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         // Check if the game has started
         checkNotNull(currentGame) { "The game has not started yet" }
-        val firstAppearance = rootService.currentGame!!.copyTo()
+        val firstAppearance = currentGame.copyTo()
         // Check if the tile placement is valid
         if (rootService.gameService.checkPlacement(space, tile)) {
             // Move gems, check collisions, distribute new tiles, and change the player
@@ -35,7 +35,10 @@ class PlayerTurnService(private val rootService: RootService) {
             firstAppearance.nextGameState = lastGame
             lastGame?.previousGameState = firstAppearance
             rootService.currentGame?.nextGameState = lastGame
-            rootService.currentGame = rootService.currentGame!!.nextGameState
+            rootService.currentGame = rootService.currentGame?.nextGameState
+            /*if(rootService.gameService.endGame())
+             //TODO("refresh After EndGame ")
+              */
         } else {
             throw Exception("Invalid space, choose another space please")
         }
@@ -142,6 +145,5 @@ class PlayerTurnService(private val rootService: RootService) {
         copiedIndigo.routeTiles = this.routeTiles.toMutableList()
         return copiedIndigo
     }
-
 }
 
