@@ -106,6 +106,8 @@ class PlayerTurnServiceTest {
             assertEquals(testGame.players[i].handTile,actualGame.players[i].handTile)
             assertEquals(testGame.players[i].gemCounter,actualGame.players[i].gemCounter)
             assertEquals(testGame.players[i].age,actualGame.players[i].age)
+            assertEquals(testGame.players[i].isAI,actualGame.players[i].isAI)
+            assertEquals(testGame.players[i].score,actualGame.players[i].score)
         }
         assertEquals(testGame.routeTiles,actualGame.routeTiles)
         assertEquals(51,actualGame.routeTiles.size)
@@ -116,6 +118,8 @@ class PlayerTurnServiceTest {
         assertEquals(0,actualGame.currentPlayerIndex)
         assertEquals(52,actualGame.routeTiles.size)
         assertEquals(player1HandTile,actualGame.players[0].handTile)
+        assertEquals(6,actualGame.gameBoard.gameBoardTiles.size)
+        assertEquals(6,actualGame.middleTile.gemPosition.size)
 
         playerTurnService.redo()
         actualGame = rootService.currentGame
@@ -134,6 +138,8 @@ class PlayerTurnServiceTest {
             assertEquals(testGame.players[i].handTile,actualGame.players[i].handTile)
             assertEquals(testGame.players[i].gemCounter,actualGame.players[i].gemCounter)
             assertEquals(testGame.players[i].age,actualGame.players[i].age)
+            assertEquals(testGame.players[i].isAI,actualGame.players[i].isAI)
+            assertEquals(testGame.players[i].score,actualGame.players[i].score)
         }
         assertEquals(51,actualGame.routeTiles.size)
         // Fügen Sie weitere Tests für andere Methoden hinzu
