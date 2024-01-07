@@ -110,7 +110,19 @@ class PlayerTurnService(private val rootService: RootService) {
         val copiedGameBoard = GameBoard()
         copiedGameBoard.gameBoardTiles.putAll(copiedGameBoardTiles)
         copiedGameBoard.gateTokens = copiedGateTokens
-        val copiedPlayers = settings.players.toList()
+        val copiedPlayers = settings.players.map {
+            Player(
+                it.name,
+                it.age,
+                it.color,
+                it.isAI
+            ).apply {
+                score = it.score
+                gemCounter = it.gemCounter
+                // Copy the handTile
+                handTile = it.handTile?.copy()
+            }
+        }.toList()
         val copiedSettings = GameSettings(copiedPlayers)
         val copiedIndigo = Indigo(
             copiedSettings,

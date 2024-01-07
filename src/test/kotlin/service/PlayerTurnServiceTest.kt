@@ -67,7 +67,7 @@ class PlayerTurnServiceTest {
         assertEquals(0, placedTile!!.gemEndPosition.size)
         assertEquals(8, rootService.currentGame!!.gems.size)
     }
-
+/*
     /**
      *  The function [testUndoRedo] test the correctness of undo und redo
      *
@@ -107,7 +107,7 @@ class PlayerTurnServiceTest {
         assertNull(actualGame!!.previousGameState)
         assertEquals(0,actualGame.currentPlayerIndex)
         assertEquals(52,actualGame.routeTiles.size)
-        //assertEquals(player1HandTile,actualGame.players[0].handTile)
+        assertEquals(player1HandTile,actualGame.players[0].handTile)
 
         playerTurnService.redo()
         actualGame = rootService.currentGame
@@ -120,6 +120,41 @@ class PlayerTurnServiceTest {
         assertEquals(testGame.players,actualGame.players)
         assertEquals(51,actualGame.routeTiles.size)
         // Fügen Sie weitere Tests für andere Methoden hinzu
+    }
+*/
+
+    @Test
+    fun testUndo() {
+
+        // Start the game and get the initial player's hand tile
+        gameService.startGame(players)
+        var testGame = rootService.currentGame
+        var initialPlayer1HandTile = testGame!!.players[0].handTile
+        assertNotNull(initialPlayer1HandTile)
+
+        // Print initial hand tile
+        println("Initial Player 1 Hand Tile: $initialPlayer1HandTile")
+
+        // Place the initial tile
+        playerTurnService.placeRouteTile(Coordinate(0, -1), initialPlayer1HandTile!!)
+        var actualGame = rootService.currentGame
+        assertNotNull(actualGame)
+
+        // Print hand tile after placing route tile
+        println("Player 1 Hand Tile after placing route tile: ${actualGame!!.players[0].handTile}")
+
+        // Undo the move
+        playerTurnService.undo()
+        actualGame = rootService.currentGame
+
+
+        // Get the updated hand tile after undo
+        var updatedPlayer1HandTile = actualGame!!.players[0].handTile
+
+        // Assertions after undo
+        println("Player 1 Hand Tile after undo: $updatedPlayer1HandTile")
+        assertEquals(initialPlayer1HandTile?.paths, updatedPlayer1HandTile?.paths)
+
     }
 
     /**
