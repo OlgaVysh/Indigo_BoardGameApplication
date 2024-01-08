@@ -1,7 +1,5 @@
 package view
 
-import entity.*
-import service.*
 
 /**
  * Interface for objects that can be refreshed in response to different game events.

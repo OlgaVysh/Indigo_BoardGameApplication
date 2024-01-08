@@ -6,7 +6,6 @@ import view.Refreshable
  * Abstract service class that handles multiples [Refreshable]s (usually UI elements, such as
  * specialized [GameScene] classes/instances) which are notified
  * of changes to refresh via the [onAllRefreshables] method.
- *
  */
 abstract class AbstractRefreshingService {
 
