@@ -221,7 +221,7 @@ open class NetworkService(private val rootService: RootService) {
         repeat(rotation) {
             rootService.playerTurnService.rotateTileRight(handTile)
         }
-        val space = Coordinate(message.rCoordinate, message.rCoordinate)
+        val space = Coordinate(message.rcoordinate, message.qcoordinate)
         rootService.playerTurnService.placeRouteTile(space,handTile)
         currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
