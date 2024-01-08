@@ -11,16 +11,21 @@ import entity.Token
  *  sharedGates or notSharedGates
  */
 fun createTestGateTokens(game: Indigo, notSharedGates: Boolean): MutableList<Token> {
+    // Retrieve the players and determine the size of the player list
     val players = game.players
     val playerSize = players.size
+    // Initialize a mutable list to store the generated gate tokens
     val gateTokens = mutableListOf<Token>()
+    // Generate gate tokens based on the specified conditions
 
     if (notSharedGates) {
+        // Create gate tokens for each player in a cyclic manner
         for (i in 0 until 6) {
             gateTokens.add(Token(players[i % playerSize].color))
             gateTokens.add(Token(players[i % playerSize].color))
         }
     } else {
+        // Generate gate tokens based on the number of players
         if (playerSize == 4) {
             gateTokens.add(Token(players[0].color))
             gateTokens.add(Token(players[1].color))
@@ -50,5 +55,6 @@ fun createTestGateTokens(game: Indigo, notSharedGates: Boolean): MutableList<Tok
             gateTokens.add(Token(players[2].color))
         }
     }
+    // Return the generated list of gate tokens
     return gateTokens
 }

@@ -1,4 +1,3 @@
-
 import entity.Edge
 import entity.Tile
 
@@ -7,7 +6,8 @@ import entity.Tile
  *
  *  @return A mutable List of route tiles
  */
-fun createTestRouteTile() : MutableList<Tile>{
+fun createTestRouteTile(): MutableList<Tile> {
+    // Define edge connections for different tile configurations
     val tile0 = listOf(
         Pair(Edge.ZERO, Edge.TWO),
         Pair(Edge.ONE, Edge.FOUR),
@@ -33,21 +33,24 @@ fun createTestRouteTile() : MutableList<Tile>{
         Pair(Edge.ONE, Edge.TWO),
         Pair(Edge.THREE, Edge.FOUR)
     )
+    // Initialize a mutable list to store the generated route tiles
     val routeTiles = mutableListOf<Tile>()
-    repeat(14){
+    // Repeat the process to add specific tiles with their edge connections
+    repeat(14) {
         routeTiles.add(Tile(tile0, mutableMapOf()))
     }
-    repeat(6){
+    repeat(6) {
         routeTiles.add(Tile(tile1, mutableMapOf()))
     }
-    repeat(14){
+    repeat(14) {
         routeTiles.add(Tile(tile2, mutableMapOf()))
     }
-    repeat(14){
+    repeat(14) {
         routeTiles.add(Tile(tile3, mutableMapOf()))
     }
-    repeat(6){
+    repeat(6) {
         routeTiles.add(Tile(tile4, mutableMapOf()))
     }
+    // Return the generated list of route tiles
     return routeTiles
 }
