@@ -395,9 +395,9 @@ class NetworkConnectionTests {
             var hosTile = hostRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(1,1)]
             assertEquals(hosTile,guestTile)
             Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
-            Thread.sleep(2000)
-            guestTile = guestRootService.currentGame!!.gameBoard.gameBoardTiles[coordinate]
-            hosTile = hostRootService.currentGame!!.gameBoard.gameBoardTiles[coordinate]
+            Thread.sleep(3000)
+            guestTile = guestRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,-1)]
+            hosTile = hostRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,-1)]
             assertEquals(hosTile,guestTile)
             Property(client.connectionState).await(ConnectionState.PLAYING_MY_TURN)
             latch.countDown()
