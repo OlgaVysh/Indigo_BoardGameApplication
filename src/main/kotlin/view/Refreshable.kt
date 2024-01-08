@@ -1,59 +1,76 @@
 package view
-/*
+
 import entity.*
 import service.*
 
 /**
- * This interface provides a mechanism for the service layer classes to communicate
- * (usually to the view classes) that certain changes have been made to the entity
- * layer, so that the user interface can be updated accordingly.
- *
- * Default (empty) implementations are provided for all methods, so that implementing
- * UI classes only need to react to events relevant to them.
- *
- * @see AbstractRefreshingService
- *
+ * Interface for objects that can be refreshed in response to different game events.
  */
 interface Refreshable {
+    /**
+     * Refreshes the state after starting a local game.
+     */
+    fun refreshAfterStartGame() {}
 
     /**
-     * perform refreshes that are necessary after a new game started
+     * Refreshes the state after starting a network game.
      */
-    fun refreshAfterStartNewGame() {}
+
+    fun refreshAfterStartNetGame() {}
 
     /**
-     * perform refreshes that are necessary after played cards have been evaluated and a winner exists
-     * (i.e., card values are not equal)
-     *
-     * @param winningPlayer the player that won the evaluation and received cards
-     * @param movedCards the cards that the winning player received onto their collected cards stack
+     * Refreshes the state after restarting the game.
      */
-    fun refreshAfterEvaluateDrawnCards(winningPlayer: WarPlayer, movedCards: List<WarCard>) {}
+    fun refreshAfterRestartGame() {}
 
     /**
-     * perform refreshes that are necessary after a player has drawn from their left draw stack
-     *
-     * @param player the player that drawn from their left stack
+     * Refreshes the state after the game has ended.
      */
-    fun refreshAfterDrawFromLeftStack(player: WarPlayer) {}
+    fun refreshAfterEndGame() {}
 
     /**
-     * perform refreshes that are necessary after a player has drawn from their right draw stack
-     *
-     * @param player the player that drawn from their right stack
+     * Refreshes the state after placing game elements.
      */
-    fun refreshAfterDrawFromRightStack(player: WarPlayer) {}
+    fun refreshAfterPlacement() {}
 
     /**
-     * perform refreshes that are necessary after the last round was played
+     * Refreshes the state after moving gems.
      */
-    fun refreshAfterGameEnd() {}
+    fun refreshAfterMoveGems() {}
 
     /**
-     * refreshes the network connection status with the given information
-     *
-     * @param state the information to show
+     * Refreshes the state after a collision in the game.
      */
-    fun refreshConnectionState(state: ConnectionState) {}
+    fun refreshAfterCollision() {}
 
-}*/
+    /**
+     * Refreshes the state after rotating game elements.
+     */
+    fun refreshAfterRotation() {}
+
+    /**
+     * Refreshes the state after redoing a game action.
+     */
+    fun refreshAfterRedo() {}
+
+    /**
+     * Refreshes the state after undoing a game action.
+     */
+    fun refreshAfterUndo() {}
+
+    /**
+     * Refreshes the state after saving the game.
+     */
+    fun refreshAfterSaveGame() {}
+
+    /**
+     * Refreshes the state after loading a saved game.
+     */
+    fun refreshAfterLoadGame() {}
+
+    /**
+     * Refreshes the state after the AI takes its turn.
+     */
+    fun refreshAfterAITurn() {}
+
+}

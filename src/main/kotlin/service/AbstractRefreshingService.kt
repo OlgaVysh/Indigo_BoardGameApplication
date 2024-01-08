@@ -1,10 +1,10 @@
 package service
-/*
+
 import view.Refreshable
 
 /**
  * Abstract service class that handles multiples [Refreshable]s (usually UI elements, such as
- * specialized [BoardGameScene] classes/instances) which are notified
+ * specialized [GameScene] classes/instances) which are notified
  * of changes to refresh via the [onAllRefreshables] method.
  *
  */
@@ -34,4 +34,4 @@ abstract class AbstractRefreshingService {
     fun onAllRefreshables(method: Refreshable.() -> Unit) =
         refreshables.forEach { it.method() }
 
-}*/
+}
