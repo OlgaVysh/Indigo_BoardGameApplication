@@ -390,15 +390,15 @@ class NetworkConnectionTests {
             val client = guestRootService.testNetworkService/*Join game */
             println("[$guestPlayerName] Join game...")
             client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
-            Thread.sleep(3000)
-            var guestTile = guestRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(1,1)]
-            var hosTile = hostRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(1,1)]
+            Thread.sleep(2000)
+            val guestTile = guestRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(1,1)]
+            val hosTile = hostRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(1,1)]
             assertEquals(hosTile,guestTile)
             Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             Thread.sleep(3000)
-            guestTile = guestRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,-1)]
-            hosTile = hostRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,-1)]
-            assertEquals(hosTile,guestTile)
+            val guestTile1 = guestRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,-1)]
+            val hosTile1 = hostRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,-1)]
+            assertEquals(hosTile1,guestTile1)
             Property(client.connectionState).await(ConnectionState.PLAYING_MY_TURN)
             latch.countDown()
             latch.await()
