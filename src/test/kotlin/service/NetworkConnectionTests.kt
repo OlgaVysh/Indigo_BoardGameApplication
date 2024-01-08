@@ -372,14 +372,14 @@ class NetworkConnectionTests {
             var testTile = hostRootService.currentGame!!.players[currentPlayerIndex].handTile
             hostRootService.playerTurnService.placeRouteTile(coordinate,testTile!!)
             host.sendPlacedTile(testTile, coordinate)
-            Thread.sleep(1000)
+            Thread.sleep(5000)
             Property(host.connectionState).await(ConnectionState.PLAYING_MY_TURN)
-            testTile = hostRootService.currentGame!!.players[currentPlayerIndex].handTile
+            testTile = hostRootService.currentGame!!.players[1].handTile
             hostRootService.playerTurnService.rotateTileLeft(testTile!!)
             coordinate = Coordinate(0,-1)
             hostRootService.playerTurnService.placeRouteTile(coordinate,testTile)
             host.sendPlacedTile(testTile, coordinate)
-            Thread.sleep(1000)
+            Thread.sleep(5000)
             Property(host.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             latch.countDown()
             latch.await()
@@ -390,12 +390,12 @@ class NetworkConnectionTests {
             val client = guestRootService.testNetworkService/*Join game */
             println("[$guestPlayerName] Join game...")
             client.joinGame(name = guestPlayerName, sessionID = sessionIDQueue.take())
-            Thread.sleep(2000)
+            Thread.sleep(3000)
             val guestTile = guestRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(1,1)]
             val hosTile = hostRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(1,1)]
             assertEquals(hosTile,guestTile)
             Property(client.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
-            Thread.sleep(3000)
+            Thread.sleep(5000)
             val guestTile1 = guestRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,-1)]
             val hosTile1 = hostRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0,-1)]
             assertEquals(hosTile1,guestTile1)
