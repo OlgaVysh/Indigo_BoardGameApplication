@@ -1,24 +1,37 @@
 package service
-
-//import view.Refreshable
-
-
-abstract class AbstractRefreshingService {
 /*
+import view.Refreshable
+
+/**
+ * Abstract service class that handles multiples [Refreshable]s (usually UI elements, such as
+ * specialized [BoardGameScene] classes/instances) which are notified
+ * of changes to refresh via the [onAllRefreshables] method.
+ *
+ */
+abstract class AbstractRefreshingService {
+
     private val refreshables = mutableListOf<Refreshable>()
 
-
-
-   fun addRefreshable(newRefreshable : Refreshable) {
+    /**
+     * adds a [Refreshable] to the list that gets called
+     * whenever [onAllRefreshables] is used.
+     */
+    fun addRefreshable(newRefreshable : Refreshable) {
         refreshables += newRefreshable
     }
 
+    /**
+     * Executes the passed method (usually a lambda) on all
+     * [Refreshable]s registered with the service class that
+     * extends this [AbstractRefreshingService]
+     *
+     * Example usage (from any method within the service):
+     * ```
+     * onAllRefreshables {
+     * }
 
-
-
-
+     */
     fun onAllRefreshables(method: Refreshable.() -> Unit) =
         refreshables.forEach { it.method() }
-     */
 
-    }
+}*/

@@ -25,8 +25,8 @@ class ModusMenuScene : MenuScene(1920, 1080, background = ImageVisual("SevenGems
     /**
      * Initializes the ModusMenuScene with default values and sets up UI components.
      */
-    init {        // Set the initial opacity of the scene
-
+    init {
+        // Set the initial opacity of the scene
         opacity = 1.0
         // Add components to the scene
         addComponents(modusLabel1, modusLabel2, networkButton, hotSeatButton)

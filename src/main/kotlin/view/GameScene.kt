@@ -1,6 +1,6 @@
 package view
 
-//import service.RootService
+import service.RootService
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.core.BoardGameScene
@@ -8,14 +8,26 @@ import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 import java.awt.Color
 
-//Stand der GameTableScene
-class GameScene(/*private val rootService: RootService*/) : BoardGameScene(1920, 1080, background =  ImageVisual("PlainBackground_FCE6BD.png")) {
+/**
+ * Represents the game scene containing a hexagonal grid.
+ *
+ * @param rootService The root service providing access to game-related functionality.
+ */
+
+class GameScene(private val rootService: RootService) :
+    BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")) {
+    // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> = HexagonGrid(
         coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL,
         posX = 820,
-        posY = 420)
+        posY = 420
+    )
 
-    init{
+    /**
+     * Initializes the GameScene with default values and sets up the hexagonal grid.
+     */
+    init {
+        // Populate the hexagonal grid with HexagonView instances
         for (row in -4..4) {
             for (col in -4..4) {
                 val hexagon = HexagonView(visual = ColorVisual(Color.BLUE))
@@ -25,25 +37,26 @@ class GameScene(/*private val rootService: RootService*/) : BoardGameScene(1920,
                 hexagonGrid[col, row] = hexagon
             }
         }
+        // Rotate the hexagonal grid by -30 degrees
         hexagonGrid.rotate(-30)
-        hexagonGrid[4, -4]?.visual  = ImageVisual("gatetile1.png")
-        //middletile
-        hexagonGrid[0, 0]?.visual  = ImageVisual("middletile.png")
-        //gatetiles
+        hexagonGrid[4, -4]?.visual = ImageVisual("gatetile1.png")
+        // Middle Tile
+        hexagonGrid[0, 0]?.visual = ImageVisual("middletile.png")
+        // Gate Tiles
         //1 (oben und dann im Uhrzeigersinn die GateTiles)
-        hexagonGrid[4, -4]?.visual  = ImageVisual("gatetile1.png")
+        hexagonGrid[4, -4]?.visual = ImageVisual("gatetile1.png")
         //2
-        hexagonGrid[4, 0]?.visual  = ImageVisual("gatetile2.png")
+        hexagonGrid[4, 0]?.visual = ImageVisual("gatetile2.png")
         //3
-        hexagonGrid[0, 4]?.visual  = ImageVisual("gatetile3.png")
+        hexagonGrid[0, 4]?.visual = ImageVisual("gatetile3.png")
         //4
-        hexagonGrid[-4, 4]?.visual  = ImageVisual("gatetile4.png")
+        hexagonGrid[-4, 4]?.visual = ImageVisual("gatetile4.png")
         //5
-        hexagonGrid[-4, 0]?.visual  = ImageVisual("gatetile5.png")
+        hexagonGrid[-4, 0]?.visual = ImageVisual("gatetile5.png")
         //6
-        hexagonGrid[0, -4]?.visual  = ImageVisual("gatetile6.png")
+        hexagonGrid[0, -4]?.visual = ImageVisual("gatetile6.png")
 
-
+        // Add the hexagonal grid to the components of the game scene
         addComponents(hexagonGrid)
 
     }
