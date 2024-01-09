@@ -34,11 +34,11 @@ class RootService {
      */
     fun addRefreshable(newRefreshable: Refreshable) {
 
-        /*networkService.addRefreshable(newRefreshable)
+        networkService.addRefreshable(newRefreshable)
         networkMappingService.addRefreshable(newRefreshable)
         playerTurnService.addRefreshable(newRefreshable)
         gameService.addRefreshable(newRefreshable)
-        ioService.addRefreshable(newRefreshable)*/
+        ioService.addRefreshable(newRefreshable)
     }
 
     /**

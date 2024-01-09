@@ -3,6 +3,7 @@ package service.network
 import edu.udo.cs.sopra.ntf.GameInitMessage
 import edu.udo.cs.sopra.ntf.TilePlacedMessage
 import entity.*
+import service.AbstractRefreshingService
 import service.RootService
 
 /**
@@ -10,7 +11,7 @@ import service.RootService
  *
  *  @property rootService the rootService to have the information of the current game
  */
-open class NetworkService(private val rootService: RootService) {
+open class NetworkService(private val rootService: RootService) : AbstractRefreshingService() {
     companion object {
         /** URL of the BGW Net to play at SoPra23d */
         const val SERVER_ADDRESS = "sopra.cs.tu-dortmund.de:80/bgw-net/connect"
@@ -222,7 +223,7 @@ open class NetworkService(private val rootService: RootService) {
             rootService.playerTurnService.rotateTileRight(handTile)
         }
         val space = Coordinate(message.rcoordinate, message.qcoordinate)
-        rootService.playerTurnService.placeRouteTile(space,handTile)
+        rootService.playerTurnService.placeRouteTile(space, handTile)
         currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         for (otherPlayer in client?.otherPlayers!!) {

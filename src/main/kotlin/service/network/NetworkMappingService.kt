@@ -8,6 +8,7 @@ import entity.Edge
 import entity.Tile
 import entity.Token
 import entity.TokenColor
+import service.AbstractRefreshingService
 import service.RootService
 import kotlin.math.abs
 
@@ -19,7 +20,7 @@ import kotlin.math.abs
  * @property rootService The rootService with all connection
  * to other Services
  */
-class NetworkMappingService(private val rootService: RootService) {
+class NetworkMappingService(private val rootService: RootService) : AbstractRefreshingService() {
 
     /**
      * The function [toGameMode] find the right mode for the GameInitMessage
@@ -62,8 +63,8 @@ class NetworkMappingService(private val rootService: RootService) {
         val players = game.players
         val currentPlayerIndex = game.currentPlayerIndex
         val routeTiles = game.routeTiles.toMutableList()
-        for(i in players.indices.reversed()){
-            routeTiles.add(0,players[abs(currentPlayerIndex-i) % players.size].handTile!!)
+        for (i in players.indices.reversed()) {
+            routeTiles.add(0, players[abs(currentPlayerIndex - i) % players.size].handTile!!)
         }
         val tile0 = listOf(
             Pair(Edge.ZERO, Edge.TWO),
