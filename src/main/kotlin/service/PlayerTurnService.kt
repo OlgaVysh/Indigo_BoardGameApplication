@@ -7,7 +7,7 @@ import java.lang.Exception
  * Service class for managing player turns and actions.
  * @param rootService The root service providing access to the current game state.
  */
-class PlayerTurnService(private val rootService: RootService) {
+class PlayerTurnService(private val rootService: RootService) : AbstractRefreshingService() {
     /**
      * Places a route tile at the specified coordinate.
      * @param space The coordinate where the tile is to be placed.
@@ -36,9 +36,9 @@ class PlayerTurnService(private val rootService: RootService) {
             lastGame?.previousGameState = firstAppearance
             rootService.currentGame?.nextGameState = lastGame
             rootService.currentGame = rootService.currentGame?.nextGameState
-            /*if(rootService.gameService.endGame())
-             //TODO("refresh After EndGame ")
-              */
+            /* if(rootService.gameService.endGame())
+             {onAllRefreshables { refreshAfterEndGame() }}
+               */
         } else {
             throw Exception("Invalid space, choose another space please")
         }
@@ -59,6 +59,7 @@ class PlayerTurnService(private val rootService: RootService) {
         } else {
             println("Previous game state doesn't exist, cannot undo the move")
         }
+        onAllRefreshables { refreshAfterUndo() }
     }
 
 
@@ -75,6 +76,7 @@ class PlayerTurnService(private val rootService: RootService) {
         } else {
             println("Next game state doesn't exist, cannot redo the move")
         }
+        onAllRefreshables { refreshAfterRedo() }
     }
 
     /**
@@ -85,6 +87,7 @@ class PlayerTurnService(private val rootService: RootService) {
         tile.edges.addAll(tile.edges.subList(0, 1))
         // Remove the original first edge
         tile.edges.removeAll(tile.edges.subList(0, 1))
+        onAllRefreshables { refreshAfterRotation() }
     }
 
     /**
@@ -95,6 +98,7 @@ class PlayerTurnService(private val rootService: RootService) {
         tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
         // Remove the original last edge
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
+        onAllRefreshables { refreshAfterRotation() }
     }
 
     /**

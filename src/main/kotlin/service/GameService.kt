@@ -1,13 +1,14 @@
 package service
 
 import entity.*
+import view.Refreshable
 import java.lang.Exception
 
 /**
  * Service class for managing the game logic.
  * @param rootService The root service providing access to the current game state.
  */
-class GameService(private val rootService: RootService) {
+class GameService(private val rootService: RootService) : AbstractRefreshingService() {
     /**
      * Starts a new game with the specified parameters or default values.
      *
@@ -58,6 +59,7 @@ class GameService(private val rootService: RootService) {
             distributeNewTile()
             changePlayer()
         }
+        onAllRefreshables { refreshAfterStartGame() }
     }
 
     /**
@@ -77,6 +79,7 @@ class GameService(private val rootService: RootService) {
         random: Boolean = false
     ) {
         return this.startGame(players, notSharedGate, random)
+        onAllRefreshables { refreshAfterRestartGame() }
     }
 
     /**
@@ -95,6 +98,7 @@ class GameService(private val rootService: RootService) {
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val currentPlayerTile = currentGame.players[currentPlayerIndex].handTile
         return gems.isEmpty() || currentPlayerTile == null
+        onAllRefreshables { refreshAfterEndGame() }
     }
 
     /**
@@ -117,6 +121,7 @@ class GameService(private val rootService: RootService) {
         return if (!coordinateHasExit(space)) {
             placeTile(space, tile)
             true
+
         } else {
             // Check if the tile blocks an exit
             return if (!tileBlocksExit(space, tile)) {
@@ -127,6 +132,7 @@ class GameService(private val rootService: RootService) {
                 throw Exception("tile blocks exit, please rotate Tile")
             }
         }
+
     }
 
     /**
@@ -168,6 +174,7 @@ class GameService(private val rootService: RootService) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
+        onAllRefreshables { refreshAfterPlacement() }
     }
 
     /**
@@ -251,6 +258,7 @@ class GameService(private val rootService: RootService) {
             }
         }
         return false
+        onAllRefreshables { refreshAfterCollision() }
     }
 
     /**
@@ -328,7 +336,7 @@ class GameService(private val rootService: RootService) {
         val game = rootService.currentGame
         checkNotNull(game)
         rootService.ioService.saveGameToFile(game, path)
-        TODO(/*refresh*/)
+        onAllRefreshables { refreshAfterSaveGame() }
     }
 
     /**
@@ -340,7 +348,7 @@ class GameService(private val rootService: RootService) {
     fun loadGame(path: String) {
         rootService.currentGame = rootService.ioService.readGameFromFile(path)
         checkNotNull(rootService.currentGame)
-        TODO(/*refresh*/)
+        onAllRefreshables { refreshAfterLoadGame() }
     }
 
     /**
@@ -363,7 +371,7 @@ class GameService(private val rootService: RootService) {
         val playerSize = currentGame.players.size
         val currentPlayerIndex = currentGame.currentPlayerIndex
         currentGame.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
-
+        onAllRefreshables { refreshAfterChangePlayer() }
     }
 
     /**
@@ -410,14 +418,14 @@ class GameService(private val rootService: RootService) {
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
             moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, (lastGemPosition + 3 % 6))
         }
-        if (neighbourTile == null ) {
+        if (neighbourTile == null) {
             return
         }
 
         val tileGems = currentTile.gemEndPosition
         val neighbourGems = neighbourTile.gemEndPosition
         val neighborEdge = neighbourTile.edges[neighbourStart]
-        val neighborEnd = getAnotherEdge(neighborEdge,neighbourTile)
+        val neighborEnd = getAnotherEdge(neighborEdge, neighbourTile)
 
         if (tileGems.contains(currentGemPosition)) {
             if (neighbourGems.contains(neighbourStart)) {
@@ -436,13 +444,14 @@ class GameService(private val rootService: RootService) {
                 return
             }
         }
-        if(!neighbourTile.gemEndPosition.contains(neighbourStart))return
+        if (!neighbourTile.gemEndPosition.contains(neighbourStart)) return
         val currentEdge = currentTile.edges[currentGemPosition]
         val currentEnd = getAnotherEdge(currentEdge, currentTile)
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
         removeGemsReachedGate(currentTile, currentCoordinate)
         moveGems(neighborCoordinates[currentEnd], currentCoordinate, (currentEnd + 3) % 6)
+        onAllRefreshables { refreshAfterMoveGems() }
     }
 
 
@@ -458,9 +467,9 @@ class GameService(private val rootService: RootService) {
             game.players[game.currentPlayerIndex].handTile = null
             return
         }
-        val newHandTile =game.routeTiles.removeFirst()
+        val newHandTile = game.routeTiles.removeFirst()
         game.players[game.currentPlayerIndex].handTile = newHandTile
-        //TODO(/*refreshables*/)
+        onAllRefreshables { refreshAfterDistributeNewTile() }
     }
 
     /**

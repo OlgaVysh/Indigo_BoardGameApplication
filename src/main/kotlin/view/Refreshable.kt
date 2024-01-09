@@ -71,4 +71,15 @@ interface Refreshable {
      */
     fun refreshAfterAITurn() {}
 
+    /**
+     * Refreshes the state after changing the active player.
+     */
+    fun refreshAfterChangePlayer() {}
+
+    /**
+     * Refreshes the state after distributing a new tile.
+     */
+    fun refreshAfterDistributeNewTile() {}
+
+
 }
