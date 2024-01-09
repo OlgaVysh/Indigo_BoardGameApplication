@@ -3,6 +3,7 @@ package service
 import entity.Indigo
 import service.network.NetworkMappingService
 import service.network.NetworkService
+import view.Refreshable
 
 /**
  *  The class [RootService] is the service class which connect the service layer
@@ -15,10 +16,36 @@ import service.network.NetworkService
  *  @property ioService to get all function of the [IOService]
  */
 class RootService {
-    var currentGame: Indigo? = null
+
     var networkService = NetworkService(this)
     val networkMappingService = NetworkMappingService(this)
     val playerTurnService = PlayerTurnService(this)
     val gameService = GameService(this)
     val ioService = IOService(this)
+
+    /**
+     * The currently active game. Can be `null`, if no game has started yet.
+     */
+    var currentGame: Indigo? = null
+
+    /**
+     * Adds the provided [newRefreshable] to all services connected
+     * to this root service
+     */
+    fun addRefreshable(newRefreshable: Refreshable) {
+
+        /*networkService.addRefreshable(newRefreshable)
+        networkMappingService..addRefreshable(newRefreshable)
+        playerTurnService.addRefreshable(newRefreshable)
+        gameService.addRefreshable(newRefreshable)
+        ioService.addRefreshable(newRefreshable)*/
+    }
+
+    /**
+     * Adds each of the provided [newRefreshables] to all services
+     * connected to this root service
+     */
+    fun addRefreshables(vararg newRefreshables: Refreshable) {
+        newRefreshables.forEach { addRefreshable(it) }
+    }
 }
