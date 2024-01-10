@@ -79,7 +79,15 @@ interface Refreshable {
     /**
      * Refreshes the state after distributing a new tile.
      */
-    fun refreshAfterDistributeNewTile() {}
+    fun refreshAfterDistributeNewTile(){}
 
+    fun refreshAfterPlayerJoined(newPlayerName :String){}
 
+    fun refreshAfterPlayerLeaved(playerLeavedName:String){}
+
+    fun refreshAfterStartNewJoinedGame(){}
+
+    fun refreshAfterJoinGame(){}
+
+    fun refreshAfterHostGame(){}
 }

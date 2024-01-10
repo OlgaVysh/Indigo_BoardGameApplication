@@ -24,7 +24,8 @@ open class IndigoNetworkClient(
     host: String,
     secret: String,
     var networkService: NetworkService,
-) : BoardGameClient(playerName, host, secret, NetworkLogging.VERBOSE) {
+) : BoardGameClient(playerName, host, secret, NetworkLogging.VERBOSE)
+{
     /**
      * @property sessionID The SessionID is to connect to the specific game
      */
@@ -32,6 +33,7 @@ open class IndigoNetworkClient(
 
     //List of all player which are participate the game
     var otherPlayers = mutableListOf<String>()
+
 
     /**
      * The function [onCreateGameResponse] is getting from the server a message
@@ -91,6 +93,7 @@ open class IndigoNetworkClient(
             { "not awaiting any guests." }
 
             otherPlayers.add(notification.sender)
+            NetworkRefreshingService().refreshAfterPlayerJoined(notification.sender)
         }
     }
 
@@ -100,10 +103,13 @@ open class IndigoNetworkClient(
      *  @param notification the notification of new Player
      */
     override fun onPlayerLeft(notification: PlayerLeftNotification) {
-        check(networkService.connectionState == ConnectionState.WAITING_FOR_GUEST)
-        { "not awaiting any guests." }
+        BoardGameApplication.runOnGUIThread {
+            check(networkService.connectionState == ConnectionState.WAITING_FOR_GUEST)
+            { "Player should not leave" }
 
-        otherPlayers.remove(notification.sender)
+            otherPlayers.remove(notification.sender)
+            NetworkRefreshingService().refreshAfterPlayerLeaved(notification.sender)
+        }
     }
 
     /**

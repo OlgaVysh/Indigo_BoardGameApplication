@@ -61,6 +61,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
             client?.createGame(GAME_ID, sessionID, "Welcome!")
         }
         updateConnectionState(ConnectionState.HOST_WAITING_FOR_CONFIRMATION)
+        onAllRefreshables { refreshAfterHostGame() }
     }
 
     /**
@@ -76,6 +77,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         }
         client?.joinGame(sessionID, "Hello!")
         updateConnectionState(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
+        onAllRefreshables { refreshAfterJoinGame()  }
     }
 
     /**
@@ -149,6 +151,9 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         repeat(players.size) {
             gameService.distributeNewTile()
             gameService.changePlayer()
+        }
+        onAllRefreshables {
+            refreshAfterStartNewJoinedGame()
         }
     }
 
