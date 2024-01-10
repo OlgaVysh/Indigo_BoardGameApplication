@@ -81,13 +81,30 @@ interface Refreshable {
      */
     fun refreshAfterDistributeNewTile(){}
 
+    /**
+     *  The function refreshes the view layer after a new Player joined the game for
+     *  the host.
+     */
     fun refreshAfterPlayerJoined(newPlayerName :String){}
 
+    /**
+     *  The function refreshes the view layer after a Player leaved the game for
+     *  the host.
+     */
     fun refreshAfterPlayerLeaved(playerLeavedName:String){}
 
+    /**
+     *  the function updated the view layer after received the tilePlaceMessage
+     */
     fun refreshAfterStartNewJoinedGame(){}
 
+    /**
+     * The function updated the view layer after joining a Game
+     */
     fun refreshAfterJoinGame(){}
 
+    /**
+     * The function updated the view Layer after a host Game started
+     */
     fun refreshAfterHostGame(){}
 }
