@@ -50,6 +50,21 @@ class RefreshableTest : Refreshable {
     var refreshAfterDistributeNewTileCalled: Boolean = false
         private set
 
+    var refreshAfterHostGameCalled = false
+    private set
+
+    var refreshAfterJoinGameCalled = false
+    private set
+
+    var refreshAfterStartNewJoinedGameCalled = false
+    private set
+
+
+    var refreshAfterPlayerJoinedCalled = false
+    private set
+
+    var refreshAfterPlayerLeavedCalled = false
+        private set
     /**
      * resets all *Called properties to false
      */
@@ -69,6 +84,11 @@ class RefreshableTest : Refreshable {
         refreshAfterAITurnCalled = false
         refreshAfterChangePlayerCalled = false
         refreshAfterDistributeNewTileCalled = false
+        refreshAfterHostGameCalled = false
+        refreshAfterJoinGameCalled = false
+        refreshAfterStartNewJoinedGameCalled = false
+        refreshAfterPlayerJoinedCalled = false
+        refreshAfterPlayerLeavedCalled = false
 
 
     }
@@ -128,5 +148,25 @@ class RefreshableTest : Refreshable {
     }
     override fun refreshAfterDistributeNewTile() {
         refreshAfterDistributeNewTileCalled = true
+    }
+
+    override fun refreshAfterHostGame() {
+        refreshAfterHostGameCalled = true
+    }
+
+    override fun refreshAfterPlayerJoined(newPlayerName: String) {
+        refreshAfterPlayerJoinedCalled = true
+    }
+
+    override fun refreshAfterJoinGame() {
+        refreshAfterJoinGameCalled = true
+    }
+
+    override fun refreshAfterPlayerLeaved(playerLeavedName: String) {
+        refreshAfterPlayerLeavedCalled = true
+    }
+
+    override fun refreshAfterStartNewJoinedGame() {
+        refreshAfterStartNewJoinedGameCalled = true
     }
 }
