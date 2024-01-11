@@ -29,8 +29,8 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     public val aiMenuScene = AIMenuScene(rootService)
     public val hostGameScene = HostGameScene(rootService)*/
     val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
-    /*public val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
-    public val gameScene = GameScene()*/
+    //public val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
+    //public val gameScene = GameScene()
 
 
 
@@ -44,7 +44,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
         this.showMenuScene(startScene)
 
         //Testen der GameScene
-       // this.showGameScene(gameScene)
+        //this.showGameScene(gameScene)
     }
 
 
