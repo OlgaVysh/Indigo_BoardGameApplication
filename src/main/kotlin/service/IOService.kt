@@ -20,13 +20,10 @@ class IOService(private val root: RootService) : AbstractRefreshingService() {
      * function for saving a game of Indigo to a file
      */
     fun saveGameToFile(indigo: Indigo, path: String) {
-       try {
-           val json = mapper.writeValueAsString(indigo)
-           File(path).writeText(json)
-       }catch (e: JsonProcessingException) {
-        // Hier können Sie die Ausnahme behandeln oder einfach weitergeben
-        throw e
-    }
+
+        val json = mapper.writeValueAsString(indigo)
+        File(path).writeText(json)
+
     }
 
     /**
