@@ -12,13 +12,16 @@ import view.components.Label
  * @param height The height of the scene.
  * @param background The background image for the scene.
  */
-class NewGameMenuScene : MenuScene(1920, 1080, background = ImageVisual("NewGameMenuBackground.png")) {
+class NewGameMenuScene (private val indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("NewGameMenuBackground.png")) {
     // Button for starting a new game
 
-    private val startButton = Button(696, 337, 528, 207, "Start new game", 48)
+    private val startButton = Button(696, 337, 528, 207, "Start new game", 48).
+    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.modusScene)} }
     // Button for continuing an existing game
 
-    private val continueButton = Button(696, 664, 528, 207, "Continue game", 48)
+    private val continueButton = Button(696, 664, 528, 207, "Continue game", 48).
+        apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.savedGamesScene)
+        indigoApp.hideMenuScene()} }
 
     // Label for the game name or title
     private val indigoLabel = Label(775, 62, 370, 155, "Indigo", 120)
