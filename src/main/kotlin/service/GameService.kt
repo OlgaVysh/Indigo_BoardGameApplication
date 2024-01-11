@@ -231,8 +231,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             if (path.first == edge1) secondEdge = path.second
             if (path.second == edge1) secondEdge = path.first
         }
-        val indexInEdges = edges.indexOf(secondEdge)
-        return indexInEdges
+        return edges.indexOf(secondEdge)
     }
 
     /**
