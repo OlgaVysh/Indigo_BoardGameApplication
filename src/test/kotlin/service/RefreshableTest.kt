@@ -20,15 +20,25 @@ class RefreshableTest : Refreshable {
     var refreshAfterEndGameCalled: Boolean = false
         private set
 
-    var refreshAfterPlacementCalled: Boolean = false
+    var refreshAfterCheckPlacementCalled: Boolean = false
         private set
+
+    var refreshAfterPlaceTileCalled: Boolean = false
+        private set
+
     var refreshAfterMoveGemsCalled: Boolean = false
+        private set
+
+    var refreshAfterRemoveGemsCalled: Boolean = false
         private set
 
     var refreshAfterCollisionCalled: Boolean = false
         private set
 
-    var refreshAfterRotationCalled: Boolean = false
+    var refreshAfterLeftRotationCalled: Boolean = false
+        private set
+
+    var refreshAfterRightRotationCalled: Boolean = false
         private set
 
     var refreshAfterRedoCalled: Boolean = false
@@ -36,6 +46,7 @@ class RefreshableTest : Refreshable {
 
     var refreshAfterUndoCalled: Boolean = false
         private set
+
     var refreshAfterSaveGameCalled: Boolean = false
         private set
 
@@ -44,6 +55,7 @@ class RefreshableTest : Refreshable {
 
     var refreshAfterAITurnCalled: Boolean = false
         private set
+
     var refreshAfterChangePlayerCalled: Boolean = false
         private set
 
@@ -51,20 +63,21 @@ class RefreshableTest : Refreshable {
         private set
 
     var refreshAfterHostGameCalled = false
-    private set
+        private set
 
     var refreshAfterJoinGameCalled = false
-    private set
+        private set
 
     var refreshAfterStartNewJoinedGameCalled = false
-    private set
+        private set
 
 
     var refreshAfterPlayerJoinedCalled = false
-    private set
+        private set
 
     var refreshAfterPlayerLeavedCalled = false
         private set
+
     /**
      * resets all *Called properties to false
      */
@@ -73,10 +86,13 @@ class RefreshableTest : Refreshable {
         refreshAfterStartNetGameCalled = false
         refreshAfterRestartGameCalled = false
         refreshAfterEndGameCalled = false
-        refreshAfterPlacementCalled = false
+        refreshAfterCheckPlacementCalled = false
+        refreshAfterPlaceTileCalled = false
         refreshAfterMoveGemsCalled = false
+        refreshAfterRemoveGemsCalled = false
         refreshAfterCollisionCalled = false
-        refreshAfterRotationCalled = false
+        refreshAfterLeftRotationCalled = false
+        refreshAfterRightRotationCalled = false
         refreshAfterRedoCalled = false
         refreshAfterUndoCalled = false
         refreshAfterSaveGameCalled = false
@@ -109,20 +125,32 @@ class RefreshableTest : Refreshable {
         refreshAfterEndGameCalled = true
     }
 
-    override fun refreshAfterPlacement() {
-        refreshAfterPlacementCalled = true
+    override fun refreshAfterCheckPlacement() {
+        refreshAfterCheckPlacementCalled = true
+    }
+
+    override fun refreshAfterPlaceTile() {
+        refreshAfterPlaceTileCalled = true
     }
 
     override fun refreshAfterMoveGems() {
         refreshAfterMoveGemsCalled = true
     }
 
+    override fun refreshAfterRemoveGems() {
+        refreshAfterRemoveGemsCalled = true
+    }
+
     override fun refreshAfterCollision() {
         refreshAfterCollisionCalled = true
     }
 
-    override fun refreshAfterRotation() {
-        refreshAfterRotationCalled = true
+    override fun refreshAfterLeftRotation() {
+        refreshAfterLeftRotationCalled = true
+    }
+
+    override fun refreshAfterRightRotation() {
+        refreshAfterRightRotationCalled = true
     }
 
     override fun refreshAfterRedo() {
@@ -137,15 +165,19 @@ class RefreshableTest : Refreshable {
 
         refreshAfterSaveGameCalled = true
     }
+
     override fun refreshAfterLoadGame() {
-        refreshAfterLoadGameCalled= true
+        refreshAfterLoadGameCalled = true
     }
+
     override fun refreshAfterAITurn() {
         refreshAfterAITurnCalled = true
     }
+
     override fun refreshAfterChangePlayer() {
         refreshAfterChangePlayerCalled = true
     }
+
     override fun refreshAfterDistributeNewTile() {
         refreshAfterDistributeNewTileCalled = true
     }

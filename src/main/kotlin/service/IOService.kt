@@ -1,5 +1,6 @@
 package service
 
+import com.fasterxml.jackson.core.JsonProcessingException
 import entity.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -19,8 +20,13 @@ class IOService(private val root: RootService) : AbstractRefreshingService() {
      * function for saving a game of Indigo to a file
      */
     fun saveGameToFile(indigo: Indigo, path: String) {
-        val json = mapper.writeValueAsString(indigo)
-        File(path).writeText(json)
+       try {
+           val json = mapper.writeValueAsString(indigo)
+           File(path).writeText(json)
+       }catch (e: JsonProcessingException) {
+        // Hier können Sie die Ausnahme behandeln oder einfach weitergeben
+        throw e
+    }
     }
 
     /**

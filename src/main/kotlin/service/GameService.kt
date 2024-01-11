@@ -77,8 +77,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         notSharedGate: Boolean = false,
         random: Boolean = false
     ) {
-        return this.startGame(players, notSharedGate, random)
         onAllRefreshables { refreshAfterRestartGame() }
+        return this.startGame(players, notSharedGate, random)
     }
 
     /**
@@ -96,8 +96,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val gems = currentGame.gems
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val currentPlayerTile = currentGame.players[currentPlayerIndex].handTile
-        return gems.isEmpty() || currentPlayerTile == null
         onAllRefreshables { refreshAfterEndGame() }
+        return gems.isEmpty() || currentPlayerTile == null
     }
 
     /**
@@ -118,12 +118,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         }
         // Check if the space has an exit
         return if (!coordinateHasExit(space)) {
+            onAllRefreshables { refreshAfterCheckPlacement() }
             placeTile(space, tile)
             true
 
         } else {
             // Check if the tile blocks an exit
             return if (!tileBlocksExit(space, tile)) {
+                onAllRefreshables { refreshAfterCheckPlacement() }
                 placeTile(space, tile)
                 true
             } else {
@@ -131,7 +133,6 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 throw Exception("tile blocks exit, please rotate Tile")
             }
         }
-
     }
 
     /**
@@ -173,7 +174,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
-        onAllRefreshables { refreshAfterPlacement() }
+        onAllRefreshables { refreshAfterPlaceTile() }
     }
 
     /**
@@ -253,11 +254,11 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 //Two gems are colliding
                 tile.gemEndPosition.remove(path.first.ordinal)
                 tile.gemEndPosition.remove(path.second.ordinal)
+                onAllRefreshables { refreshAfterCollision() }
                 return true
             }
         }
         return false
-        onAllRefreshables { refreshAfterCollision() }
     }
 
     /**
@@ -299,7 +300,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                                 assignGem(gem, player)
                                 if (gem == gem2)
                                     tile.gemEndPosition.remove((5 + i) % 6)
-                                if (gem1 == gem) tile.gemEndPosition.remove((0 + i) % 6)
+                                if (gem == gem1)
+                                    tile.gemEndPosition.remove((0 + i) % 6)
                             }
                         }
 
@@ -313,16 +315,15 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                             }
                             if (gem == gem2)
                                 tile.gemEndPosition.remove((5 + i) % 6)
-                            if (gem1 == gem)
+                            if (gem == gem1)
                                 tile.gemEndPosition.remove((0 + i) % 6)
-
                         }
                     }
                     currentGame.gems.remove(gem)
                 }
             }
         }
-
+        onAllRefreshables { refreshAfterRemoveGems() }
     }
 
     /**
@@ -358,7 +359,6 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     private fun assignGem(gem: Gem, player: Player) {
         player.score += gem.gemColor.ordinal + 1
         player.gemCounter++
-        //refresh
     }
 
     /**
@@ -585,25 +585,25 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
         return neighbors
     }
+    /*
+        /**
+         * Gets the neighboring tiles for a given coordinate
+         * @param coordinate The coordinate for which to find neighboring tiles
+         * @return List of neighboring tiles
+         */
+        fun getNeighboringTiles(coordinate: Coordinate): List<Tile> {
+            val neighboringTiles = mutableListOf<Tile>()
+            val currentGame = rootService.currentGame
+            checkNotNull(currentGame)
 
-    /**
-     * Gets the neighboring tiles for a given coordinate
-     * @param coordinate The coordinate for which to find neighboring tiles
-     * @return List of neighboring tiles
-     */
-    fun getNeighboringTiles(coordinate: Coordinate): List<Tile> {
-        val neighboringTiles = mutableListOf<Tile>()
-        val currentGame = rootService.currentGame
-        checkNotNull(currentGame)
-
-        for (neighborCoordinate in getNeighboringCoordinates(coordinate)) {
-            currentGame.gameBoard.gameBoardTiles[neighborCoordinate]?.let {
-                neighboringTiles.add(it)
+            for (neighborCoordinate in getNeighboringCoordinates(coordinate)) {
+                currentGame.gameBoard.gameBoardTiles[neighborCoordinate]?.let {
+                    neighboringTiles.add(it)
+                }
             }
+            return neighboringTiles
         }
-        return neighboringTiles
-    }
-
+    */
     /**
      * The private function [createGateTokens]
      * create from the upcoming information of the network

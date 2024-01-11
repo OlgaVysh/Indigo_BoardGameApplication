@@ -27,9 +27,14 @@ interface Refreshable {
     fun refreshAfterEndGame() {}
 
     /**
-     * Refreshes the state after placing game elements.
+     * Refreshes the state after checking place for game tile.
      */
-    fun refreshAfterPlacement() {}
+    fun refreshAfterCheckPlacement() {}
+
+    /**
+     * Refreshes the state after placing game tile.
+     */
+    fun refreshAfterPlaceTile() {}
 
     /**
      * Refreshes the state after moving gems.
@@ -37,14 +42,24 @@ interface Refreshable {
     fun refreshAfterMoveGems() {}
 
     /**
+     * Refreshes the state after the player win the gem, and then the gem will be removed from game board.
+     */
+    fun refreshAfterRemoveGems() {}
+
+    /**
      * Refreshes the state after a collision in the game.
      */
     fun refreshAfterCollision() {}
 
     /**
-     * Refreshes the state after rotating game elements.
+     * Refreshes the state after left rotating tile.
      */
-    fun refreshAfterRotation() {}
+    fun refreshAfterLeftRotation() {}
+
+    /**
+     * Refreshes the state after right rotating tile.
+     */
+    fun refreshAfterRightRotation() {}
 
     /**
      * Refreshes the state after redoing a game action.
@@ -79,32 +94,32 @@ interface Refreshable {
     /**
      * Refreshes the state after distributing a new tile.
      */
-    fun refreshAfterDistributeNewTile(){}
+    fun refreshAfterDistributeNewTile() {}
 
     /**
      *  The function refreshes the view layer after a new Player joined the game for
      *  the host.
      */
-    fun refreshAfterPlayerJoined(newPlayerName :String){}
+    fun refreshAfterPlayerJoined(newPlayerName: String) {}
 
     /**
      *  The function refreshes the view layer after a Player leaved the game for
      *  the host.
      */
-    fun refreshAfterPlayerLeaved(playerLeavedName:String){}
+    fun refreshAfterPlayerLeaved(playerLeavedName: String) {}
 
     /**
      *  the function updated the view layer after received the tilePlaceMessage
      */
-    fun refreshAfterStartNewJoinedGame(){}
+    fun refreshAfterStartNewJoinedGame() {}
 
     /**
      * The function updated the view layer after joining a Game
      */
-    fun refreshAfterJoinGame(){}
+    fun refreshAfterJoinGame() {}
 
     /**
      * The function updated the view Layer after a host Game started
      */
-    fun refreshAfterHostGame(){}
+    fun refreshAfterHostGame() {}
 }
