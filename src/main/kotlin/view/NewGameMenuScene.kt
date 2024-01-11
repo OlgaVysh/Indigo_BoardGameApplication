@@ -7,10 +7,7 @@ import view.components.Label
 
 /**
  * Represents the menu scene for starting or continuing a new game.
- *
- * @param width The width of the scene.
- * @param height The height of the scene.
- * @param background The background image for the scene.
+ *@param indigoApp represents an object of [IndigoApplication]
  */
 class NewGameMenuScene (private val indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("NewGameMenuBackground.png")) {
     // Button for starting a new game
