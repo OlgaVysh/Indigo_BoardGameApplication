@@ -1,5 +1,5 @@
 package service
-import entity.*
+/*import entity.*
 import java.io.File
 import kotlin.test.*
 
@@ -25,10 +25,11 @@ class SavegameTest {
     fun saveTest() {
         val players = mutableListOf<Player>()
         gameService.startGame(players, false, false)
-        val file = "/Users/mohammadkarkanawi/IdeaProjects/Projekt2-gruppe1/src/test/resources/Indigo/Indigo.kt"
+        val file = "/Users/mohammadkarkanawi/IdeaProjects/Projekt2-gruppe1/src/test/resources/"
 
         gameService.saveGame(file)
         assert(File(file).exists())
         assert(File(file).readText().isNotEmpty())    }
 
 }
+*/

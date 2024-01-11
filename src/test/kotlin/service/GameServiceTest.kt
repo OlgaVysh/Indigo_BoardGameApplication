@@ -283,7 +283,7 @@ class GameServiceTest {
         fun loadGameTest() {
            /* assertNull(rootService.currentGame)
 
-            val testPath = "/Users/mohammadkarkanawi/IdeaProjects/Projekt2-gruppe1/src/test/resources/Indigo/Indigo.kt"
+            val testPath = "/Users/mohammadkarkanawi/IdeaProjects/Projekt2-gruppe1/src/test/resources/
             rootService.gameService.loadGame(testPath)
             assertNotNull(rootService.currentGame)*/
         }
