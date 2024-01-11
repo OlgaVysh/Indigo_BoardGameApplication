@@ -18,11 +18,11 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
 
     private val startScene = NewGameMenuScene(this)
     val modusScene = ModusMenuScene(this)
+    val configurePlayersScene = ConfigurePlayersGameScene(this)
    /* val gatesScene = GateMenuScene(this)
     val networkScene = NetworkMenuScene(this)
     val saveGameScene = SaveGameMenuScene(this)
     val gameSavedMenuScene = GameSavedMenuScene(this)
-    val newPlayerMenuScene = NewPlayerMenuScene(this)
     val configurePlayerXScene = ConfigurePlayerXScene(this)
     val joinGameScene = JoinGameScene(this)
     val endGameMenuScene = EndGameMenuScene(this)
@@ -41,7 +41,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
         val fontFile = File(resource.toURI())
         loadFont(fontFile)
 
-        this.showMenuScene(startScene)
+        this.showGameScene(configurePlayersScene)
 
         //Testen der GameScene
         //this.showGameScene(gameScene)

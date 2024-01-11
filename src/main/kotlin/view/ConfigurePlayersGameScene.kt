@@ -2,9 +2,9 @@ package view
 
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
-import service.RootService
 import tools.aqua.bgw.components.layoutviews.GridPane
 import tools.aqua.bgw.core.Alignment
+import tools.aqua.bgw.core.BoardGameScene
 import view.components.Button
 import view.components.Label
 
@@ -17,9 +17,8 @@ import view.components.Label
  *
  * The layout and design of these components are defined in this class.
  *
- * @param rootService The root service providing access to game-related functionality.
  */
-class NewPlayerMenuScene(private val rootService: RootService) : MenuScene(1920, 1080) {
+class ConfigurePlayersGameScene(indigoApp : IndigoApplication) : BoardGameScene(1920, 1080) {
     // UI components for configuring players
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)
     private val startGameButton = Button(1047, 755, 528, 207, "Start game", 48)
