@@ -11,10 +11,10 @@ import java.awt.Color
 /**
  * Represents the game scene containing a hexagonal grid.
  *
- * @param rootService The root service providing access to game-related functionality.
+ *
  */
 
-class GameScene(private val rootService: RootService) :
+class GameScene( private val indigoApp : IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")) {
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> = HexagonGrid(
