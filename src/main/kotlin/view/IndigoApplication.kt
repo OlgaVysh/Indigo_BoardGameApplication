@@ -17,9 +17,9 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
 
 
     private val startScene = NewGameMenuScene(this)
-    public val modusScene = ModusMenuScene()
-    public val gatesScene = GateMenuScene()
-    public val networkScene = NetworkMenuScene()
+    val modusScene = ModusMenuScene()
+   /* public val gatesScene = GateMenuScene()
+   public val networkScene = NetworkMenuScene()
     public val saveGameScene = SaveGameMenuScene()
     public val gameSavedMenuScene = GameSavedMenuScene()
     public val newPlayerMenuScene = NewPlayerMenuScene(rootService)
@@ -27,10 +27,10 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     public val joinGameScene = JoinGameScene(rootService)
     public val endGameMenuScene = EndGameMenuScene(rootService)
     public val aiMenuScene = AIMenuScene(rootService)
-    public val hostGameScene = HostGameScene(rootService)
-    public val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
-    public val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
-    public val gameScene = GameScene()
+    public val hostGameScene = HostGameScene(rootService)*/
+    val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
+    /*public val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
+    public val gameScene = GameScene()*/
 
 
 
