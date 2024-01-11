@@ -41,7 +41,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
         val fontFile = File(resource.toURI())
         loadFont(fontFile)
 
-        this.showGameScene(configurePlayersScene)
+        this.showMenuScene(startScene)
 
         //Testen der GameScene
         //this.showGameScene(gameScene)
