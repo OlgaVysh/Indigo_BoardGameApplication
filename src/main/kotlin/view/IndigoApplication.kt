@@ -15,23 +15,22 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     // also holds the currently active game
     private val rootService = RootService()
 
-    //auskommentiert wegen Warnings
-    private val startScene = NewGameMenuScene()
-    //auskommentiert wegen Warnings
-    /*private val modusScene = ModusMenuScene()
-    private val gatesScene = GateMenuScene()
-    private val networkScene = NetworkMenuScene()
-    private val saveGameScene = SaveGameMenuScene()
-    private val gameSavedMenuScene = GameSavedMenuScene()
-    private val newPlayerMenuScene = NewPlayerMenuScene(rootService)
-    private val configurePlayerXScene = ConfigurePlayerXScene(rootService)
-    private val joinGameScene = JoinGameScene(rootService)
-    private val endGameMenuScene = EndGameMenuScene(rootService)
-    private val aiMenuScene = AIMenuScene(rootService)
-    private val hostGameScene = HostGameScene(rootService)
-    private val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
-    private val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
-    private val gameScene = GameScene(/*rootService*/)*/
+
+    private val startScene = NewGameMenuScene(this)
+    public val modusScene = ModusMenuScene()
+    public val gatesScene = GateMenuScene()
+    public val networkScene = NetworkMenuScene()
+    public val saveGameScene = SaveGameMenuScene()
+    public val gameSavedMenuScene = GameSavedMenuScene()
+    public val newPlayerMenuScene = NewPlayerMenuScene(rootService)
+    public val configurePlayerXScene = ConfigurePlayerXScene(rootService)
+    public val joinGameScene = JoinGameScene(rootService)
+    public val endGameMenuScene = EndGameMenuScene(rootService)
+    public val aiMenuScene = AIMenuScene(rootService)
+    public val hostGameScene = HostGameScene(rootService)
+    public val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
+    public val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
+    public val gameScene = GameScene()
 
 
 
