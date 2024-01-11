@@ -108,7 +108,7 @@ open class IndigoNetworkClient(
             { "Player should not leave" }
 
             otherPlayers.remove(notification.sender)
-            NetworkRefreshingService().refreshAfterPlayerLeaved(notification.sender)
+            NetworkRefreshingService().refreshAfterPlayerLeft(notification.sender)
         }
     }
 

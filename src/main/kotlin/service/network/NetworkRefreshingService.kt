@@ -18,8 +18,8 @@ class NetworkRefreshingService : AbstractRefreshingService()  {
     /**
      * The function trigger the refresh function for refreshAfterPlayerJoined
      */
-    fun refreshAfterPlayerLeaved(playerLeavedName : String){
-        onAllRefreshables {refreshAfterPlayerLeaved(playerLeavedName) }
+    fun refreshAfterPlayerLeft(playerLeftName : String){
+        onAllRefreshables { refreshAfterPlayerLeft(playerLeftName) }
     }
 
 }

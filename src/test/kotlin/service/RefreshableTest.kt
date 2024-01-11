@@ -194,7 +194,7 @@ class RefreshableTest : Refreshable {
         refreshAfterJoinGameCalled = true
     }
 
-    override fun refreshAfterPlayerLeaved(playerLeavedName: String) {
+    override fun refreshAfterPlayerLeft(playerLeftName: String) {
         refreshAfterPlayerLeavedCalled = true
     }
 

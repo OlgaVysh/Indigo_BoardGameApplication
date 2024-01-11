@@ -106,7 +106,7 @@ interface Refreshable {
      *  The function refreshes the view layer after a Player leaved the game for
      *  the host.
      */
-    fun refreshAfterPlayerLeaved(playerLeavedName: String) {}
+    fun refreshAfterPlayerLeft(playerLeftName: String) {}
 
     /**
      *  the function updated the view layer after received the tilePlaceMessage
