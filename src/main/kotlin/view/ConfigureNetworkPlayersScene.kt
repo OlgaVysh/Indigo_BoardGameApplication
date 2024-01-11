@@ -59,8 +59,8 @@ class ConfigureNetworkPlayersScene(games: List<String>) :
             grid.addRows(currentRows)
             val newNetworkPlayer = NetworkPlayersView(0, 151 * (currentRows - 1)).apply {
                 label.text = "Player " + grid.rows + ": " + newPlayerName
-                label.posY = (151 * (currentRows - 1)).toDouble()
-                button.posY = (151 * (currentRows - 1)).toDouble()
+                //label.posY = (151 * (currentRows - 1)).toDouble()
+                //button.posY = (151 * (currentRows - 1)).toDouble()
             }
             grid.set(0, currentRows, newNetworkPlayer)
         } else {
@@ -85,13 +85,14 @@ class ConfigureNetworkPlayersScene(games: List<String>) :
             }
         }
         grid.removeEmptyRows()
-        for (i in 0 until grid.rows) {
-            val NetworkPlayer = grid.get(0, i) ?: continue
-            NetworkPlayer.apply {
-                posY = (151 * i).toDouble()
-                label.posY = (151 * i).toDouble()
-                button.posY = (151 * i).toDouble()
-            }
+        /*for (i in 0 until grid.rows) {
+         val NetworkPlayer = grid.get(0, i) ?: continue
+        NetworkPlayeapply {
+            posY = (151 * i).toDouble()
+            label.posY = (151 * i).toDouble()
+            button.posY = (151 * i).toDouble()
         }
+        }*/
     }
+
 }
