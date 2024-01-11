@@ -1,13 +1,8 @@
 package view
 
-import service.RootService
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
-import tools.aqua.bgw.components.uicomponents.Button
-import tools.aqua.bgw.components.uicomponents.Label
-import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.core.BoardGameScene
-import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.visual.Visual
