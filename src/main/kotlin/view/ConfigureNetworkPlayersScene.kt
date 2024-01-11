@@ -1,5 +1,6 @@
 package view
 
+import service.RootService
 import view.components.*
 
 import tools.aqua.bgw.components.layoutviews.GridPane
@@ -12,7 +13,12 @@ import tools.aqua.bgw.visual.ImageVisual
  * @param games List of strings representing available games for configuration.
  */
 class ConfigureNetworkPlayersScene(games: List<String>) :
-    BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")) {    // Title label for the scene
+    BoardGameScene(
+        1920,
+        1080,
+        background = ImageVisual("PlainBackground_FCE6BD.png")
+    ),
+    Refreshable {    // Title label for the scene
 
     private val label = Label(453, 21, 1050, 155, "Configure Players", 120)
 
@@ -40,5 +46,52 @@ class ConfigureNetworkPlayersScene(games: List<String>) :
         }
         // Add components to the scene
         addComponents(label, grid, addButton, startButton)
+    }
+
+    /**
+     *  The Methode [refreshAfterPlayerJoined] added in the grid the new joined Player
+     *
+     *  @param newPlayerName is a String which contains the name of the new joined Player
+     */
+    override fun refreshAfterPlayerJoined(newPlayerName: String) {
+        val currentRows = grid.rows
+        if (currentRows < 4) {
+            grid.addRows(currentRows)
+            val newNetworkPlayer = NetworkPlayersView(0, 151 * (currentRows - 1)).apply {
+                label.text = "Player " + grid.rows + ": " + newPlayerName
+                label.posY = (151 * (currentRows - 1)).toDouble()
+                button.posY = (151 * (currentRows - 1)).toDouble()
+            }
+            grid.set(0, currentRows, newNetworkPlayer)
+        } else {
+            val rootService = RootService()
+            val networkClient = rootService.networkService.client
+            checkNotNull(networkClient)
+            networkClient.otherPlayers.remove(newPlayerName)
+        }
+    }
+
+    /**
+     *  The Methode [refreshAfterPlayerJoined] remove the new left Player in the grid
+     *
+     *  @param playerLeftName is a String which contains the name of the left Player
+     */
+    override fun refreshAfterPlayerLeft(playerLeftName: String) {
+        for (i in 0 until grid.rows) {
+            val NetworkPlayer = grid.get(0, i) ?: continue
+            if (NetworkPlayer.label.name.contains(playerLeftName)) {
+                grid.removeRow(i)
+                break
+            }
+        }
+        grid.removeEmptyRows()
+        for (i in 0 until grid.rows) {
+            val NetworkPlayer = grid.get(0, i) ?: continue
+            NetworkPlayer.apply {
+                posY = (151 * i).toDouble()
+                label.posY = (151 * i).toDouble()
+                button.posY = (151 * i).toDouble()
+            }
+        }
     }
 }
