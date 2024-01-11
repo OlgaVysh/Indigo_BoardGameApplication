@@ -24,7 +24,7 @@ class HostGameScene (private val rootService: RootService) : MenuScene(990, 1080
     private val nameLabel = Label(80, 321,300,58,"Name :",48)
 
     // Label for the ID.
-    private val gameIdLabel = Label (80, 486,350,116,"Game ID :",48)
+    private val sessionIdLabel = Label (80, 486,350,116,"Session ID :",48)
 
     // TextField for the host's name with an event handler to
     // enable or disable the host game button based on text input.
@@ -56,7 +56,7 @@ class HostGameScene (private val rootService: RootService) : MenuScene(990, 1080
         addComponents(
             hostLabel,
             nameLabel,
-            gameIdLabel,
+            sessionIdLabel,
             hostName,
             gameId,
             hostGameButton

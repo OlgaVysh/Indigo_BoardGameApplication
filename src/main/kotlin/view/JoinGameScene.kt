@@ -23,7 +23,7 @@ class JoinGameScene(private val rootService: RootService) : MenuScene(990, 1080)
     private val nameLabel = Label(80, 370, width = 300, text = "Name : ", fontSize = 48)
     private val nameInput: TextField = TextField(width = 420, height = 69, posX = 320, posY = 370)
 
-    private val idLabel = Label(80, 535, width = 300, text = "Game id : ", fontSize = 48)
+    private val idLabel = Label(80, 535, width = 300, text = "Session ID : ", fontSize = 48)
     private val idInput: TextField = TextField(width = 420, height = 69, posX = 320, posY = 535)
 
     private val aiLabel = Label(80, 700, width = 300, text = "AI : ", fontSize = 48)
