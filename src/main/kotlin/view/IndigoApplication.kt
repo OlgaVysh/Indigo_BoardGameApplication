@@ -1,6 +1,6 @@
 package view
 
-import service.RootService
+//import service.RootService
 import tools.aqua.bgw.core.BoardGameApplication
 import java.io.File
 import java.io.FileNotFoundException
@@ -13,24 +13,24 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
 {
     // Central service from which all others are created/accessed
     // also holds the currently active game
-    private val rootService = RootService()
+    //val rootService = RootService()
 
 
     private val startScene = NewGameMenuScene(this)
-    val modusScene = ModusMenuScene()
-   /* public val gatesScene = GateMenuScene()
-   public val networkScene = NetworkMenuScene()
-    public val saveGameScene = SaveGameMenuScene()
-    public val gameSavedMenuScene = GameSavedMenuScene()
-    public val newPlayerMenuScene = NewPlayerMenuScene(rootService)
-    public val configurePlayerXScene = ConfigurePlayerXScene(rootService)
-    public val joinGameScene = JoinGameScene(rootService)
-    public val endGameMenuScene = EndGameMenuScene(rootService)
-    public val aiMenuScene = AIMenuScene(rootService)
-    public val hostGameScene = HostGameScene(rootService)*/
+    val modusScene = ModusMenuScene(this)
+   /* val gatesScene = GateMenuScene(this)
+    val networkScene = NetworkMenuScene(this)
+    val saveGameScene = SaveGameMenuScene(this)
+    val gameSavedMenuScene = GameSavedMenuScene(this)
+    val newPlayerMenuScene = NewPlayerMenuScene(this)
+    val configurePlayerXScene = ConfigurePlayerXScene(this)
+    val joinGameScene = JoinGameScene(this)
+    val endGameMenuScene = EndGameMenuScene(this)
+    val aiMenuScene = AIMenuScene(this)
+    val hostGameScene = HostGameScene(this)*/
     val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
-    //public val networkConfigureScene = ConfigureNetworkPlayersScene(listOf("one","two","three"))
-    //public val gameScene = GameScene()
+    //public val networkConfigureScene = ConfigureNetworkPlayersScene(this,listOf("one","two","three"))
+    //public val gameScene = GameScene(this)
 
 
 

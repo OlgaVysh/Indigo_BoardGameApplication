@@ -7,13 +7,10 @@ import view.components.Label
 
 /**
  * Represents the menu scene for selecting game modes.
- *
- * @param width The width of the scene.
- * @param height The height of the scene.
- * @param background The background image for the scene.
+ * @param indigoApp represents an object of [IndigoApplication]
  */
 
-class ModusMenuScene : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) {
+class ModusMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) {
     // Buttons for selecting game modes
     private val hotSeatButton = Button(266, 642, 528, 207, "HotSeat", 48)
     private val networkButton = Button(1100, 642, 528, 207, "Network", 48)
