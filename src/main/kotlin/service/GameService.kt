@@ -648,4 +648,30 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         }
         return gateTokens
     }
+
+    companion object {
+        fun isGameOver(state: Any): Boolean {
+TODO()
+        }
+
+        fun checkPlacement(coordinate: Coordinate, playerTile: Tile): Boolean {
+TODO()
+        }
+
+        fun placeTile(coordinate: Coordinate, tile: Tile) {
+TODO()
+        }
+
+        fun getNeighboringCoordinates(coordinate: Coordinate):  List<Coordinate> {
+TODO()
+        }
+
+        fun moveGems(coordinate: Coordinate, coordinate1: Coordinate, i: Int) {
+TODO()
+        }
+
+        fun distributeNewTile() {
+            TODO()
+        }
+    }
 }
