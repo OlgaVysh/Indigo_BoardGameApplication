@@ -13,7 +13,8 @@ class NewGameMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, b
     // Button for starting a new game
 
     private val startButton = Button(696, 337, 528, 207, "Start new game", 48).
-    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.modusScene)} }
+    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.modusScene)
+    indigoApp.hideMenuScene()} }
     // Button for continuing an existing game
 
     private val continueButton = Button(696, 664, 528, 207, "Continue game", 48).

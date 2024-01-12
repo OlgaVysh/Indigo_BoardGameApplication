@@ -8,12 +8,15 @@ import view.components.Label
 /**
  * Represents the menu scene for saving a game.
  */
-class SaveGameMenuScene : MenuScene(1920, 1080, background = ImageVisual("SaveMenuScene.png")) {
+class SaveGameMenuScene(indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SaveMenuScene.png")) {
     // Button for continuing the game without saving
-    private val continueButton = Button(266, 642, 528, 207, "Continue game", 48)
+    private val continueButton = Button(266, 642, 528, 207, "Continue game", 48).
+    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.gameScene)
+    indigoApp.hideMenuScene()} }
 
     // Button for confirming the decision to save the game
-    private val yesButton = Button(1100, 642, 528, 207, "Yes", 48)
+    private val yesButton = Button(1100, 642, 528, 207, "Yes", 48).
+    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.gameSavedScene)} }
 
     // Label displaying the first part of the confirmation message
     private val label1 = Label(424, 284, 1072, 116, "Do you want to break of", 86)

@@ -1,6 +1,5 @@
 package view
 
-import service.RootService
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.uicomponents.TextField
 import tools.aqua.bgw.core.MenuScene
@@ -17,8 +16,10 @@ import view.components.Label
  *
  * @property rootService An instance of RootService to access and manipulate game data.
  */
-class HostGameScene(private val rootService: RootService) : MenuScene(990, 1080), Refreshable {
-    private val game = rootService.currentGame
+class HostGameScene( indigoApp : IndigoApplication) : MenuScene(990, 1080), Refreshable {
+
+    private val rootService = indigoApp.rootService
+    //private val game = indigoApp.rootService.currentGame
 
     // Label to display the "Host Game" Header.
     private val hostLabel = Label(42, 105, 900, 116, "Host Game", 120)
@@ -51,7 +52,9 @@ class HostGameScene(private val rootService: RootService) : MenuScene(990, 1080)
     )
 
     // Button for host to game.
-    private val hostGameButton = Button(247, 698, 532, 207, "Host game", 48)
+    private val hostGameButton = Button(247, 698, 532, 207, "Host game", 48).
+    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
+    indigoApp.hideMenuScene()} }
 
     val textMessageLabel = Label(
         15,

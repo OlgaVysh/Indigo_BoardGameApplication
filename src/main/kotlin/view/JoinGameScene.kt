@@ -1,6 +1,5 @@
 package view
 
-import service.RootService
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.uicomponents.*
 import tools.aqua.bgw.core.Alignment
@@ -16,13 +15,18 @@ import view.components.Label
  * This scene when a player enters the option to join a game in the scene before ("Szenenname").
  *
  * The layout and design of these components are defined in this class.
- * @param rootService The root service providing access to game-related functionality.
  */
-class JoinGameScene(private val rootService: RootService) : MenuScene(990, 1080), Refreshable {
+class JoinGameScene(indigoApp : IndigoApplication) : MenuScene(990, 1080), Refreshable {
     //private val game = rootService.currentGame
+
+    private val rootService = indigoApp.rootService
+
     //iregendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player X", 96)
-    private val joinButton = Button(247, 800, 528, 207, "Save changes", 48)
+    private val joinButton = Button(247, 800, 528, 207, "Join", 48).
+    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.gameScene)
+    indigoApp.hideMenuScene()} }
+
     private val nameLabel = Label(80, 370, width = 300, text = "Name : ", fontSize = 48)
     private val nameInput: TextField = TextField(width = 420, height = 69, posX = 320, posY = 370)
 
@@ -38,7 +42,7 @@ class JoinGameScene(private val rootService: RootService) : MenuScene(990, 1080)
     private val yesButton = RadioButton(posX = 320, posY = 700, toggleGroup = toggleGroup)
     private val noButton = RadioButton(posX = 620, posY = 700, toggleGroup = toggleGroup)
 
-    val textMessageLabel = Label(
+    private val textMessageLabel = Label(
         15, 340, 960, 480, "Waiting for Confirmation", 48
     ).apply {
         visual = ImageVisual("button.png")

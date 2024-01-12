@@ -1,6 +1,6 @@
 package view
 
-import tools.aqua.bgw.core.MenuScene
+
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.components.layoutviews.GridPane
 import tools.aqua.bgw.core.Alignment
@@ -21,7 +21,8 @@ import view.components.Label
 class ConfigurePlayersGameScene(indigoApp : IndigoApplication) : BoardGameScene(1920, 1080) {
     // UI components for configuring players
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)
-    private val startGameButton = Button(1047, 755, 528, 207, "Start game", 48)
+    private val startGameButton = Button(1047, 755, 528, 207, "Start game", 48).
+    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.gameScene)} }
     private val addNewPlayerButton = Button(340, 755, 528, 207, "Add new player", 48)
     //private val game = rootService.currentGame
     /**

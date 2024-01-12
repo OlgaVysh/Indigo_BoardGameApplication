@@ -13,7 +13,7 @@ import java.awt.Color
  *
  */
 
-class GameScene() :
+class GameScene(indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")) {
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> = HexagonGrid(coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL, posX = 820, posY = 420)
@@ -28,7 +28,8 @@ class GameScene() :
     private val redoButton = view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40)
 
     // saveButton component
-    private val saveButton = view.components.Button(posX = 1055, posY = 980, width = 160, height = 68, text = "Save", fontSize = 40)
+    private val saveButton = view.components.Button(posX = 1055, posY = 980, width = 160, height = 68, text = "Save", fontSize = 40).
+    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.saveGameScene)} }
 
     // Player components
     private var player1Label = view.components.Label(posX = 110, posY = 68, width = 200, text = "Player 1", fontSize = 48)

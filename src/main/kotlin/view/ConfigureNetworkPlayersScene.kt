@@ -12,7 +12,7 @@ import tools.aqua.bgw.visual.ImageVisual
  *
  * @param games List of strings representing available games for configuration.
  */
-class ConfigureNetworkPlayersScene(games: List<String>) :
+class ConfigureNetworkPlayersScene(indigoApp : IndigoApplication, games: List<String>) :
     BoardGameScene(
         1920,
         1080,
@@ -32,7 +32,8 @@ class ConfigureNetworkPlayersScene(games: List<String>) :
     private val addButton = Button(188, 806, 528, 207, "Add new player", 40)
 
     // Button for starting a new game
-    private val startButton = Button(1217, 806, 528, 207, "Start new game", 40)
+    private val startButton = Button(1217, 806, 528, 207, "Start new game", 40).
+    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.gameScene)} }
 
     /**
      * Initializes the ConfigureNetworkPlayersScene.
@@ -42,7 +43,8 @@ class ConfigureNetworkPlayersScene(games: List<String>) :
         // Populate the grid with NetworkPlayersView instances
 
         for (i in 0..size) {
-            grid[0, i] = NetworkPlayersView()
+            grid[0, i] = NetworkPlayersView().
+            apply { this.button.onMouseClicked = {indigoApp.showMenuScene(indigoApp.configurePlayerXScene)} }
         }
         // Add components to the scene
         addComponents(label, grid, addButton, startButton)
@@ -78,8 +80,8 @@ class ConfigureNetworkPlayersScene(games: List<String>) :
      */
     override fun refreshAfterPlayerLeft(playerLeftName: String) {
         for (i in 0 until grid.rows) {
-            val NetworkPlayer = grid.get(0, i) ?: continue
-            if (NetworkPlayer.label.name.contains(playerLeftName)) {
+            val networkPlayer = grid.get(0, i) ?: continue
+            if (networkPlayer.label.name.contains(playerLeftName)) {
                 grid.removeRow(i)
                 break
             }

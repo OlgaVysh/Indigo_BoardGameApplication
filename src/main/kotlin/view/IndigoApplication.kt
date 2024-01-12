@@ -16,25 +16,25 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
 
     // Central service from which all others are created/accessed
     // also holds the currently active game
-    //val rootService = RootService()
 
 
-    private val startScene = NewGameMenuScene(this)
+    val rootService = RootService()
+
+    val startScene = NewGameMenuScene(this)
     val modusScene = ModusMenuScene(this)
     val configurePlayersScene = ConfigurePlayersGameScene(this)
-
-    /*val gatesScene = GateMenuScene(this)
+    //val gatesScene = GateMenuScene(this)
      val networkScene = NetworkMenuScene(this)
-     val saveGameScene = SaveGameMenuScene(this)
-     val gameSavedMenuScene = GameSavedMenuScene(this)
      val configurePlayerXScene = ConfigurePlayerXScene(this)
      val joinGameScene = JoinGameScene(this)
-     val endGameMenuScene = EndGameMenuScene(this)
-     val aiMenuScene = AIMenuScene(this)*/
-    private val hostGameScene = HostGameScene(RootService())
+     //val endGameMenuScene = EndGameMenuScene(this)
+     // val aiMenuScene = AIMenuScene(this)
+    val gameSavedScene = GameSavedMenuScene(this)
+    val saveGameScene = SaveGameMenuScene(this)
+    val hostGameScene = HostGameScene(this)
     val savedGamesScene = SavedGamesMenuScene(listOf("one", "two", "three"))
-    private val networkConfigureScene = ConfigureNetworkPlayersScene(/*this,*/ listOf("one", "two", "three"))
-    //public val gameScene = GameScene(this)
+    val networkConfigureScene = ConfigureNetworkPlayersScene(this, listOf("one", "two", "three"))
+    val gameScene = GameScene(this)
 
 
     init {
