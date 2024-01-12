@@ -5,7 +5,7 @@ import service.GameService
  * The MCTS: Monte Carlo Tree Search algorithm to find the best player moves
  *
  * @property rootservice the RootService instance that holds the game state information
- * @property aiIndex the index of the player that the AI is playing as
+ * @property aiIndex the index of the player that the AI is playing as.
  */
 class MCTS (private val rootservice: service.RootService, private val aiIndex: Int) {
 
