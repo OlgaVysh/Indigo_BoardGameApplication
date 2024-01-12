@@ -1,9 +1,12 @@
 package view
 
 import service.RootService
+import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.uicomponents.*
 import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.core.MenuScene
+import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
+import tools.aqua.bgw.visual.ImageVisual
 import view.components.Button
 import view.components.Label
 
@@ -15,7 +18,7 @@ import view.components.Label
  * The layout and design of these components are defined in this class.
  * @param rootService The root service providing access to game-related functionality.
  */
-class JoinGameScene(private val rootService: RootService) : MenuScene(990, 1080) {
+class JoinGameScene(private val rootService: RootService) : MenuScene(990, 1080), Refreshable {
     //private val game = rootService.currentGame
     //iregendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player X", 96)
@@ -35,6 +38,14 @@ class JoinGameScene(private val rootService: RootService) : MenuScene(990, 1080)
     private val yesButton = RadioButton(posX = 320, posY = 700, toggleGroup = toggleGroup)
     private val noButton = RadioButton(posX = 620, posY = 700, toggleGroup = toggleGroup)
 
+    val textMessageLabel = Label(
+        15, 340, 960, 480, "Waiting for Confirmation", 48
+    ).apply {
+        visual = ImageVisual("button.png")
+        isVisible = false
+        isDisabled = true
+    }
+
     /**
      * Initializes the JoinGameScene with default values and sets up UI components.
      */
@@ -53,9 +64,67 @@ class JoinGameScene(private val rootService: RootService) : MenuScene(990, 1080)
         addComponents(noButton)
         addComponents(yesLabel)
         addComponents(noLabel)
+        addComponents(textMessageLabel)
+
         // Set alignment for specific labels
         nameLabel.alignment = Alignment.CENTER_LEFT
         aiLabel.alignment = Alignment.CENTER_LEFT
         idLabel.alignment = Alignment.CENTER_LEFT
+    }
+
+    override fun refreshAfterJoinGame() {
+        textMessageLabel.isVisible = true
+        textMessageLabel.isDisabled = false
+        textMessageLabel.text = rootService.networkService.connectionState.name
+    }
+
+    override fun refreshAfterOnJoinGameResponse(responseStatus: JoinGameResponseStatus) {
+        textMessageLabel.isVisible = true
+        textMessageLabel.isDisabled = false
+        when (responseStatus) {
+            JoinGameResponseStatus.SUCCESS -> textMessageLabel.text = "Waiting for Host to finish Game Configuration"
+
+            JoinGameResponseStatus.ALREADY_ASSOCIATED_WITH_GAME -> {
+                textMessageLabel.text = "Already connected to the Game"
+                playAnimation(DelayAnimation(duration = 2000).apply {
+                    onFinished = {
+                        textMessageLabel.isVisible = false
+                        textMessageLabel.isDisabled = true
+                    }
+                }
+                )
+            }
+
+            JoinGameResponseStatus.INVALID_SESSION_ID -> {
+                textMessageLabel.text = JoinGameResponseStatus.INVALID_SESSION_ID.name + "\n" + "try another Session ID"
+                playAnimation(DelayAnimation(duration = 2000).apply {
+                    onFinished = {
+                        textMessageLabel.isVisible = false
+                        textMessageLabel.isDisabled = true
+                    }
+                })
+            }
+
+            JoinGameResponseStatus.PLAYER_NAME_ALREADY_TAKEN -> {
+                textMessageLabel.text =
+                    JoinGameResponseStatus.INVALID_SESSION_ID.name + "\n" + "try another Player Name"
+                playAnimation(DelayAnimation(duration = 2000).apply {
+                    onFinished = {
+                        textMessageLabel.isVisible = false
+                        textMessageLabel.isDisabled = true
+                    }
+                })
+            }
+
+            else -> {
+                textMessageLabel.text = "Another failure"
+                playAnimation(DelayAnimation(duration = 2000).apply {
+                    onFinished = {
+                        textMessageLabel.isVisible = false
+                        textMessageLabel.isDisabled = true
+                    }
+                })
+            }
+        }
     }
 }

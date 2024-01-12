@@ -1,6 +1,7 @@
 package view
 
 import service.RootService
+import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.uicomponents.TextField
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
@@ -82,6 +83,7 @@ class HostGameScene(private val rootService: RootService) : MenuScene(990, 1080)
     override fun refreshAfterHostGame() {
         textMessageLabel.isVisible = true
         textMessageLabel.isDisabled = false
+        textMessageLabel.text = rootService.networkService.connectionState.name
     }
 
     override fun refreshAfterOnCreateGameResponse(sessionID: String?) {
@@ -96,8 +98,8 @@ class HostGameScene(private val rootService: RootService) : MenuScene(990, 1080)
         } else {
             textMessageLabel.text = "Session ID: $sessionId"
         }
-        textMessageLabel.apply {
-            onMouseClicked = {
+        DelayAnimation(duration = 2000).apply {
+            onFinished = {
                 textMessageLabel.isVisible = false
                 textMessageLabel.isDisabled = true
             }

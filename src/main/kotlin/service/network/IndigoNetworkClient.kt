@@ -54,6 +54,7 @@ open class IndigoNetworkClient(
                 }
                 else -> {
                     disconnect()
+                    networkService.updateConnectionState(ConnectionState.DISCONNECTED)
                 }
             }
             NetworkRefreshingService().refreshAfterOnCreateGameResponse(response.sessionID)
@@ -78,9 +79,12 @@ open class IndigoNetworkClient(
                     sessionID = response.sessionID
                     networkService.updateConnectionState(ConnectionState.WAITING_FOR_INIT)
                 }
-
-                else -> {}
+                else -> {
+                    disconnect()
+                    networkService.updateConnectionState(ConnectionState.DISCONNECTED)
+                }
             }
+            NetworkRefreshingService().refreshAfterOnJoinGameResponse(response.status)
         }
     }
 
@@ -130,7 +134,7 @@ open class IndigoNetworkClient(
     }
 
     /**
-     * The function [onGameActionResponse]
+     * The function [onGameActionResponse] is used to get GameActions from another player
      */
     override fun onGameActionResponse(response: GameActionResponse) {
         BoardGameApplication.runOnGUIThread {

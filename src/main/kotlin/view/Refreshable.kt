@@ -1,5 +1,7 @@
 package view
 
+import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
+
 
 /**
  * Interface for objects that can be refreshed in response to different game events.
@@ -124,7 +126,12 @@ interface Refreshable {
     fun refreshAfterHostGame() {}
 
     /**
-     * After receiving an Game Responese update the view Layer
+     * After receiving a Game Responese update the view Layer
      */
-    fun refreshAfterOnCreateGameResponse(sessionID:String?) {}
+    fun refreshAfterOnCreateGameResponse(sessionID: String?) {}
+
+    /**
+     *  update the Gui with the status
+     */
+    fun refreshAfterOnJoinGameResponse(responseStatus: JoinGameResponseStatus) {}
 }
