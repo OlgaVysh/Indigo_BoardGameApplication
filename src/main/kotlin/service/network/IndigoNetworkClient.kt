@@ -52,9 +52,11 @@ open class IndigoNetworkClient(
                     networkService.connectionState = ConnectionState.WAITING_FOR_GUEST
                     sessionID = response.sessionID
                 }
-
-                else -> {}
+                else -> {
+                    disconnect()
+                }
             }
+            NetworkRefreshingService().refreshAfterOnCreateGameResponse(response.sessionID)
         }
     }
 

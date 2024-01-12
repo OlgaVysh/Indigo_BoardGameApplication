@@ -1,16 +1,19 @@
 package view
 
 //import service.RootService
+import service.RootService
+import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.core.BoardGameApplication
 import java.io.File
 import java.io.FileNotFoundException
+
 
 /**
  * Implementation of the BGW [BoardGameApplication] for the example game "Indigo"
  */
 
-class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
-{
+class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
+
     // Central service from which all others are created/accessed
     // also holds the currently active game
     //val rootService = RootService()
@@ -19,19 +22,19 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     private val startScene = NewGameMenuScene(this)
     val modusScene = ModusMenuScene(this)
     val configurePlayersScene = ConfigurePlayersGameScene(this)
-   /* val gatesScene = GateMenuScene(this)
-    val networkScene = NetworkMenuScene(this)
-    val saveGameScene = SaveGameMenuScene(this)
-    val gameSavedMenuScene = GameSavedMenuScene(this)
-    val configurePlayerXScene = ConfigurePlayerXScene(this)
-    val joinGameScene = JoinGameScene(this)
-    val endGameMenuScene = EndGameMenuScene(this)
-    val aiMenuScene = AIMenuScene(this)
-    val hostGameScene = HostGameScene(this)*/
-    val savedGamesScene = SavedGamesMenuScene(listOf("one","two","three"))
-    //public val networkConfigureScene = ConfigureNetworkPlayersScene(this,listOf("one","two","three"))
-    //public val gameScene = GameScene(this)
 
+    /*val gatesScene = GateMenuScene(this)
+     val networkScene = NetworkMenuScene(this)
+     val saveGameScene = SaveGameMenuScene(this)
+     val gameSavedMenuScene = GameSavedMenuScene(this)
+     val configurePlayerXScene = ConfigurePlayerXScene(this)
+     val joinGameScene = JoinGameScene(this)
+     val endGameMenuScene = EndGameMenuScene(this)
+     val aiMenuScene = AIMenuScene(this)*/
+    private val hostGameScene = HostGameScene(RootService())
+    val savedGamesScene = SavedGamesMenuScene(listOf("one", "two", "three"))
+    private val networkConfigureScene = ConfigureNetworkPlayersScene(/*this,*/ listOf("one", "two", "three"))
+    //public val gameScene = GameScene(this)
 
 
     init {
@@ -52,5 +55,18 @@ class IndigoApplication : BoardGameApplication("Indigo Game") //,Refreshable{
     //an jedem Component mit Text : font = Font(family: "Irish Grover")
     // .apply { componentStyle = gradient }
 
-
+    override fun refreshAfterOnCreateGameResponse(sessionID: String?) {
+        if (sessionID != null) {
+            DelayAnimation(duration = 2000).apply {
+                onFinished = {
+                    this@IndigoApplication.hideMenuScene()
+                    this@IndigoApplication.showGameScene(networkConfigureScene)
+                    hostGameScene.apply {
+                        textMessageLabel.isVisible = false
+                        textMessageLabel.isDisabled = true
+                    }
+                }
+            }
+        }
+    }
 }

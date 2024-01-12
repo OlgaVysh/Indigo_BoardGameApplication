@@ -22,4 +22,7 @@ class NetworkRefreshingService : AbstractRefreshingService()  {
         onAllRefreshables { refreshAfterPlayerLeft(playerLeftName) }
     }
 
+    fun refreshAfterOnCreateGameResponse(sessionID : String? ){
+        onAllRefreshables { refreshAfterOnCreateGameResponse(sessionID) }
+    }
 }

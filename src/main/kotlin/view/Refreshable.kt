@@ -122,4 +122,9 @@ interface Refreshable {
      * The function updated the view Layer after a host Game started
      */
     fun refreshAfterHostGame() {}
+
+    /**
+     * After receiving an Game Responese update the view Layer
+     */
+    fun refreshAfterOnCreateGameResponse(sessionID:String?) {}
 }
