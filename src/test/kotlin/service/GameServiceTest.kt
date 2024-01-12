@@ -8,6 +8,7 @@ import java.util.*
 import entity.*
 import entity.GemColor.*
 import org.junit.jupiter.api.*
+import java.io.File
 
 
 /**
@@ -252,14 +253,14 @@ class GameServiceTest {
         )
         assertFalse(rootService.gameService.checkCollision(tile3))
     }
-    /*
+
         /**
          * Test the saveGame function.
          */
 
         @Test
         fun saveGameTest() {
-            assertNull(rootService.currentGame)
+            /*assertNull(rootService.currentGame)
             rootService.gameService.startGame(
                 fourPlayers.toMutableList()
             )
@@ -272,7 +273,20 @@ class GameServiceTest {
             rootService.gameService.saveGame(testPath)
             rootService.currentGame = null
             rootService.gameService.loadGame(testPath)
-            assertNotNull(rootService.currentGame)}
+            assertNotNull(rootService.currentGame)
+
+             */
+            //updating test
+            rootService.gameService.startGame(fourPlayers.toMutableList())
+            val gameToSave = rootService.currentGame
+            assertNotNull(gameToSave)
+            val testPath = "src/main/resources/gameToSave.json"
+            rootService.gameService.saveGame(testPath)
+
+            assertNotNull(File(testPath))
+            assertEquals(gameToSave,rootService.currentGame)
+            assertEquals(gameToSave?.players,rootService.currentGame?.players)
+        }
 
 
 
@@ -286,8 +300,28 @@ class GameServiceTest {
             val testPath = "/Users/mohammadkarkanawi/IdeaProjects/Projekt2-gruppe1/src/test/resources/
             rootService.gameService.loadGame(testPath)
             assertNotNull(rootService.currentGame)*/
+
+
+            /*
+            //Updating test
+            rootService.gameService.startGame(fourPlayers.toMutableList())
+            val gameToSave = rootService.currentGame
+            assertNotNull(gameToSave)
+            val testPath = "src/main/resources/gameToSave.json"
+            rootService.gameService.saveGame(testPath)
+
+            rootService.gameService.endGame()
+            //rootService.currentGame = rootService.ioService.readGameFromFile(testPath)
+            checkNotNull(rootService.currentGame)
+            rootService.gameService.loadGame(testPath)
+            val loadedGame = rootService.currentGame
+            assertNotNull(loadedGame)
+            assertEquals(gameToSave,loadedGame)
+            assertEquals(gameToSave?.players,loadedGame?.players)
+
+             */
         }
-    */
+
     /**
      * Test the changePlayer function.
      */
