@@ -131,4 +131,5 @@ class JoinGameScene(indigoApp : IndigoApplication) : MenuScene(990, 1080), Refre
             }
         }
     }
+
 }

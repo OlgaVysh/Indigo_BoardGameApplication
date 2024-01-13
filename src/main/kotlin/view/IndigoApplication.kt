@@ -55,18 +55,5 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
     //an jedem Component mit Text : font = Font(family: "Irish Grover")
     // .apply { componentStyle = gradient }
 
-    override fun refreshAfterOnCreateGameResponse(sessionID: String?) {
-        if (sessionID != null) {
-            DelayAnimation(duration = 2000).apply {
-                onFinished = {
-                    this@IndigoApplication.hideMenuScene()
-                    this@IndigoApplication.showGameScene(networkConfigureScene)
-                    hostGameScene.apply {
-                        textMessageLabel.isVisible = false
-                        textMessageLabel.isDisabled = true
-                    }
-                }
-            }
-        }
-    }
+
 }

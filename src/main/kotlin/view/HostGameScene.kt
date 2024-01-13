@@ -16,7 +16,7 @@ import view.components.Label
  *
  * @property rootService An instance of RootService to access and manipulate game data.
  */
-class HostGameScene( indigoApp : IndigoApplication) : MenuScene(990, 1080), Refreshable {
+class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), Refreshable {
 
     private val rootService = indigoApp.rootService
     //private val game = indigoApp.rootService.currentGame
@@ -105,6 +105,10 @@ class HostGameScene( indigoApp : IndigoApplication) : MenuScene(990, 1080), Refr
             onFinished = {
                 textMessageLabel.isVisible = false
                 textMessageLabel.isDisabled = true
+                if (sessionID != null) {
+                    indigoApp.hideMenuScene()
+                    indigoApp.showGameScene(indigoApp.networkConfigureScene)
+                }
             }
         }
     }
