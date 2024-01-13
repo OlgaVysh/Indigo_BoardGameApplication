@@ -15,8 +15,8 @@ import view.components.Label
  *
  * @property rootService An instance of RootService to interact with the application's core functionalities.
  */
-class AIMenuScene (private val rootService: RootService) : MenuScene (1920, 1080),Refreshable {
-    private val game = rootService.currentGame
+class AIMenuScene (indigoApp : IndigoApplication) : MenuScene (1920, 1080),Refreshable {
+
 
     // Label to display the header.
     private val aiGameLabel = Label (397, 71, 1126,155,"This is an AI Game!",120)
