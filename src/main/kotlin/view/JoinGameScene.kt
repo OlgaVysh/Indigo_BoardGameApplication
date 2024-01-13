@@ -38,10 +38,14 @@ class JoinGameScene(val indigoApp : IndigoApplication) : MenuScene(990, 1080), R
 
     private val joinButton = Button(247, 800, 528, 207, "Join", 48).
     apply {isDisabled = nameInput.text.isBlank() || idInput.text.isBlank()
-        onMouseClicked = {
-            if(nameInput.text.isNotBlank() && idInput.text.isNotBlank())
-                indigoApp.rootService.networkService.joinGame(name = nameInput.name, sessionID =idLabel.name  )
-        }
+        var isAi = false
+        if (yesButton.isSelected) isAi = true
+        if (nameInput.text.isNotBlank() && idInput.text.isNotBlank())
+            indigoApp.rootService.networkService.joinGame(
+                name = nameInput.name,
+                sessionID = idLabel.name,
+                isAi = isAi
+            )
     }
 
     private val aiLabel = Label(80, 700, width = 300, text = "AI : ", fontSize = 48)
