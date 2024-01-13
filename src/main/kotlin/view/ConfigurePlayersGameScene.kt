@@ -20,12 +20,18 @@ import view.components.Label
  */
 class ConfigurePlayersGameScene(indigoApp: IndigoApplication) : BoardGameScene(1920, 1080), Refreshable {
     // UI components for configuring players
+
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)
     private val startGameButton = Button(1047, 755, 528, 207, "Start game", 48).apply {
-        onMouseClicked = { indigoApp.showGameScene(indigoApp.gameScene) }
+        isDisabled = indigoApp.players.size<=2
+        onMouseClicked = {
+            if(indigoApp.aiGame) indigoApp.showMenuScene(indigoApp.aiMenuScene)
+            else indigoApp.showGameScene(indigoApp.gameScene) }
     }
-    private val addNewPlayerButton = Button(340, 755, 528, 207, "Add new player", 48)
-    //private val game = rootService.currentGame
+    private val addNewPlayerButton = Button(340, 755, 528, 207, "Add new player", 48).
+    apply { isDisabled = indigoApp.players.size>=4
+    onMouseClicked = {indigoApp.showMenuScene(indigoApp.newPlayerScene)}}
+
     /**
      * Initializes the NewPlayerMenuScene with default values and sets up UI components.
      */
