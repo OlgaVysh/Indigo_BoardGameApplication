@@ -5,6 +5,7 @@ import edu.udo.cs.sopra.ntf.TilePlacedMessage
 import entity.*
 import service.AbstractRefreshingService
 import service.RootService
+import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
 
 /**
  *  The class [NetworkService] is to have all function  with the network for online gaming.
@@ -277,4 +278,25 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         this.connectionState = newState
     }
 
+    /**
+     * The function trigger the refresh function for refreshAfterPlayerJoined
+     */
+    fun refreshAfterPlayerJoined(playerJoinedName : String){
+        onAllRefreshables {refreshAfterPlayerJoined(playerJoinedName) }
+    }
+
+    /**
+     * The function trigger the refresh function for refreshAfterPlayerJoined
+     */
+    fun refreshAfterPlayerLeft(playerLeftName : String){
+        onAllRefreshables { refreshAfterPlayerLeft(playerLeftName) }
+    }
+
+    fun refreshAfterOnCreateGameResponse(sessionID : String? ){
+        onAllRefreshables { refreshAfterOnCreateGameResponse(sessionID)}
+    }
+
+    fun refreshAfterOnJoinGameResponse(responseStatus: JoinGameResponseStatus){
+        onAllRefreshables { refreshAfterOnJoinGameResponse(responseStatus) }
+    }
 }

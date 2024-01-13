@@ -56,7 +56,7 @@ open class IndigoNetworkClient(
                     networkService.disconnect()
                 }
             }
-            NetworkRefreshingService().refreshAfterOnCreateGameResponse(response.sessionID)
+            networkService.refreshAfterOnCreateGameResponse(response.sessionID)
         }
     }
 
@@ -82,7 +82,7 @@ open class IndigoNetworkClient(
                     networkService.disconnect()
                 }
             }
-            NetworkRefreshingService().refreshAfterOnJoinGameResponse(response.status)
+            networkService.refreshAfterOnJoinGameResponse(response.status)
         }
     }
 
@@ -97,7 +97,7 @@ open class IndigoNetworkClient(
             { "not awaiting any guests." }
 
             otherPlayers.add(notification.sender)
-            NetworkRefreshingService().refreshAfterPlayerJoined(notification.sender)
+           networkService.refreshAfterPlayerJoined(notification.sender)
         }
     }
 
@@ -112,7 +112,7 @@ open class IndigoNetworkClient(
             { "Player should not leave" }
 
             otherPlayers.remove(notification.sender)
-            NetworkRefreshingService().refreshAfterPlayerLeft(notification.sender)
+            networkService.refreshAfterPlayerLeft(notification.sender)
         }
     }
 
