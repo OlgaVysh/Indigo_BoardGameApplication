@@ -30,6 +30,8 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
      */
     var client: IndigoNetworkClient? = null
 
+    private var guestAI = false
+
     /**
      *  The function [disconnect] is to disconnect the server
      *  if we leave an online Game
@@ -71,18 +73,19 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
      *  @param name Name of the host
      *  @param  sessionID The sessionID of the Game you want to join
      */
-    fun joinGame(secret: String = "game23d", name: String, sessionID: String) {
+    fun joinGame(secret: String = "game23d", name: String, sessionID: String, isAi: Boolean = false) {
         if (!connect(secret, name)) {
             error("Connection failed")
         }
         client?.joinGame(sessionID, "Hello!")
+        guestAI = isAi
         updateConnectionState(ConnectionState.GUEST_WAITING_FOR_CONFIRMATION)
-        onAllRefreshables { refreshAfterJoinGame()  }
+        onAllRefreshables { refreshAfterJoinGame() }
     }
 
     /**
      * The function [startNewHostedGame] start a new HostGame
-     * and configure all other player
+     * and configure all others player
      *
      */
     fun startNewHostedGame(
@@ -109,6 +112,12 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         check(connectionState == ConnectionState.WAITING_FOR_INIT) { "not waiting for game init message. " }
         val routeTiles = rootService.networkMappingService.toRouteTiles(message.tileList)
         val players = rootService.networkMappingService.toEntityPlayer(message.players)
+        if (guestAI) {
+            val guestAi = players.find { it.name == playerName }
+            checkNotNull(guestAi)
+            val playerIndex = players.indexOf(guestAi)
+            players[playerIndex] = CPUPlayer(name = guestAi.name, color = guestAi.color)
+        }
         if (players[0].name == playerName) {
             updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         } else {
