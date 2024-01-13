@@ -9,6 +9,8 @@ import view.components.Button
 import view.components.Label
 
 class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080),Refreshable {
+
+    private var aiPlayer = false
     private val label = Label(42, 80, 900, 116, "Configure Player", 96)
 
     private val nameLabel = Label(65, 293, 300, 98, text = "Name: ", fontSize = 48)
@@ -25,17 +27,13 @@ class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080),Refr
     private val noLabel = Label(600, 693, width = 80, text = "no", fontSize = 48)
 
     private val toggleGroup = ToggleGroup()
-    private val yesButton = RadioButton(posX = 350, posY = 710, toggleGroup = toggleGroup)
+    private val yesButton = RadioButton(posX = 350, posY = 710, toggleGroup = toggleGroup).
+    apply { onMouseClicked = {aiPlayer = true
+    indigoApp.aiGame = true} }
+
     private val noButton = RadioButton(posX = 550, posY = 710, toggleGroup = toggleGroup)
 
-    private val addNewPlayerButton = Button(250, 780, 528, 207, "Add new player", 48).
-    apply { onMouseClicked = {
-        indigoApp.hideMenuScene()
-    //refreshAfterAddNewPlayer()
-    }
-    }
-
-    private val hostName: TextField = TextField(
+    private val playerName: TextField = TextField(
         width = 350,
         height = 50,
         posX = 360,
@@ -46,7 +44,16 @@ class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080),Refr
         }
     }
 
-    private val hostAge: TextField = TextField(
+    private val addNewPlayerButton = Button(250, 780, 528, 207, "Add new player", 48).
+    apply {
+        isDisabled = playerName.text.isBlank()
+        onMouseClicked = {
+        indigoApp.hideMenuScene()
+    //refreshAfterAddNewPlayer()
+    }
+    }
+
+    private val playerAge: TextField = TextField(
         width = 350,
         height = 50,
         posX = 360,
@@ -67,7 +74,7 @@ class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080),Refr
             yesLabel, noLabel, aiLabel,
             yesButton, noButton,
             addNewPlayerButton,
-            hostName, hostAge
+            playerName, playerAge
         )
 
         turnBox.items = mutableListOf(1, 2, 3, 4)
