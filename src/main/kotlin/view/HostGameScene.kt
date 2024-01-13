@@ -16,7 +16,7 @@ import view.components.Label
  *
  * @property rootService An instance of RootService to access and manipulate game data.
  */
-class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), Refreshable {
+class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
 
     private val rootService = indigoApp.rootService
     //private val game = indigoApp.rootService.currentGame
@@ -52,11 +52,10 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
     )
 
     // Button for host to game.
-    private val hostGameButton = Button(247, 698, 532, 207, "Host game", 48).
-    apply {
+    private val hostGameButton = Button(247, 698, 532, 207, "Host game", 48).apply {
         isDisabled = hostName.text.isBlank()
         onMouseClicked = {
-            indigoApp.rootService.networkService.hostGame(name= hostName.text, sessionID = sessionId.text)
+            indigoApp.rootService.networkService.hostGame(name = hostName.text, sessionID = sessionId.text)
         }
     }
 
@@ -103,18 +102,19 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
                 textMessageLabel.text = "Please use another Session ID"
             }
         } else {
-            textMessageLabel.text = "Session ID: $sessionId"
+            textMessageLabel.text = "Session ID: $sessionID"
         }
-        if (sessionID != null) {
-            indigoApp.hideMenuScene()
-            indigoApp.showGameScene(indigoApp.networkConfigureScene)
-        }
-        DelayAnimation(duration = 2000).apply {
+
+        playAnimation(DelayAnimation(duration = 2000).apply {
             onFinished = {
                 textMessageLabel.isVisible = false
                 textMessageLabel.isDisabled = true
-
+                if (sessionID != null) {
+                    indigoApp.hideMenuScene()
+                    indigoApp.showGameScene(indigoApp.networkConfigureScene)
+                }
             }
         }
+        )
     }
 }
