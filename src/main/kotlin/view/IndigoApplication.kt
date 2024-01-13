@@ -15,8 +15,8 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
 
     // Central service from which all others are created/accessed
     // also holds the currently active game
-
-    var networkMode: Boolean = false //sagt, ob wir Hotseat oder Network spielen (wird in ModusMenuScene gesetzt)
+    var players: MutableList<Player> = mutableListOf() // list of players for the Game
+    var networkMode : Boolean=false //sagt, ob wir Hotseat oder Network spielen (wird in ModusMenuScene gesetzt)
     val rootService = RootService()
 
     val startScene = NewGameMenuScene(this)
