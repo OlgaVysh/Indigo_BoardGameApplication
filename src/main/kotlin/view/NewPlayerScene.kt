@@ -29,8 +29,11 @@ class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080),Refr
     private val noButton = RadioButton(posX = 550, posY = 710, toggleGroup = toggleGroup)
 
     private val addNewPlayerButton = Button(250, 780, 528, 207, "Add new player", 48).
-    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
-        indigoApp.hideMenuScene()} }
+    apply { onMouseClicked = {
+        indigoApp.hideMenuScene()
+    //refreshAfterAddNewPlayer()
+    }
+    }
 
     private val hostName: TextField = TextField(
         width = 350,
