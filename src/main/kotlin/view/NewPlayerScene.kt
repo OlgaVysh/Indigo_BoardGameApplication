@@ -8,7 +8,7 @@ import tools.aqua.bgw.core.MenuScene
 import view.components.Button
 import view.components.Label
 
-class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080) {
+class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080),Refreshable {
     private val label = Label(42, 80, 900, 116, "Configure Player", 96)
 
     private val nameLabel = Label(65, 293, 300, 98, text = "Name: ", fontSize = 48)

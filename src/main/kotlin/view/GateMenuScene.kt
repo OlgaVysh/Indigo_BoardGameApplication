@@ -13,7 +13,7 @@ import view.components.Label
  * @param background The background image for the scene.
  */
 
-class GateMenuScene : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) {
+class GateMenuScene : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")), Refreshable {
     // Buttons for selecting game modes
     private val sharedButton = Button(266, 642, 528, 207, "HotSeat", 48)
     private val separatedButton = Button(1100, 642, 528, 207, "Network", 48)

@@ -18,11 +18,12 @@ import view.components.Label
  * The layout and design of these components are defined in this class.
  *
  */
-class ConfigurePlayersGameScene(indigoApp : IndigoApplication) : BoardGameScene(1920, 1080) {
+class ConfigurePlayersGameScene(indigoApp: IndigoApplication) : BoardGameScene(1920, 1080), Refreshable {
     // UI components for configuring players
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)
-    private val startGameButton = Button(1047, 755, 528, 207, "Start game", 48).
-    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.gameScene)} }
+    private val startGameButton = Button(1047, 755, 528, 207, "Start game", 48).apply {
+        onMouseClicked = { indigoApp.showGameScene(indigoApp.gameScene) }
+    }
     private val addNewPlayerButton = Button(340, 755, 528, 207, "Add new player", 48)
     //private val game = rootService.currentGame
     /**

@@ -15,7 +15,7 @@ import view.components.Label
  *
  * @property rootService An instance of RootService to interact with the application's core functionalities.
  */
-class AIMenuScene (private val rootService: RootService) : MenuScene (1920, 1080) {
+class AIMenuScene (private val rootService: RootService) : MenuScene (1920, 1080),Refreshable {
     private val game = rootService.currentGame
 
     // Label to display the header.

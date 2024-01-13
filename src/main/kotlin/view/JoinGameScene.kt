@@ -43,12 +43,9 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         onMouseClicked = {
             var isAi = false
             if (yesButton.isSelected) isAi = true
-            if (nameInput.text.isNotBlank() && idInput.text.isNotBlank())
-                indigoApp.rootService.networkService.joinGame(
-                    name = nameInput.name,
-                    sessionID = idLabel.name,
-                    isAi = isAi
-                )
+            if (nameInput.text.isNotBlank() && idInput.text.isNotBlank()) indigoApp.rootService.networkService.joinGame(
+                name = nameInput.name, sessionID = idLabel.name, isAi = isAi
+            )
         }
     }
 
@@ -106,49 +103,31 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         textMessageLabel.isDisabled = false
         when (responseStatus) {
             JoinGameResponseStatus.SUCCESS -> textMessageLabel.text = "Waiting for Host to finish Game Configuration"
-
             JoinGameResponseStatus.ALREADY_ASSOCIATED_WITH_GAME -> {
                 textMessageLabel.text = "Already connected to the Game"
-                playAnimation(DelayAnimation(duration = 2000).apply {
-                    onFinished = {
-                        textMessageLabel.isVisible = false
-                        textMessageLabel.isDisabled = true
-                    }
-                }
-                )
             }
 
             JoinGameResponseStatus.INVALID_SESSION_ID -> {
                 textMessageLabel.text = JoinGameResponseStatus.INVALID_SESSION_ID.name + "\n" + "try another Session ID"
-                playAnimation(DelayAnimation(duration = 2000).apply {
-                    onFinished = {
-                        textMessageLabel.isVisible = false
-                        textMessageLabel.isDisabled = true
-                    }
-                })
             }
 
             JoinGameResponseStatus.PLAYER_NAME_ALREADY_TAKEN -> {
                 textMessageLabel.text =
                     JoinGameResponseStatus.INVALID_SESSION_ID.name + "\n" + "try another Player Name"
-                playAnimation(DelayAnimation(duration = 2000).apply {
-                    onFinished = {
-                        textMessageLabel.isVisible = false
-                        textMessageLabel.isDisabled = true
-                    }
-                })
             }
 
             else -> {
                 textMessageLabel.text = "Another failure"
-                playAnimation(DelayAnimation(duration = 2000).apply {
-                    onFinished = {
-                        textMessageLabel.isVisible = false
-                        textMessageLabel.isDisabled = true
-                    }
-                })
             }
         }
+        playAnimation(DelayAnimation(duration = 2000).apply {
+            onFinished = {
+                if (responseStatus != JoinGameResponseStatus.SUCCESS) {
+                    textMessageLabel.isVisible = false
+                    textMessageLabel.isDisabled = true
+                }
+            }
+        })
     }
 
     override fun refreshAfterStartNewJoinedGame() {

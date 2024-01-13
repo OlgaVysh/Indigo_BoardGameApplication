@@ -8,7 +8,7 @@ import view.components.Label
 /**
  * Represents the menu scene for saving a game.
  */
-class SaveGameMenuScene(indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SaveMenuScene.png")) {
+class SaveGameMenuScene(indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SaveMenuScene.png")),Refreshable {
     // Button for continuing the game without saving
     private val continueButton = Button(266, 642, 528, 207, "Continue game", 48).
     apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.gameScene)

@@ -17,7 +17,7 @@ import view.components.Label
  *
  * @parameter indigoApp
  */
-class ConfigurePlayerXScene(indigoApp : IndigoApplication) : MenuScene(990, 1080) {
+class ConfigurePlayerXScene(indigoApp : IndigoApplication) : MenuScene(990, 1080),Refreshable{
     //private val game = rootService.currentGame
     //irgendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     //ich hab die Box noch nicht durch tokens geändert ist etwas komplizierter

@@ -53,9 +53,12 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
 
     // Button for host to game.
     private val hostGameButton = Button(247, 698, 532, 207, "Host game", 48).
-    apply { isDisabled = hostName.text.isBlank()
-        onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
-    indigoApp.hideMenuScene()} }
+    apply {
+        isDisabled = hostName.text.isBlank()
+        onMouseClicked = {
+            indigoApp.rootService.networkService.hostGame(name= hostName.text, sessionID = sessionId.text)
+        }
+    }
 
     private val textMessageLabel = Label(
         15,
@@ -102,14 +105,15 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
         } else {
             textMessageLabel.text = "Session ID: $sessionId"
         }
+        if (sessionID != null) {
+            indigoApp.hideMenuScene()
+            indigoApp.showGameScene(indigoApp.networkConfigureScene)
+        }
         DelayAnimation(duration = 2000).apply {
             onFinished = {
                 textMessageLabel.isVisible = false
                 textMessageLabel.isDisabled = true
-                if (sessionID != null) {
-                    indigoApp.hideMenuScene()
-                    indigoApp.showGameScene(indigoApp.networkConfigureScene)
-                }
+
             }
         }
     }

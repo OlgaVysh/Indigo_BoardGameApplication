@@ -14,68 +14,80 @@ import java.awt.Color
  */
 
 class GameScene(indigoApp: IndigoApplication) :
-    BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")) {
+    BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
     // Hexagonal grid for the game board
-    private val hexagonGrid: HexagonGrid<HexagonView> = HexagonGrid(coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL, posX = 820, posY = 420)
+    private val hexagonGrid: HexagonGrid<HexagonView> =
+        HexagonGrid(coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL, posX = 820, posY = 420)
 
     // reserveStack component
     private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
 
     // undoButton component
-    private val undoButton = view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40)
+    private val undoButton =
+        view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40)
 
     // redoButton component
-    private val redoButton = view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40)
+    private val redoButton =
+        view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40)
 
     // saveButton component
-    private val saveButton = view.components.Button(posX = 1055, posY = 980, width = 160, height = 68, text = "Save", fontSize = 40).
-    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.saveGameScene)} }
+    private val saveButton =
+        view.components.Button(posX = 1055, posY = 980, width = 160, height = 68, text = "Save", fontSize = 40)
+            .apply { onMouseClicked = { indigoApp.showMenuScene(indigoApp.saveGameScene) } }
 
     // Player components
-    private var player1Label = view.components.Label(posX = 110, posY = 68, width = 200, text = "Player 1", fontSize = 48)
-    private var player2Label = view.components.Label(posX = 1573, posY = 68, width = 200, text = "Player 2", fontSize = 48)
-    private var player3Label = view.components.Label(posX = 143, posY = 917, width = 200, text = "Player 3", fontSize = 48)
-    private var player4Label = view.components.Label(posX = 1579, posY = 917, width = 200, text = "Player 4", fontSize = 48)
+    private var player1Label =
+        view.components.Label(posX = 110, posY = 68, width = 200, text = "Player 1", fontSize = 48)
+    private var player2Label =
+        view.components.Label(posX = 1573, posY = 68, width = 200, text = "Player 2", fontSize = 48)
+    private var player3Label =
+        view.components.Label(posX = 143, posY = 917, width = 200, text = "Player 3", fontSize = 48)
+    private var player4Label =
+        view.components.Label(posX = 1579, posY = 917, width = 200, text = "Player 4", fontSize = 48)
 
     // PlayerScore components
-    private var player1ScoreLabel = view.components.Label(posX = 110, posY = 114, width = 200, text = "0 points", fontSize = 48)
-    private var player2ScoreLabel = view.components.Label(posX = 1573, posY = 114, width = 200, text = "0 points", fontSize = 48)
-    private var player3ScoreLabel = view.components.Label(posX = 143, posY = 964, width = 200, text = "0 points", fontSize = 48)
-    private var player4ScoreLabel = view.components.Label(posX = 1579, posY = 964, width = 200, text = "0 points", fontSize = 48)
+    private var player1ScoreLabel =
+        view.components.Label(posX = 110, posY = 114, width = 200, text = "0 points", fontSize = 48)
+    private var player2ScoreLabel =
+        view.components.Label(posX = 1573, posY = 114, width = 200, text = "0 points", fontSize = 48)
+    private var player3ScoreLabel =
+        view.components.Label(posX = 143, posY = 964, width = 200, text = "0 points", fontSize = 48)
+    private var player4ScoreLabel =
+        view.components.Label(posX = 1579, posY = 964, width = 200, text = "0 points", fontSize = 48)
 
     // PlayerToken components
     private var player1Token = view.components.Label(posX = 60, posY = 70, text = "")
-    private var player2Token = view.components.Label(posX = 1523, posY = 70,text = "")
+    private var player2Token = view.components.Label(posX = 1523, posY = 70, text = "")
     private var player3Token = view.components.Label(posX = 93, posY = 921, text = "")
     private var player4Token = view.components.Label(posX = 1529, posY = 921, text = "")
 
     // PlayergreenGem components
     private var player1greenGem = view.components.Label(posX = 399, posY = 142, text = "", width = 81, height = 65)
-    private var player2greenGem = view.components.Label(posX = 1351, posY = 142,text = "", width = 81, height = 65)
+    private var player2greenGem = view.components.Label(posX = 1351, posY = 142, text = "", width = 81, height = 65)
     private var player3greenGem = view.components.Label(posX = 399, posY = 830, text = "", width = 81, height = 65)
     private var player4greenGem = view.components.Label(posX = 1351, posY = 830, text = "", width = 81, height = 65)
 
     // PlayeryellowGem components
     private var player1yellowGem = view.components.Label(posX = 490, posY = 86, text = "", width = 81, height = 65)
-    private var player2yellowGem = view.components.Label(posX = 1262, posY = 86,text = "", width = 81, height = 65)
+    private var player2yellowGem = view.components.Label(posX = 1262, posY = 86, text = "", width = 81, height = 65)
     private var player3yellowGem = view.components.Label(posX = 490, posY = 764, text = "", width = 81, height = 65)
     private var player4yellowGem = view.components.Label(posX = 1262, posY = 764, text = "", width = 81, height = 65)
 
     // PlayergreenGemCounter components
     private var player1greenGemCounter = view.components.Label(posX = 413, posY = 95, text = "0", fontSize = 48)
-    private var player2greenGemCounter = view.components.Label(posX = 1365, posY = 95,text = "0", fontSize = 48)
+    private var player2greenGemCounter = view.components.Label(posX = 1365, posY = 95, text = "0", fontSize = 48)
     private var player3greenGemCounter = view.components.Label(posX = 413, posY = 783, text = "0", fontSize = 48)
     private var player4greenGemCounter = view.components.Label(posX = 1365, posY = 783, text = "0", fontSize = 48)
 
     // PlayeryellowGemCounter components
     private var player1yellowGemCounter = view.components.Label(posX = 504, posY = 39, text = "0", fontSize = 48)
-    private var player2yellowGemCounter = view.components.Label(posX = 1276, posY = 39,text = "0", fontSize = 48)
+    private var player2yellowGemCounter = view.components.Label(posX = 1276, posY = 39, text = "0", fontSize = 48)
     private var player3yellowGemCounter = view.components.Label(posX = 504, posY = 717, text = "0", fontSize = 48)
     private var player4yellowGemCounter = view.components.Label(posX = 1276, posY = 717, text = "0", fontSize = 48)
 
     // PlayerHandTile components
     private var player1handTile = view.components.Label(posX = 127, posY = 184, text = "")
-    private var player2handTile = view.components.Label(posX = 1619, posY = 184,text = "")
+    private var player2handTile = view.components.Label(posX = 1619, posY = 184, text = "")
     private var player3handTile = view.components.Label(posX = 127, posY = 754, text = "")
     private var player4handTile = view.components.Label(posX = 1619, posY = 754, text = "")
 
@@ -88,22 +100,22 @@ class GameScene(indigoApp: IndigoApplication) :
     // GateToken components
     //gate oben links und dann im Uhrzeigersinn
     private var gate1Token1 = view.components.Label(posX = 666, posY = 105, text = "")
-    private var gate1Token2 = view.components.Label(posX = 748, posY = 57,text = "")
+    private var gate1Token2 = view.components.Label(posX = 748, posY = 57, text = "")
 
     private var gate2Token1 = view.components.Label(posX = 1065, posY = 57, text = "")
-    private var gate2Token2 = view.components.Label(posX = 1147, posY = 105,text = "")
+    private var gate2Token2 = view.components.Label(posX = 1147, posY = 105, text = "")
 
     private var gate3Token1 = view.components.Label(posX = 1306, posY = 385, text = "")
-    private var gate3Token2 = view.components.Label(posX = 1306, posY = 475,text = "")
+    private var gate3Token2 = view.components.Label(posX = 1306, posY = 475, text = "")
 
     private var gate4Token1 = view.components.Label(posX = 1147, posY = 750, text = "")
-    private var gate4Token2 = view.components.Label(posX = 1065, posY = 797,text = "")
+    private var gate4Token2 = view.components.Label(posX = 1065, posY = 797, text = "")
 
     private var gate5Token1 = view.components.Label(posX = 748, posY = 797, text = "")
-    private var gate5Token2 = view.components.Label(posX = 666, posY = 750,text = "")
+    private var gate5Token2 = view.components.Label(posX = 666, posY = 750, text = "")
 
     private var gate6Token1 = view.components.Label(posX = 510, posY = 475, text = "")
-    private var gate6Token2 = view.components.Label(posX = 510, posY = 385,text = "")
+    private var gate6Token2 = view.components.Label(posX = 510, posY = 385, text = "")
 
     /**
      * Initializes the GameScene with default values and sets up the hexagonal grid.
@@ -152,10 +164,10 @@ class GameScene(indigoApp: IndigoApplication) :
         player2turnHighlight.rotate(30)
         player3turnHighlight.rotate(30)
         player4turnHighlight.rotate(30)
-        player1turnHighlight.resize(147.9,171.7)
-        player2turnHighlight.resize(147.9,171.7)
-        player3turnHighlight.resize(147.9,171.7)
-        player4turnHighlight.resize(147.9,171.7)
+        player1turnHighlight.resize(147.9, 171.7)
+        player2turnHighlight.resize(147.9, 171.7)
+        player3turnHighlight.resize(147.9, 171.7)
+        player4turnHighlight.resize(147.9, 171.7)
 
         //initialize gateTokenViews
         gate1Token1.visual = ImageVisual("tokenred.png")
@@ -236,14 +248,14 @@ class GameScene(indigoApp: IndigoApplication) :
 
     }
 
-        /**
+    /**
      * Initialize game board grid
      */
 
     /**
      * Initialize game board grid
      */
-    fun initializeGameBoardGrid(){
+    fun initializeGameBoardGrid() {
         // Populate the hexagonal grid with HexagonView instances
         for (row in -4..4) {
             for (col in -4..4) {
@@ -273,12 +285,12 @@ class GameScene(indigoApp: IndigoApplication) :
         hexagonGrid[0, -4]?.visual = ImageVisual("gatetile6.png")
 
         //hides the unused hexagon components left and right
-        for (i in 0 .. 3) {
-            for (j in -4 .. -4 + i){
+        for (i in 0..3) {
+            for (j in -4..-4 + i) {
                 //left board side
-                hexagonGrid[-(i+1), j]?.visual = Visual.EMPTY
+                hexagonGrid[-(i + 1), j]?.visual = Visual.EMPTY
                 //right board side
-                hexagonGrid[(i+1), -j]?.visual = Visual.EMPTY
+                hexagonGrid[(i + 1), -j]?.visual = Visual.EMPTY
             }
         }
     }
