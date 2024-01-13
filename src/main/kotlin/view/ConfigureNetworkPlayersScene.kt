@@ -26,7 +26,8 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication, games: List
     private val size = games.size - 1
 
     // Button for adding a new player
-    private val addButton = Button(188, 806, 528, 207, "Add new player", 40)
+    private val addButton = Button(188, 806, 528, 207, "Add new player", 40).
+    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.newPlayerScene)}}
 
     // Button for starting a new game
     private val startButton = Button(1217, 806, 528, 207, "Start new game", 40).apply {
