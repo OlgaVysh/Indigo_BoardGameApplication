@@ -7,15 +7,14 @@ import view.components.Label
 
 /**
  * Represents the menu scene for network game options.
- *
- * @param width The width of the scene.
- * @param height The height of the scene.
- * @param background The background image for the scene.
  */
-class NetworkMenuScene : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) {
+class NetworkMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) {
     // Buttons for network game options
-    private val hostButton = Button(266, 642, 528, 207, "Host game", 48)
-    private val joinButton = Button(1100, 642, 528, 207, "Join game", 48)
+    private val hostButton = Button(266, 642, 528, 207, "Host game", 48).
+    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.hostGameScene)} }
+
+    private val joinButton = Button(1100, 642, 528, 207, "Join game", 48).
+    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.joinGameScene)} }
 
     // Labels for providing instructions
     private val networkLabel1 = Label(381, 370, 1111, 85, "Please, choose one of the following", 60)

@@ -1,6 +1,6 @@
 package view
 
-import tools.aqua.bgw.core.MenuScene
+import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.visual.ImageVisual
 import view.components.Button
 import view.components.Label
@@ -10,12 +10,16 @@ import view.components.Label
  * @param indigoApp represents an object of [IndigoApplication]
  */
 
-class ModusMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) {
+class ModusMenuScene (indigoApp : IndigoApplication) : BoardGameScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) {
     // Buttons for selecting game modes
     private val hotSeatButton = Button(266, 642, 528, 207, "HotSeat", 48).
-    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.configurePlayersScene)
+    apply { onMouseClicked = {
+        indigoApp.showGameScene(indigoApp.configurePlayersScene)
     indigoApp.hideMenuScene()}}
-    private val networkButton = Button(1100, 642, 528, 207, "Network", 48)
+
+    private val networkButton = Button(1100, 642, 528, 207, "Network", 48).
+    apply { onMouseClicked = {indigoApp.networkMode = true
+        indigoApp.showMenuScene(indigoApp.networkScene) }}
 
     // Labels for providing instructions
     private val modusLabel1 = Label(639, 388, 642, 85, "Please, choose your", 60)
