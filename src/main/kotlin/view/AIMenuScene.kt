@@ -1,6 +1,5 @@
 package view
 
-import service.RootService
 import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
@@ -13,7 +12,6 @@ import view.components.Label
  * This scene includes various UI components like labels, a combo box for selecting AI speed, and a button to start the game.
  * The layout and visual elements are defined within this class.
  *
- * @property rootService An instance of RootService to interact with the application's core functionalities.
  */
 class AIMenuScene (indigoApp : IndigoApplication) : MenuScene (1920, 1080),Refreshable {
 
