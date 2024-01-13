@@ -1,6 +1,5 @@
 package view
 
-import service.RootService
 import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.components.uicomponents.RadioButton
 import tools.aqua.bgw.components.uicomponents.TextField
@@ -29,7 +28,9 @@ class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080) {
     private val yesButton = RadioButton(posX = 350, posY = 710, toggleGroup = toggleGroup)
     private val noButton = RadioButton(posX = 550, posY = 710, toggleGroup = toggleGroup)
 
-    private val addNewPlayerButton = Button(250, 780, 528, 207, "Add new player", 48)
+    private val addNewPlayerButton = Button(250, 780, 528, 207, "Add new player", 48).
+    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
+        indigoApp.hideMenuScene()} }
 
     private val hostName: TextField = TextField(
         width = 350,
