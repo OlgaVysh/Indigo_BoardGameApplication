@@ -34,6 +34,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
     val savedGamesScene = SavedGamesMenuScene(listOf("one", "two", "three"))
     val networkConfigureScene = ConfigureNetworkPlayersScene(this, listOf("one", "two", "three"))
     val gameScene = GameScene(this)
+    //val newPlayerScene = NewPlayerScene (this)
 
 
     init {
