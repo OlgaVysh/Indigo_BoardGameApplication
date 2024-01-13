@@ -28,7 +28,7 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
     private val nameLabel = Label(80, 321, 300, 58, "Name :", 48)
 
     // Label for the ID.
-    private val sessionIdLabel = Label(80, 486, 350, 116, "Session ID :", 48)
+    private val sessionIdLabel = Label(80, 486, 350, 116, "Session ID (optional):", 28)
 
     // TextField for the host's name with an event handler to
     // enable or disable the host game button based on text input.
@@ -53,10 +53,11 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
 
     // Button for host to game.
     private val hostGameButton = Button(247, 698, 532, 207, "Host game", 48).
-    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
+    apply { isDisabled = hostName.text.isBlank()
+        onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
     indigoApp.hideMenuScene()} }
 
-    val textMessageLabel = Label(
+    private val textMessageLabel = Label(
         15,
         340,
         960,

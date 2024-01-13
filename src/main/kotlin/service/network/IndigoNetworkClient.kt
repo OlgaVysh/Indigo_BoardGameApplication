@@ -53,8 +53,7 @@ open class IndigoNetworkClient(
                     sessionID = response.sessionID
                 }
                 else -> {
-                    disconnect()
-                    networkService.updateConnectionState(ConnectionState.DISCONNECTED)
+                    networkService.disconnect()
                 }
             }
             NetworkRefreshingService().refreshAfterOnCreateGameResponse(response.sessionID)
@@ -80,8 +79,7 @@ open class IndigoNetworkClient(
                     networkService.updateConnectionState(ConnectionState.WAITING_FOR_INIT)
                 }
                 else -> {
-                    disconnect()
-                    networkService.updateConnectionState(ConnectionState.DISCONNECTED)
+                    networkService.disconnect()
                 }
             }
             NetworkRefreshingService().refreshAfterOnJoinGameResponse(response.status)
@@ -148,7 +146,6 @@ open class IndigoNetworkClient(
             GameActionResponseStatus.SUCCESS -> {
                 println("SUCCESS")
             }
-
             else -> {
                 println("Fail")
             }

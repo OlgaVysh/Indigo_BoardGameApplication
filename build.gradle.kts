@@ -37,6 +37,9 @@ dependencies {
     implementation(group = "tools.aqua", name = "bgw-net-client", version = "0.9")
     implementation(group = "edu.udo.cs.sopra", name = "ntf", version = "1.1")
     implementation(group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version = "2.13.3")
+    //implementation("com.fasterxml.jackson.module", "jackson-module-kotlin","2.11.0")
+    implementation("com.fasterxml.jackson.core","jackson-databind","2.11.0")
+    implementation("com.fasterxml.jackson.module","jackson-module-kotlin","2.11.0")
 }
 
 tasks.distZip {

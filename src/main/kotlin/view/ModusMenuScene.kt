@@ -13,11 +13,13 @@ import view.components.Label
 class ModusMenuScene (indigoApp : IndigoApplication) : BoardGameScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) {
     // Buttons for selecting game modes
     private val hotSeatButton = Button(266, 642, 528, 207, "HotSeat", 48).
-    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.configurePlayersScene)
+    apply { onMouseClicked = {
+        indigoApp.showGameScene(indigoApp.configurePlayersScene)
     indigoApp.hideMenuScene()}}
 
     private val networkButton = Button(1100, 642, 528, 207, "Network", 48).
-    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.networkScene) }}
+    apply { onMouseClicked = {indigoApp.networkMode = true
+        indigoApp.showMenuScene(indigoApp.networkScene) }}
 
     // Labels for providing instructions
     private val modusLabel1 = Label(639, 388, 642, 85, "Please, choose your", 60)
