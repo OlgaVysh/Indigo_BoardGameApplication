@@ -22,7 +22,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     private val rootService = indigoApp.rootService
 
     //iregendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
-    private val titleLabel = Label(42, 80, 900, 116, "Configure Player X", 96)
+    private val titleLabel = Label(42, 80, 900, 116, "Configure Player", 96)
 
     private val nameLabel = Label(80, 370, width = 300, text = "Name : ", fontSize = 48)
     private val nameInput: TextField = TextField(width = 420, height = 69, posX = 320, posY = 370).apply {
