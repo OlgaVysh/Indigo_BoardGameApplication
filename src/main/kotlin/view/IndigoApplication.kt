@@ -5,7 +5,7 @@ import service.RootService
 import tools.aqua.bgw.core.BoardGameApplication
 import java.io.File
 import java.io.FileNotFoundException
-
+import entity.Player
 
 /**
  * Implementation of the BGW [BoardGameApplication] for the example game "Indigo"
@@ -36,7 +36,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
     val savedGamesScene = SavedGamesMenuScene(listOf("one", "two", "three"))
     val networkConfigureScene = ConfigureNetworkPlayersScene(this/*, listOf("one", "two", "three")*/)
     val gameScene = GameScene(this)
-    //val newPlayerScene = NewPlayerScene (this)
+    val newPlayerScene = NewPlayerScene (this)
 
 
     init {
@@ -57,8 +57,8 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
             hostGameScene,
             savedGamesScene,
             networkConfigureScene,
-            gameScene
-            //newPlayerScene,
+            gameScene,
+            newPlayerScene
         )
         val resource = this::class.java.getResource("/IrishGrover.ttf")
             ?: throw FileNotFoundException()
