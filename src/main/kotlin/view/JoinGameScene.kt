@@ -44,7 +44,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             var isAi = false
             if (yesButton.isSelected) isAi = true
             if (nameInput.text.isNotBlank() && idInput.text.isNotBlank()) indigoApp.rootService.networkService.joinGame(
-                name = nameInput.name, sessionID = idLabel.name, isAi = isAi
+                name = nameInput.text, sessionID = idInput.text, isAi = isAi
             )
         }
     }
