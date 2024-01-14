@@ -24,7 +24,8 @@ class ConfigurePlayerXScene(indigoApp : IndigoApplication) : MenuScene(990, 1080
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player X", 96)
     private val saveChangeButton = Button(247,779,528,207, "Save changes", 48).
     apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
-    indigoApp.hideMenuScene()} }
+    indigoApp.hideMenuScene()}
+    }
 
     private val colorLabel = Label(80, 370, width = 300, text = "color : ", fontSize = 48)
     private val colorBox = ComboBox<String>(320, 370, 454.34, 69, prompt = "Select your color!")

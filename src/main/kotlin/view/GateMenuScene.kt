@@ -1,5 +1,6 @@
 package view
 
+import service.network.ConnectionState
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
 import view.components.Button
@@ -13,10 +14,38 @@ import view.components.Label
  * @param background The background image for the scene.
  */
 
-class GateMenuScene : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")), Refreshable {
+class GateMenuScene(val indigoApp: IndigoApplication) :
+    MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")), Refreshable {
     // Buttons for selecting game modes
-    private val sharedButton = Button(266, 642, 528, 207, "HotSeat", 48)
-    private val separatedButton = Button(1100, 642, 528, 207, "Network", 48)
+    private val sharedButton = Button(266, 642, 528, 207, "SharedGates", 48).apply {
+        onMouseClicked = {
+            val isRandom = indigoApp.isRandom
+            val players = indigoApp.players
+            val connectionState = indigoApp.rootService.networkService.connectionState
+            if (connectionState == ConnectionState.DISCONNECTED) {
+                indigoApp.rootService.gameService.startGame(players, false, isRandom)
+
+            } else {
+                indigoApp.rootService.networkService.startNewHostedGame(players, false, isRandom)
+            }
+            indigoApp.hideMenuScene()
+            indigoApp.showGameScene(indigoApp.gameScene)
+        }
+    }
+    private val separatedButton = Button(1100, 642, 528, 207, "SeperatedGates", 48).apply {
+        onMouseClicked = {
+            val isRandom = indigoApp.isRandom
+            val players = indigoApp.players
+            val connectionState = indigoApp.rootService.networkService.connectionState
+            if (connectionState == ConnectionState.DISCONNECTED) {
+                indigoApp.rootService.gameService.startGame(players, true, isRandom)
+            } else {
+                indigoApp.rootService.networkService.startNewHostedGame(players, true, isRandom)
+            }
+            indigoApp.hideMenuScene()
+            indigoApp.showGameScene(indigoApp.gameScene)
+        }
+    }
 
     // Labels for providing instructions
     private val gatesLabel1 = Label(381, 370, 1111, 85, "Please, choose one of the following", 60)

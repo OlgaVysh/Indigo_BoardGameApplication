@@ -102,18 +102,20 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         textMessageLabel.isVisible = true
         textMessageLabel.isDisabled = false
         when (responseStatus) {
-            JoinGameResponseStatus.SUCCESS -> textMessageLabel.text = "Waiting for Host to finish Game Configuration"
+            JoinGameResponseStatus.SUCCESS ->{ textMessageLabel.text = "Waiting for Host to finish \n Game Configuration"
+            joinButton.isDisabled = true
+            }
             JoinGameResponseStatus.ALREADY_ASSOCIATED_WITH_GAME -> {
                 textMessageLabel.text = "Already connected to the Game"
             }
 
             JoinGameResponseStatus.INVALID_SESSION_ID -> {
-                textMessageLabel.text = JoinGameResponseStatus.INVALID_SESSION_ID.name + "\n" + "try another Session ID"
+                textMessageLabel.text = responseStatus.name + "\n" + "try another Session ID"
             }
 
             JoinGameResponseStatus.PLAYER_NAME_ALREADY_TAKEN -> {
                 textMessageLabel.text =
-                    JoinGameResponseStatus.INVALID_SESSION_ID.name + "\n" + "try another Player Name"
+                    responseStatus.name + "\n" + "try another Player Name"
             }
 
             else -> {
@@ -125,6 +127,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
                 if (responseStatus != JoinGameResponseStatus.SUCCESS) {
                     textMessageLabel.isVisible = false
                     textMessageLabel.isDisabled = true
+                    joinButton.isDisabled = false
                 }
             }
         })
