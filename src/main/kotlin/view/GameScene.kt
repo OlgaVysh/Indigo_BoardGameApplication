@@ -2,6 +2,7 @@ package view
 
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
+import tools.aqua.bgw.components.uicomponents.Button
 import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
@@ -10,7 +11,6 @@ import java.awt.Color
 
 /**
  * Represents the game scene containing a hexagonal grid.
- *
  */
 
 class GameScene(indigoApp: IndigoApplication) :
@@ -86,16 +86,35 @@ class GameScene(indigoApp: IndigoApplication) :
     private var player4yellowGemCounter = view.components.Label(posX = 1276, posY = 717, text = "0", fontSize = 48)
 
     // PlayerHandTile components
+    // player1 oben links player2 oben rechts player3 unten links player4 unten rechts
     private var player1handTile = view.components.Label(posX = 127, posY = 184, text = "")
     private var player2handTile = view.components.Label(posX = 1619, posY = 184, text = "")
     private var player3handTile = view.components.Label(posX = 127, posY = 754, text = "")
     private var player4handTile = view.components.Label(posX = 1619, posY = 754, text = "")
 
-    // PlayerturnHighlight components currentPlayer bekommt einen blauen Hintergrund (egal welcher Player)
+    // PlayerturnHighlight components (currentPlayer bekommt einen blauen Hintergrund (egal welcher Player))
     private val player1turnHighlight = HexagonView(posX = 102, posY = 149, visual = ColorVisual(Color.BLUE))
     private val player2turnHighlight = HexagonView(posX = 1595, posY = 149, visual = ColorVisual(Color.BLUE))
     private val player3turnHighlight = HexagonView(posX = 102, posY = 719, visual = ColorVisual(Color.BLUE))
     private val player4turnHighlight = HexagonView(posX = 1595, posY = 719, visual = ColorVisual(Color.BLUE))
+
+    // PlayerRotateButton components
+    private val player1leftButton = Button(posX = 60, posY = 360, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
+    private val player1rightButton = Button(posX = 240, posY = 360, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
+    private val player1checkButton = Button(posX = 150, posY = 360, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
+
+    private val player2leftButton = Button(posX = 1553, posY = 360, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
+    private val player2rightButton = Button(posX = 1733, posY = 360, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
+    private val player2checkButton = Button(posX = 1643, posY = 360, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
+
+    private val player3leftButton = Button(posX = 60, posY = 680, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
+    private val player3rightButton = Button(posX = 240, posY = 680, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
+    private val player3checkButton = Button(posX = 150, posY = 680, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
+
+    private val player4leftButton = Button(posX = 1553, posY = 680, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
+    private val player4rightButton = Button(posX = 1733, posY = 680, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
+    private val player4checkButton = Button(posX = 1643, posY = 680, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
+
 
     // GateToken components
     //gate oben links und dann im Uhrzeigersinn
@@ -117,6 +136,21 @@ class GameScene(indigoApp: IndigoApplication) :
     private var gate6Token1 = view.components.Label(posX = 510, posY = 475, text = "")
     private var gate6Token2 = view.components.Label(posX = 510, posY = 385, text = "")
 
+    // GameboardGem components
+    private var blueGem = view.components.Label(posX = 911, posY = 432, text = "", width = 40, height = 32)
+    //oben links im Uhrzeigersinn
+    private var greenGem1 = view.components.Label(posX = 890, posY = 405, text = "", width = 40, height = 32)
+    private var greenGem2 = view.components.Label(posX = 930, posY = 402, text = "", width = 40, height = 32)
+    private var greenGem3 = view.components.Label(posX = 944, posY = 439, text = "", width = 40, height = 32)
+    private var greenGem4 = view.components.Label(posX = 912, posY = 465, text = "", width = 40, height = 32)
+    private var greenGem5 = view.components.Label(posX = 875, posY = 438, text = "", width = 40, height = 32)
+    //oben im Uhrzeigersinn
+    private var yellowGem1 = view.components.Label(posX = 910, posY = 70, text = "", width = 40, height = 32)
+    private var yellowGem2 = view.components.Label(posX = 1226, posY = 248, text = "", width = 40, height = 32)
+    private var yellowGem3 = view.components.Label(posX = 1226, posY = 612, text = "", width = 40, height = 32)
+    private var yellowGem4 = view.components.Label(posX = 910, posY = 797, text = "", width = 40, height = 32)
+    private var yellowGem5 = view.components.Label(posX = 590, posY = 613, text = "", width = 40, height = 32)
+    private var yellowGem6 = view.components.Label(posX = 590, posY = 246, text = "", width = 40, height = 32)
     /**
      * Initializes the GameScene with default values and sets up the hexagonal grid.
      */
@@ -144,6 +178,20 @@ class GameScene(indigoApp: IndigoApplication) :
         player2yellowGem.visual = ImageVisual("yellowGem.png")
         player3yellowGem.visual = ImageVisual("yellowGem.png")
         player4yellowGem.visual = ImageVisual("yellowGem.png")
+
+        blueGem.visual = ImageVisual("blueGem.png")
+        greenGem1.visual = ImageVisual("greenGem.png")
+        greenGem2.visual = ImageVisual("greenGem.png")
+        greenGem3.visual = ImageVisual("greenGem.png")
+        greenGem4.visual = ImageVisual("greenGem.png")
+        greenGem5.visual = ImageVisual("greenGem.png")
+        yellowGem1.visual = ImageVisual("yellowGem.png")
+        yellowGem2.visual = ImageVisual("yellowGem.png")
+        yellowGem3.visual = ImageVisual("yellowGem.png")
+        yellowGem4.visual = ImageVisual("yellowGem.png")
+        yellowGem5.visual = ImageVisual("yellowGem.png")
+        yellowGem6.visual = ImageVisual("yellowGem.png")
+
 
         //initialize handTileViews
         player1handTile.rotate(30)
@@ -187,6 +235,7 @@ class GameScene(indigoApp: IndigoApplication) :
 
         gate6Token1.visual = ImageVisual("tokenred.png")
         gate6Token2.visual = ImageVisual("tokenblue.png")
+
 
 
         // Add the hexagonal grid to the components of the game scene
@@ -243,15 +292,34 @@ class GameScene(indigoApp: IndigoApplication) :
             gate5Token1,
             gate5Token2,
             gate6Token1,
-            gate6Token2
+            gate6Token2,
+            blueGem,
+            greenGem1,
+            greenGem2,
+            greenGem3,
+            greenGem4,
+            greenGem5,
+            yellowGem1,
+            yellowGem2,
+            yellowGem3,
+            yellowGem4,
+            yellowGem5,
+            yellowGem6,
+            player1leftButton,
+            player1rightButton,
+            player1checkButton,
+            player2leftButton,
+            player2rightButton,
+            player2checkButton,
+            player3leftButton,
+            player3rightButton,
+            player3checkButton,
+            player4leftButton,
+            player4rightButton,
+            player4checkButton
         )
 
     }
-
-    /**
-     * Initialize game board grid
-     */
-
     /**
      * Initialize game board grid
      */
