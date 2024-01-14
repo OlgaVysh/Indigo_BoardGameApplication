@@ -64,9 +64,10 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                 "white " -> newPlayerColor = TokenColor.WHITE
             }
             var newPlayer = Player(name = playerName.text, color = newPlayerColor)
-            if (aiPlayer) newPlayer = CPUPlayer(
-                name = playerName.text, color = newPlayerColor
-            )
+            if (aiPlayer) {
+                newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)
+            indigoApp.aiGame = true
+            }
             addPlayerToTheScene(newPlayer)
             //refreshAfterAddNewPlayer()
         }
