@@ -28,7 +28,8 @@ class AIMenuScene (indigoApp : IndigoApplication) : MenuScene (1920, 1080),Refre
     private val aiSpeed = ComboBox<String>(1015, 495, 300, 69, prompt = "Select ai speed")
 
     // Button to start the game.
-    private val startButton = Button(730, 805,532,207,"Start new game",48)
+    private val startButton = Button(730, 805,532,207,"Start new game",48).
+    apply { indigoApp.showGameScene(indigoApp.gameScene) }
 
     // Setting the background and adding all components to the scene.
     init{
