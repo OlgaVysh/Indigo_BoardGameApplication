@@ -6,6 +6,7 @@ import tools.aqua.bgw.core.BoardGameApplication
 import java.io.File
 import java.io.FileNotFoundException
 import entity.Player
+import entity.TokenColor
 
 /**
  * Implementation of the BGW [BoardGameApplication] for the example game "Indigo"
@@ -30,13 +31,13 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
     val joinGameScene = JoinGameScene(this)
 
     //val endGameMenuScene = EndGameMenuScene(this)
+    val gameScene = GameScene(this)
     val aiMenuScene = AIMenuScene(this)
     val gameSavedScene = GameSavedMenuScene(this)
     val saveGameScene = SaveGameMenuScene(this)
     val hostGameScene = HostGameScene(this)
     val savedGamesScene = SavedGamesMenuScene(listOf("one", "two", "three"))
     val networkConfigureScene = ConfigureNetworkPlayersScene(this/*, listOf("one", "two", "three")*/)
-    val gameScene = GameScene(this)
     val newPlayerScene = NewPlayerScene (this)
 
 
