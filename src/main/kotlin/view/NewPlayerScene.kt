@@ -8,7 +8,6 @@ import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.components.uicomponents.RadioButton
 import tools.aqua.bgw.components.uicomponents.TextField
 import tools.aqua.bgw.components.uicomponents.ToggleGroup
-import tools.aqua.bgw.core.BoardGameApplication
 import tools.aqua.bgw.core.MenuScene
 import view.components.Button
 import view.components.Label
