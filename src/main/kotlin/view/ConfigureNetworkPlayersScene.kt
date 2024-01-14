@@ -1,5 +1,7 @@
 package view
 
+import entity.Player
+import entity.TokenColor
 import service.RootService
 import service.network.ConnectionState
 import view.components.*
@@ -20,18 +22,26 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
     private val label = Label(453, 21, 1050, 155, "Configure Players", 120)
 
     // Grid for displaying NetworkPlayersView for each game
-    private val grid = GridPane<NetworkPlayersView>(960, 484, 1, 1, 10, true)
+   val grid = GridPane<NetworkPlayersView>(960, 484, 1, 1, 10, true)
 
     // Number of games minus one to get the correct index
     //private val size = games.size - 1
 
     // Button for adding a new player
-    private val addButton = Button(188, 806, 528, 207, "Add new player", 40).
-    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.newPlayerScene)}}
+    private val addButton = Button(188, 806, 528, 207, "Add new player", 40).apply {
+        onMouseClicked = { indigoApp.showMenuScene(indigoApp.newPlayerScene) }
+    }
 
     // Button for starting a new game
     private val startButton = Button(1217, 806, 528, 207, "Start new game", 40).apply {
-        onMouseClicked = { indigoApp.showGameScene(indigoApp.gameScene) }
+        onMouseClicked = {
+            indigoApp.showGameScene(indigoApp.gameScene)
+            /*val players = indigoApp.players
+            var isRandom = false
+            if()isRandom = true
+            indigoApp.rootService.networkService.startNewHostedGame(players, random = isRandom)
+             */
+        }
     }
 
     /**
@@ -80,6 +90,9 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
             grid.addRows(currentRows)
             val newNetworkPlayer = NetworkPlayersView(0, 0).apply {
                 label.text = "Player " + grid.rows + ": " + newPlayerName
+                indigoApp.players.add(
+                    Player(name = newPlayerName, color = TokenColor.BLUE)
+                )
                 this.button.onMouseClicked = {
                     indigoApp.showMenuScene(indigoApp.configurePlayerXScene)
                 }
@@ -108,6 +121,8 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                 break
             }
         }
+        val removePlayer = indigoApp.players.find { it.name == playerLeftName }
+        indigoApp.players.remove(removePlayer)
         grid.removeEmptyRows()/*for (i in 0 until grid.rows) {
          val networkPlayer = grid.get(0, i) ?: continue
         networkPlayer.apply {
@@ -116,5 +131,13 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
             button.posY = (151 * i).toDouble()
         }
         }*/
+    }
+
+    override fun refreshAfterStartGame() {
+        val networkService = indigoApp.rootService.networkService
+        val connectionState = networkService.connectionState
+        if (connectionState != ConnectionState.DISCONNECTED) {
+            indigoApp.showGameScene(indigoApp.gameScene)
+        }
     }
 }
