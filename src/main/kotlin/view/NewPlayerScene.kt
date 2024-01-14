@@ -8,6 +8,7 @@ import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.components.uicomponents.RadioButton
 import tools.aqua.bgw.components.uicomponents.TextField
 import tools.aqua.bgw.components.uicomponents.ToggleGroup
+import tools.aqua.bgw.core.BoardGameApplication
 import tools.aqua.bgw.core.MenuScene
 import view.components.Button
 import view.components.Label
@@ -15,6 +16,8 @@ import view.components.NetworkPlayersView
 
 class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
 
+    private val colors = mutableListOf("blue", "purple", "red", "white")
+    private val turns = mutableListOf(1, 2, 3, 4)
     private var aiPlayer = false
     private val label = Label(42, 80, 900, 116, "Configure Player", 96)
 
@@ -39,7 +42,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         }
     }
 
-    private val noButton = RadioButton(posX = 550, posY = 710, toggleGroup = toggleGroup)
+    private val noButton = RadioButton(posX = 550, posY = 710, isSelected = true,toggleGroup = toggleGroup)
 
     private val playerName: TextField = TextField(
         width = 350,
@@ -68,6 +71,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                 newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)
             }
             addPlayerToTheScene(newPlayer)
+            refreshScene()
             //refreshAfterAddNewPlayer()
         }
     }
@@ -103,8 +107,9 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             playerAge
         )
 
-        turnBox.items = mutableListOf(1, 2, 3, 4)
-        colorBox.items = mutableListOf("blue", "purple", "red", "white")
+        turnBox.items = turns
+        colorBox.items = colors
+
     }
 
     private fun addPlayerToTheScene(newPlayer: Player) {
@@ -124,5 +129,24 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                 }
             }
         }
+    }
+
+    /**
+     * Clears all the components of the scene and deletes the chosen color and turn from the
+     * ComboBoxes, so every color and turn can only be chosen once
+     */
+    private fun refreshScene()
+    {
+        noButton.isSelected = true
+        playerName.text = ""
+        playerAge.text = ""
+
+        colors.remove(colorBox.selectedItem)
+        colorBox.items = colors
+        colorBox.selectedItem = null
+
+        turns.remove(turnBox.selectedItem)
+        turnBox.items = turns
+        turnBox.selectedItem = null
     }
 }
