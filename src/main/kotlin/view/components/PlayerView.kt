@@ -3,23 +3,23 @@ import tools.aqua.bgw.components.layoutviews.GridPane
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 
-class PlayerView(name : String, turn :String = "", color:String ="", posX : Int = 0, posY : Int = 0) :
+class PlayerView(name : String, color:String ="", turn : Int?, posX : Int = 0, posY : Int = 0) :
     GridPane<Label>(posX,posY,3,1, visual = ColorVisual(253,240,216))
 {
+
+    private val turnOutput = turn?.toString()?:""
     init {
         //name
         this[0,0] = Label(text = name, width = 200, height = 65, fontSize = 40)
         //color
         getGem(color)
-        //turn
-        var newTurn = ""
-        if (turn!="null") newTurn = turn
-        this[2,0] = Label(text = "turn : "+ newTurn, width = 400, height = 65,fontSize = 40)
+
+        this[2,0] = Label(text = "turn : " + turnOutput, width = 400, height = 65,fontSize = 40)
     }
 
     private fun getGem(color:String)
     {
-        if(color!="")
+        if(color!="null")
         {
             if(color=="red") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenred.png")}
             if(color=="white") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenwhite.png")}

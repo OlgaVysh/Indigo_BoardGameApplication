@@ -59,7 +59,7 @@ class ConfigurePlayersGameScene1(indigoApp: IndigoApplication) : BoardGameScene(
 
     }
 
-    fun addPlayer(indigoApp : IndigoApplication,name : String, turn :String, color:String)
+    fun addPlayer(indigoApp : IndigoApplication,name : String, color:String, turn:Int?)
     {
         //val counter = indigoApp.players.size-1
         //players[1,counter] = PlayerView(name,color,turn)

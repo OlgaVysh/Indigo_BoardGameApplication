@@ -21,7 +21,7 @@ class AIMenuScene (indigoApp : IndigoApplication) : MenuScene (1920, 1080),Refre
 
     // Labels for instructions regarding the simulation speed.
     private val speed1Label = Label (397, 324,1126,77,"Please, choose the simulation speed :",64)
-    private val speed2Label = Label (397, 416,1192,58,"(recommended speed is : 1.0)",48)
+    private val speed2Label = Label (397, 416,1192,58,"(Default speed is middle)",48)
     private val speed3Label = Label (230, 508,1192,58,"Set speed to :",48)
 
     // ComboBox to allow the user to select the AI speed.
@@ -39,8 +39,9 @@ class AIMenuScene (indigoApp : IndigoApplication) : MenuScene (1920, 1080),Refre
             aiGameLabel,
             speed1Label,
             speed2Label,
-            startButton,
             speed3Label,
+            startButton,
             aiSpeed)
+        aiSpeed.items = mutableListOf("low","middle","high")
     }
 }
