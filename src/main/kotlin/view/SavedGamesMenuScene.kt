@@ -12,7 +12,8 @@ import tools.aqua.bgw.visual.ImageVisual
  * @param games The list of saved game names.
  */
 class SavedGamesMenuScene(games: List<String>) :
-    BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")) {    // Label for the scene title
+    BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")),
+    Refreshable {    // Label for the scene title
 
     private val label = Label(566, 22, 777, 155, "Saved games", 120)
 

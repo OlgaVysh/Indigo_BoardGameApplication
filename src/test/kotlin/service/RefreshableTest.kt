@@ -1,6 +1,7 @@
 package service
 
 //import entity.*
+import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
 import view.Refreshable
 
 /**
@@ -78,6 +79,11 @@ class RefreshableTest : Refreshable {
     var refreshAfterPlayerLeavedCalled = false
         private set
 
+    var refreshAfterOnCreateGameResponseCalled =false
+        private set
+
+    var refreshAfterOnJoinGameCalled=false
+        private set
     /**
      * resets all *Called properties to false
      */
@@ -105,7 +111,8 @@ class RefreshableTest : Refreshable {
         refreshAfterStartNewJoinedGameCalled = false
         refreshAfterPlayerJoinedCalled = false
         refreshAfterPlayerLeavedCalled = false
-
+        refreshAfterOnJoinGameCalled = false
+        refreshAfterOnCreateGameResponseCalled = false
 
     }
 
@@ -200,5 +207,13 @@ class RefreshableTest : Refreshable {
 
     override fun refreshAfterStartNewJoinedGame() {
         refreshAfterStartNewJoinedGameCalled = true
+    }
+
+    override fun refreshAfterOnCreateGameResponse(sessionID: String?) {
+        refreshAfterOnCreateGameResponseCalled = true
+    }
+
+    override fun refreshAfterOnJoinGameResponse(responseStatus: JoinGameResponseStatus) {
+        refreshAfterOnJoinGameCalled = true
     }
 }

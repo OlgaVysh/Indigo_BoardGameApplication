@@ -1,5 +1,9 @@
 package view
 
+import entity.CPUPlayer
+import entity.Player
+import entity.TokenColor
+import service.network.ConnectionState
 import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.components.uicomponents.RadioButton
 import tools.aqua.bgw.components.uicomponents.TextField
@@ -7,8 +11,14 @@ import tools.aqua.bgw.components.uicomponents.ToggleGroup
 import tools.aqua.bgw.core.MenuScene
 import view.components.Button
 import view.components.Label
+import view.components.NetworkPlayersView
 
-class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080) {
+class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
+
+    private val colors = mutableListOf("blue", "purple", "red", "white")
+    private val turns = mutableListOf(1, 2, 3, 4)
+    private var aiPlayer = false
+
     private val label = Label(42, 80, 900, 116, "Configure Player", 96)
 
     private val nameLabel = Label(65, 293, 300, 98, text = "Name: ", fontSize = 48)
@@ -25,14 +35,15 @@ class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080) {
     private val noLabel = Label(600, 693, width = 80, text = "no", fontSize = 48)
 
     private val toggleGroup = ToggleGroup()
-    private val yesButton = RadioButton(posX = 350, posY = 710, toggleGroup = toggleGroup)
-    private val noButton = RadioButton(posX = 550, posY = 710, toggleGroup = toggleGroup)
+    private val yesButton = RadioButton(posX = 350, posY = 710, toggleGroup = toggleGroup).apply {
+        onMouseClicked = {
+            aiPlayer = true
+            indigoApp.aiGame = true
+        }
+    }
+    private val noButton = RadioButton(posX = 550, posY = 710, isSelected = true,toggleGroup = toggleGroup)
 
-    private val addNewPlayerButton = Button(250, 780, 528, 207, "Add new player", 48).
-    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
-        indigoApp.hideMenuScene()} }
-
-    private val hostName: TextField = TextField(
+    private val playerName: TextField = TextField(
         width = 350,
         height = 50,
         posX = 360,
@@ -43,7 +54,28 @@ class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080) {
         }
     }
 
-    private val hostAge: TextField = TextField(
+    private val addNewPlayerButton = Button(250, 780, 528, 207, "Add new player", 48).apply {
+        isDisabled = playerName.text.isBlank()
+        onMouseClicked = {
+            indigoApp.hideMenuScene()
+            var newPlayerColor = TokenColor.BLUE
+            when (colorBox.selectedItem) {
+                "purple" -> newPlayerColor = TokenColor.PURPLE
+                "blue" -> newPlayerColor = TokenColor.BLUE
+                "red" -> newPlayerColor = TokenColor.RED
+                "white " -> newPlayerColor = TokenColor.WHITE
+            }
+            var newPlayer = Player(name = playerName.text, color = newPlayerColor)
+            if (aiPlayer) {
+                newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)
+            }
+            addPlayerToTheScene(newPlayer)
+            refreshScene()
+            //refreshAfterAddNewPlayer()
+        }
+    }
+
+    private val playerAge: TextField = TextField(
         width = 350,
         height = 50,
         posX = 360,
@@ -58,16 +90,66 @@ class NewPlayerScene (indigoApp : IndigoApplication) : MenuScene(990, 1080) {
         opacity = 0.5
         addComponents(
             label,
-            nameLabel, ageLabel,
-            turnBox, turnLabel,
-            colorLabel, colorBox,
-            yesLabel, noLabel, aiLabel,
-            yesButton, noButton,
+            nameLabel,
+            ageLabel,
+            turnBox,
+            turnLabel,
+            colorLabel,
+            colorBox,
+            yesLabel,
+            noLabel,
+            aiLabel,
+            yesButton,
+            noButton,
             addNewPlayerButton,
-            hostName, hostAge
+            playerName,
+            playerAge
         )
 
-        turnBox.items = mutableListOf(1, 2, 3, 4)
-        colorBox.items = mutableListOf("blue", "purple", "red", "white")
+        turnBox.items = turns
+        colorBox.items = colors
+
+    }
+
+    private fun addPlayerToTheScene(newPlayer: Player) {
+
+        indigoApp.players.add(newPlayer)
+
+        indigoApp.configurePlayersScene.addPlayer(indigoApp,playerName.text, colorBox.selectedItem!!, turnBox.selectedItem!!.toString())
+
+        val connectionState = indigoApp.rootService.networkService.connectionState
+        if (connectionState != ConnectionState.DISCONNECTED) {
+            val configureNetworkPlayersScene = indigoApp.networkConfigureScene
+            val currentRows = configureNetworkPlayersScene.grid.rows
+            if (currentRows < 4) {
+                configureNetworkPlayersScene.grid.addRows(currentRows)
+                val grid = configureNetworkPlayersScene.grid
+                configureNetworkPlayersScene.grid[0, currentRows] = NetworkPlayersView(0, 0).apply {
+                    label.text = "Player " + grid.rows + ": " + newPlayer.name
+                    this.button.onMouseClicked = {
+                        indigoApp.showMenuScene(indigoApp.configurePlayerXScene)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Clears all the components of the scene and deletes the chosen color and turn from the
+     * ComboBoxes, so every color and turn can only be chosen once
+     */
+    private fun refreshScene()
+    {
+        noButton.isSelected = true
+        playerName.text = ""
+        playerAge.text = ""
+
+        colors.remove(colorBox.selectedItem)
+        colorBox.items = colors
+        colorBox.selectedItem = null
+
+        turns.remove(turnBox.selectedItem)
+        turnBox.items = turns
+        turnBox.selectedItem = null
     }
 }

@@ -1,7 +1,9 @@
 package view
 
 import tools.aqua.bgw.animation.DelayAnimation
+import tools.aqua.bgw.components.uicomponents.RadioButton
 import tools.aqua.bgw.components.uicomponents.TextField
+import tools.aqua.bgw.components.uicomponents.ToggleGroup
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
 import view.components.Button
@@ -16,7 +18,7 @@ import view.components.Label
  *
  * @property rootService An instance of RootService to access and manipulate game data.
  */
-class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), Refreshable {
+class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
 
     private val rootService = indigoApp.rootService
     //private val game = indigoApp.rootService.currentGame
@@ -51,11 +53,26 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
         posY = 510
     )
 
+    private val aiLabel = Label(130, 693, width = 200, text = "AI : ", fontSize = 48)
+    private val yesLabel = Label(440, 693, width = 80, text = "yes", fontSize = 48)
+    private val noLabel = Label(640, 693, width = 80, text = "no", fontSize = 48)
+
+
+    private val toggleGroup = ToggleGroup()
+    private val yesButton = RadioButton(posX = 390, posY = 693, toggleGroup = toggleGroup).apply {
+        onMouseClicked = {
+            indigoApp.aiGame = true
+        }
+    }
+    private val noButton = RadioButton(posX = 590, posY = 693, isSelected = true,toggleGroup = toggleGroup)
+
     // Button for host to game.
-    private val hostGameButton = Button(247, 698, 532, 207, "Host game", 48).
-    apply { isDisabled = hostName.text.isBlank()
-        onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
-    indigoApp.hideMenuScene()} }
+    private val hostGameButton = Button(247, 798, 532, 207, "Host game", 48).apply {
+        isDisabled = hostName.text.isBlank()
+        onMouseClicked = {
+            indigoApp.rootService.networkService.hostGame(name = hostName.text, sessionID = sessionId.text)
+        }
+    }
 
     private val textMessageLabel = Label(
         15,
@@ -80,7 +97,12 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
             hostName,
             sessionId,
             hostGameButton,
-            textMessageLabel
+            textMessageLabel,
+            yesLabel,
+            noLabel,
+            aiLabel,
+            yesButton,
+            noButton
         )
     }
 
@@ -100,9 +122,10 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
                 textMessageLabel.text = "Please use another Session ID"
             }
         } else {
-            textMessageLabel.text = "Session ID: $sessionId"
+            textMessageLabel.text = "Session ID: $sessionID"
         }
-        DelayAnimation(duration = 2000).apply {
+
+        playAnimation(DelayAnimation(duration = 2000).apply {
             onFinished = {
                 textMessageLabel.isVisible = false
                 textMessageLabel.isDisabled = true
@@ -112,5 +135,6 @@ class HostGameScene( val indigoApp : IndigoApplication) : MenuScene(990, 1080), 
                 }
             }
         }
+        )
     }
 }

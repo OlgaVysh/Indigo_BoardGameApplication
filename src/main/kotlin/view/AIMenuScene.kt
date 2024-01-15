@@ -1,6 +1,5 @@
 package view
 
-import service.RootService
 import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
@@ -13,10 +12,9 @@ import view.components.Label
  * This scene includes various UI components like labels, a combo box for selecting AI speed, and a button to start the game.
  * The layout and visual elements are defined within this class.
  *
- * @property rootService An instance of RootService to interact with the application's core functionalities.
  */
-class AIMenuScene (private val rootService: RootService) : MenuScene (1920, 1080) {
-    private val game = rootService.currentGame
+class AIMenuScene (indigoApp : IndigoApplication) : MenuScene (1920, 1080),Refreshable {
+
 
     // Label to display the header.
     private val aiGameLabel = Label (397, 71, 1126,155,"This is an AI Game!",120)
@@ -30,7 +28,8 @@ class AIMenuScene (private val rootService: RootService) : MenuScene (1920, 1080
     private val aiSpeed = ComboBox<String>(1015, 495, 300, 69, prompt = "Select ai speed")
 
     // Button to start the game.
-    private val startButton = Button(730, 805,532,207,"Start new game",48)
+    private val startButton = Button(730, 805,532,207,"Start new game",48).
+    apply { indigoApp.showGameScene(indigoApp.gameScene) }
 
     // Setting the background and adding all components to the scene.
     init{

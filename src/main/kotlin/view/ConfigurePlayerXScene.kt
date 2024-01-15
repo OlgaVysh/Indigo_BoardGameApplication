@@ -17,14 +17,15 @@ import view.components.Label
  *
  * @parameter indigoApp
  */
-class ConfigurePlayerXScene(indigoApp : IndigoApplication) : MenuScene(990, 1080) {
+class ConfigurePlayerXScene(indigoApp : IndigoApplication) : MenuScene(990, 1080),Refreshable{
     //private val game = rootService.currentGame
     //irgendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     //ich hab die Box noch nicht durch tokens geändert ist etwas komplizierter
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player X", 96)
     private val saveChangeButton = Button(247,779,528,207, "Save changes", 48).
     apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
-    indigoApp.hideMenuScene()} }
+    indigoApp.hideMenuScene()}
+    }
 
     private val colorLabel = Label(80, 370, width = 300, text = "color : ", fontSize = 48)
     private val colorBox = ComboBox<String>(320, 370, 454.34, 69, prompt = "Select your color!")
