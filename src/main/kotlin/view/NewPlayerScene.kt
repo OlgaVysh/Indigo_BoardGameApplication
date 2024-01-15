@@ -142,7 +142,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                 indigoApp,
                 playerName.text,
                 colorBox.selectedItem.toString(),
-                turnBox.selectedItem.toString()
+                turnBox.selectedItem
             )
 
         }
