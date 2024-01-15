@@ -1,37 +1,38 @@
 package AI
 import entity.*
-import service.GameService
+import service.AbstractRefreshingService
+import service.RootService
 
-class AiActionService {
-    companion object {
+class AiActionService(private val rootService: RootService) : AbstractRefreshingService() {
         /**
          * Simulates a game move for a given player in the AI analysis.
          *
-         * @param indigo - the current indigo object representing the game state.
-         * @param move - the move object, representing the game move.
-         * @return a new indigo object, representing the game state after the move.
+         * @param indigo - the current [Indigo] object representing the game state.
+         * @param coordinate - the [Coordinate] object, representing the game move.
+         * @return a new [Indigo] object, representing the game state after the move.
          * @throws Exception if the player's handTile is null.
          *
          */
-        fun doMove(indigo: Indigo, move: Move): Indigo {
+        fun doMove(indigo: Indigo, coordinate: Coordinate): Indigo {
             val newIndigo = indigo.copyTo()
             val currentPlayer = newIndigo.players[newIndigo.currentPlayerIndex]
+            val gameService = rootService.gameService
 
             // Get the tile from the player's hand
             val tile = currentPlayer.handTile
 
             if (tile != null) {
                 // Place the tile on the game board
-                GameService.placeTile(Coordinate(move.posX, move.posY), tile)
+                gameService.placeTile(Coordinate(coordinate.row, coordinate.column), tile)
 
                 // Move gems to neighboring coordinates, check for collision, and remove gems
-                val neighbors = GameService.getNeighboringCoordinates(Coordinate(move.posX, move.posY))
+                val neighbors = gameService.getNeighboringCoordinates(Coordinate(coordinate.row, coordinate.column))
                 for (i in neighbors.indices) {
-                    GameService.moveGems(Coordinate(move.posX, move.posY), neighbors[i], i)
+                    gameService.moveGems(Coordinate(coordinate.row, coordinate.column), neighbors[i], i)
                 }
 
                 // Distribute a new tile
-                GameService.distributeNewTile()
+                gameService.distributeNewTile()
             } else {
                 throw Exception("Player's handTile is null.")
             }
@@ -86,7 +87,6 @@ class AiActionService {
             copiedIndigo.routeTiles = this.routeTiles.toMutableList()
             return copiedIndigo
         }
-    }
 
 
 }
