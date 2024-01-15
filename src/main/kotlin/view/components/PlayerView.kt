@@ -12,7 +12,9 @@ class PlayerView(name : String, turn :String = "", color:String ="", posX : Int 
         //color
         getGem(color)
         //turn
-        this[2,0] = Label(text = "turn : "+ turn, width = 400, height = 65,fontSize = 40)
+        var newTurn = ""
+        if (turn!="null") newTurn = turn
+        this[2,0] = Label(text = "turn : "+ newTurn, width = 400, height = 65,fontSize = 40)
     }
 
     private fun getGem(color:String)

@@ -58,7 +58,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         isDisabled = playerName.text.isBlank()
         onMouseClicked = {
             indigoApp.hideMenuScene()
-            var newPlayerColor =
+            val newPlayerColor =
                 when (colorBox.selectedItem) {
                     "purple" -> TokenColor.PURPLE
                     "blue" ->  TokenColor.BLUE
@@ -70,6 +70,13 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             var newPlayer = Player(name = playerName.text, color = newPlayerColor)
             if (aiPlayer) {
                 newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)
+            }
+            when(turnBox.selectedItem){
+                1-> indigoApp.players[0]
+                2-> indigoApp.players[1]
+                3-> indigoApp.players[2]
+                4-> indigoApp.players[3]
+                else -> indigoApp.players.add(newPlayer)
             }
             addPlayerToTheScene(newPlayer)
             refreshScene()
@@ -114,16 +121,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     }
 
     private fun addPlayerToTheScene(newPlayer: Player) {
-
         indigoApp.players.add(newPlayer)
-
-        indigoApp.configurePlayersScene.addPlayer(
-            indigoApp,
-            playerName.text,
-            colorBox.selectedItem!!,
-            turnBox.selectedItem!!.toString()
-        )
-
         val connectionState = indigoApp.rootService.networkService.connectionState
         if (connectionState != ConnectionState.DISCONNECTED) {
             val configureNetworkPlayersScene = indigoApp.networkConfigureScene
@@ -138,6 +136,15 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                     }
                 }
             }
+        }
+        else{
+            indigoApp.configurePlayersScene.addPlayer(
+                indigoApp,
+                playerName.text,
+                colorBox.selectedItem.toString(),
+                turnBox.selectedItem.toString()
+            )
+
         }
     }
 
@@ -157,5 +164,6 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         turns.remove(turnBox.selectedItem)
         turnBox.items = turns
         turnBox.selectedItem = null
+        addNewPlayerButton.isDisabled = true
     }
 }

@@ -17,7 +17,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
     // Central service from which all others are created/accessed
     // also holds the currently active game
     var aiGame = false //ob es KI Spieler gibt
-    var players: MutableList<Player> = mutableListOf() // list of players for the Game
+    var players: MutableList<Player?> = mutableListOf(null,null,null,null) // list of players for the Game
     var networkMode : Boolean=false //sagt, ob wir Hotseat oder Network spielen (wird in ModusMenuScene gesetzt)
     var isRandom = false //if the participant are all random
     var notSharedGates = true // if you play on notSharedGates and SharedGAtes mode
