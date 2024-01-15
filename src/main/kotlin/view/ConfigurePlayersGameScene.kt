@@ -29,7 +29,7 @@ class ConfigurePlayersGameScene(indigoApp: IndigoApplication) : BoardGameScene(1
             else indigoApp.showGameScene(indigoApp.gameScene) }
     }
     private val addNewPlayerButton = Button(340, 755, 528, 207, "Add new player", 48).
-    apply { isDisabled = indigoApp.players.size>=4
+    apply {
     onMouseClicked = {indigoApp.showMenuScene(indigoApp.newPlayerScene)}}
 
     /**
@@ -99,4 +99,5 @@ class ConfigurePlayersGameScene(indigoApp: IndigoApplication) : BoardGameScene(1
 
     }
 
+    //add refreshScene addnewplayerButton is disabled = indigoApp.players.size>=4
 }
