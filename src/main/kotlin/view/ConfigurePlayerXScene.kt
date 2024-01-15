@@ -54,24 +54,36 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
     }
 
     private fun configuredPlayer() {
-        val player = indigoApp.players.find { it?.name == playerName }
-        val color = when ( colorBox.selectedItem) {
-            "blue" ->TokenColor.BLUE
+
+        val color = when (colorBox.selectedItem) {
+            "blue" -> TokenColor.BLUE
             "purple" -> TokenColor.PURPLE
-            "red"->TokenColor.RED
+            "red" -> TokenColor.RED
             "white" -> TokenColor.WHITE
-            else -> player!!.color
+            else -> indigoApp.avaibleColors[0]
         }
-        player?.color = color
+        indigoApp.players.find { it?.name == playerName }?.color = color
+        val player = indigoApp.players.find { it?.name == playerName }
         indigoApp.avaibleColors.remove(color)
-        val index = indigoApp.players.indexOf(player)
         when (turnBox.selectedItem) {
-            1 -> indigoApp.players[0]
-            2 -> indigoApp.players[1]
-            3 -> indigoApp.players[2]
-            4 -> indigoApp.players[3]
-            else ->{
-                indigoApp.players[index] = player
+            1 -> {
+                indigoApp.players.remove(player)
+                indigoApp.players[0] = player
+            }
+
+            2 -> {
+                indigoApp.players.remove(player)
+                indigoApp.players[1] = player
+            }
+
+            3 -> {
+                indigoApp.players.remove(player)
+                indigoApp.players[2] = player
+            }
+
+            4 -> {
+                indigoApp.players.remove(player)
+                indigoApp.players[3] = player
             }
         }
     }
