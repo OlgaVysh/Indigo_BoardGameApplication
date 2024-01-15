@@ -41,7 +41,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             indigoApp.aiGame = true
         }
     }
-    private val noButton = RadioButton(posX = 550, posY = 710, isSelected = true,toggleGroup = toggleGroup)
+    private val noButton = RadioButton(posX = 550, posY = 710, isSelected = true, toggleGroup = toggleGroup)
 
     private val playerName: TextField = TextField(
         width = 350,
@@ -58,13 +58,15 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         isDisabled = playerName.text.isBlank()
         onMouseClicked = {
             indigoApp.hideMenuScene()
-            var newPlayerColor = TokenColor.BLUE
-            when (colorBox.selectedItem) {
-                "purple" -> newPlayerColor = TokenColor.PURPLE
-                "blue" -> newPlayerColor = TokenColor.BLUE
-                "red" -> newPlayerColor = TokenColor.RED
-                "white " -> newPlayerColor = TokenColor.WHITE
-            }
+            var newPlayerColor =
+                when (colorBox.selectedItem) {
+                    "purple" -> TokenColor.PURPLE
+                    "blue" ->  TokenColor.BLUE
+                    "red" ->  TokenColor.RED
+                    "white " ->TokenColor.WHITE
+                    else -> indigoApp.avaibleColors[0]
+                }
+            indigoApp.avaibleColors.remove(newPlayerColor)
             var newPlayer = Player(name = playerName.text, color = newPlayerColor)
             if (aiPlayer) {
                 newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)
@@ -115,7 +117,12 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
 
         indigoApp.players.add(newPlayer)
 
-        indigoApp.configurePlayersScene.addPlayer(indigoApp,playerName.text, colorBox.selectedItem!!, turnBox.selectedItem!!.toString())
+        indigoApp.configurePlayersScene.addPlayer(
+            indigoApp,
+            playerName.text,
+            colorBox.selectedItem!!,
+            turnBox.selectedItem!!.toString()
+        )
 
         val connectionState = indigoApp.rootService.networkService.connectionState
         if (connectionState != ConnectionState.DISCONNECTED) {
@@ -138,8 +145,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
      * Clears all the components of the scene and deletes the chosen color and turn from the
      * ComboBoxes, so every color and turn can only be chosen once
      */
-    private fun refreshScene()
-    {
+    private fun refreshScene() {
         noButton.isSelected = true
         playerName.text = ""
         playerAge.text = ""
