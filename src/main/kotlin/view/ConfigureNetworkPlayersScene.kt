@@ -109,6 +109,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                 label.text = "Player " + grid.rows + ": " + newPlayerName
                 this.button.onMouseClicked = {
                     indigoApp.showMenuScene(indigoApp.configurePlayerXScene)
+                    indigoApp.configurePlayerXScene.playerName = newPlayerName
                 }
                 //label.posY = (151 * (currentRows - 1)).toDouble()
                 //button.posY = (151 * (currentRows - 1)).toDouble()
