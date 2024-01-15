@@ -12,7 +12,7 @@ import kotlin.jvm.Throws
 class CoordinateMapKeySerializer: JsonSerializer<Coordinate>() {
     val kMapper = ObjectMapper().registerModules(KotlinModule())
 
-    //val coordinates = Coordinate(1,1)
+
     //val serializedCoordinate = kMapper.writeValueAsString(coordinates)
     @Throws(IOException::class)
     override fun serialize(value: Coordinate?, gen: JsonGenerator?, serializers: SerializerProvider?) {

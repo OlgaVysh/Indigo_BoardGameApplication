@@ -1,5 +1,6 @@
 package entity
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Date
 
 /**
@@ -14,7 +15,9 @@ import java.util.Date
  * @property score [Int] to keep track of accumulated points, initially 0
  * @property gemCounter [Int] to keep track of accumulated gems, initially 0
  */
-open class Player(val name: String, val age: Date = Date(0), val color: TokenColor, val isAI: Boolean = false) {
+open class Player(val name: String, val age: Date = Date(0), val color: TokenColor,
+                  @JsonProperty("ai")
+                  val isAI: Boolean = false) {
     var score = 0
     var gemCounter = 0
     var handTile: Tile? = null

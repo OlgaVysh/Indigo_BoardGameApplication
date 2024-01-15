@@ -1,6 +1,7 @@
 package service
 
 import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.module.SimpleModule
 import entity.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -15,6 +16,12 @@ import java.io.File
  */
 class IOService(private val root: RootService) : AbstractRefreshingService() {
     private val mapper = jacksonObjectMapper()
+
+    init {
+        val module = SimpleModule()
+        module.addKeyDeserializer(Coordinate::class.java,CoordinateMapKeyDeserializer())
+        mapper.registerModules(SimpleModule().addKeyDeserializer(Coordinate::class.java,CoordinateMapKeyDeserializer()))
+    }
 
     /**
      * function for saving a game of Indigo to a file
