@@ -18,6 +18,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     private val colors = mutableListOf("blue", "purple", "red", "white")
     private val turns = mutableListOf(1, 2, 3, 4)
     private var aiPlayer = false
+
     private val label = Label(42, 80, 900, 116, "Configure Player", 96)
 
     private val nameLabel = Label(65, 293, 300, 98, text = "Name: ", fontSize = 48)
@@ -112,7 +113,11 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     }
 
     private fun addPlayerToTheScene(newPlayer: Player) {
+
         indigoApp.players.add(newPlayer)
+
+        indigoApp.configurePlayersScene.addPlayer(indigoApp,playerName.text, colorBox.selectedItem!!, turnBox.selectedItem!!.toString())
+
         val connectionState = indigoApp.rootService.networkService.connectionState
         if (connectionState != ConnectionState.DISCONNECTED) {
             val configureNetworkPlayersScene = indigoApp.networkConfigureScene
