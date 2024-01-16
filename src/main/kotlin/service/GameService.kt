@@ -1,7 +1,12 @@
 package service
 
+import AI.MCTS
 import entity.*
 import java.lang.Exception
+import java.util.*
+import kotlin.concurrent.thread
+import kotlin.concurrent.schedule
+
 
 /**
  * Service class for managing the game logic.
@@ -132,6 +137,34 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 throw Exception("tile blocks exit, please rotate Tile")
             }
         }
+    }
+
+
+
+    //for AI returning false instead of throwing exception
+    fun checkPlacementAI(space: Coordinate, tile: Tile): Boolean {
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+
+        if (space == Coordinate(0, 0) || currentGame.gameBoard.gameBoardTiles[space] != null) {
+            // Return false when the space is occupied or is (0, 0)
+            return false
+        }
+
+        // Check if the space has an exit
+        if (!coordinateHasExit(space)) {
+            placeTile(space, tile)
+            return true
+        }
+
+        // Check if the tile blocks an exit
+        if (!tileBlocksExit(space, tile)) {
+            placeTile(space, tile)
+            return true
+        }
+
+        // Return false when the tile blocks an exit
+        return false
     }
 
     /**
@@ -365,9 +398,44 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     fun changePlayer() {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
+
         val playerSize = currentGame.players.size
         val currentPlayerIndex = currentGame.currentPlayerIndex
+
+        // It's AI's turn
+        if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
+            val currentCPUPlayer = currentGame.players[currentGame.currentPlayerIndex] as? CPUPlayer
+
+            if(currentCPUPlayer!!.difficulty.equals("easy")){
+                AIService(rootService).makeRandomTurn()
+            }
+            else {
+
+                val timeout = 10000L
+                val timer = Timer()
+
+                val thread = thread {
+                    MCTS(rootService, currentPlayerIndex).findNextMove()
+                    timer.cancel() // Cancel the timer if the task completes within the timeout
+                }
+
+                timer.schedule(timeout) {
+                    thread.interrupt() // Interrupt the thread if the task exceeds the timeout
+                }
+
+                try {
+                    thread.join()
+                } catch (e: InterruptedException) {
+                    // implement maybe a simple MCTS that doesn't go through all the tree
+                   TODO()
+                }
+                   TODO()
+                //call the normal methods to place the tile after actually choosing the coordinate
+            }
+        }
+
         currentGame.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
+
         onAllRefreshables { refreshAfterChangePlayer() }
     }
 
