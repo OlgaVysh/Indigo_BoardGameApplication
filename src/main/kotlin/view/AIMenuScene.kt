@@ -29,7 +29,8 @@ class AIMenuScene (indigoApp : IndigoApplication) : MenuScene (1920, 1080),Refre
 
     // Button to start the game.
     private val startButton = Button(730, 805,532,207,"Start new game",48).
-    apply { indigoApp.showGameScene(indigoApp.gameScene) }
+    apply { onMouseClicked ={indigoApp.showGameScene(indigoApp.gameScene)
+    indigoApp.hideMenuScene()}}
 
     // Setting the background and adding all components to the scene.
     init{
