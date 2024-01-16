@@ -40,8 +40,9 @@ class ConfigurePlayersGameScene1(indigoApp: IndigoApplication) : BoardGameScene(
                         players.add(player)
                     }
                 }
-
-                indigoApp.rootService.gameService.startGame(players, false,false)
+                indigoApp.notSharedGates = true
+                if(players.size == 4) indigoApp.notSharedGates= false
+                indigoApp.rootService.gameService.startGame(players, indigoApp.notSharedGates,false)
                 indigoApp.showGameScene(indigoApp.gameScene)
             }
         }

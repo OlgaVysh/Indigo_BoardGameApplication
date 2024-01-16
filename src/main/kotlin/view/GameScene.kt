@@ -397,8 +397,6 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     private fun initialzeGateTokens() {
         val guiGateTokens = listOf(
-            gate1Token1,
-            gate1Token2,
             gate2Token1,
             gate2Token2,
             gate3Token1,
@@ -408,7 +406,9 @@ class GameScene(val indigoApp: IndigoApplication) :
             gate5Token1,
             gate5Token2,
             gate6Token1,
-            gate6Token2
+            gate6Token2,
+            gate1Token1,
+            gate1Token2,
         )
         val currentGame = indigoApp.rootService.currentGame
         val entityGateTokens = currentGame!!.gameBoard.gateTokens
@@ -548,14 +548,30 @@ class GameScene(val indigoApp: IndigoApplication) :
     override fun refreshAfterChangePlayer() {
         val playerHighlights =
             listOf(player1turnHighlight, player2turnHighlight, player3turnHighlight, player4turnHighlight)
+        val playerRotateRights = listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
+        val playerRotateLefts = listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
+        val playerRotateCheck = listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
         val currentGame = indigoApp.rootService.currentGame
         checkNotNull(currentGame)
         val currentPlayerIndex = currentGame.currentPlayerIndex
         for (i in playerHighlights.indices) {
             if (i == currentPlayerIndex) {
                 playerHighlights[i].isVisible = true
+                playerRotateRights[i].isVisible = true
+                playerRotateRights[i].isDisabled = false
+                playerRotateLefts[i].isVisible = true
+                playerRotateLefts[i].isDisabled = false
+                playerRotateCheck[i].isVisible = true
+                playerRotateCheck[i].isDisabled = false
             } else {
                 playerHighlights[i].isVisible = false
+                playerRotateRights[i].isVisible = false
+                playerRotateRights[i].isDisabled = true
+                playerRotateLefts[i].isVisible = false
+                playerRotateLefts[i].isDisabled = true
+                playerRotateCheck[i].isVisible = false
+                playerRotateCheck[i].isDisabled = true
+
             }
         }
     }
@@ -570,10 +586,9 @@ class GameScene(val indigoApp: IndigoApplication) :
         val players = currentGame.players
         val currentIndex = currentGame.currentPlayerIndex
         val currentHandTile = players[currentIndex].handTile
-        if(currentHandTile==null){
+        if (currentHandTile == null) {
             playerTile[currentIndex].isVisible = false
-        }
-        else{
+        } else {
             playerTile[currentIndex].visual = currentHandTile.type.toImg()
             playerTile[currentIndex].isVisible = true
         }
