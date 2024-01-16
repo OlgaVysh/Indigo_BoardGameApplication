@@ -77,7 +77,9 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                 2 -> indigoApp.players[1] = newPlayer
                 3 -> indigoApp.players[2] = newPlayer
                 4 -> indigoApp.players[3] = newPlayer
-                else -> {}
+                else -> {
+                    indigoApp.players.add(newPlayer)
+                }
             }
             addPlayerToTheScene(newPlayer)
             refreshScene()
@@ -122,7 +124,6 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     }
 
     private fun addPlayerToTheScene(newPlayer: Player) {
-        indigoApp.players.add(newPlayer)
         val connectionState = indigoApp.rootService.networkService.connectionState
         if (connectionState != ConnectionState.DISCONNECTED) {
             val configureNetworkPlayersScene = indigoApp.networkConfigureScene
