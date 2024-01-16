@@ -301,7 +301,7 @@ class GameServiceTest {
             rootService.gameService.loadGame(testPath)
             assertNotNull(rootService.currentGame)*/
 
-            /*
+/*
 
             //Updating test for loadGame
             rootService.gameService.startGame(fourPlayers.toMutableList())
@@ -312,14 +312,15 @@ class GameServiceTest {
 
             rootService.gameService.endGame()
             //rootService.currentGame = rootService.ioService.readGameFromFile(testPath)
-            checkNotNull(rootService.currentGame)
+            //checkNotNull(rootService.currentGame)
             rootService.gameService.loadGame(testPath)
             val loadedGame = rootService.currentGame
             assertNotNull(loadedGame)
-            assertEquals(gameToSave,loadedGame)
+//            assertEquals(gameToSave,loadedGame)
             assertEquals(gameToSave?.players,loadedGame?.players)
-
-            */
+            assertEquals(gameToSave?.allTiles,loadedGame?.allTiles)
+            assertEquals(gameToSave?.previousGameState,loadedGame?.previousGameState)
+*/
         }
 
     /**

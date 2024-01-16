@@ -15,13 +15,23 @@ import java.io.File
  * @param root [RootService] the IOService belongs to
  */
 class IOService(private val root: RootService) : AbstractRefreshingService() {
-    private val mapper = jacksonObjectMapper()
+    private val mapper = jacksonObjectMapper().apply {
+        val module = SimpleModule().apply {
+            addKeySerializer(Coordinate::class.java ,CoordinateMapKeySerializer())
+            addKeyDeserializer(Coordinate::class.java, CoordinateMapKeyDeserializer())
+        }
+        registerModules(module)
+    }
 
+    /*
     init {
         val module = SimpleModule()
         module.addKeyDeserializer(Coordinate::class.java,CoordinateMapKeyDeserializer())
         mapper.registerModules(SimpleModule().addKeyDeserializer(Coordinate::class.java,CoordinateMapKeyDeserializer()))
     }
+*/
+
+
 
     /**
      * function for saving a game of Indigo to a file

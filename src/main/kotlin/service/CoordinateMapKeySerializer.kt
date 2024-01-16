@@ -10,7 +10,7 @@ import java.io.IOException
 import kotlin.jvm.Throws
 
 class CoordinateMapKeySerializer: JsonSerializer<Coordinate>() {
-    val kMapper = ObjectMapper().registerModules(KotlinModule())
+    val kMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
 
 
     //val serializedCoordinate = kMapper.writeValueAsString(coordinates)
@@ -20,8 +20,9 @@ class CoordinateMapKeySerializer: JsonSerializer<Coordinate>() {
             value?.let { coordinate ->
                 jGen.writeFieldName(kMapper.writeValueAsString(coordinate))
             } ?: jGen.writeNull()
-            gen?.writeFieldName("${value?.row},${value?.column}")
+
         }
+        //gen?.writeFieldName("${value?.row},${value?.column}")
     }
 
 }

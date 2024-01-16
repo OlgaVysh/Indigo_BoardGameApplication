@@ -10,7 +10,7 @@ import entity.Coordinate
 import kotlin.jvm.Throws
 
 class CoordinateMapKeyDeserializer: KeyDeserializer() {
-    val kMapper = ObjectMapper().registerModule(KotlinModule())
+    val kMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
 
     //
     //    return key?.let {kMapper.readValue<Coordinate>(key)}
@@ -19,17 +19,18 @@ class CoordinateMapKeyDeserializer: KeyDeserializer() {
     override fun deserializeKey(key: String?, ctxt: DeserializationContext?): Coordinate? {
         return key?.let { kMapper.readValue<Coordinate>(key) }
 
-
         /*
+
     //or this ??
     @Throws(IOException::class)
     override fun deserializeKey(key:String?, ctxt: DeserializationContext?):Coordinate? {
         return key?.split(",")?.let{
-            val(row,column) = it.map { num ->num.toInt() }
-                    Coordinate(row,column)
+            //val(row,column) = it.map { num ->num.toInt() }
+              //      Coordinate(row,column)
+            Coordinate(it[0].toInt(), it[1].toInt())
         }
     }
-
 */
+
     }
 }
