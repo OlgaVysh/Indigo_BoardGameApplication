@@ -39,12 +39,12 @@ class NetworkConnectionTests {
         get() = this.client as? TestNetworkClient
 
     private val treasureTiles = listOf(
-        Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
-        Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
-        Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
-        Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
-        Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
-        Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
+        Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), TileType.Type_5, mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
+        Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), TileType.Type_5, mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
+        Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), TileType.Type_5, mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
+        Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), TileType.Type_5, mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
+        Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), TileType.Type_5, mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
+        Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), TileType.Type_5, mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
     )
 
     private val testSettings = GameSettings(

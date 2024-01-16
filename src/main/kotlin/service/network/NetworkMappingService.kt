@@ -192,23 +192,23 @@ class NetworkMappingService(private val rootService: RootService) : AbstractRefr
         for (tileType in tileList) {
             when (tileType) {
                 TileType.TYPE_0 -> {
-                    routeTiles.add(Tile(tile0, mutableMapOf()))
+                    routeTiles.add(Tile(tile0,entity.TileType.Type_0 ,mutableMapOf()))
                 }
 
                 TileType.TYPE_1 -> {
-                    routeTiles.add(Tile(tile1, mutableMapOf()))
+                    routeTiles.add(Tile(tile1, entity.TileType.Type_1,mutableMapOf()))
                 }
 
                 TileType.TYPE_2 -> {
-                    routeTiles.add(Tile(tile2, mutableMapOf()))
+                    routeTiles.add(Tile(tile2,entity.TileType.Type_2 ,mutableMapOf()))
                 }
 
                 TileType.TYPE_3 -> {
-                    routeTiles.add(Tile(tile3, mutableMapOf()))
+                    routeTiles.add(Tile(tile3,entity.TileType.Type_3,mutableMapOf()))
                 }
 
                 TileType.TYPE_4 -> {
-                    routeTiles.add(Tile(tile4, mutableMapOf()))
+                    routeTiles.add(Tile(tile4,entity.TileType.Type_3, mutableMapOf()))
                 }
             }
         }

@@ -491,7 +491,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                             Edge.values()[(Edge.values().size + gemPos - 1) % 6],
                             Edge.values()[(Edge.values().size + gemPos + 1) % 6]
                         )
-                    ), mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
+                    ),TileType.Type_5, mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
                 )
             )
         }
@@ -500,35 +500,35 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         var path2 = Pair(Edge.ONE, Edge.FOUR)
         var path3 = Pair(Edge.THREE, Edge.FIVE)
         for (i in 0 until 14) {
-            allTiles.add(Tile(listOf(path1, path2, path3)))
+            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_0))
         }
         //TypeID 1 Route Tiles are added
         path1 = Pair(Edge.TWO, Edge.FIVE)
         path2 = Pair(Edge.ONE, Edge.FOUR)
         path3 = Pair(Edge.ZERO, Edge.THREE)
         for (i in 0 until 6) {
-            allTiles.add(Tile(listOf(path1, path2, path3)))
+            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_1))
         }
         //TypeID 2 Route Tiles are added
         path1 = Pair(Edge.ZERO, Edge.FIVE)
         path2 = Pair(Edge.ONE, Edge.FOUR)
         path3 = Pair(Edge.TWO, Edge.THREE)
         for (i in 0 until 14) {
-            allTiles.add(Tile(listOf(path1, path2, path3)))
+            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_2))
         }
         //TypeID 3 Route Tiles are added
         path1 = Pair(Edge.ZERO, Edge.FIVE)
         path2 = Pair(Edge.ONE, Edge.THREE)
         path3 = Pair(Edge.TWO, Edge.FOUR)
         for (i in 0 until 14) {
-            allTiles.add(Tile(listOf(path1, path2, path3)))
+            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_3))
         }
         //TypeID 4 Route Tiles are added
         path1 = Pair(Edge.ZERO, Edge.FIVE)
         path2 = Pair(Edge.ONE, Edge.TWO)
         path3 = Pair(Edge.THREE, Edge.FOUR)
         for (i in 0 until 6) {
-            allTiles.add(Tile(listOf(path1, path2, path3)))
+            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_4))
         }
         return allTiles
     }

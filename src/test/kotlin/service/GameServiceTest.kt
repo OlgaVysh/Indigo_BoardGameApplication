@@ -31,7 +31,8 @@ class GameServiceTest {
             Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),
             Pair(Edge.THREE, Edge.FIVE)
-        )
+        ),
+        TileType.Type_0
     )
 
     /**
@@ -170,18 +171,21 @@ class GameServiceTest {
         //tileID 0 initialisieren
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            TileType.Type_0,
             mutableMapOf(Pair(1, Gem(EMERALD)))
         )
 
         //tileID 2 initialisieren
         val tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
+            TileType.Type_2 ,
             mutableMapOf(Pair(1, Gem(EMERALD)))
         )
 
         //tileID 4 initialisieren
         val tile4 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
+            TileType.Type_4,
             mutableMapOf(Pair(1, Gem(EMERALD)))
         )
 
@@ -240,6 +244,7 @@ class GameServiceTest {
         //tileID 0 initialisieren and check collision.
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            TileType.Type_0,
             mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(AMBER)))
         )
         assertTrue(rootService.gameService.checkCollision(tile0))
@@ -249,6 +254,7 @@ class GameServiceTest {
         //tileID 3 initialisieren and check collision.
         val tile3 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.THREE), Pair(Edge.TWO, Edge.FOUR)),
+            TileType.Type_3,
             mutableMapOf(Pair(1, Gem(EMERALD)), Pair(5, Gem(SAPPHIRE)))
         )
         assertFalse(rootService.gameService.checkCollision(tile3))
@@ -363,7 +369,8 @@ class GameServiceTest {
                 Pair(Edge.ZERO, Edge.TWO),
                 Pair(Edge.ONE, Edge.FOUR),
                 Pair(Edge.THREE, Edge.FIVE)
-            )
+            ),
+            TileType.Type_0
         )
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 3), testTile1)
         val secondPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]
@@ -375,7 +382,8 @@ class GameServiceTest {
                 Pair(Edge.ZERO, Edge.TWO),
                 Pair(Edge.ONE, Edge.FOUR),
                 Pair(Edge.THREE, Edge.FIVE)
-            )
+            ),
+            TileType.Type_0
         )
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 1), testTile2)
         assertEquals(10, rootService.currentGame!!.gems.size)
@@ -415,18 +423,21 @@ class GameServiceTest {
         //tileID 0 initialisieren
         var tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            TileType.Type_0,
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
         )
 
         //tileID 2 initialisieren
         var tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
+            TileType.Type_2,
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(SAPPHIRE)))
         )
 
         //tileID 4 initialisieren
         var tile4 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
+            TileType.Type_4,
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
         )
 
@@ -473,18 +484,21 @@ class GameServiceTest {
         //tileID 0 initialisieren
         tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            TileType.Type_0,
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
         )
 
         //tileID 2 initialisieren
         tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
+            TileType.Type_2,
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(SAPPHIRE)))
         )
 
         //tileID 4 initialisieren
         tile4 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
+            TileType.Type_4,
             mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
         )
 
@@ -530,7 +544,7 @@ class GameServiceTest {
                             Edge.values()[(Edge.values().size + gemPos - 1) % 6],
                             Edge.values()[(Edge.values().size + gemPos + 1) % 6]
                         )
-                    ), mutableMapOf(Pair(gemPos, Gem(AMBER)))
+                    ), TileType.Type_0,mutableMapOf(Pair(gemPos, Gem(AMBER)))
                 )
             )
         }

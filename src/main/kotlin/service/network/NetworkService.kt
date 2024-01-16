@@ -127,12 +127,12 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         val setting = GameSettings(players)
 
         val allTiles = mutableListOf(
-            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ONE, Edge.FIVE)), mutableMapOf(Pair(0, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ZERO, Edge.TWO)), mutableMapOf(Pair(1, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ONE, Edge.THREE)), mutableMapOf(Pair(2, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)),TileType.Type_5, mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), TileType.Type_5, mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)),TileType.Type_5, mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ONE, Edge.FIVE)),TileType.Type_5, mutableMapOf(Pair(0, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ZERO, Edge.TWO)),TileType.Type_5, mutableMapOf(Pair(1, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ONE, Edge.THREE)), TileType.Type_5,mutableMapOf(Pair(2, Gem(GemColor.AMBER)))),
         )
         allTiles.addAll(routeTiles)
 

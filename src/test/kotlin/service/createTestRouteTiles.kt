@@ -1,5 +1,6 @@
 import entity.Edge
 import entity.Tile
+import entity.TileType
 
 /**
  * the function create a  test list of route tiles
@@ -37,19 +38,19 @@ fun createTestRouteTile(): MutableList<Tile> {
     val routeTiles = mutableListOf<Tile>()
     // Repeat the process to add specific tiles with their edge connections
     repeat(14) {
-        routeTiles.add(Tile(tile0, mutableMapOf()))
+        routeTiles.add(Tile(tile0, TileType.Type_0,mutableMapOf()))
     }
     repeat(6) {
-        routeTiles.add(Tile(tile1, mutableMapOf()))
+        routeTiles.add(Tile(tile1, TileType.Type_1,mutableMapOf()))
     }
     repeat(14) {
-        routeTiles.add(Tile(tile2, mutableMapOf()))
+        routeTiles.add(Tile(tile2, TileType.Type_2,mutableMapOf()))
     }
     repeat(14) {
-        routeTiles.add(Tile(tile3, mutableMapOf()))
+        routeTiles.add(Tile(tile3, TileType.Type_3,mutableMapOf()))
     }
     repeat(6) {
-        routeTiles.add(Tile(tile4, mutableMapOf()))
+        routeTiles.add(Tile(tile4, TileType.Type_4,mutableMapOf()))
     }
     // Return the generated list of route tiles
     return routeTiles

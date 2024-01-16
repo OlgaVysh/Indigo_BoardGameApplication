@@ -47,19 +47,19 @@ class NetworkMappingServiceTest {
         Pair(Edge.THREE, Edge.FOUR)
     )
     private val treasureTiles = mutableListOf(
-        Tile(listOf()),
-        Tile(listOf()),
-        Tile(listOf()),
-        Tile(listOf()),
-        Tile(listOf()),
-        Tile(listOf()),
+        Tile(listOf(),entity.TileType.Type_5),
+        Tile(listOf(),entity.TileType.Type_5),
+        Tile(listOf(),entity.TileType.Type_5),
+        Tile(listOf(),entity.TileType.Type_5),
+        Tile(listOf(),entity.TileType.Type_5),
+        Tile(listOf(),entity.TileType.Type_5),
     )
     private val routeTiles = mutableListOf(
-        Tile(tile0),
-        Tile(tile1),
-        Tile(tile2),
-        Tile(tile3),
-        Tile(tile4)
+        Tile(tile0,entity.TileType.Type_0),
+        Tile(tile1,entity.TileType.Type_1),
+        Tile(tile2,entity.TileType.Type_2),
+        Tile(tile3,entity.TileType.Type_3),
+        Tile(tile4,entity.TileType.Type_4)
     )
     private val allTiles = treasureTiles.addAll(routeTiles)
     private val threeNotSharedTokens = mutableListOf(
@@ -221,11 +221,11 @@ class NetworkMappingServiceTest {
             TileType.TYPE_0
         )
         val testRoutetiles = listOf(
-            Tile(tile1, mutableMapOf()),
-            Tile(tile2, mutableMapOf()),
-            Tile(tile4, mutableMapOf()),
-            Tile(tile3, mutableMapOf()),
-            Tile(tile0, mutableMapOf())
+            Tile(tile1,entity.TileType.Type_1 ,mutableMapOf()),
+            Tile(tile2,entity.TileType.Type_2 ,mutableMapOf()),
+            Tile(tile4,entity.TileType.Type_4 ,mutableMapOf()),
+            Tile(tile3,entity.TileType.Type_3 ,mutableMapOf()),
+            Tile(tile0,entity.TileType.Type_0,mutableMapOf())
         )
         val allTiles = treasureTiles.take(6).toMutableList()
         allTiles.addAll(testRoutetiles)
