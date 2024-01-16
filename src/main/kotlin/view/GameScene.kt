@@ -1,5 +1,6 @@
 package view
 
+import entity.*
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.components.uicomponents.Button
@@ -15,6 +16,10 @@ import java.awt.Color
 
 class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
+
+    private val rootService = indigoApp.rootService
+
+
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> =
         HexagonGrid(coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL, posX = 820, posY = 420)
@@ -410,6 +415,120 @@ class GameScene(val indigoApp: IndigoApplication) :
 
         for (i in entityGateTokens.indices) {
             guiGateTokens[i].visual = entityGateTokens[i].color.toImg()
+        }
+    }
+
+    override fun refreshAfterStartGame()
+    {
+        val game = rootService.currentGame
+        checkNotNull(game) { "No started game found." }
+        val players = game.players
+        setPlayers(players)
+        initialzeGateTokens()
+    }
+
+    private fun setPlayers(players : List<Player>)
+    {
+        val count = players.size
+
+        for (n in 0 until count)
+        {
+
+            when (n) {
+                0 -> {
+                    player1Label.text = players[0].name
+                    getGem(player1Token, players[0].color)
+                }
+
+                1 -> {
+                    player2Label.text = players[1].name
+                    getGem(player2Token, players[1].color)
+                }
+
+                2 -> {
+                    player3Label.text = players[2].name
+                    getGem(player3Token, players[2].color)
+                }
+
+                3 -> {
+                    player4Label.text = players[3].name
+                    getGem(player4Token, players[3].color)
+                }
+            }
+        }
+
+
+        for (a in count until 4)
+        {
+            when(a)
+            {
+                2 -> {
+                    player3Label.apply {isVisible = false}
+                    player3ScoreLabel.apply { isDisabled = true
+                        isVisible = false}
+                    player3Token.apply { isDisabled = true
+                        isVisible = false}
+                    player3greenGem.apply { isDisabled = true
+                        isVisible = false}
+                    player3greenGemCounter.apply { isDisabled = true
+                        isVisible = false}
+                    player3yellowGem.apply { isDisabled = true
+                        isVisible = false}
+                    player3yellowGemCounter.apply { isDisabled = true
+                        isVisible = false}
+                    player3turnHighlight.apply { isDisabled = true
+                        isVisible = false}
+                    player3handTile.apply { isDisabled = true
+                        isVisible = false}
+                    player3leftButton.apply { isDisabled = true
+                        isVisible = false}
+                    player3rightButton.apply { isDisabled = true
+                        isVisible = false}
+                    player3checkButton.apply { isDisabled = true
+                        isVisible = false}
+                }
+
+                3 -> {
+                    player4Label.apply { isDisabled = true
+                        isVisible = false}
+                    player4ScoreLabel.apply { isDisabled = true
+                        isVisible = false}
+                    player4Token.apply { isDisabled = true
+                        isVisible = false}
+                    player4greenGem.apply { isDisabled = true
+                        isVisible = false}
+                    player4greenGemCounter.apply { isDisabled = true
+                        isVisible = false}
+                    player4yellowGem.apply { isDisabled = true
+                        isVisible = false}
+                    player4yellowGemCounter.apply { isDisabled = true
+                        isVisible = false}
+                    player4turnHighlight.apply { isDisabled = true
+                        isVisible = false}
+                    player4handTile.apply { isDisabled = true
+                        isVisible = false}
+                    player4leftButton.apply { isDisabled = true
+                        isVisible = false}
+                    player4rightButton.apply { isDisabled = true
+                        isVisible = false}
+                    player4checkButton.apply { isDisabled = true
+                        isVisible = false}
+                }
+            }
+        }
+
+    }
+
+    private fun getGem(label : view.components.Label, color: TokenColor)
+    {
+        when(color) {
+            TokenColor.WHITE -> label.apply{visual = ImageVisual("tokenwhite.png") }
+
+            TokenColor.PURPLE -> label.apply{visual = ImageVisual("tokenpurple.png") }
+
+            TokenColor.BLUE -> label.apply{visual = ImageVisual("tokenblue.png") }
+
+            TokenColor.RED -> label.apply{visual = ImageVisual("tokenred.png") }
         }
     }
 
