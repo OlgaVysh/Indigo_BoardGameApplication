@@ -1,5 +1,6 @@
 package view
 
+import entity.Player
 import service.network.ConnectionState
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
@@ -20,14 +21,19 @@ class GateMenuScene(val indigoApp: IndigoApplication) :
     private val sharedButton = Button(266, 642, 528, 207, "SharedGates", 48).apply {
         onMouseClicked = {
             val isRandom = indigoApp.isRandom
-            val players = indigoApp.players
+            val players = mutableListOf<Player>()
+            for(player in indigoApp.players){
+                if(player!=null){
+                    players.add(player)
+                }
+            }
             val connectionState = indigoApp.rootService.networkService.connectionState
             if (connectionState == ConnectionState.DISCONNECTED) {
                 indigoApp.rootService.gameService.startGame(players, false, isRandom)
-
             } else {
                 indigoApp.rootService.networkService.startNewHostedGame(players, false, isRandom)
             }
+            players.clear()
             indigoApp.hideMenuScene()
             indigoApp.showGameScene(indigoApp.gameScene)
         }
@@ -35,13 +41,19 @@ class GateMenuScene(val indigoApp: IndigoApplication) :
     private val separatedButton = Button(1100, 642, 528, 207, "SeperatedGates", 48).apply {
         onMouseClicked = {
             val isRandom = indigoApp.isRandom
-            val players = indigoApp.players
+            val players = mutableListOf<Player>()
+            for(player in indigoApp.players){
+                if(player!=null){
+                    players.add(player)
+                }
+            }
             val connectionState = indigoApp.rootService.networkService.connectionState
             if (connectionState == ConnectionState.DISCONNECTED) {
                 indigoApp.rootService.gameService.startGame(players, true, isRandom)
             } else {
                 indigoApp.rootService.networkService.startNewHostedGame(players, true, isRandom)
             }
+            players.clear()
             indigoApp.hideMenuScene()
             indigoApp.showGameScene(indigoApp.gameScene)
         }

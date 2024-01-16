@@ -1,7 +1,6 @@
 package AI
 import entity.Coordinate
 import entity.Indigo
-import service.GameService
 import service.RootService
 
 /**
@@ -9,20 +8,21 @@ import service.RootService
  *
  * @property rootService The RootService instance containing game-related information.
  * @property parent The parent node in the search tree (null if the node is the root).
- * @property move The move that leads from the parent node to this node.
+ * @property coordinate The [Coordinate] where the move that leads from the parent node to this node was made.
  */
 
 
-data class Node(val rootService: RootService, val parent: Node?, val move: Move) {
+data class Node(val rootService: RootService, val parent: Node?, val coordinate: Coordinate) {
     val children: MutableList<Node> = mutableListOf()
-
+    val aiActionService = rootService.aiActionService
+    val gameService = rootService.gameService
     /**the state property is initialized based on whether the node is the root node or has a parent.
      * If it has a parent, the game state is updated by the move made from the parent node.
      * If it is the root node, the game state is initialized based on the current game obtained from the rootService.
      */
 
     val state: Indigo =
-        if (parent != null) AiActionService.doMove(parent.state, move) else
+        if (parent != null) aiActionService.doMove(parent.state, coordinate) else
             Indigo (rootService.currentGame!!.settings,
                 rootService.currentGame!!.gameBoard,
                 rootService.currentGame!!.allTiles,
@@ -41,10 +41,10 @@ data class Node(val rootService: RootService, val parent: Node?, val move: Move)
     /**
      * Returns a list of possible moves in this node's state.
      **
-     * @return List of Move objects representing the possible moves in this node's state
+     * @return List of [Coordinate] objects representing the possible moves in this node's state
      */
-    fun getPossibleMoves(): MutableList<Move> {
-        val availableMoves:MutableList<Move> = mutableListOf()
+    fun getPossibleMoves(): MutableList<Coordinate> {
+        val availableMoves:MutableList<Coordinate> = mutableListOf()
 
         // If the current player has no hand tile, return an empty list of moves
         val playerTile= state.players[state.currentPlayerIndex].handTile ?: return availableMoves
@@ -54,8 +54,8 @@ data class Node(val rootService: RootService, val parent: Node?, val move: Move)
             for (col in -4..4) {
                 val coordinate = Coordinate(row, col)
                 // Check if placing the tile at the coordinate is a valid move
-                if (GameService.checkPlacement(coordinate, playerTile)) {
-                    availableMoves.add(Move(row,col))
+                if (gameService.checkPlacement(coordinate, playerTile)) {
+                    availableMoves.add(Coordinate(row,col))
                 }
             }
         }

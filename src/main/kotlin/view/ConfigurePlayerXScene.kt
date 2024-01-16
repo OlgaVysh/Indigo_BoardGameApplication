@@ -1,10 +1,13 @@
 package view
 
 
+import entity.Player
+import entity.TokenColor
 import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.core.MenuScene
 import view.components.Button
 import view.components.Label
+
 /**
  * Represents the game menu scene in which a player can choose his Tokencolor and his turn.
  *
@@ -17,22 +20,25 @@ import view.components.Label
  *
  * @parameter indigoApp
  */
-class ConfigurePlayerXScene(indigoApp : IndigoApplication) : MenuScene(990, 1080),Refreshable{
+class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
     //private val game = rootService.currentGame
     //irgendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     //ich hab die Box noch nicht durch tokens geändert ist etwas komplizierter
+
+    var playerName = ""
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player X", 96)
-    private val saveChangeButton = Button(247,779,528,207, "Save changes", 48).
-    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.networkConfigureScene)
-    indigoApp.hideMenuScene()}
+    private val saveChangeButton = Button(247, 779, 528, 207, "Save changes", 48).apply {
+        onMouseClicked = {
+            configuredPlayer()
+            indigoApp.showGameScene(indigoApp.networkConfigureScene)
+            indigoApp.hideMenuScene()
+        }
     }
 
     private val colorLabel = Label(80, 370, width = 300, text = "color : ", fontSize = 48)
     private val colorBox = ComboBox<String>(320, 370, 454.34, 69, prompt = "Select your color!")
     private val turnLabel = Label(80, 535, width = 300, text = "turn : ", fontSize = 48)
     private val turnBox = ComboBox<Int>(320, 535, 454.34, 69, prompt = "Select your turn!")
-
-
 
 
     init {
@@ -45,5 +51,40 @@ class ConfigurePlayerXScene(indigoApp : IndigoApplication) : MenuScene(990, 1080
         addComponents(colorBox)
         turnBox.items = mutableListOf(1, 2, 3, 4)
         colorBox.items = mutableListOf("blue", "purple", "red", "white")
+    }
+
+    private fun configuredPlayer() {
+
+        val color = when (colorBox.selectedItem) {
+            "blue" -> TokenColor.BLUE
+            "purple" -> TokenColor.PURPLE
+            "red" -> TokenColor.RED
+            "white" -> TokenColor.WHITE
+            else -> indigoApp.avaibleColors[0]
+        }
+        indigoApp.players.find { it?.name == playerName }?.color = color
+        val player = indigoApp.players.find { it?.name == playerName }
+        indigoApp.avaibleColors.remove(color)
+        when (turnBox.selectedItem) {
+            1 -> {
+                indigoApp.players.remove(player)
+                indigoApp.players[0] = player
+            }
+
+            2 -> {
+                indigoApp.players.remove(player)
+                indigoApp.players[1] = player
+            }
+
+            3 -> {
+                indigoApp.players.remove(player)
+                indigoApp.players[2] = player
+            }
+
+            4 -> {
+                indigoApp.players.remove(player)
+                indigoApp.players[3] = player
+            }
+        }
     }
 }

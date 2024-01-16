@@ -36,7 +36,12 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
     private val startButton = Button(1217, 806, 528, 207, "Start new game", 40).apply {
         onMouseClicked = {
             //indigoApp.showGameScene(indigoApp.gameScene)
-            val players = indigoApp.players
+            val players = mutableListOf<Player>()
+            for(player in indigoApp.players){
+                if(player!=null){
+                    players.add(player)
+                }
+            }
             indigoApp.notSharedGates = false
             if (indigoApp.players.size == 4) indigoApp.notSharedGates = true
             if (indigoApp.players.size == 3) {
@@ -46,6 +51,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                 val isRandom = indigoApp.isRandom
                 indigoApp.rootService.networkService.startNewHostedGame(players, notSharedGates, isRandom)
             }
+            players.clear()
         }
     }
 
@@ -82,6 +88,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                 label.text = "Player " + grid.rows + ": " + hostName
                 this.button.onMouseClicked = {
                     indigoApp.showMenuScene(indigoApp.configurePlayerXScene)
+                    indigoApp.configurePlayerXScene.playerName = hostName
                 }
             }
         }
@@ -103,6 +110,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                 label.text = "Player " + grid.rows + ": " + newPlayerName
                 this.button.onMouseClicked = {
                     indigoApp.showMenuScene(indigoApp.configurePlayerXScene)
+                    indigoApp.configurePlayerXScene.playerName = newPlayerName
                 }
                 //label.posY = (151 * (currentRows - 1)).toDouble()
                 //button.posY = (151 * (currentRows - 1)).toDouble()
@@ -129,7 +137,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                 break
             }
         }
-        val removePlayer = indigoApp.players.find { it.name == playerLeftName }
+        val removePlayer = indigoApp.players.find { it?.name == playerLeftName }
         indigoApp.players.remove(removePlayer)
         grid.removeEmptyRows()/*for (i in 0 until grid.rows) {
          val networkPlayer = grid.get(0, i) ?: continue

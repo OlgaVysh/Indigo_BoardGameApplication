@@ -34,7 +34,7 @@ class ConfigurePlayersGameScene1(indigoApp: IndigoApplication) : BoardGameScene(
     apply {
         onMouseClicked = {indigoApp.showMenuScene(indigoApp.newPlayerScene)}}
 
-    val players = GridPane<ComponentView>(posX = 397, posY = 300, layoutFromCenter = false, rows = 4, columns = 2, spacing = 50)
+    val players = GridPane<ComponentView>(posX = 397, posY = 300, layoutFromCenter = false, rows = 0, columns = 2, spacing = 50)
 
     /**
      * Initializes the NewPlayerMenuScene with default values and sets up UI components.
@@ -50,22 +50,27 @@ class ConfigurePlayersGameScene1(indigoApp: IndigoApplication) : BoardGameScene(
         addComponents(addNewPlayerButton)
         // Create a grid for displaying player information
 
-        players[0,0] = Label(text = "Player 1 :", width = 200, height = 65, fontSize = 40)
-        players[0,1] = Label(text = "Player 2 :", width = 200, height = 65, fontSize = 40)
-        players[0,2] = Label(text = "Player 3 :", width = 200, height = 65, fontSize = 40)
-        players[0,3] = Label(text = "Player 4 :", width = 200, height = 65, fontSize = 40)
+        //players[0,0] = Label(text = "Player 1 :", width = 200, height = 65, fontSize = 40)
+        //players[0,1] = Label(text = "Player 2 :", width = 200, height = 65, fontSize = 40)
+        //players[0,2] = Label(text = "Player 3 :", width = 200, height = 65, fontSize = 40)
+        //players[0,3] = Label(text = "Player 4 :", width = 200, height = 65, fontSize = 40)
 
         addComponents(players)
 
     }
 
-    fun addPlayer(indigoApp : IndigoApplication,name : String, turn :String, color:String)
+    fun addPlayer(indigoApp : IndigoApplication,name : String, color:String, turn:Int?)
     {
-        val counter = indigoApp.players.size-1
-        players[1,counter] = PlayerView(name,color,turn)
-
-        startGameButton.isDisabled = indigoApp.players.size<2
-        addNewPlayerButton.isDisabled= indigoApp.players.size==4
+        //val counter = indigoApp.players.size-1
+        //players[1,counter] = PlayerView(name,color,turn)
+        //startGameButton.isDisabled = Indigo.players.size<2
+        //addNewPlayerButton.isDisabled= indigoApp.players.size==4
+        val currentRows = players.rows
+        players.addRows(currentRows)
+        players[0,currentRows] = Label(text = "Player ${players.rows} :", width = 200, height = 65, fontSize = 40)
+        players[1,currentRows] = PlayerView(name,color,turn)
+        startGameButton.isDisabled = players.rows<2
+        addNewPlayerButton.isDisabled= players.rows==4
     }
     //add refreshScene addnewplayerButton is disabled = indigoApp.players.size>=4
 }

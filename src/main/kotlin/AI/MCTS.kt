@@ -1,31 +1,36 @@
 package AI
+import entity.Coordinate
+import service.AbstractRefreshingService
 import service.GameService
 
 /**
  * The MCTS: Monte Carlo Tree Search algorithm to find the best player moves
  *
- * @property rootservice the RootService instance that holds the game state information
+ * @param rootService the RootService instance that holds the game state information
+ * @property gameService to get access to functions from the [GameService]
  * @property aiIndex the index of the player that the AI is playing as.
  */
-class MCTS (private val rootservice: service.RootService, private val aiIndex: Int) {
+class MCTS (private val rootService: service.RootService, private val aiIndex: Int): AbstractRefreshingService() {
+
+    val gameService = rootService.gameService
 
     /**
      * This method initiates the MCTS algorithm to find the next best move for the AI player.
      * It starts with a root node and iteratively performs selection, expansion, simulation, and backpropagation
      * until a stopping condition is met: "game is over" or " If there are no more possible moves to explore from the current node"
      *
-     * @return A [Move] object representing the best move for the AI player.
+     * @return A [Coordinate] object representing the best move for the AI player.
      */
-    fun findNextMove() : Move {
-        val defaultMove = Move( -1, -1)
-        val root = Node(rootservice, null, defaultMove)
+    fun findNextMove() : Coordinate {
+        val defaultMove = Coordinate( -1, -1)
+        val root = Node(rootService, null, defaultMove)
 
         var terminateCondition = false
         while (true) {
             val node = selectPromisingNode(root)
-            if (GameService.isGameOver(node.state) || terminateCondition) {
+            if (gameService.isGameOver(node.state) || terminateCondition) {
                 backpropagation(node, true)
-                return node.move
+                return node.coordinate
             }
             terminateCondition = expandNode(node)
             val nodeToExplore = selectPromisingNode(node)
@@ -61,7 +66,7 @@ class MCTS (private val rootservice: service.RootService, private val aiIndex: I
 
     private fun expandNode(node: Node): Boolean {
         node.getPossibleMoves().forEach {
-            val child = Node(rootservice, node, it)
+            val child = Node(rootService, node, it)
             node.children.add(child)
         }
         node.children.shuffle()
@@ -76,7 +81,7 @@ class MCTS (private val rootservice: service.RootService, private val aiIndex: I
         var tempNode = node.copy()
 
         var stop = false
-        while (!GameService.isGameOver(tempNode.state) && !stop) {
+        while (!gameService.isGameOver(tempNode.state) && !stop) {
             stop = expandNode(tempNode)
             tempNode = selectPromisingNode(tempNode)
         }
