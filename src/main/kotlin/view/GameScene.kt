@@ -25,10 +25,18 @@ class GameScene(indigoApp: IndigoApplication) :
     // undoButton component
     private val undoButton =
         view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40)
+            .apply {
+                if (indigoApp.networkMode) isVisible = false
+                isDisabled=true
+            }
 
     // redoButton component
     private val redoButton =
         view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40)
+            .apply {
+            if (indigoApp.networkMode) isVisible = false
+            isDisabled=true
+        }
 
     // saveButton component
     private val saveButton =
@@ -323,7 +331,7 @@ class GameScene(indigoApp: IndigoApplication) :
     /**
      * Initialize game board grid
      */
-    fun initializeGameBoardGrid() {
+    private fun initializeGameBoardGrid() {
         // Populate the hexagonal grid with HexagonView instances
         for (row in -4..4) {
             for (col in -4..4) {
