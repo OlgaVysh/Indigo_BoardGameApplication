@@ -266,23 +266,7 @@ class GameServiceTest {
 
         @Test
         fun saveGameTest() {
-            /*assertNull(rootService.currentGame)
-            rootService.gameService.startGame(
-                fourPlayers.toMutableList()
-            )
-            val game = rootService.currentGame
-            assertNotNull(game)
-            // Define the test path
-            val testPath = "/Users/mohammadkarkanawi/IdeaProjects/Projekt2-gruppe1/src/test/resources/Indigo/Indigo.kt"
 
-            // Call the method to be tested
-            rootService.gameService.saveGame(testPath)
-            rootService.currentGame = null
-            rootService.gameService.loadGame(testPath)
-            assertNotNull(rootService.currentGame)
-
-             */
-            //updating test
             rootService.gameService.startGame(fourPlayers.toMutableList())
             val gameToSave = rootService.currentGame
             assertNotNull(gameToSave)
