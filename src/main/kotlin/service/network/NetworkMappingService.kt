@@ -208,7 +208,7 @@ class NetworkMappingService(private val rootService: RootService) : AbstractRefr
                 }
 
                 TileType.TYPE_4 -> {
-                    routeTiles.add(Tile(tile4,entity.TileType.Type_3, mutableMapOf()))
+                    routeTiles.add(Tile(tile4,entity.TileType.Type_4, mutableMapOf()))
                 }
             }
         }
