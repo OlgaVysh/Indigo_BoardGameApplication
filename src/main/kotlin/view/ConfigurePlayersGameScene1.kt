@@ -1,5 +1,6 @@
 package view
 
+import entity.Player
 import entity.TokenColor
 import tools.aqua.bgw.components.ComponentView
 import tools.aqua.bgw.visual.ImageVisual
@@ -31,7 +32,19 @@ class ConfigurePlayersGameScene1(indigoApp: IndigoApplication) : BoardGameScene(
         onMouseClicked = {
             if(players.rows==3) indigoApp.showMenuScene(indigoApp.gatesScene)
             else if(indigoApp.aiGame) indigoApp.showMenuScene(indigoApp.aiMenuScene)
-            else indigoApp.showGameScene(indigoApp.gameScene) }
+            else
+            {
+                val players = mutableListOf<Player>()
+                for(player in indigoApp.players){
+                    if(player!=null){
+                        players.add(player)
+                    }
+                }
+
+                indigoApp.rootService.gameService.startGame(players, false,false)
+                indigoApp.showGameScene(indigoApp.gameScene)
+            }
+        }
         }
     private val addNewPlayerButton = Button(340, 755, 528, 207, "Add new player", 48).
     apply {

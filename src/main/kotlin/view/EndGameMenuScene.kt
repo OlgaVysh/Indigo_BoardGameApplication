@@ -1,7 +1,6 @@
 package view
 
 import entity.Player
-import service.RootService
 import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
@@ -16,10 +15,10 @@ import view.components.Label
  *
  * The layout and design of these components are defined in this class.
  *
- * @property rootService An instance of RootService to access game-related functionalities.
+ * @property indigoApp to get an instance of the RootService to access game-related functionalities.
  */
-class EndGameMenuScene(private val rootService: RootService) : MenuScene(1920, 1080), Refreshable {
-    private val game = rootService.currentGame
+class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Refreshable {
+    private val game = indigoApp.rootService.currentGame
 
     // Label to display the "Game Over" Header.
     private val gameOverLabel = Label(650, 48, 620, 155, "Game Over", 120)

@@ -1,5 +1,6 @@
 package view
 
+import entity.*
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.components.uicomponents.Button
@@ -15,6 +16,10 @@ import java.awt.Color
 
 class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
+
+    private val rootService = indigoApp.rootService
+
+
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> =
         HexagonGrid(coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL, posX = 820, posY = 420)
@@ -24,19 +29,17 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     // undoButton component
     private val undoButton =
-        view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40)
-            .apply {
-                if (indigoApp.networkMode) isVisible = false
-                isDisabled = true
-            }
+        view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40).apply {
+            if (indigoApp.networkMode) isVisible = false
+            isDisabled = true
+        }
 
     // redoButton component
     private val redoButton =
-        view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40)
-            .apply {
-                if (indigoApp.networkMode) isVisible = false
-                isDisabled = true
-            }
+        view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40).apply {
+            if (indigoApp.networkMode) isVisible = false
+            isDisabled = true
+        }
 
     // saveButton component
     private val saveButton =
@@ -392,7 +395,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      *  Initialize GateTokens
      */
-    private fun initialzeGateTokens(){
+    private fun initialzeGateTokens() {
         val guiGateTokens = listOf(
             gate1Token1,
             gate1Token2,
@@ -410,9 +413,180 @@ class GameScene(val indigoApp: IndigoApplication) :
         val currentGame = indigoApp.rootService.currentGame
         val entityGateTokens = currentGame!!.gameBoard.gateTokens
 
-        for (i in entityGateTokens.indices){
+        for (i in entityGateTokens.indices) {
             guiGateTokens[i].visual = entityGateTokens[i].color.toImg()
         }
+    }
+
+    /**
+     * Initializes the GUI after a new game was created. Creates views of players, their tiles and gates
+     */
+    override fun refreshAfterStartGame()
+    {
+        val game = rootService.currentGame
+        checkNotNull(game) { "No started game found." }
+        val players = game.players
+        setPlayers(players)
+        initialzeGateTokens()
+    }
+
+    /**
+     * For every player set a view of name and token color and disable superfluous players views
+     */
+    private fun setPlayers(players : List<Player>)
+    {
+        val count = players.size
+
+        for (n in 0 until count)
+        {
+
+            when (n) {
+                0 -> {
+                    player1Label.text = players[0].name
+                    getGem(player1Token, players[0].color)
+                }
+
+                1 -> {
+                    player2Label.text = players[1].name
+                    getGem(player2Token, players[1].color)
+                }
+
+                2 -> {
+                    player3Label.text = players[2].name
+                    getGem(player3Token, players[2].color)
+                }
+
+                3 -> {
+                    player4Label.text = players[3].name
+                    getGem(player4Token, players[3].color)
+                }
+            }
+        }
+
+
+        for (a in count until 4)
+        {
+            when(a)
+            {
+                2 -> {
+                    player3Label.apply {isVisible = false}
+                    player3ScoreLabel.apply { isDisabled = true
+                        isVisible = false}
+                    player3Token.apply { isDisabled = true
+                        isVisible = false}
+                    player3greenGem.apply { isDisabled = true
+                        isVisible = false}
+                    player3greenGemCounter.apply { isDisabled = true
+                        isVisible = false}
+                    player3yellowGem.apply { isDisabled = true
+                        isVisible = false}
+                    player3yellowGemCounter.apply { isDisabled = true
+                        isVisible = false}
+                    player3turnHighlight.apply { isDisabled = true
+                        isVisible = false}
+                    player3handTile.apply { isDisabled = true
+                        isVisible = false}
+                    player3leftButton.apply { isDisabled = true
+                        isVisible = false}
+                    player3rightButton.apply { isDisabled = true
+                        isVisible = false}
+                    player3checkButton.apply { isDisabled = true
+                        isVisible = false}
+                }
+
+                3 -> {
+                    player4Label.apply { isDisabled = true
+                        isVisible = false}
+                    player4ScoreLabel.apply { isDisabled = true
+                        isVisible = false}
+                    player4Token.apply { isDisabled = true
+                        isVisible = false}
+                    player4greenGem.apply { isDisabled = true
+                        isVisible = false}
+                    player4greenGemCounter.apply { isDisabled = true
+                        isVisible = false}
+                    player4yellowGem.apply { isDisabled = true
+                        isVisible = false}
+                    player4yellowGemCounter.apply { isDisabled = true
+                        isVisible = false}
+                    player4turnHighlight.apply { isDisabled = true
+                        isVisible = false}
+                    player4handTile.apply { isDisabled = true
+                        isVisible = false}
+                    player4leftButton.apply { isDisabled = true
+                        isVisible = false}
+                    player4rightButton.apply { isDisabled = true
+                        isVisible = false}
+                    player4checkButton.apply { isDisabled = true
+                        isVisible = false}
+                }
+            }
+        }
+
+    }
+
+
+    /**
+     * Sets Token-Label with an Image of the given TokenColor
+     */
+    private fun getGem(label : view.components.Label, color: TokenColor)
+    {
+        when(color) {
+            TokenColor.WHITE -> label.apply{visual = ImageVisual("tokenwhite.png") }
+
+            TokenColor.PURPLE -> label.apply{visual = ImageVisual("tokenpurple.png") }
+
+            TokenColor.BLUE -> label.apply{visual = ImageVisual("tokenblue.png") }
+
+            TokenColor.RED -> label.apply{visual = ImageVisual("tokenred.png") }
+        }
+    }
+
+    /**
+     * Update the Gui highlight after refresh called
+     */
+    override fun refreshAfterChangePlayer() {
+        val playerHighlights =
+            listOf(player1turnHighlight, player2turnHighlight, player3turnHighlight, player4turnHighlight)
+        val currentGame = indigoApp.rootService.currentGame
+        checkNotNull(currentGame)
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+        for (i in playerHighlights.indices) {
+            if (i == currentPlayerIndex) {
+                playerHighlights[i].isVisible = true
+            } else {
+                playerHighlights[i].isVisible = false
+            }
+        }
+    }
+
+    /**
+     *  Update the GameScene with the new tile from the currentplayer
+     */
+    override fun refreshAfterDistributeNewTile() {
+        val playerTile = listOf(player1handTile, player2handTile, player3handTile, player4handTile)
+        val currentGame = indigoApp.rootService.currentGame
+        checkNotNull(currentGame)
+        val players = currentGame.players
+        val currentIndex = currentGame.currentPlayerIndex
+        val currentHandTile = players[currentIndex].handTile
+        if(currentHandTile==null){
+            playerTile[currentIndex].isVisible = false
+        }
+        else{
+            playerTile[currentIndex].visual = currentHandTile.type.toImg()
+            playerTile[currentIndex].isVisible = true
+        }
+    }
+    /**
+     *  refreshes the GameScene after EndGame was called
+     *
+     *  @throws IllegalStateException if no game is running
+     */
+    override fun refreshAfterEndGame() {
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game) { "No game found."}
+        indigoApp.showMenuScene(indigoApp.endGameMenuScene)
     }
 
 }
