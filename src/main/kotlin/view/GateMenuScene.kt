@@ -9,10 +9,6 @@ import view.components.Label
 
 /**
  * Represents the menu scene for selecting gate options.
- *
- * @param width The width of the scene.
- * @param height The height of the scene.
- * @param background The background image for the scene.
  */
 
 class GateMenuScene(val indigoApp: IndigoApplication) :
@@ -34,8 +30,9 @@ class GateMenuScene(val indigoApp: IndigoApplication) :
                 indigoApp.rootService.networkService.startNewHostedGame(players, false, isRandom)
             }
             players.clear()
-            indigoApp.hideMenuScene()
-            indigoApp.showGameScene(indigoApp.gameScene)
+            if(indigoApp.aiGame) indigoApp.showMenuScene(indigoApp.aiMenuScene)
+            else { indigoApp.showGameScene(indigoApp.gameScene)
+            indigoApp.hideMenuScene()}
         }
     }
     private val separatedButton = Button(1100, 642, 528, 207, "SeperatedGates", 48).apply {
@@ -54,8 +51,10 @@ class GateMenuScene(val indigoApp: IndigoApplication) :
                 indigoApp.rootService.networkService.startNewHostedGame(players, true, isRandom)
             }
             players.clear()
-            indigoApp.hideMenuScene()
-            indigoApp.showGameScene(indigoApp.gameScene)
+            if(indigoApp.aiGame) indigoApp.showMenuScene(indigoApp.aiMenuScene)
+            else { indigoApp.showGameScene(indigoApp.gameScene)
+                indigoApp.hideMenuScene()}
+
         }
     }
 

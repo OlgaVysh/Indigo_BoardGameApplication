@@ -138,11 +138,11 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             }
         }
         else{
-            indigoApp.configurePlayersScene.addPlayer(
-                indigoApp,
+            indigoApp.configurePlayersScene.addPlayerView(
                 playerName.text,
-                colorBox.selectedItem.toString(),
-                turnBox.selectedItem
+                newPlayer.color ,
+                turnBox.selectedItem,
+                aiPlayer
             )
 
         }
@@ -165,5 +165,6 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         turnBox.items = turns
         turnBox.selectedItem = null
         addNewPlayerButton.isDisabled = true
+        aiPlayer=false
     }
 }
