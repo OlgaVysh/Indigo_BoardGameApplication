@@ -167,7 +167,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         }
         indigoApp.showGameScene(indigoApp.gameScene)
         indigoApp.hideMenuScene()
-        //TODO(//indigoApp.gameScene.refreshAfterStartNewGame)
+        indigoApp.gameScene.refreshAfterStartGame()
     }
 
     fun startJoinGame() {

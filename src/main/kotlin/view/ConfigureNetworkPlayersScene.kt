@@ -44,8 +44,8 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                     players.add(player)
                 }
             }
-            indigoApp.notSharedGates = false
-            if (players.size == 4) indigoApp.notSharedGates = true
+            indigoApp.notSharedGates = true
+            if (players.size == 4) indigoApp.notSharedGates = false
             if (players.size == 3) {
                 indigoApp.showMenuScene(indigoApp.gatesScene)
             } else {
