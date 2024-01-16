@@ -418,6 +418,9 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
     }
 
+    /**
+     * Initializes the GUI after a new game was created. Creates views of players, their tiles and gates
+     */
     override fun refreshAfterStartGame()
     {
         val game = rootService.currentGame
@@ -427,6 +430,9 @@ class GameScene(val indigoApp: IndigoApplication) :
         initialzeGateTokens()
     }
 
+    /**
+     * For every player set a view of name and token color and disable superfluous players views
+     */
     private fun setPlayers(players : List<Player>)
     {
         val count = players.size
@@ -519,6 +525,10 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     }
 
+
+    /**
+     * Sets Token-Label with an Image of the given TokenColor
+     */
     private fun getGem(label : view.components.Label, color: TokenColor)
     {
         when(color) {
