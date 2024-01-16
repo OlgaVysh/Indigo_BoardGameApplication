@@ -164,6 +164,8 @@ class GameScene(indigoApp: IndigoApplication) :
      */
     init {
         initializeGameBoardGrid()
+        hexagonGrid.rotate(60)
+        hexagonGrid.reposition(900, 340)
 
         //initialize reserveStack
         reserveStack.rotate(30)
@@ -347,18 +349,19 @@ class GameScene(indigoApp: IndigoApplication) :
         // Middle Tile
         hexagonGrid[0, 0]?.visual = ImageVisual("middletile.png")
         // Gate Tiles
-        //1 (oben und dann im Uhrzeigersinn die GateTiles)
-        hexagonGrid[4, -4]?.visual = ImageVisual("gatetile1.png")
+        //1
+        hexagonGrid[0, -4]?.visual = ImageVisual("gatetile1.png")
         //2
-        hexagonGrid[4, 0]?.visual = ImageVisual("gatetile2.png")
+        hexagonGrid[4, -4]?.visual = ImageVisual("gatetile2.png")
         //3
-        hexagonGrid[0, 4]?.visual = ImageVisual("gatetile3.png")
+        hexagonGrid[4, 0]?.visual = ImageVisual("gatetile3.png")
         //4
-        hexagonGrid[-4, 4]?.visual = ImageVisual("gatetile4.png")
+        hexagonGrid[0, 4]?.visual = ImageVisual("gatetile4.png")
         //5
-        hexagonGrid[-4, 0]?.visual = ImageVisual("gatetile5.png")
+        hexagonGrid[-4, 4]?.visual = ImageVisual("gatetile5.png")
         //6
-        hexagonGrid[0, -4]?.visual = ImageVisual("gatetile6.png")
+        hexagonGrid[-4, 0]?.visual = ImageVisual("gatetile6.png")
+
 
         //hides the unused hexagon components left and right
         for (i in 0..3) {
