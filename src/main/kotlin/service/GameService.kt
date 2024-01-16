@@ -96,7 +96,6 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val gems = currentGame.gems
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val currentPlayerTile = currentGame.players[currentPlayerIndex].handTile
-        onAllRefreshables { refreshAfterEndGame() }
         return gems.isEmpty() || currentPlayerTile == null
     }
 

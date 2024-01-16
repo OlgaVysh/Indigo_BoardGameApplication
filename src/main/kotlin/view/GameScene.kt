@@ -13,7 +13,7 @@ import java.awt.Color
  * Represents the game scene containing a hexagonal grid.
  */
 
-class GameScene(indigoApp: IndigoApplication) :
+class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> =
@@ -27,16 +27,16 @@ class GameScene(indigoApp: IndigoApplication) :
         view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40)
             .apply {
                 if (indigoApp.networkMode) isVisible = false
-                isDisabled=true
+                isDisabled = true
             }
 
     // redoButton component
     private val redoButton =
         view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40)
             .apply {
-            if (indigoApp.networkMode) isVisible = false
-            isDisabled=true
-        }
+                if (indigoApp.networkMode) isVisible = false
+                isDisabled = true
+            }
 
     // saveButton component
     private val saveButton =
@@ -107,21 +107,33 @@ class GameScene(indigoApp: IndigoApplication) :
     private val player4turnHighlight = HexagonView(posX = 1595, posY = 719, visual = ColorVisual(Color.BLUE))
 
     // PlayerRotateButton components
-    private val player1leftButton = Button(posX = 60, posY = 360, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
-    private val player1rightButton = Button(posX = 240, posY = 360, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
-    private val player1checkButton = Button(posX = 150, posY = 360, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
+    private val player1leftButton =
+        Button(posX = 60, posY = 360, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
+    private val player1rightButton =
+        Button(posX = 240, posY = 360, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
+    private val player1checkButton =
+        Button(posX = 150, posY = 360, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
 
-    private val player2leftButton = Button(posX = 1553, posY = 360, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
-    private val player2rightButton = Button(posX = 1733, posY = 360, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
-    private val player2checkButton = Button(posX = 1643, posY = 360, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
+    private val player2leftButton =
+        Button(posX = 1553, posY = 360, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
+    private val player2rightButton =
+        Button(posX = 1733, posY = 360, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
+    private val player2checkButton =
+        Button(posX = 1643, posY = 360, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
 
-    private val player3leftButton = Button(posX = 60, posY = 680, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
-    private val player3rightButton = Button(posX = 240, posY = 680, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
-    private val player3checkButton = Button(posX = 150, posY = 680, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
+    private val player3leftButton =
+        Button(posX = 60, posY = 680, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
+    private val player3rightButton =
+        Button(posX = 240, posY = 680, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
+    private val player3checkButton =
+        Button(posX = 150, posY = 680, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
 
-    private val player4leftButton = Button(posX = 1553, posY = 680, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
-    private val player4rightButton = Button(posX = 1733, posY = 680, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
-    private val player4checkButton = Button(posX = 1643, posY = 680, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
+    private val player4leftButton =
+        Button(posX = 1553, posY = 680, width = 80, height = 50, visual = ImageVisual("leftbutton.png"))
+    private val player4rightButton =
+        Button(posX = 1733, posY = 680, width = 80, height = 50, visual = ImageVisual("rightbutton.png"))
+    private val player4checkButton =
+        Button(posX = 1643, posY = 680, width = 80, height = 50, visual = ImageVisual("checkbutton.png"))
 
 
     // GateToken components
@@ -146,12 +158,14 @@ class GameScene(indigoApp: IndigoApplication) :
 
     // GameboardGem components
     private var blueGem = view.components.Label(posX = 911, posY = 432, text = "", width = 40, height = 32)
+
     //oben links im Uhrzeigersinn
     private var greenGem1 = view.components.Label(posX = 890, posY = 405, text = "", width = 40, height = 32)
     private var greenGem2 = view.components.Label(posX = 930, posY = 402, text = "", width = 40, height = 32)
     private var greenGem3 = view.components.Label(posX = 944, posY = 439, text = "", width = 40, height = 32)
     private var greenGem4 = view.components.Label(posX = 912, posY = 465, text = "", width = 40, height = 32)
     private var greenGem5 = view.components.Label(posX = 875, posY = 438, text = "", width = 40, height = 32)
+
     //oben im Uhrzeigersinn
     private var yellowGem1 = view.components.Label(posX = 910, posY = 70, text = "", width = 40, height = 32)
     private var yellowGem2 = view.components.Label(posX = 1226, posY = 248, text = "", width = 40, height = 32)
@@ -159,6 +173,7 @@ class GameScene(indigoApp: IndigoApplication) :
     private var yellowGem4 = view.components.Label(posX = 910, posY = 797, text = "", width = 40, height = 32)
     private var yellowGem5 = view.components.Label(posX = 590, posY = 613, text = "", width = 40, height = 32)
     private var yellowGem6 = view.components.Label(posX = 590, posY = 246, text = "", width = 40, height = 32)
+
     /**
      * Initializes the GameScene with default values and sets up the hexagonal grid.
      */
@@ -247,7 +262,6 @@ class GameScene(indigoApp: IndigoApplication) :
         gate6Token2.visual = ImageVisual("tokenblue.png")
 
 
-
         // Add the hexagonal grid to the components of the game scene
         addComponents(
             hexagonGrid,
@@ -330,6 +344,7 @@ class GameScene(indigoApp: IndigoApplication) :
         )
 
     }
+
     /**
      * Initialize game board grid
      */
@@ -373,4 +388,31 @@ class GameScene(indigoApp: IndigoApplication) :
             }
         }
     }
+
+    /**
+     *  Initialize GateTokens
+     */
+    private fun initialzeGateTokens(){
+        val guiGateTokens = listOf(
+            gate1Token1,
+            gate1Token2,
+            gate2Token1,
+            gate2Token2,
+            gate3Token1,
+            gate3Token2,
+            gate4Token1,
+            gate4Token2,
+            gate5Token1,
+            gate5Token2,
+            gate6Token1,
+            gate6Token2
+        )
+        val currentGame = indigoApp.rootService.currentGame
+        val entityGateTokens = currentGame!!.gameBoard.gateTokens
+
+        for (i in entityGateTokens.indices){
+            guiGateTokens[i].visual = entityGateTokens[i].color.toImg()
+        }
+    }
+
 }

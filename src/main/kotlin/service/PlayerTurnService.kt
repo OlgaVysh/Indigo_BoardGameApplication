@@ -36,9 +36,9 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
             lastGame?.previousGameState = firstAppearance
             rootService.currentGame?.nextGameState = lastGame
             rootService.currentGame = rootService.currentGame?.nextGameState
-            /* if(rootService.gameService.endGame())
-             {onAllRefreshables { refreshAfterEndGame() }}
-               */
+            if (rootService.gameService.endGame()) {
+                onAllRefreshables { refreshAfterEndGame() }
+            }
         } else {
             throw Exception("Invalid space, choose another space please")
         }

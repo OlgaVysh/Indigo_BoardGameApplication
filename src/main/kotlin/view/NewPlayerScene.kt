@@ -117,10 +117,8 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             playerName,
             playerAge
         )
-
         turnBox.items = turns
         colorBox.items = colors
-
     }
 
     private fun addPlayerToTheScene(newPlayer: Player) {
