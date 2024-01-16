@@ -24,19 +24,17 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     // undoButton component
     private val undoButton =
-        view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40)
-            .apply {
-                if (indigoApp.networkMode) isVisible = false
-                isDisabled = true
-            }
+        view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40).apply {
+            if (indigoApp.networkMode) isVisible = false
+            isDisabled = true
+        }
 
     // redoButton component
     private val redoButton =
-        view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40)
-            .apply {
-                if (indigoApp.networkMode) isVisible = false
-                isDisabled = true
-            }
+        view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40).apply {
+            if (indigoApp.networkMode) isVisible = false
+            isDisabled = true
+        }
 
     // saveButton component
     private val saveButton =
@@ -392,7 +390,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      *  Initialize GateTokens
      */
-    private fun initialzeGateTokens(){
+    private fun initialzeGateTokens() {
         val guiGateTokens = listOf(
             gate1Token1,
             gate1Token2,
@@ -410,9 +408,45 @@ class GameScene(val indigoApp: IndigoApplication) :
         val currentGame = indigoApp.rootService.currentGame
         val entityGateTokens = currentGame!!.gameBoard.gateTokens
 
-        for (i in entityGateTokens.indices){
+        for (i in entityGateTokens.indices) {
             guiGateTokens[i].visual = entityGateTokens[i].color.toImg()
         }
     }
 
+    /**
+     * Update the Gui highlight after refresh called
+     */
+    override fun refreshAfterChangePlayer() {
+        val playerHighlights =
+            listOf(player1turnHighlight, player2turnHighlight, player3turnHighlight, player4turnHighlight)
+        val currentGame = indigoApp.rootService.currentGame
+        checkNotNull(currentGame)
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+        for (i in playerHighlights.indices) {
+            if (i == currentPlayerIndex) {
+                playerHighlights[i].isVisible = true
+            } else {
+                playerHighlights[i].isVisible = false
+            }
+        }
+    }
+
+    /**
+     *  Update the GameScene with the new tile from the currentplayer
+     */
+    override fun refreshAfterDistributeNewTile() {
+        val playerTile = listOf(player1handTile, player2handTile, player3handTile, player4handTile)
+        val currentGame = indigoApp.rootService.currentGame
+        checkNotNull(currentGame)
+        val players = currentGame.players
+        val currentIndex = currentGame.currentPlayerIndex
+        val currentHandTile = players[currentIndex].handTile
+        if(currentHandTile==null){
+            playerTile[currentIndex].isVisible = false
+        }
+        else{
+            playerTile[currentIndex].visual = currentHandTile.type.toImg()
+            playerTile[currentIndex].isVisible = true
+        }
+    }
 }
