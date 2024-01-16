@@ -49,13 +49,13 @@ class AIService(val rootService: RootService) {
         val availableMoves = mutableListOf<Pair<Coordinate, Tile>>()
 
         // Iterate over the game board and find available moves
-        for (row in -4..4) {
-            for (col in -4..4) {
-                val coordinate = Coordinate(row, col)
+        for (q in -4..4) {
+            for (r in Integer.max(-4, -q - 4)..Integer.min(4, -q + 4)) {
+                val coordinate = Coordinate(q, r)
                 val playerTile = currentGame.players[currentGame.currentPlayerIndex].handTile ?: continue
 
                 // Check if placing the tile at the coordinate is a valid move
-                if (rootService.gameService.checkPlacement(coordinate, playerTile)) {
+                if (rootService.gameService.checkPlacementAI(coordinate, playerTile)) {
                     availableMoves.add(Pair(coordinate, playerTile))
                 }
             }
