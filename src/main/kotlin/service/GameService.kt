@@ -648,7 +648,4 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         }
         return gateTokens
     }
-    fun isGameOver(state: Any) : Boolean{
-        TODO()
-    }
 }

@@ -1,18 +1,17 @@
 package AI
 import entity.Coordinate
 import service.AbstractRefreshingService
-import service.GameService
 
 /**
  * The MCTS: Monte Carlo Tree Search algorithm to find the best player moves
  *
  * @param rootService the RootService instance that holds the game state information
- * @property gameService to get access to functions from the [GameService]
+ * @property aiActionService to get access to functions from the [AiActionService]
  * @property aiIndex the index of the player that the AI is playing as.
  */
 class MCTS (private val rootService: service.RootService, private val aiIndex: Int): AbstractRefreshingService() {
 
-    val gameService = rootService.gameService
+    private val aiActionService = rootService.aiActionService
 
     /**
      * This method initiates the MCTS algorithm to find the next best move for the AI player.
@@ -28,7 +27,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
         var terminateCondition = false
         while (true) {
             val node = selectPromisingNode(root)
-            if (gameService.isGameOver(node.state) || terminateCondition) {
+            if (aiActionService.isGameOver(node.state) || terminateCondition) {
                 backpropagation(node, true)
                 return node.coordinate
             }
@@ -81,7 +80,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
         var tempNode = node.copy()
 
         var stop = false
-        while (!gameService.isGameOver(tempNode.state) && !stop) {
+        while (!aiActionService.isGameOver(tempNode.state) && !stop) {
             stop = expandNode(tempNode)
             tempNode = selectPromisingNode(tempNode)
         }

@@ -88,6 +88,22 @@ class AiActionService(private val rootService: RootService) : AbstractRefreshing
             return copiedIndigo
         }
 
+    /**
+     * checks whether a given game state cannot be played further by checking the following conditions:
+     *
+     * All [Gem]s have been collected
+     *
+     * No more Route [Tile]s available in both [Indigo] and each [Player]s hands
+     */
+    fun isGameOver(state: Indigo):Boolean{
+        var areHandsEmpty = true
+        for (player in state.players) {
+            if (player.handTile != null) areHandsEmpty = false
+        }
+        if (state.gems.isEmpty()) return true
+        if (state.routeTiles.size == 0 && areHandsEmpty) return true
+        return false
+    }
 
 }
 
