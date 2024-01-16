@@ -449,4 +449,15 @@ class GameScene(val indigoApp: IndigoApplication) :
             playerTile[currentIndex].isVisible = true
         }
     }
+    /**
+     *  refreshes the GameScene after EndGame was called
+     *
+     *  @throws IllegalStateException if no game is running
+     */
+    override fun refreshAfterEndGame() {
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game) { "No game found."}
+        indigoApp.showMenuScene(indigoApp.endGameMenuScene)
+    }
+
 }

@@ -18,8 +18,8 @@ import view.components.Label
  *
  * @property rootService An instance of RootService to access game-related functionalities.
  */
-class EndGameMenuScene(private val rootService: RootService) : MenuScene(1920, 1080), Refreshable {
-    private val game = rootService.currentGame
+class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Refreshable {
+    private val game = indigoApp.rootService.currentGame
 
     // Label to display the "Game Over" Header.
     private val gameOverLabel = Label(650, 48, 620, 155, "Game Over", 120)

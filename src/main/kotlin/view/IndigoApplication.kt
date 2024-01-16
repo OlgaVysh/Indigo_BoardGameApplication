@@ -33,7 +33,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
     val configurePlayerXScene = ConfigurePlayerXScene(this)
     val joinGameScene = JoinGameScene(this)
 
-    //val endGameMenuScene = EndGameMenuScene(this)
+    val endGameMenuScene = EndGameMenuScene(this)
     val gameScene = GameScene(this)
     val aiMenuScene = AIMenuScene(this)
     val gameSavedScene = GameSavedMenuScene(this)
@@ -55,7 +55,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
             configurePlayerXScene,
             joinGameScene,
             networkScene,
-            // endGameMenuScene ,
+            endGameMenuScene ,
             //aiMenuScene,
             gameSavedScene,
             saveGameScene,
