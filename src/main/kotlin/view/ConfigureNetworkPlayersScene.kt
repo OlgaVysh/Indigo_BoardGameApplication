@@ -28,12 +28,14 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
     //private val size = games.size - 1
 
     // Button for adding a new player
-    private val addButton = Button(188, 806, 528, 207, "Add new player", 40).apply {
+   val addButton = Button(188, 806, 528, 207, "Add new player", 40).apply {
         onMouseClicked = { indigoApp.showMenuScene(indigoApp.newPlayerScene) }
+        isDisabled = grid.rows ==4
     }
 
     // Button for starting a new game
-    private val startButton = Button(1217, 806, 528, 207, "Start new game", 40).apply {
+    val startButton = Button(1217, 806, 528, 207, "Start new game", 40).apply {
+        isDisabled = grid.rows<2
         onMouseClicked = {
             //indigoApp.showGameScene(indigoApp.gameScene)
             val players = mutableListOf<Player>()
@@ -116,6 +118,8 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                 //button.posY = (151 * (currentRows - 1)).toDouble()
             }
             grid[0, currentRows] = newNetworkPlayer
+            startButton.isDisabled = grid.rows < 2
+            addButton.isDisabled = grid.rows==4
         } else {
             val rootService = RootService()
             val networkClient = rootService.networkService.client
@@ -147,6 +151,8 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
             button.posY = (151 * i).toDouble()
         }
         }*/
+        startButton.isDisabled = grid.rows <2
+        addButton.isDisabled = grid.rows==4
     }
 
     override fun refreshAfterStartGame() {
