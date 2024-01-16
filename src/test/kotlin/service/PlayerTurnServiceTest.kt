@@ -27,7 +27,7 @@ class PlayerTurnServiceTest {
             Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),
             Pair(Edge.THREE, Edge.FIVE)
-        ),
+        ),TileType.Type_0,
         mutableMapOf()
     )
 
