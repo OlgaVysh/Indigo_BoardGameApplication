@@ -1,5 +1,7 @@
 package view
 
+import entity.CPUPlayer
+import entity.Player
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.uicomponents.*
 import tools.aqua.bgw.core.Alignment
@@ -21,6 +23,9 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
 
     private val rootService = indigoApp.rootService
 
+    var difficulty = "easy"
+    var simulationSpeed = 0
+
     //iregendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player", 96)
 
@@ -41,11 +46,15 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     private val joinButton = Button(247, 800, 528, 207, "Join", 48).apply {
         isDisabled = nameInput.text.isBlank() || idInput.text.isBlank()
         onMouseClicked = {
-            var isAi = false
-            if (yesButton.isSelected) isAi = true
-            if (nameInput.text.isNotBlank() && idInput.text.isNotBlank()) indigoApp.rootService.networkService.joinGame(
-                name = nameInput.text, sessionID = idInput.text, isAi = isAi
-            )
+            if (yesButton.isSelected) {
+                indigoApp.aiGame = true
+                indigoApp.hideMenuScene()
+                indigoApp.showMenuScene(indigoApp.aiMenuScene)
+            } else {
+                indigoApp.rootService.networkService.joinGame(
+                    name = nameInput.text, sessionID = idInput.text
+                )
+            }
         }
     }
 
@@ -102,9 +111,11 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         textMessageLabel.isVisible = true
         textMessageLabel.isDisabled = false
         when (responseStatus) {
-            JoinGameResponseStatus.SUCCESS ->{ textMessageLabel.text = "Waiting for Host to finish \n Game Configuration"
-            joinButton.isDisabled = true
+            JoinGameResponseStatus.SUCCESS -> {
+                textMessageLabel.text = "Waiting for Host to finish \n Game Configuration"
+                joinButton.isDisabled = true
             }
+
             JoinGameResponseStatus.ALREADY_ASSOCIATED_WITH_GAME -> {
                 textMessageLabel.text = "Already connected to the Game"
             }
@@ -134,8 +145,33 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     }
 
     override fun refreshAfterStartNewJoinedGame() {
+        if (indigoApp.aiGame) {
+            val currentGame = indigoApp.rootService.currentGame
+            checkNotNull(currentGame)
+            val player = currentGame.players.find { it.name == nameInput.text }
+            val playerIndex = currentGame.players.indexOf(player)
+            val CPUPlayer = CPUPlayer(player!!.name, player.age, player.color, difficulty, simulationSpeed).apply {
+                handTile = player.handTile
+                score = player.score
+                gemCounter = player.gemCounter
+            }
+            val newPlayers = mutableListOf<Player>()
+            for (i in currentGame.players.indices) {
+                if (i == playerIndex) {
+                    newPlayers.add(CPUPlayer)
+                } else {
+                    newPlayers.add(currentGame.players[i])
+                }
+            }
+            currentGame.settings.players = newPlayers.toList()
+        }
         indigoApp.showGameScene(indigoApp.gameScene)
         indigoApp.hideMenuScene()
         //TODO(//indigoApp.gameScene.refreshAfterStartNewGame)
+    }
+
+    fun startJoinGame() {
+        indigoApp.rootService.networkService.joinGame(
+            name = nameInput.text, sessionID = idInput.text)
     }
 }

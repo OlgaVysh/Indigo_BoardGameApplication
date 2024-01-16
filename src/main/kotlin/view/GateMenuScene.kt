@@ -23,11 +23,16 @@ class GateMenuScene(val indigoApp: IndigoApplication) :
                     players.add(player)
                 }
             }
+            indigoApp.notSharedGates = false
             val connectionState = indigoApp.rootService.networkService.connectionState
             if (connectionState == ConnectionState.DISCONNECTED) {
-                indigoApp.rootService.gameService.startGame(players, false, isRandom)
+                if(indigoApp.aiGame)indigoApp.showMenuScene(indigoApp.aiMenuScene)
+                else
+                indigoApp.rootService.gameService.startGame(players, indigoApp.notSharedGates, isRandom)
             } else {
-                indigoApp.rootService.networkService.startNewHostedGame(players, false, isRandom)
+                if(indigoApp.aiGame)indigoApp.showMenuScene(indigoApp.aiMenuScene)
+                else
+                indigoApp.rootService.networkService.startNewHostedGame(players, indigoApp.notSharedGates, isRandom)
             }
             players.clear()
             if(indigoApp.aiGame) indigoApp.showMenuScene(indigoApp.aiMenuScene)

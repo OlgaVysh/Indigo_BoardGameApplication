@@ -67,16 +67,17 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                     else -> indigoApp.avaibleColors[0]
                 }
             indigoApp.avaibleColors.remove(newPlayerColor)
-            var newPlayer = Player(name = playerName.text, color = newPlayerColor)
+            var newPlayer = Player(name, color = newPlayerColor)
             if (aiPlayer) {
                 newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)
-            }
+            } else
+                newPlayer = Player(name = playerName.text, color = newPlayerColor)
             when (turnBox.selectedItem) {
-                1 -> indigoApp.players[0]
-                2 -> indigoApp.players[1]
-                3 -> indigoApp.players[2]
-                4 -> indigoApp.players[3]
-                else -> indigoApp.players.add(newPlayer)
+                1 -> indigoApp.players[0] = newPlayer
+                2 -> indigoApp.players[1] = newPlayer
+                3 -> indigoApp.players[2] = newPlayer
+                4 -> indigoApp.players[3] = newPlayer
+                else -> {}
             }
             addPlayerToTheScene(newPlayer)
             refreshScene()

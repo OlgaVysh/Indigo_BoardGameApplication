@@ -1,5 +1,8 @@
 package view
 
+import entity.CPUPlayer
+import entity.Player
+import service.network.ConnectionState
 import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
@@ -13,30 +16,63 @@ import view.components.Label
  * The layout and visual elements are defined within this class.
  *
  */
-class AIMenuScene (indigoApp : IndigoApplication) : MenuScene (1920, 1080),Refreshable {
+class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Refreshable {
 
 
     // Label to display the header.
-    private val aiGameLabel = Label (397, 71, 1126,155,"This is an AI Game!",120)
+    private val aiGameLabel = Label(397, 71, 1126, 155, "This is an AI Game!", 120)
 
     // Labels for instructions regarding the simulation speed.
-    private val speed1Label = Label (107, 224,1800,77,"Please, choose simulation speed and AI-difficulty:",64)
-    private val speed2Label = Label (397, 416,1192,58,"(Default : middle)",48)
-    private val speed3Label = Label (230, 508,1192,58,"Set speed to :",48)
-    private val speed4Label = Label (230, 608,1192,58,"Set difficulty to :",48)
+    private val speed1Label = Label(107, 224, 1800, 77, "Please, choose simulation speed and AI-difficulty:", 64)
+    private val speed2Label = Label(397, 416, 1192, 58, "(Default : middle)", 48)
+    private val speed3Label = Label(230, 508, 1192, 58, "Set speed to :", 48)
+    private val speed4Label = Label(230, 608, 1192, 58, "Set difficulty to :", 48)
 
     // ComboBox to allow the user to select the AI speed.
     private val aiSpeed = ComboBox<String>(1015, 495, 300, 69, prompt = "Select ai speed")
     private val aiDiff = ComboBox<String>(1015, 595, 300, 69, prompt = "Select ai difficulty")
 
     // Button to start the game.
-    private val startButton = Button(730, 805,532,207,"Start new game",48).
-    apply { onMouseClicked ={indigoApp.showGameScene(indigoApp.gameScene)
-    indigoApp.hideMenuScene()}}
+    private val startButton = Button(730, 805, 532, 207, "Start new game", 48).apply {
+        onMouseClicked = {
+            val players = indigoApp.players
+            val actualPlayer = mutableListOf<Player>()
+            for (player in players) {
+                if (player?.isAI == true) {
+                    val cpuPlayer = CPUPlayer(player.name, player.age, player.color,aiDiff(),aiSpeed())
+                    actualPlayer.add(cpuPlayer)
+                } else {
+                    player?.let { it1 -> actualPlayer.add(it1) }
+                }
+
+            }
+            if (indigoApp.networkMode) {
+                val connectionState = indigoApp.rootService.networkService.connectionState
+                if (connectionState == ConnectionState.DISCONNECTED) {
+                    indigoApp.joinGameScene.difficulty = speed4Label.text
+                    indigoApp.joinGameScene.simulationSpeed = aiSpeed()
+                    indigoApp.hideMenuScene()
+                    indigoApp.showMenuScene(indigoApp.joinGameScene)
+                    indigoApp.joinGameScene.startJoinGame()
+                } else {
+                    indigoApp.rootService.networkService.startNewHostedGame(
+                        actualPlayer,
+                        indigoApp.notSharedGates,
+                        indigoApp.isRandom
+                    )
+                    indigoApp.showGameScene(indigoApp.gameScene)
+                    indigoApp.hideMenuScene()
+                }
+            } else {
+                indigoApp.showGameScene(indigoApp.gameScene)
+                indigoApp.hideMenuScene()
+            }
+        }
+    }
 
     // Setting the background and adding all components to the scene.
-    init{
-        background =  ImageVisual("ThreeGemsBackground.png")
+    init {
+        background = ImageVisual("ThreeGemsBackground.png")
         opacity = 1.0
         addComponents(
             aiGameLabel,
@@ -46,8 +82,32 @@ class AIMenuScene (indigoApp : IndigoApplication) : MenuScene (1920, 1080),Refre
             speed4Label,
             startButton,
             aiSpeed,
-            aiDiff)
-        aiSpeed.items = mutableListOf("low","middle","high")
-        aiDiff.items = mutableListOf("low","middle","high")
+            aiDiff
+        )
+        aiSpeed.items = mutableListOf("low", "middle", "high")
+        aiDiff.items = mutableListOf("easy", "high")
+    }
+
+    private fun aiSpeed(): Int {
+        when (aiSpeed.selectedItem) {
+            "low" -> return 1
+            "middle" -> return 2
+            "high" -> return 3
+        }
+        return 2
+    }
+
+    private fun aiDiff(): String {
+        if(aiDiff.selectedItem != null) {
+            return aiDiff.selectedItem.toString()
+        }
+        else {
+            return "easy"
+        }
+    }
+
+    override fun refreshAfterStartGame() {
+        indigoApp.hideMenuScene()
+        indigoApp.showGameScene(indigoApp.gameScene)
     }
 }

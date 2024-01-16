@@ -45,15 +45,20 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                 }
             }
             indigoApp.notSharedGates = false
-            if (indigoApp.players.size == 4) indigoApp.notSharedGates = true
-            if (indigoApp.players.size == 3) {
+            if (players.size == 4) indigoApp.notSharedGates = true
+            if (players.size == 3) {
                 indigoApp.showMenuScene(indigoApp.gatesScene)
             } else {
-                val notSharedGates = indigoApp.notSharedGates
-                val isRandom = indigoApp.isRandom
-                indigoApp.rootService.networkService.startNewHostedGame(players, notSharedGates, isRandom)
+                if (indigoApp.aiGame) {
+                    indigoApp.hideMenuScene()
+                    indigoApp.showMenuScene(indigoApp.aiMenuScene)
+                } else {
+                    val notSharedGates = indigoApp.notSharedGates
+                    val isRandom = indigoApp.isRandom
+                    indigoApp.rootService.networkService.startNewHostedGame(players, notSharedGates, isRandom)
+                    players.clear()
+                }
             }
-            players.clear()
         }
     }
 

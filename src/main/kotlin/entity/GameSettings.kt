@@ -11,7 +11,7 @@ package entity
  * defaults to false
  */
 class GameSettings(
-    val players: List<Player>,
+    var players: List<Player>,
     val playerIndex: Int = 0,
     val isRandom: Boolean = false
 )
