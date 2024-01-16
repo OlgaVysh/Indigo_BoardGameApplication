@@ -30,7 +30,7 @@ class ConfigurePlayersGameScene1(indigoApp: IndigoApplication) : BoardGameScene(
         isDisabled = true
         onMouseClicked = {
             if(players.rows==3) indigoApp.showMenuScene(indigoApp.gatesScene)
-            //else if(indigoApp.aiGame) indigoApp.showMenuScene(indigoApp.aiMenuScene)
+            else if(indigoApp.aiGame) indigoApp.showMenuScene(indigoApp.aiMenuScene)
             else indigoApp.showGameScene(indigoApp.gameScene) }
         }
     private val addNewPlayerButton = Button(340, 755, 528, 207, "Add new player", 48).
