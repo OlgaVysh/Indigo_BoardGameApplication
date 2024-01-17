@@ -154,11 +154,11 @@ class RefreshableTest : Refreshable {
         refreshAfterCollisionCalled = true
     }
 
-    override fun refreshAfterLeftRotation() {
+    override fun refreshAfterLeftRotation(currentPlayerIndex: Int) {
         refreshAfterLeftRotationCalled = true
     }
 
-    override fun refreshAfterRightRotation() {
+    override fun refreshAfterRightRotation(currentPlayerIndex: Int) {
         refreshAfterRightRotationCalled = true
     }
 
