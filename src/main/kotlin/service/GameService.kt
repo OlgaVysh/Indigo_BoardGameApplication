@@ -414,8 +414,10 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 val timeout = 10000L
                 val timer = Timer()
 
+                var resultCoordinate: Coordinate? = null
+
                 val thread = thread {
-                    MCTS(rootService, currentPlayerIndex).findNextMove()
+                    resultCoordinate= MCTS(rootService, currentPlayerIndex).findNextMove()
                     timer.cancel() // Cancel the timer if the task completes within the timeout
                 }
 
@@ -427,10 +429,10 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                     thread.join()
                 } catch (e: InterruptedException) {
                     // implement maybe a simple MCTS that doesn't go through all the tree
-                   TODO()
+                    resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMoveLimited(1000)
                 }
-                   TODO()
-                //call the normal methods to place the tile after actually choosing the coordinate
+                // Eventually placing the Tile
+                PlayerTurnService(rootService).placeRouteTile(resultCoordinate!!,currentCPUPlayer.handTile!!)
             }
         }
 
