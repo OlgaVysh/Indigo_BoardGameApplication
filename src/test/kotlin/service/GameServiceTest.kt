@@ -162,6 +162,7 @@ class GameServiceTest {
         val rootService = RootService()
         assertNull(rootService.currentGame)
         rootService.gameService.startGame(
+            mutableListOf(Player("a", color = TokenColor.BLUE), Player("b", color = TokenColor.PURPLE))
         )
 
         val indigo = rootService.currentGame
@@ -236,6 +237,7 @@ class GameServiceTest {
         val rootService = RootService()
         assertNull(rootService.currentGame)
         rootService.gameService.startGame(
+            mutableListOf(Player("a", color = TokenColor.BLUE), Player("b", color = TokenColor.PURPLE))
         )
 
         val indigo = rootService.currentGame

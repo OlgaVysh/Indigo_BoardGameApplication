@@ -208,6 +208,9 @@ class PlayerTurnServiceTest {
      */
     @Test
     fun rotateTileTest() {
+        rootService.gameService.startGame(
+            mutableListOf(Player("a", color = TokenColor.BLUE), Player("b", color = TokenColor.PURPLE))
+        )
         // Set up the expected and initial tile configurations
         val expectedTile = testTile
         val expectedTileRightRotated = testTile
