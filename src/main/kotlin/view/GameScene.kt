@@ -21,7 +21,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     private val rootService = indigoApp.rootService
 
-    private var chosenTile : HexagonView? = null
+    private var chosenPlace : HexagonView? = null
     private var chosenCol : Int? = null
     private var chosenRow : Int? = null
 
@@ -652,19 +652,20 @@ class GameScene(val indigoApp: IndigoApplication) :
         indigoApp.showMenuScene(indigoApp.endGameMenuScene)
     }
 
+
     /**
-     * Highlights the clicked tile and sets [chosenTile] to the currently chosen tile
+     * Highlights the clicked tile and sets [chosenPlace] to the currently chosen tile
      * Saves the coordinates of the chosen tile in [chosenCol] and [chosenRow]
      */
     private fun chooseTile(tile : HexagonView, col : Int, row: Int)
     {
-        if(chosenTile!=null) chosenTile!!.visual.borderWidth= BorderWidth(0)
+        if(chosenPlace!=null) chosenPlace!!.visual.borderWidth= BorderWidth(0)
 
         tile.apply{
             visual.borderWidth = BorderWidth(5)
             visual.borderColor = BorderColor.RED}
 
-        chosenTile = tile
+        chosenPlace = tile
         chosenRow = row
         chosenCol = col
 
@@ -676,7 +677,7 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     private fun callPlaceTile(tile: Tile)
     {
-        checkNotNull(chosenTile){"Please, choose space on the board and press ✓"}
+        checkNotNull(chosenPlace){"Please, choose space on the board and press ✓"}
 
             val coordinates = Coordinate(chosenRow!!,chosenCol!!)
             rootService.playerTurnService.placeRouteTile(coordinates,tile)
@@ -688,10 +689,10 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     private fun refreshAfterMove()
     {
-        if(chosenTile!=null)
+        if(chosenPlace!=null)
         {
-            chosenTile!!.visual.borderWidth= BorderWidth(0)
-            chosenTile=null
+            chosenPlace!!.visual.borderWidth= BorderWidth(0)
+            chosenPlace=null
             chosenRow=null
             chosenCol=null
 
