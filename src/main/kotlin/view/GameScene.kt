@@ -42,15 +42,17 @@ class GameScene(val indigoApp: IndigoApplication) :
     // undoButton component
     private val undoButton =
         view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40).apply {
-            if (indigoApp.networkMode) isVisible = false
-            isDisabled = true
+            if (indigoApp.networkMode) {isVisible = false
+            isDisabled = true}
+            onMouseClicked= {indigoApp.rootService.playerTurnService.undo()}
         }
 
     // redoButton component
     private val redoButton =
         view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40).apply {
-            if (indigoApp.networkMode) isVisible = false
-            isDisabled = true
+            if (indigoApp.networkMode){ isVisible = false
+            isDisabled = true}
+            onMouseClicked= {indigoApp.rootService.playerTurnService.redo()}
         }
 
     // saveButton component
@@ -691,7 +693,10 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     override fun refreshAfterRedo() {
-
+        val coordinate = chosenCol?.let { chosenRow?.let { it1 -> Coordinate(it, it1) } }
+        if (coordinate != null) {
+            refreshAfterPlaceTile(coordinate)
+        }
     }
 
     override fun refreshAfterUndo() {
