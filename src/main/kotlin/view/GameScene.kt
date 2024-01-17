@@ -621,6 +621,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
             }
         }
+        refreshAfterMove()
     }
 
     /**
@@ -680,6 +681,21 @@ class GameScene(val indigoApp: IndigoApplication) :
             val coordinates = Coordinate(chosenRow!!,chosenCol!!)
             rootService.playerTurnService.placeRouteTile(coordinates,tile)
 
+    }
+
+    /**
+     * Sets chosen tile back after the player tried to or placed his/her tile
+     */
+    private fun refreshAfterMove()
+    {
+        if(chosenTile!=null)
+        {
+            chosenTile!!.visual.borderWidth= BorderWidth(0)
+            chosenTile=null
+            chosenRow=null
+            chosenCol=null
+
+        }
     }
 
 }
