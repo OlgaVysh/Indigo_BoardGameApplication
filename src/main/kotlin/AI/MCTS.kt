@@ -40,6 +40,33 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
 
 
     /**
+     * A simplified version of findNextMove that doesn't go through all the tree.
+     * It performs a limited number of iterations to make a quick decision.
+     *
+     * @param maxIterations The maximum number of iterations to perform.
+     * @return A [Coordinate] object representing the best move for the AI player.
+     */
+    fun findNextMoveLimited(maxIterations: Int): Coordinate {
+        val defaultMove = Coordinate(-1, -1)
+        val root = Node(rootService, null, defaultMove)
+
+        repeat(maxIterations) {
+            val node = selectPromisingNode(root)
+            if (aiActionService.isGameOver(node.state)) {
+                return node.coordinate
+            }
+            expandNode(node)
+            val nodeToExplore = selectPromisingNode(node)
+            simulateRandomPlayout(nodeToExplore)
+            backpropagation(nodeToExplore, true)
+        }
+
+        return root.children.maxByOrNull { it.visitCount }?.coordinate ?: defaultMove
+    }
+
+
+
+    /**
      * selectPromisingNode - a function that selects the most promising node to be expanded
      * It traverses the tree to find the most promising node based on the UCT (Upper Confidence Bound applied to Trees) formula
      * @param node: the current node
@@ -78,7 +105,6 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
      */
     private fun simulateRandomPlayout(node: Node): Boolean {
         var tempNode = node.copy()
-
         var stop = false
         while (!aiActionService.isGameOver(tempNode.state) && !stop) {
             stop = expandNode(tempNode)
