@@ -97,16 +97,17 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
     /**
      * Rotates the tile to the right.
      * @param tile The tile to be rotated.
+     * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating an AI move, defaults to false
      * @throws IllegalStateException if no game is running
      */
-    fun rotateTileRight(tile: Tile) {    // Add the last edge to the beginning of the list
+    fun rotateTileRight(tile: Tile,isAiCalled: Boolean = false) {    // Add the last edge to the beginning of the list
         val game = rootService.currentGame
         checkNotNull(game) { "No game found."}
 
         tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
         // Remove the original last edge
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
-        onAllRefreshables { refreshAfterRightRotation(game.currentPlayerIndex) }
+        if (!isAiCalled) onAllRefreshables { refreshAfterRightRotation(game.currentPlayerIndex) }
     }
 
     /**
