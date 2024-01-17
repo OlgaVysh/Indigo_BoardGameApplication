@@ -644,17 +644,13 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     override fun refreshAfterUndo() {
-        val previousGame = indigoApp.rootService.currentGame?.previousGameState
-        if(previousGame != null){
-            indigoApp.rootService.currentGame = previousGame
+
         }
-    }
+
 
     override fun refreshAfterRedo() {
-        val nextGame = indigoApp.rootService.currentGame?.nextGameState
-        if(nextGame != null){
-            indigoApp.rootService.currentGame = nextGame
+
         }
     }
 
-}
+
