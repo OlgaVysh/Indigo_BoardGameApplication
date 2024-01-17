@@ -206,7 +206,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
-        onAllRefreshables { refreshAfterPlaceTile() }
+        onAllRefreshables { refreshAfterPlaceTile(space) }
     }
 
     /**

@@ -699,4 +699,17 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
     }
 
+    override fun refreshAfterRedo() {
+
+    }
+
+    override fun refreshAfterUndo() {
+        
+    }
+
+    override fun refreshAfterPlaceTile(coordinate: Coordinate) {
+          chooseTile(chosenPlace!!, coordinate.column, coordinate.row)
+          rootService.gameService.changePlayer()
+          refreshAfterChangePlayer()
+    }
 }
