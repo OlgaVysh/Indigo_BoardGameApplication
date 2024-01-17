@@ -114,26 +114,30 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     fun checkPlacement(space: Coordinate, tile: Tile): Boolean {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
-        if (space == Coordinate(0, 0)) return false
+        if (space == Coordinate(0, 0)) {
+            onAllRefreshables { refreshAfterCheckPlacement() }
+            return false
+        }
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
 
+            onAllRefreshables { refreshAfterCheckPlacement()}
             throw Exception("this place is occupied")
+
         }
         // Check if the space has an exit
         return if (!coordinateHasExit(space)) {
-            onAllRefreshables { refreshAfterCheckPlacement() }
             placeTile(space, tile)
             true
 
         } else {
             // Check if the tile blocks an exit
             return if (!tileBlocksExit(space, tile)) {
-                onAllRefreshables { refreshAfterCheckPlacement() }
                 placeTile(space, tile)
                 true
             } else {
 
+                onAllRefreshables { refreshAfterCheckPlacement()}
                 throw Exception("tile blocks exit, please rotate Tile")
             }
         }

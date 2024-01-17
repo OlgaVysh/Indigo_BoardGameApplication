@@ -411,20 +411,27 @@ class GameScene(val indigoApp: IndigoApplication) :
         // Rotate the hexagonal grid by -30 degrees
         hexagonGrid.rotate(-30)
         // Middle Tile
-        hexagonGrid[0, 0]?.visual = ImageVisual("middletile.png")
+        hexagonGrid[0, 0]?.apply { visual = ImageVisual("middletile.png")
+        isDisabled = true}
         // Gate Tiles
         //1
-        hexagonGrid[0, -4]?.visual = ImageVisual("gatetile1.png")
+        hexagonGrid[0, -4]?.apply{visual = ImageVisual("gatetile1.png")
+            isDisabled = true}
         //2
-        hexagonGrid[4, -4]?.visual = ImageVisual("gatetile2.png")
+        hexagonGrid[4, -4]?.apply{visual = ImageVisual("gatetile2.png")
+            isDisabled = true}
         //3
-        hexagonGrid[4, 0]?.visual = ImageVisual("gatetile3.png")
+        hexagonGrid[4, 0]?.apply{visual = ImageVisual("gatetile3.png")
+            isDisabled = true}
         //4
-        hexagonGrid[0, 4]?.visual = ImageVisual("gatetile4.png")
+        hexagonGrid[0, 4]?.apply{visual = ImageVisual("gatetile4.png")
+            isDisabled = true}
         //5
-        hexagonGrid[-4, 4]?.visual = ImageVisual("gatetile5.png")
+        hexagonGrid[-4, 4]?.apply{visual = ImageVisual("gatetile5.png")
+            isDisabled = true}
         //6
-        hexagonGrid[-4, 0]?.visual = ImageVisual("gatetile6.png")
+        hexagonGrid[-4, 0]?.apply{visual = ImageVisual("gatetile6.png")
+            isDisabled = true}
 
 
         //hides the unused hexagon components left and right
@@ -652,10 +659,30 @@ class GameScene(val indigoApp: IndigoApplication) :
         indigoApp.showMenuScene(indigoApp.endGameMenuScene)
     }
 
+    override fun refreshAfterRedo() {
+
+    }
+
+    override fun refreshAfterUndo() {
+
+    }
+
+    override fun refreshAfterPlaceTile(coordinate: Coordinate) {
+        chooseTile(chosenPlace!!, coordinate.column, coordinate.row)
+        rootService.gameService.changePlayer()
+        refreshAfterChangePlayer()
+    }
 
     /**
-     * Highlights the clicked tile and sets [chosenPlace] to the currently chosen tile
-     * Saves the coordinates of the chosen tile in [chosenCol] and [chosenRow]
+     * Sets chosen space back after the player tried to place tile at the occupied space
+     */
+    override fun refreshAfterCheckPlacement() {
+        refreshAfterMove()
+    }
+
+    /**
+     * Highlights the clicked tile and sets [chosenPlace] to the currently chosen space
+     * Saves the coordinates of the chosen space in [chosenCol] and [chosenRow]
      */
     private fun chooseTile(tile : HexagonView, col : Int, row: Int)
     {
@@ -685,7 +712,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     /**
-     * Sets chosen tile back after the player tried to or placed his/her tile
+     * Sets chosen space back after the player tried to or placed his/her tile
      */
     private fun refreshAfterMove()
     {
@@ -699,17 +726,5 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
     }
 
-    override fun refreshAfterRedo() {
 
-    }
-
-    override fun refreshAfterUndo() {
-        
-    }
-
-    override fun refreshAfterPlaceTile(coordinate: Coordinate) {
-          chooseTile(chosenPlace!!, coordinate.column, coordinate.row)
-          rootService.gameService.changePlayer()
-          refreshAfterChangePlayer()
-    }
 }
