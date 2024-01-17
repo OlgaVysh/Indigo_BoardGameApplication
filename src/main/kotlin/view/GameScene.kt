@@ -769,6 +769,7 @@ class GameScene(val indigoApp: IndigoApplication) :
                         scaleY(0.6)
                         scaleX(0.6)}}
             }
+        if(indigoApp.networkMode) rootService.networkService.sendPlacedTile(tile,coordinates)
             rootService.playerTurnService.placeRouteTile(coordinates,tile)
 
     }
