@@ -25,6 +25,8 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var chosenCol : Int? = null
     private var chosenRow : Int? = null
 
+    private var tileToPlace : HexagonView? = null
+
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> =
         HexagonGrid(coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL, posX = 820, posY = 420)
@@ -668,9 +670,11 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     override fun refreshAfterPlaceTile(coordinate: Coordinate) {
-        chooseTile(chosenPlace!!, coordinate.column, coordinate.row)
-        rootService.gameService.changePlayer()
-        refreshAfterChangePlayer()
+        val col = coordinate.column
+        val row = coordinate.row
+        checkNotNull(tileToPlace){"keine Ahnung wie"}
+        hexagonGrid[col,row] = tileToPlace!! //wie kann es null sein
+        tileToPlace=null
     }
 
     /**
@@ -700,6 +704,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     /**
      * Creates Coordinate Object of chosenRow and chosenCol. Asserts if no space was chosen yet.
+     * tileToPlace saves the latest View of currentPlayers tile to place on the gameBoard
      * Calls placeRouteTile with the given tile and created Coordinate
      */
     private fun callPlaceTile(tile: Tile)
@@ -707,6 +712,27 @@ class GameScene(val indigoApp: IndigoApplication) :
         checkNotNull(chosenPlace){"Please, choose space on the board and press ✓"}
 
             val coordinates = Coordinate(chosenRow!!,chosenCol!!)
+            val currentPlayer = rootService.currentGame!!.currentPlayerIndex
+            when(currentPlayer)
+            {
+                0 -> { tileToPlace = HexagonView(visual = player1handTile.visual)
+                    .apply { resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)
+                    }}
+                1 -> { tileToPlace = HexagonView(visual =player2handTile.visual)
+                    .apply { resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)}}
+                2 -> { tileToPlace = HexagonView(visual =player3handTile.visual)
+                    .apply { resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)}}
+                3 -> { tileToPlace = HexagonView(visual =player4handTile.visual)
+                    .apply { resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)}}
+            }
             rootService.playerTurnService.placeRouteTile(coordinates,tile)
 
     }
@@ -724,6 +750,7 @@ class GameScene(val indigoApp: IndigoApplication) :
             chosenCol=null
 
         }
+
     }
 
 
