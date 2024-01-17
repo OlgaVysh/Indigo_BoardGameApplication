@@ -22,11 +22,11 @@ enum class TileType {
      */
     fun toImg() =
         when(this) {
-            Type_0 -> ImageVisual("tile0.png")
-            Type_1 -> ImageVisual("tile1.png")
-            Type_2 -> ImageVisual("tile2.png")
-            Type_3 -> ImageVisual("tile3.png")
-            Type_4 -> ImageVisual("tile4.png")
+            Type_0 -> ImageVisual("hextile0.png")
+            Type_1 -> ImageVisual("hextile1.png")
+            Type_2 -> ImageVisual("hextile2.png")
+            Type_3 -> ImageVisual("hextile3.png")
+            Type_4 -> ImageVisual("hextile4.png")
             Type_5 -> ImageVisual("gatetile1.png") //stimmt fuer nur ein gate da aufgeteilt in 6 Bilder
         }
 }

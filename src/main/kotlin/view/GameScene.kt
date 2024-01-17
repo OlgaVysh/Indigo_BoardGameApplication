@@ -21,6 +21,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
 
     private val rootService = indigoApp.rootService
+    //private var rotationDegree = 0
 
     //view von dem angeklickten Place am GameBoard (für Highlighten)
     private var chosenPlace : HexagonView? = null
@@ -386,12 +387,18 @@ class GameScene(val indigoApp: IndigoApplication) :
 
         for(i in 0 until count)
         {
-            leftButtons[i].onMouseClicked = {rootService.playerTurnService.rotateTileLeft(tile)}
+            leftButtons[i].onMouseClicked = {
+                rootService.playerTurnService.rotateTileLeft(tile)
+           //     rotationDegree -= 60
+            }
         }
 
         for(i in 0 until count)
         {
-            rightButtons[i].onMouseClicked = {rootService.playerTurnService.rotateTileRight(tile)}
+            rightButtons[i].onMouseClicked = {
+                rootService.playerTurnService.rotateTileRight(tile)
+            //    rotationDegree += 60
+            }
         }
 
         for(i in 0 until count)
@@ -487,6 +494,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     {
         val game = rootService.currentGame
         checkNotNull(game) { "No started game found." }
+      //  rotationDegree = 0
         val players = game.players
         setPlayers(players)
         initialzeGateTokens()
@@ -615,6 +623,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         val playerRotateLefts = listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
         val playerRotateCheck = listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
         val currentGame = indigoApp.rootService.currentGame
+       // rotationDegree = 0
         checkNotNull(currentGame)
         val currentPlayerIndex = currentGame.currentPlayerIndex
         for (i in playerHighlights.indices) {
@@ -708,8 +717,20 @@ class GameScene(val indigoApp: IndigoApplication) :
     override fun refreshAfterPlaceTile(coordinate: Coordinate, tile: Tile) {
         val col = coordinate.column
         val row = coordinate.row
+
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game) { "No game found."}
+
         checkNotNull(tileToPlace){"keine Ahnung wie"}
         hexagonGrid[col,row] = tileToPlace!! //wie kann es null sein
+    /*
+        if(rotationDegree != 0){
+            val posX = hexagonGrid[col, row]!!.actualPosX
+            val posY = hexagonGrid[col, row]!!.actualPosY
+            hexagonGrid[col, row]!!.rotate(rotationDegree)
+        }
+        rotationDegree = 0
+        */
         tileToPlace=null
     }
 
