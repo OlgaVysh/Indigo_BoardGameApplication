@@ -10,23 +10,26 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
 
 //these do not change during the course of a game
     /** these [Coordinate]s do not exist on the board but are used for distance calculation */
-    val allGates = listOf(Coordinate(3,-6),Coordinate(6,-3),Coordinate(3,3),
+    private val allGates = listOf(Coordinate(3,-6),Coordinate(6,-3),Coordinate(3,3),
         Coordinate(-3,6),Coordinate(-6,3),Coordinate(-3,-3))
     /** gates owned by the player */
-    val ownGates : List<Int> = findOwnGates()
+    private val ownGates : List<Int> = findOwnGates()
 
 //these all change and need to be updated each move
     /** all [Coordinate]s found to contain [Gem]s on their tiles */
-    var gemTiles: List<Coordinate> = findGems()
+    private var gemTiles: List<Coordinate> = listOf()
     /** Positions of [Gem]s on their respective Tile */
-    var gemPositions: List<Int> = findGemPositions()
+    private var gemPositions: List<Int> = listOf()
     /** all [Coordinate]s that extend the path of a [Gem] */
-    var moves: List<Coordinate> = findMoves()
+    private var moves: List<Coordinate> = listOf()
     /** Nearest Gate index and distance to gate for each gem */
-    var nearestGates: List<Pair<Int,Double>> = findNearestGate()
+    private var nearestGates: List<Pair<Int,Double>> = listOf()
     /** [List] of [Pair]s consisting of the best rotation for each move and the Distance delta for that move */
-    var moveValues: List<Pair<Int,Double>> = tryOrientations()
+    private var moveValues: List<Pair<Int,Double>> = listOf()
 
+    /**
+     * finds the best move for the strategy and places the tile accordingly
+     */
     fun makeMove() {
         val game = root.currentGame
         checkNotNull(game)
@@ -53,7 +56,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      * @return [List] of [Pair]s representing the best Orientation of the tile for each move
      * and the Distance delta the move causes
      */
-    fun tryOrientations(): List<Pair<Int,Double>>{
+    private fun tryOrientations(): List<Pair<Int,Double>>{
         val game = root.currentGame
         checkNotNull(game)
         val player = game.players[game.currentPlayerIndex]
@@ -87,7 +90,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      * @param index [Int] specifying which of the possible [Coordinate]s in [moves] should be regarded
      * @return [Int] representing the [Tile.gemEndPosition] after the simulated move
      */
-    fun calculateNewEndPosition(index: Int): Int{
+    private fun calculateNewEndPosition(index: Int): Int{
         val game = root.currentGame
         checkNotNull(game)
         val player = game.players[game.currentPlayerIndex]
@@ -105,7 +108,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
     /**
      * function for updating information needed for the AI to choose a move
      */
-    fun gatherInformation(){
+    private fun gatherInformation(){
         gemTiles = findGems()
         gemPositions = findGemPositions()
         moves = findMoves()
@@ -117,7 +120,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      *
      * @return [Pair] of Gate Index [Int] and distance [Double]
      */
-    fun findNearestGate() : List<Pair<Int,Double>>{
+    private fun findNearestGate() : List<Pair<Int,Double>>{
         val game = root.currentGame
         checkNotNull(game)
         val result : MutableList<Pair<Int,Double>> = mutableListOf()
@@ -145,7 +148,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      * @param gate [Int] representing the Gate to which the Distance is calculated
      * @return Distance between the [position] [Coordinate] and the [gate]
      */
-    fun calculateDistance(position : Coordinate, gate : Int) : Double {
+    private fun calculateDistance(position : Coordinate, gate : Int) : Double {
         return sqrt(
             ((position.row - allGates[gate].row) * (position.row - allGates[gate].row)
                     + (position.row - allGates[gate].column) * (position.row - allGates[gate].column)).toDouble()
@@ -156,7 +159,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      *
      * @return [List] of [Coordinate]s where a path can move an adjacent [Gem]
      */
-    fun findMoves() : List<Coordinate>{
+    private fun findMoves() : List<Coordinate>{
         val game = root.currentGame
         checkNotNull(game)
         val result : MutableList<Coordinate> = mutableListOf()
@@ -175,7 +178,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      * @param gemPos Position of [Gem] on the [Tile] at [gemTile]
      * @return [Coordinate] of neighbor adjacent to the [Gem] at [gemTile]
      */
-    fun findNeighbor(gemTile: Coordinate, gemPos: Int): Coordinate{
+    private fun findNeighbor(gemTile: Coordinate, gemPos: Int): Coordinate{
         require(gemPos in 0..5)
         return when(gemPos){
             0 -> Coordinate(gemTile.row,gemTile.column-1)
@@ -187,7 +190,13 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
             else -> gemTile     //cannot happen due to require() above
         }
     }
-    fun findGemPositions(): List<Int>{
+
+    /**
+     * finds the [Tile.gemEndPosition] for each gem on the [gemTiles]
+     *
+     * @return [List] of [Int] representing the [Tile.gemEndPosition]
+     */
+    private fun findGemPositions(): List<Int>{
         val game = root.currentGame
         checkNotNull(game)
         check(gemTiles.isNotEmpty())
@@ -204,7 +213,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      *
      * @return [List] of [Coordinate]s that have [Tile]s containing [Gem]s
      */
-    fun findGems() : List<Coordinate>{
+    private fun findGems() : List<Coordinate>{
         val game = root.currentGame
         checkNotNull(game)
         val result : MutableList<Coordinate> = mutableListOf()
@@ -222,7 +231,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      *
      * @return [List] of [Int] corresponding to the indices of gates around the board
      */
-    fun findOwnGates() : List<Int>{
+    private fun findOwnGates() : List<Int>{
         val game = root.currentGame
         checkNotNull(game)
         val player = game.players[game.currentPlayerIndex]
