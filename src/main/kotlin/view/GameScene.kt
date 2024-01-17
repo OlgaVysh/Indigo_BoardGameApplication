@@ -5,6 +5,8 @@ import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.components.uicomponents.Button
 import tools.aqua.bgw.core.BoardGameScene
+import tools.aqua.bgw.style.BorderColor
+import tools.aqua.bgw.style.BorderWidth
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.visual.Visual
@@ -19,6 +21,9 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     private val rootService = indigoApp.rootService
 
+    private var chosenTile : HexagonView? = null
+    private var chosenCol : Int? = null
+    private var chosenRow : Int? = null
 
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> =
@@ -380,10 +385,10 @@ class GameScene(val indigoApp: IndigoApplication) :
             rightButtons[i].onMouseClicked = {rootService.playerTurnService.rotateTileRight(tile)}
         }
 
-        /*for(i in 0 until count)
+        for(i in 0 until count)
         {
-            checkButtons[i].onMouseClicked = {player1turnHighlight.isVisible = !player1turnHighlight.isVisible}
-        }*/
+            checkButtons[i].onMouseClicked = {callPlaceTile(tile)}
+        }
     }
 
     /**
@@ -393,7 +398,10 @@ class GameScene(val indigoApp: IndigoApplication) :
         // Populate the hexagonal grid with HexagonView instances
         for (row in -4..4) {
             for (col in -4..4) {
-                val hexagon = HexagonView(visual = ImageVisual("plaintile.png"))
+                val hexagon = HexagonView(visual = ImageVisual("plaintile.png")).apply{
+                onMouseClicked = {
+                    chooseTile(this, col, row)}}
+
                 hexagon.resize(width = 110, height = 110)
                 hexagon.scaleY(0.6)
                 hexagon.scaleX(0.6)
@@ -643,14 +651,35 @@ class GameScene(val indigoApp: IndigoApplication) :
         indigoApp.showMenuScene(indigoApp.endGameMenuScene)
     }
 
-    override fun refreshAfterUndo() {
+    /**
+     * Highlights the clicked tile and sets [chosenTile] to the currently chosen tile
+     * Saves the coordinates of the chosen tile in [chosenCol] and [chosenRow]
+     */
+    private fun chooseTile(tile : HexagonView, col : Int, row: Int)
+    {
+        if(chosenTile!=null) chosenTile!!.visual.borderWidth= BorderWidth(0)
 
-        }
+        tile.apply{
+            visual.borderWidth = BorderWidth(5)
+            visual.borderColor = BorderColor.RED}
 
+        chosenTile = tile
+        chosenRow = row
+        chosenCol = col
 
-    override fun refreshAfterRedo() {
-
-        }
     }
 
+    /**
+     * Creates Coordinate Object of chosenRow and chosenCol. Asserts if no space was chosen yet.
+     * Calls placeRouteTile with the given tile and created Coordinate
+     */
+    private fun callPlaceTile(tile: Tile)
+    {
+        checkNotNull(chosenTile){"Please, choose space on the board and press ✓"}
 
+            val coordinates = Coordinate(chosenRow!!,chosenCol!!)
+            rootService.playerTurnService.placeRouteTile(coordinates,tile)
+
+    }
+
+}
