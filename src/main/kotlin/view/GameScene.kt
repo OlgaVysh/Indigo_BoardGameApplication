@@ -2,7 +2,6 @@ package view
 
 import entity.*
 import entity.Coordinate
-import entity.TileType
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.components.uicomponents.Button

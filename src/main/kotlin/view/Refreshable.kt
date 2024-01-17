@@ -1,7 +1,6 @@
 package view
 
 import entity.Coordinate
-import entity.TileType
 import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
 
 

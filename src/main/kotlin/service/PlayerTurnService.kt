@@ -91,7 +91,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         tile.edges.addAll(tile.edges.subList(0, 1))
         // Remove the original first edge
         tile.edges.removeAll(tile.edges.subList(0, 1))
-        onAllRefreshables { refreshAfterLeftRotation(game!!.currentPlayerIndex) }
+        onAllRefreshables { refreshAfterLeftRotation(game.currentPlayerIndex) }
     }
 
     /**
@@ -106,7 +106,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
         // Remove the original last edge
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
-        onAllRefreshables { refreshAfterRightRotation(game!!.currentPlayerIndex) }
+        onAllRefreshables { refreshAfterRightRotation(game.currentPlayerIndex) }
     }
 
     /**
