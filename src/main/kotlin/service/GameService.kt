@@ -108,37 +108,41 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * Checks if placing a tile at the specified coordinate is valid.
      * @param space The coordinate where the tile is to be placed.
      * @param tile The tile to be placed.
+     * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      * @return True if placement is valid, false otherwise.
      * @throws Exception if the space is already occupied or the tile blocks an exit.
      */
-    fun checkPlacement(space: Coordinate, tile: Tile): Boolean {
+    fun checkPlacement(space: Coordinate, tile: Tile, isAiCalled : Boolean = false): Boolean {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (space == Coordinate(0, 0)) {
-            onAllRefreshables { refreshAfterCheckPlacement() }
+            if (!isAiCalled) onAllRefreshables { refreshAfterCheckPlacement() }
             return false
         }
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
 
-            onAllRefreshables { refreshAfterCheckPlacement() }
-            throw Exception("this place is occupied")
+            if (!isAiCalled){
+                onAllRefreshables { refreshAfterCheckPlacement()}
+                throw Exception("this place is occupied")
+            }else return false
 
         }
         // Check if the space has an exit
         return if (!coordinateHasExit(space)) {
-            placeTile(space, tile)
+            if (!isAiCalled) placeTile(space, tile)
             true
 
         } else {
             // Check if the tile blocks an exit
             return if (!tileBlocksExit(space, tile)) {
-                placeTile(space, tile)
+                if (!isAiCalled) placeTile(space, tile)
                 true
             } else {
-
-                onAllRefreshables { refreshAfterCheckPlacement() }
-                throw Exception("tile blocks exit, please rotate Tile")
+                if (!isAiCalled){
+                    onAllRefreshables { refreshAfterCheckPlacement()}
+                    throw Exception("tile blocks exit, please rotate Tile")
+                }else return false
             }
         }
     }
