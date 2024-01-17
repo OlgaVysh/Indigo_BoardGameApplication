@@ -21,10 +21,14 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     private val rootService = indigoApp.rootService
 
+    //view von dem angeklickten Place am GameBoard (für Highlighten)
     private var chosenPlace : HexagonView? = null
+
+    //coordinaten vom angeklicktem Place am GameBoard(zum Platzieren)
     private var chosenCol : Int? = null
     private var chosenRow : Int? = null
 
+    //View von dem Tile vom currentPlayer (zum Platzieren)
     private var tileToPlace : HexagonView? = null
 
     // Hexagonal grid for the game board
