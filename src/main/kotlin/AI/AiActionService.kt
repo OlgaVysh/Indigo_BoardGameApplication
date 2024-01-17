@@ -21,7 +21,8 @@ class AiActionService(private val rootService: RootService) : AbstractRefreshing
             // Get the tile from the player's hand
             val tile = currentPlayer.handTile
 
-            if (tile != null) {
+            if (tile != null && gameService.checkPlacementAI(coordinate,tile)) {
+
                 // Place the tile on the game board
                 gameService.placeTile(Coordinate(coordinate.row, coordinate.column), tile)
 
