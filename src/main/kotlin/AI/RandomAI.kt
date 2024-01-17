@@ -1,20 +1,21 @@
-package service
+package AI
 
 import entity.Coordinate
 import entity.Indigo
 import entity.Tile
+import service.RootService
 
 /**
- * The class [AIService] provides functionality for the AI player
+ * The class [RandomAI] provides functionality for the AI player
  *
  * @property rootService The [RootService]
  */
-class AIService(val rootService: RootService) {
+class RandomAI(val rootService: RootService) {
 
     /**
      * Makes a random turn for the AI player.
      */
-    fun makeRandomTurn() {
+    fun makeMove() {
 
         // Get the current game state
         val currentGame = rootService.currentGame
@@ -26,7 +27,8 @@ class AIService(val rootService: RootService) {
         // If there are available moves, make a random move
         if (availableMoves.isNotEmpty()) {
             val randomMove = availableMoves.random()
-            val (coordinate, tile) = randomMove
+            val coordinate = randomMove.first
+            val tile = randomMove.second
 
             // Place the tile at the random coordinate
             rootService.gameService.placeTile(coordinate, tile)
