@@ -1,8 +1,8 @@
 package service
-/*import entity.*
+import entity.*
 import java.io.File
 import kotlin.test.*
-
+/*
 /**
  * This class contains test cases for the [GameService.saveGame]  functions.
  * */
@@ -10,8 +10,7 @@ class SavegameTest {
     private lateinit var gameService: GameService
     private lateinit var playerTurnService: PlayerTurnService
     private lateinit var rootService: RootService
-    /**     *
-     * Sets up the necessary services and initializes them before each test case.     **/
+
     @BeforeTest
     fun setUp() {
         rootService = RootService()
