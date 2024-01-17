@@ -409,11 +409,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val playerSize = currentGame.players.size
         val currentPlayerIndex = currentGame.currentPlayerIndex
 
+        currentGame.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
+
         // It's AI's turn
         if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
             val currentCPUPlayer = currentGame.players[currentGame.currentPlayerIndex] as? CPUPlayer
+            rootService.aiActionService.AiMove(currentCPUPlayer!!.difficulty)
 
-            if (currentCPUPlayer!!.difficulty.equals("easy")) {
+            /**if (currentCPUPlayer!!.difficulty.equals("easy")) {
                 AIService(rootService).makeRandomTurn()
             } else {
 
@@ -440,9 +443,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 // Eventually placing the Tile
                 PlayerTurnService(rootService).placeRouteTile(resultCoordinate!!, currentCPUPlayer.handTile!!)
             }
+             */
         }
-
-        currentGame.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
 
         onAllRefreshables { refreshAfterChangePlayer() }
     }
