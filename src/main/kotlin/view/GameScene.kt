@@ -349,6 +349,44 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     /**
+     * invokes player actions to the buttons
+     */
+    private fun invokeButtons(players : List<Player>)
+    {
+        val count = players.size
+
+        val currentGame = indigoApp.rootService.currentGame
+        checkNotNull(currentGame)
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+
+        val tile = players[currentPlayerIndex].handTile!!
+
+        val leftButtons =
+           listOf(player1leftButton,player2leftButton,player3leftButton,player4leftButton)
+
+        val rightButtons =
+            listOf(player1rightButton,player2rightButton,player3rightButton,player4rightButton)
+
+        val checkButtons =
+            listOf(player1checkButton,player2checkButton,player3checkButton,player4checkButton)
+
+        for(i in 0 until count)
+        {
+            leftButtons[i].onMouseClicked = {rootService.playerTurnService.rotateTileLeft(tile)}
+        }
+
+        for(i in 0 until count)
+        {
+            rightButtons[i].onMouseClicked = {rootService.playerTurnService.rotateTileRight(tile)}
+        }
+
+        /*for(i in 0 until count)
+        {
+            checkButtons[i].onMouseClicked = {player1turnHighlight.isVisible = !player1turnHighlight.isVisible}
+        }*/
+    }
+
+    /**
      * Initialize game board grid
      */
     private fun initializeGameBoardGrid() {
@@ -428,6 +466,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         val players = game.players
         setPlayers(players)
         initialzeGateTokens()
+        invokeButtons(players)
     }
 
     /**
