@@ -1,6 +1,7 @@
 package view
 
 import entity.Coordinate
+import entity.TileType
 import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
 
 
@@ -57,12 +58,12 @@ interface Refreshable {
     /**
      * Refreshes the state after left rotating tile.
      */
-    fun refreshAfterLeftRotation() {}
+    fun refreshAfterLeftRotation(currentPlayerIndex: Int) {}
 
     /**
      * Refreshes the state after right rotating tile.
      */
-    fun refreshAfterRightRotation() {}
+    fun refreshAfterRightRotation(currentPlayerIndex: Int) {}
 
     /**
      * Refreshes the state after redoing a game action.

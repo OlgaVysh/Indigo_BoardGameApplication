@@ -1,6 +1,8 @@
 package view
 
 import entity.*
+import entity.Coordinate
+import entity.TileType
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.components.uicomponents.Button
@@ -663,6 +665,30 @@ class GameScene(val indigoApp: IndigoApplication) :
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found."}
         indigoApp.showMenuScene(indigoApp.endGameMenuScene)
+    }
+    /**
+     *  refreshes the GameScene after PlayerTurn rotateTileLeft was called
+     *
+     *  @throws IllegalStateException if no game is running
+     */
+    override fun refreshAfterLeftRotation(currentPlayerIndex: Int) {
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game) { "No game found."}
+        val handTileLabels =
+                listOf(player1handTile, player2handTile, player3handTile, player4handTile)
+        handTileLabels[currentPlayerIndex].rotate(-60)
+    }
+    /**
+     *  refreshes the GameScene after PlayerTurn rotateTileRight was called
+     *
+     *  @throws IllegalStateException if no game is running
+     */
+    override fun refreshAfterRightRotation(currentPlayerIndex: Int) {
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game) { "No game found."}
+        val handTileLabels =
+                listOf(player1handTile, player2handTile, player3handTile, player4handTile)
+        handTileLabels[currentPlayerIndex].rotate(60)
     }
 
     override fun refreshAfterRedo() {

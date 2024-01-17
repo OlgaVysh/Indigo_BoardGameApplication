@@ -82,23 +82,31 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
     /**
      * Rotates the tile to the left.
      * @param tile The tile to be rotated.
+     * @throws IllegalStateException if no game is running
      */
     fun rotateTileLeft(tile: Tile) {    // Add the first edge to the end of the list
+        val game = rootService.currentGame
+        checkNotNull(game) { "No game found."}
+
         tile.edges.addAll(tile.edges.subList(0, 1))
         // Remove the original first edge
         tile.edges.removeAll(tile.edges.subList(0, 1))
-        onAllRefreshables { refreshAfterLeftRotation() }
+        onAllRefreshables { refreshAfterLeftRotation(game!!.currentPlayerIndex) }
     }
 
     /**
      * Rotates the tile to the right.
      * @param tile The tile to be rotated.
+     * @throws IllegalStateException if no game is running
      */
     fun rotateTileRight(tile: Tile) {    // Add the last edge to the beginning of the list
+        val game = rootService.currentGame
+        checkNotNull(game) { "No game found."}
+
         tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
         // Remove the original last edge
         tile.edges.subList(tile.edges.size - 1, tile.edges.size).clear()
-        onAllRefreshables { refreshAfterRightRotation() }
+        onAllRefreshables { refreshAfterRightRotation(game!!.currentPlayerIndex) }
     }
 
     /**
