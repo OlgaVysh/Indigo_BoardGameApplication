@@ -36,7 +36,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         if (random) {
             players.shuffle()
         }
-
+            require(players.size in 2..4)
         val gameBoard = GameBoard()
         val allTiles = initializeTiles()
         val gems = initializeGems()
@@ -121,7 +121,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
 
-            onAllRefreshables { refreshAfterCheckPlacement()}
+            onAllRefreshables { refreshAfterCheckPlacement() }
             throw Exception("this place is occupied")
 
         }
@@ -137,12 +137,11 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 true
             } else {
 
-                onAllRefreshables { refreshAfterCheckPlacement()}
+                onAllRefreshables { refreshAfterCheckPlacement() }
                 throw Exception("tile blocks exit, please rotate Tile")
             }
         }
     }
-
 
 
     //for AI returning false instead of throwing exception
@@ -210,7 +209,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
-        onAllRefreshables { refreshAfterPlaceTile(space) }
+        onAllRefreshables { refreshAfterPlaceTile(space, tile) }
     }
 
     /**
@@ -410,10 +409,9 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
             val currentCPUPlayer = currentGame.players[currentGame.currentPlayerIndex] as? CPUPlayer
 
-            if(currentCPUPlayer!!.difficulty.equals("easy")){
+            if (currentCPUPlayer!!.difficulty.equals("easy")) {
                 AIService(rootService).makeRandomTurn()
-            }
-            else {
+            } else {
 
                 val timeout = 10000L
                 val timer = Timer()
@@ -421,7 +419,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 var resultCoordinate: Coordinate? = null
 
                 val thread = thread {
-                    resultCoordinate= MCTS(rootService, currentPlayerIndex).findNextMove()
+                    resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMove()
                     timer.cancel() // Cancel the timer if the task completes within the timeout
                 }
 
@@ -436,7 +434,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                     resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMoveLimited(1000)
                 }
                 // Eventually placing the Tile
-                PlayerTurnService(rootService).placeRouteTile(resultCoordinate!!,currentCPUPlayer.handTile!!)
+                PlayerTurnService(rootService).placeRouteTile(resultCoordinate!!, currentCPUPlayer.handTile!!)
             }
         }
 
@@ -536,13 +534,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         checkNotNull(game)
         if (game.routeTiles.isEmpty()) {
             game.players[game.currentPlayerIndex].handTile = null
-            return
+        } else {
+            val newHandTile = game.routeTiles.removeAt(0)
+            val currentPlayerIndex = game.currentPlayerIndex
+            game.settings.players[currentPlayerIndex].handTile = newHandTile
         }
-        val newHandTile = game.routeTiles.removeFirst()
-        game.players[game.currentPlayerIndex].handTile = newHandTile
         onAllRefreshables { refreshAfterDistributeNewTile() }
     }
-
     /**
      * Initializes and returns a MutableList of Tile objects representing the game's tiles.
      *
@@ -564,7 +562,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                             Edge.values()[(Edge.values().size + gemPos - 1) % 6],
                             Edge.values()[(Edge.values().size + gemPos + 1) % 6]
                         )
-                    ),TileType.Type_5, mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
+                    ), TileType.Type_5, mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
                 )
             )
         }
@@ -573,35 +571,35 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         var path2 = Pair(Edge.ONE, Edge.FOUR)
         var path3 = Pair(Edge.THREE, Edge.FIVE)
         for (i in 0 until 14) {
-            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_0))
+            allTiles.add(Tile(listOf(path1, path2, path3), TileType.Type_0))
         }
         //TypeID 1 Route Tiles are added
         path1 = Pair(Edge.TWO, Edge.FIVE)
         path2 = Pair(Edge.ONE, Edge.FOUR)
         path3 = Pair(Edge.ZERO, Edge.THREE)
         for (i in 0 until 6) {
-            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_1))
+            allTiles.add(Tile(listOf(path1, path2, path3), TileType.Type_1))
         }
         //TypeID 2 Route Tiles are added
         path1 = Pair(Edge.ZERO, Edge.FIVE)
         path2 = Pair(Edge.ONE, Edge.FOUR)
         path3 = Pair(Edge.TWO, Edge.THREE)
         for (i in 0 until 14) {
-            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_2))
+            allTiles.add(Tile(listOf(path1, path2, path3), TileType.Type_2))
         }
         //TypeID 3 Route Tiles are added
         path1 = Pair(Edge.ZERO, Edge.FIVE)
         path2 = Pair(Edge.ONE, Edge.THREE)
         path3 = Pair(Edge.TWO, Edge.FOUR)
         for (i in 0 until 14) {
-            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_3))
+            allTiles.add(Tile(listOf(path1, path2, path3), TileType.Type_3))
         }
         //TypeID 4 Route Tiles are added
         path1 = Pair(Edge.ZERO, Edge.FIVE)
         path2 = Pair(Edge.ONE, Edge.TWO)
         path3 = Pair(Edge.THREE, Edge.FOUR)
         for (i in 0 until 6) {
-            allTiles.add(Tile(listOf(path1, path2, path3),TileType.Type_4))
+            allTiles.add(Tile(listOf(path1, path2, path3), TileType.Type_4))
         }
         return allTiles
     }

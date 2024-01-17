@@ -34,7 +34,6 @@ class GateMenuScene(val indigoApp: IndigoApplication) :
                 else
                 indigoApp.rootService.networkService.startNewHostedGame(players, indigoApp.notSharedGates, isRandom)
             }
-            players.clear()
             if(indigoApp.aiGame) indigoApp.showMenuScene(indigoApp.aiMenuScene)
             else { indigoApp.showGameScene(indigoApp.gameScene)
             indigoApp.hideMenuScene()}
@@ -55,7 +54,6 @@ class GateMenuScene(val indigoApp: IndigoApplication) :
             } else {
                 indigoApp.rootService.networkService.startNewHostedGame(players, true, isRandom)
             }
-            players.clear()
             if(indigoApp.aiGame) indigoApp.showMenuScene(indigoApp.aiMenuScene)
             else { indigoApp.showGameScene(indigoApp.gameScene)
                 indigoApp.hideMenuScene()}

@@ -56,7 +56,6 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                     val notSharedGates = indigoApp.notSharedGates
                     val isRandom = indigoApp.isRandom
                     indigoApp.rootService.networkService.startNewHostedGame(players, notSharedGates, isRandom)
-                    players.clear()
                 }
             }
         }

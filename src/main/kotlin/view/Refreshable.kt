@@ -1,6 +1,7 @@
 package view
 
 import entity.Coordinate
+import entity.Tile
 import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
 
 
@@ -37,7 +38,7 @@ interface Refreshable {
     /**
      * Refreshes the state after placing game tile.
      */
-    fun refreshAfterPlaceTile(coordinate: Coordinate) {}
+    fun refreshAfterPlaceTile(coordinate: Coordinate, tile: Tile) {}
 
     /**
      * Refreshes the state after moving gems.

@@ -692,18 +692,20 @@ class GameScene(val indigoApp: IndigoApplication) :
         handTileLabels[currentPlayerIndex].rotate(60)
     }
 
-    override fun refreshAfterRedo() {
+    /*override fun refreshAfterRedo() {
         val coordinate = chosenCol?.let { chosenRow?.let { it1 -> Coordinate(it, it1) } }
         if (coordinate != null) {
             refreshAfterPlaceTile(coordinate)
         }
     }
+    */
 
-    override fun refreshAfterUndo() {
+    /*override fun refreshAfterUndo() {
 
     }
+    */
 
-    override fun refreshAfterPlaceTile(coordinate: Coordinate) {
+    override fun refreshAfterPlaceTile(coordinate: Coordinate, tile: Tile) {
         val col = coordinate.column
         val row = coordinate.row
         checkNotNull(tileToPlace){"keine Ahnung wie"}
