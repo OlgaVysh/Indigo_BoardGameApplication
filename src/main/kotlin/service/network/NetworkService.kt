@@ -234,6 +234,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
             rootService.playerTurnService.rotateTileRight(handTile)
         }
         val space = Coordinate(message.rcoordinate, message.qcoordinate)
+        onAllRefreshables { refreshAfterReceivedTile() }
         rootService.playerTurnService.placeRouteTile(space, handTile)
         currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)

@@ -141,4 +141,9 @@ interface Refreshable {
      *  updated the gui with corrected button showing
      */
     fun refreshAfterNetworkPlayerTurn(){}
+
+    /**
+     * updated give the gui the correct handTile for variable PlaceTile
+     */
+    fun refreshAfterReceivedTile() {}
 }

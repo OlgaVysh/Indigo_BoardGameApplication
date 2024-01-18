@@ -1,4 +1,5 @@
 package entity
+
 /**
  * Enumeration of gem colors.
  *

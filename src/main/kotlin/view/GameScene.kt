@@ -25,14 +25,14 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var rotationDegree = 0
 
     //view von dem angeklickten Place am GameBoard (für Highlighten)
-    private var chosenPlace : HexagonView? = null
+    private var chosenPlace: HexagonView? = null
 
     //coordinaten vom angeklicktem Place am GameBoard(zum Platzieren)
-    private var chosenCol : Int? = null
-    private var chosenRow : Int? = null
+    private var chosenCol: Int? = null
+    private var chosenRow: Int? = null
 
     //View von dem Tile vom currentPlayer (zum Platzieren)
-    private var tileToPlace : HexagonView? = null
+    private var tileToPlace: HexagonView? = null
 
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> =
@@ -44,17 +44,21 @@ class GameScene(val indigoApp: IndigoApplication) :
     // undoButton component
     private val undoButton =
         view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40).apply {
-            if (indigoApp.networkMode) {isVisible = false
-            isDisabled = true}
-            onMouseClicked= {indigoApp.rootService.playerTurnService.undo()}
+            if (indigoApp.networkMode) {
+                isVisible = false
+                isDisabled = true
+            }
+            onMouseClicked = { indigoApp.rootService.playerTurnService.undo() }
         }
 
     // redoButton component
     private val redoButton =
         view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40).apply {
-            if (indigoApp.networkMode){ isVisible = false
-            isDisabled = true}
-            onMouseClicked= {indigoApp.rootService.playerTurnService.redo()}
+            if (indigoApp.networkMode) {
+                isVisible = false
+                isDisabled = true
+            }
+            onMouseClicked = { indigoApp.rootService.playerTurnService.redo() }
         }
 
     // saveButton component
@@ -367,8 +371,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      * invokes player actions to the buttons
      */
-    private fun invokeButtons(players : List<Player>)
-    {
+    private fun invokeButtons(players: List<Player>) {
         val count = players.size
 
         val currentGame = indigoApp.rootService.currentGame
@@ -378,33 +381,30 @@ class GameScene(val indigoApp: IndigoApplication) :
         val tile = players[currentPlayerIndex].handTile!!
 
         val leftButtons =
-           listOf(player1leftButton,player2leftButton,player3leftButton,player4leftButton)
+            listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
 
         val rightButtons =
-            listOf(player1rightButton,player2rightButton,player3rightButton,player4rightButton)
+            listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
 
         val checkButtons =
-            listOf(player1checkButton,player2checkButton,player3checkButton,player4checkButton)
+            listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
 
-        for(i in 0 until count)
-        {
+        for (i in 0 until count) {
             leftButtons[i].onMouseClicked = {
                 rootService.playerTurnService.rotateTileLeft(tile)
                 rotationDegree -= 60
             }
         }
 
-        for(i in 0 until count)
-        {
+        for (i in 0 until count) {
             rightButtons[i].onMouseClicked = {
                 rootService.playerTurnService.rotateTileRight(tile)
                 rotationDegree += 60
             }
         }
 
-        for(i in 0 until count)
-        {
-            checkButtons[i].onMouseClicked = {callPlaceTile(tile)}
+        for (i in 0 until count) {
+            checkButtons[i].onMouseClicked = { callPlaceTile(tile) }
         }
     }
 
@@ -415,9 +415,11 @@ class GameScene(val indigoApp: IndigoApplication) :
         // Populate the hexagonal grid with HexagonView instances
         for (row in -4..4) {
             for (col in -4..4) {
-                val hexagon = HexagonView(visual = ImageVisual("plaintile.png")).apply{
-                onMouseClicked = {
-                    chooseTile(this, col, row)}}
+                val hexagon = HexagonView(visual = ImageVisual("plaintile.png")).apply {
+                    onMouseClicked = {
+                        chooseTile(this, col, row)
+                    }
+                }
 
                 hexagon.resize(width = 110, height = 110)
                 hexagon.scaleY(0.6)
@@ -428,27 +430,41 @@ class GameScene(val indigoApp: IndigoApplication) :
         // Rotate the hexagonal grid by -30 degrees
         hexagonGrid.rotate(-30)
         // Middle Tile
-        hexagonGrid[0, 0]?.apply { visual = ImageVisual("middletile.png")
-        isDisabled = true}
+        hexagonGrid[0, 0]?.apply {
+            visual = ImageVisual("middletile.png")
+            isDisabled = true
+        }
         // Gate Tiles
         //1
-        hexagonGrid[0, -4]?.apply{visual = ImageVisual("gatetile1.png")
-            isDisabled = true}
+        hexagonGrid[0, -4]?.apply {
+            visual = ImageVisual("gatetile1.png")
+            isDisabled = true
+        }
         //2
-        hexagonGrid[4, -4]?.apply{visual = ImageVisual("gatetile2.png")
-            isDisabled = true}
+        hexagonGrid[4, -4]?.apply {
+            visual = ImageVisual("gatetile2.png")
+            isDisabled = true
+        }
         //3
-        hexagonGrid[4, 0]?.apply{visual = ImageVisual("gatetile3.png")
-            isDisabled = true}
+        hexagonGrid[4, 0]?.apply {
+            visual = ImageVisual("gatetile3.png")
+            isDisabled = true
+        }
         //4
-        hexagonGrid[0, 4]?.apply{visual = ImageVisual("gatetile4.png")
-            isDisabled = true}
+        hexagonGrid[0, 4]?.apply {
+            visual = ImageVisual("gatetile4.png")
+            isDisabled = true
+        }
         //5
-        hexagonGrid[-4, 4]?.apply{visual = ImageVisual("gatetile5.png")
-            isDisabled = true}
+        hexagonGrid[-4, 4]?.apply {
+            visual = ImageVisual("gatetile5.png")
+            isDisabled = true
+        }
         //6
-        hexagonGrid[-4, 0]?.apply{visual = ImageVisual("gatetile6.png")
-            isDisabled = true}
+        hexagonGrid[-4, 0]?.apply {
+            visual = ImageVisual("gatetile6.png")
+            isDisabled = true
+        }
 
 
         //hides the unused hexagon components left and right
@@ -491,8 +507,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      * Initializes the GUI after a new game was created. Creates views of players, their tiles and gates
      */
-    override fun refreshAfterStartGame()
-    {
+    override fun refreshAfterStartGame() {
         val game = rootService.currentGame
         checkNotNull(game) { "No started game found." }
         rotationDegree = 0
@@ -505,12 +520,10 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      * For every player set a view of name and token color and disable superfluous players views
      */
-    private fun setPlayers(players : List<Player>)
-    {
+    private fun setPlayers(players: List<Player>) {
         val count = players.size
 
-        for (n in 0 until count)
-        {
+        for (n in 0 until count) {
 
             when (n) {
                 0 -> {
@@ -536,61 +549,105 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
 
 
-        for (a in count until 4)
-        {
-            when(a)
-            {
+        for (a in count until 4) {
+            when (a) {
                 2 -> {
-                    player3Label.apply {isVisible = false}
-                    player3ScoreLabel.apply { isDisabled = true
-                        isVisible = false}
-                    player3Token.apply { isDisabled = true
-                        isVisible = false}
-                    player3greenGem.apply { isDisabled = true
-                        isVisible = false}
-                    player3greenGemCounter.apply { isDisabled = true
-                        isVisible = false}
-                    player3yellowGem.apply { isDisabled = true
-                        isVisible = false}
-                    player3yellowGemCounter.apply { isDisabled = true
-                        isVisible = false}
-                    player3turnHighlight.apply { isDisabled = true
-                        isVisible = false}
-                    player3handTile.apply { isDisabled = true
-                        isVisible = false}
-                    player3leftButton.apply { isDisabled = true
-                        isVisible = false}
-                    player3rightButton.apply { isDisabled = true
-                        isVisible = false}
-                    player3checkButton.apply { isDisabled = true
-                        isVisible = false}
+                    player3Label.apply { isVisible = false }
+                    player3ScoreLabel.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3Token.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3greenGem.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3greenGemCounter.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3yellowGem.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3yellowGemCounter.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3turnHighlight.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3handTile.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3leftButton.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3rightButton.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player3checkButton.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
                 }
 
                 3 -> {
-                    player4Label.apply { isDisabled = true
-                        isVisible = false}
-                    player4ScoreLabel.apply { isDisabled = true
-                        isVisible = false}
-                    player4Token.apply { isDisabled = true
-                        isVisible = false}
-                    player4greenGem.apply { isDisabled = true
-                        isVisible = false}
-                    player4greenGemCounter.apply { isDisabled = true
-                        isVisible = false}
-                    player4yellowGem.apply { isDisabled = true
-                        isVisible = false}
-                    player4yellowGemCounter.apply { isDisabled = true
-                        isVisible = false}
-                    player4turnHighlight.apply { isDisabled = true
-                        isVisible = false}
-                    player4handTile.apply { isDisabled = true
-                        isVisible = false}
-                    player4leftButton.apply { isDisabled = true
-                        isVisible = false}
-                    player4rightButton.apply { isDisabled = true
-                        isVisible = false}
-                    player4checkButton.apply { isDisabled = true
-                        isVisible = false}
+                    player4Label.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4ScoreLabel.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4Token.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4greenGem.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4greenGemCounter.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4yellowGem.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4yellowGemCounter.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4turnHighlight.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4handTile.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4leftButton.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4rightButton.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
+                    player4checkButton.apply {
+                        isDisabled = true
+                        isVisible = false
+                    }
                 }
             }
         }
@@ -601,16 +658,15 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      * Sets Token-Label with an Image of the given TokenColor
      */
-    private fun getGem(label : view.components.Label, color: TokenColor)
-    {
-        when(color) {
-            TokenColor.WHITE -> label.apply{visual = ImageVisual("tokenwhite.png") }
+    private fun getGem(label: view.components.Label, color: TokenColor) {
+        when (color) {
+            TokenColor.WHITE -> label.apply { visual = ImageVisual("tokenwhite.png") }
 
-            TokenColor.PURPLE -> label.apply{visual = ImageVisual("tokenpurple.png") }
+            TokenColor.PURPLE -> label.apply { visual = ImageVisual("tokenpurple.png") }
 
-            TokenColor.BLUE -> label.apply{visual = ImageVisual("tokenblue.png") }
+            TokenColor.BLUE -> label.apply { visual = ImageVisual("tokenblue.png") }
 
-            TokenColor.RED -> label.apply{visual = ImageVisual("tokenred.png") }
+            TokenColor.RED -> label.apply { visual = ImageVisual("tokenred.png") }
         }
     }
 
@@ -665,11 +721,12 @@ class GameScene(val indigoApp: IndigoApplication) :
         } else {
             playerTile[currentIndex].visual = currentHandTile.type.toImg()
             playerTile[currentIndex].isVisible = true
-            for (tile in playerTile){
+            for (tile in playerTile) {
                 tile.rotationProperty.value = 30.0
             }
         }
     }
+
     /**
      *  refreshes the GameScene after EndGame was called
      *
@@ -677,9 +734,10 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     override fun refreshAfterEndGame() {
         val game = indigoApp.rootService.currentGame
-        checkNotNull(game) { "No game found."}
+        checkNotNull(game) { "No game found." }
         indigoApp.showMenuScene(indigoApp.endGameMenuScene)
     }
+
     /**
      *  refreshes the GameScene after PlayerTurn rotateTileLeft was called
      *
@@ -687,11 +745,12 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     override fun refreshAfterLeftRotation(currentPlayerIndex: Int) {
         val game = indigoApp.rootService.currentGame
-        checkNotNull(game) { "No game found."}
+        checkNotNull(game) { "No game found." }
         val handTileLabels =
-                listOf(player1handTile, player2handTile, player3handTile, player4handTile)
+            listOf(player1handTile, player2handTile, player3handTile, player4handTile)
         handTileLabels[currentPlayerIndex].rotate(-60)
     }
+
     /**
      *  refreshes the GameScene after PlayerTurn rotateTileRight was called
      *
@@ -699,9 +758,9 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     override fun refreshAfterRightRotation(currentPlayerIndex: Int) {
         val game = indigoApp.rootService.currentGame
-        checkNotNull(game) { "No game found."}
+        checkNotNull(game) { "No game found." }
         val handTileLabels =
-                listOf(player1handTile, player2handTile, player3handTile, player4handTile)
+            listOf(player1handTile, player2handTile, player3handTile, player4handTile)
         handTileLabels[currentPlayerIndex].rotate(60)
     }
 
@@ -729,15 +788,15 @@ class GameScene(val indigoApp: IndigoApplication) :
         val row = coordinate.row
 
         val game = indigoApp.rootService.currentGame
-        checkNotNull(game) { "No game found."}
+        checkNotNull(game) { "No game found." }
 
-        checkNotNull(tileToPlace){"keine Ahnung wie"}
+        checkNotNull(tileToPlace) { "keine Ahnung wie" }
         tileToPlace!!.rotate(rotationDegree)
-        hexagonGrid[col,row] = tileToPlace!! //wie kann es null sein
+        hexagonGrid[col, row] = tileToPlace!! //wie kann es null sein
 
         rotationDegree = 0
 
-        tileToPlace=null
+        tileToPlace = null
     }
 
     /**
@@ -751,13 +810,13 @@ class GameScene(val indigoApp: IndigoApplication) :
      * Highlights the clicked tile and sets [chosenPlace] to the currently chosen space
      * Saves the coordinates of the chosen space in [chosenCol] and [chosenRow]
      */
-    private fun chooseTile(tile : HexagonView, col : Int, row: Int)
-    {
-        if(chosenPlace!=null) chosenPlace!!.visual.borderWidth= BorderWidth(0)
+    private fun chooseTile(tile: HexagonView, col: Int, row: Int) {
+        if (chosenPlace != null) chosenPlace!!.visual.borderWidth = BorderWidth(0)
 
-        tile.apply{
+        tile.apply {
             visual.borderWidth = BorderWidth(5)
-            visual.borderColor = BorderColor.RED}
+            visual.borderColor = BorderColor.RED
+        }
 
         chosenPlace = tile
         chosenRow = row
@@ -770,48 +829,62 @@ class GameScene(val indigoApp: IndigoApplication) :
      * tileToPlace saves the latest View of currentPlayers tile to place on the gameBoard
      * Calls placeRouteTile with the given tile and created Coordinate
      */
-    private fun callPlaceTile(tile: Tile)
-    {
-        checkNotNull(chosenPlace){"Please, choose space on the board and press ✓"}
+    private fun callPlaceTile(tile: Tile) {
+        checkNotNull(chosenPlace) { "Please, choose space on the board and press ✓" }
 
-            val coordinates = Coordinate(chosenRow!!,chosenCol!!)
-            val currentPlayer = rootService.currentGame!!.currentPlayerIndex
-            when(currentPlayer)
-            {
-                0 -> { tileToPlace = HexagonView(visual = player1handTile.visual)
-                    .apply { resize(width = 110, height = 110)
+        val coordinates = Coordinate(chosenRow!!, chosenCol!!)
+        val currentPlayer = rootService.currentGame!!.currentPlayerIndex
+        when (currentPlayer) {
+            0 -> {
+                tileToPlace = HexagonView(visual = player1handTile.visual)
+                    .apply {
+                        resize(width = 110, height = 110)
                         scaleY(0.6)
                         scaleX(0.6)
-                    }}
-                1 -> { tileToPlace = HexagonView(visual =player2handTile.visual)
-                    .apply { resize(width = 110, height = 110)
-                        scaleY(0.6)
-                        scaleX(0.6)}}
-                2 -> { tileToPlace = HexagonView(visual =player3handTile.visual)
-                    .apply { resize(width = 110, height = 110)
-                        scaleY(0.6)
-                        scaleX(0.6)}}
-                3 -> { tileToPlace = HexagonView(visual =player4handTile.visual)
-                    .apply { resize(width = 110, height = 110)
-                        scaleY(0.6)
-                        scaleX(0.6)}}
+                    }
             }
 
-        rootService.playerTurnService.placeRouteTile(coordinates,tile)
-        if(indigoApp.networkMode) rootService.networkService.sendPlacedTile(tile,coordinates)
+            1 -> {
+                tileToPlace = HexagonView(visual = player2handTile.visual)
+                    .apply {
+                        resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)
+                    }
+            }
+
+            2 -> {
+                tileToPlace = HexagonView(visual = player3handTile.visual)
+                    .apply {
+                        resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)
+                    }
+            }
+
+            3 -> {
+                tileToPlace = HexagonView(visual = player4handTile.visual)
+                    .apply {
+                        resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)
+                    }
+            }
+        }
+
+        rootService.playerTurnService.placeRouteTile(coordinates, tile)
+        if (indigoApp.networkMode) rootService.networkService.sendPlacedTile(tile, coordinates)
     }
 
     /**
      * Sets chosen space back after the player tried to or placed his/her tile
      */
-    private fun refreshAfterMoveTile()
-    {
-        if(chosenPlace!=null)
-        {
-            chosenPlace!!.visual.borderWidth= BorderWidth(0)
-            chosenPlace=null
-            chosenRow=null
-            chosenCol=null
+    private fun refreshAfterMoveTile() {
+        if (chosenPlace != null) {
+            chosenPlace!!.visual.borderWidth = BorderWidth(0)
+            chosenPlace = null
+            chosenRow = null
+            chosenCol = null
 
         }
 
@@ -821,13 +894,14 @@ class GameScene(val indigoApp: IndigoApplication) :
     override fun refreshAfterMoveGems() {
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
-       // TODO {/*to complete*/}
+        // TODO {/*to complete*/}
     }
+
     /**
      * Refreshes the GUI after the network player's turn based on the current connection state.
      * Updates the visibility and disabled state of rotation buttons for each player.
      */
-   override fun refreshAfterNetworkPlayerTurn(){
+    override fun refreshAfterNetworkPlayerTurn() {
         val connectionState = indigoApp.rootService.networkService.connectionState
         val playerRotateRights = listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
         val playerRotateLefts = listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
@@ -835,7 +909,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         val currentGame = indigoApp.rootService.currentGame
         checkNotNull(currentGame)
         val currentPlayerIndex = currentGame.currentPlayerIndex
-        if(connectionState == ConnectionState.WAITING_FOR_OPPONENTS_TURN){
+        if (connectionState == ConnectionState.WAITING_FOR_OPPONENTS_TURN) {
             playerRotateRights[currentPlayerIndex].isVisible = false
             playerRotateRights[currentPlayerIndex].isDisabled = true
             playerRotateLefts[currentPlayerIndex].isVisible = false
@@ -843,5 +917,47 @@ class GameScene(val indigoApp: IndigoApplication) :
             playerRotateCheck[currentPlayerIndex].isVisible = false
             playerRotateCheck[currentPlayerIndex].isDisabled = true
         }
+    }
+
+    override fun refreshAfterReceivedTile() {
+        val currentPlayer = rootService.currentGame!!.currentPlayerIndex
+        when (currentPlayer) {
+            0 -> {
+                tileToPlace = HexagonView(visual = player1handTile.visual)
+                    .apply {
+                        resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)
+                    }
+            }
+
+            1 -> {
+                tileToPlace = HexagonView(visual = player2handTile.visual)
+                    .apply {
+                        resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)
+                    }
+            }
+
+            2 -> {
+                tileToPlace = HexagonView(visual = player3handTile.visual)
+                    .apply {
+                        resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)
+                    }
+            }
+
+            3 -> {
+                tileToPlace = HexagonView(visual = player4handTile.visual)
+                    .apply {
+                        resize(width = 110, height = 110)
+                        scaleY(0.6)
+                        scaleX(0.6)
+                    }
+            }
+        }
+
     }
 }
