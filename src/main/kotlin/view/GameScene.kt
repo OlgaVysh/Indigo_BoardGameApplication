@@ -33,7 +33,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var chosenRow: Int? = null
 
     //View von dem Tile vom currentPlayer (zum Platzieren)
-    private var tileToPlace: HexagonView? = null //braucht man nicht mehr
+    //private var tileToPlace: HexagonView? = null //braucht man nicht mehr
 
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> =
@@ -391,11 +391,6 @@ class GameScene(val indigoApp: IndigoApplication) :
     private fun invokeButtons(players: List<Player>) {
         val count = players.size
 
-        val currentGame = indigoApp.rootService.currentGame
-        checkNotNull(currentGame)
-        val currentPlayerIndex = currentGame.currentPlayerIndex
-
-        val tile = players[currentPlayerIndex].handTile!!
 
         val leftButtons =
             listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
@@ -408,6 +403,9 @@ class GameScene(val indigoApp: IndigoApplication) :
 
         for (i in 0 until count) {
             leftButtons[i].onMouseClicked = {
+                val game = indigoApp.rootService.currentGame!!
+                val index = game.currentPlayerIndex
+                val tile = players[index].handTile!!
                 rootService.playerTurnService.rotateTileLeft(tile)
                 rotationDegree--
             }
@@ -415,13 +413,23 @@ class GameScene(val indigoApp: IndigoApplication) :
 
         for (i in 0 until count) {
             rightButtons[i].onMouseClicked = {
+                val game = indigoApp.rootService.currentGame!!
+                val index = game.currentPlayerIndex
+                val tile = players[index].handTile!!
                 rootService.playerTurnService.rotateTileRight(tile)
                 rotationDegree++
             }
         }
 
         for (i in 0 until count) {
-            checkButtons[i].onMouseClicked = { callPlaceTile(tile) }
+            checkButtons[i].onMouseClicked = {
+                val game = indigoApp.rootService.currentGame!!
+                val index = game.currentPlayerIndex
+                val tile = players[index].handTile!!
+                println(index)
+                println(players[index].handTile!!.toString())
+                println(tile.toString())
+                callPlaceTile(tile) }
         }
     }
 
