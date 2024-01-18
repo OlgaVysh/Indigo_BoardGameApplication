@@ -64,6 +64,8 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
                     indigoApp.hideMenuScene()
                 }
             } else {
+
+                indigoApp.rootService.gameService.startGame(actualPlayer,indigoApp.notSharedGates,indigoApp.isRandom)
                 indigoApp.showGameScene(indigoApp.gameScene)
                 indigoApp.hideMenuScene()
             }
@@ -85,7 +87,7 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
             aiDiff
         )
         aiSpeed.items = mutableListOf("low", "middle", "high")
-        aiDiff.items = mutableListOf("easy", "high")
+        aiDiff.items = mutableListOf("easy", "medium")
     }
 
     private fun aiSpeed(): Int {

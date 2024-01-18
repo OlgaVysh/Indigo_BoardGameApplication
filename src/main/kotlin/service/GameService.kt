@@ -36,7 +36,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         if (random) {
             players.shuffle()
         }
-            require(players.size in 2..4)
+        require(players.size in 2..4)
         val gameBoard = GameBoard()
         val allTiles = initializeTiles()
         val gems = initializeGems()
@@ -59,11 +59,23 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             rootService.currentGame!!.gameBoard.gameBoardTiles[coordinate] = treasureTiles[i]
         }
         rootService.currentGame!!.routeTiles.shuffle()
-        repeat(players.size) {
-            distributeNewTile()
-            changePlayer()
+        for (i in players.indices) {
+            players[i].handTile = rootService.currentGame!!.routeTiles.removeFirst()
+            onAllRefreshables { refreshAfterDistributeNewTile() }
         }
-        onAllRefreshables { refreshAfterStartGame() }
+        onAllRefreshables {
+            refreshAfterChangePlayer()
+            refreshAfterStartGame()
+        }
+      val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
+         val currentPlayer = players[currentPlayerIndex]
+        if(currentPlayer.isAI){
+            when(currentPlayer){
+                is CPUPlayer -> {
+                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                }
+            }
+        }
     }
 
     /**
@@ -112,7 +124,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @return True if placement is valid, false otherwise.
      * @throws Exception if the space is already occupied or the tile blocks an exit.
      */
-    fun checkPlacement(space: Coordinate, tile: Tile, isAiCalled : Boolean = false): Boolean {
+    fun checkPlacement(space: Coordinate, tile: Tile, isAiCalled: Boolean = false): Boolean {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (space == Coordinate(0, 0)) {
@@ -122,10 +134,10 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
 
-            if (!isAiCalled){
-                onAllRefreshables { refreshAfterCheckPlacement()}
+            if (!isAiCalled) {
+                onAllRefreshables { refreshAfterCheckPlacement() }
                 throw Exception("this place is occupied")
-            }else return false
+            } else return false
 
         }
         // Check if the space has an exit
@@ -139,10 +151,10 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 if (!isAiCalled) placeTile(space, tile)
                 true
             } else {
-                if (!isAiCalled){
-                    onAllRefreshables { refreshAfterCheckPlacement()}
+                if (!isAiCalled) {
+                    onAllRefreshables { refreshAfterCheckPlacement() }
                     throw Exception("tile blocks exit, please rotate Tile")
-                }else return false
+                } else return false
             }
         }
     }
@@ -418,31 +430,31 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             rootService.aiActionService.AiMove(currentCPUPlayer!!.difficulty)
 
             /**if (currentCPUPlayer!!.difficulty.equals("easy")) {
-                AIService(rootService).makeRandomTurn()
+            AIService(rootService).makeRandomTurn()
             } else {
 
-                val timeout = 10000L
-                val timer = Timer()
+            val timeout = 10000L
+            val timer = Timer()
 
-                var resultCoordinate: Coordinate? = null
+            var resultCoordinate: Coordinate? = null
 
-                val thread = thread {
-                    resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMove()
-                    timer.cancel() // Cancel the timer if the task completes within the timeout
-                }
+            val thread = thread {
+            resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMove()
+            timer.cancel() // Cancel the timer if the task completes within the timeout
+            }
 
-                timer.schedule(timeout) {
-                    thread.interrupt() // Interrupt the thread if the task exceeds the timeout
-                }
+            timer.schedule(timeout) {
+            thread.interrupt() // Interrupt the thread if the task exceeds the timeout
+            }
 
-                try {
-                    thread.join()
-                } catch (e: InterruptedException) {
-                    // implement maybe a simple MCTS that doesn't go through all the tree
-                    resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMoveLimited(1000)
-                }
-                // Eventually placing the Tile
-                PlayerTurnService(rootService).placeRouteTile(resultCoordinate!!, currentCPUPlayer.handTile!!)
+            try {
+            thread.join()
+            } catch (e: InterruptedException) {
+            // implement maybe a simple MCTS that doesn't go through all the tree
+            resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMoveLimited(1000)
+            }
+            // Eventually placing the Tile
+            PlayerTurnService(rootService).placeRouteTile(resultCoordinate!!, currentCPUPlayer.handTile!!)
             }
              */
         }
@@ -459,8 +471,10 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * if both are on the Edge
 
      */
-    fun moveGems(currentCoordinate: Coordinate, neighborCoordinate: Coordinate, currentGemPosition: Int,
-                 isAiCalled : Boolean = false) {
+    fun moveGems(
+        currentCoordinate: Coordinate, neighborCoordinate: Coordinate, currentGemPosition: Int,
+        isAiCalled: Boolean = false
+    ) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val middleTile = currentGame.middleTile
@@ -539,7 +553,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      * @throws IllegalStateException if currentGame in [rootService] is null or no route [Tile]s remain
      */
-    fun distributeNewTile(isAiCalled : Boolean = false) {
+    fun distributeNewTile(isAiCalled: Boolean = false) {
         val game = rootService.currentGame
         checkNotNull(game)
         if (game.routeTiles.isEmpty()) {
@@ -551,6 +565,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         }
         if (!isAiCalled) onAllRefreshables { refreshAfterDistributeNewTile() }
     }
+
     /**
      * Initializes and returns a MutableList of Tile objects representing the game's tiles.
      *
