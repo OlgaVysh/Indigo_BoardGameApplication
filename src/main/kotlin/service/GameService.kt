@@ -427,7 +427,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         // It's AI's turn
 
         //Xue Code
-        val currentPlayer = currentGame.players[currentPlayerIndex]
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
         if (currentPlayer.isAI) {
             when (currentPlayer) {
                 is CPUPlayer -> {
