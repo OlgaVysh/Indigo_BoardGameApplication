@@ -2,6 +2,7 @@ package view
 
 import entity.*
 import entity.Coordinate
+import service.network.ConnectionState
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.components.uicomponents.Button
@@ -664,6 +665,9 @@ class GameScene(val indigoApp: IndigoApplication) :
         } else {
             playerTile[currentIndex].visual = currentHandTile.type.toImg()
             playerTile[currentIndex].isVisible = true
+            for (Tile in playerTile){
+                Tile.rotationProperty.value = 30.0
+            }
         }
     }
     /**
@@ -790,9 +794,9 @@ class GameScene(val indigoApp: IndigoApplication) :
                         scaleY(0.6)
                         scaleX(0.6)}}
             }
-        if(indigoApp.networkMode) rootService.networkService.sendPlacedTile(tile,coordinates)
-            rootService.playerTurnService.placeRouteTile(coordinates,tile)
 
+        rootService.playerTurnService.placeRouteTile(coordinates,tile)
+        if(indigoApp.networkMode) rootService.networkService.sendPlacedTile(tile,coordinates)
     }
 
     /**
@@ -811,5 +815,21 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     }
 
-
+   override fun refreshAfterNetworkPlayerTurn(){
+        val connectionState = indigoApp.rootService.networkService.connectionState
+        val playerRotateRights = listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
+        val playerRotateLefts = listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
+        val playerRotateCheck = listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
+        val currentGame = indigoApp.rootService.currentGame
+        checkNotNull(currentGame)
+        val currentPlayerIndex = currentGame.currentPlayerIndex
+        if(connectionState == ConnectionState.WAITING_FOR_OPPONENTS_TURN){
+            playerRotateRights[currentPlayerIndex].isVisible = false
+            playerRotateRights[currentPlayerIndex].isDisabled = true
+            playerRotateLefts[currentPlayerIndex].isVisible = false
+            playerRotateLefts[currentPlayerIndex].isDisabled = true
+            playerRotateCheck[currentPlayerIndex].isVisible = false
+            playerRotateCheck[currentPlayerIndex].isDisabled = true
+        }
+    }
 }

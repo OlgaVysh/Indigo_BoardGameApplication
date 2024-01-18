@@ -98,6 +98,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         { "currently not prepared to start a new hosted game." }
         rootService.gameService.startGame(players, notSharedGates, random)
         sendGameInitMessage()
+        onAllRefreshables { refreshAfterNetworkPlayerTurn() }
     }
 
 
@@ -156,7 +157,9 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         }
         onAllRefreshables {
             refreshAfterStartNewJoinedGame()
+            refreshAfterNetworkPlayerTurn()
         }
+
     }
 
     /**
@@ -206,6 +209,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                 updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             }
         }
+        onAllRefreshables { refreshAfterNetworkPlayerTurn() }
     }
 
     /**
@@ -238,6 +242,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                 updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             }
         }
+        onAllRefreshables { refreshAfterNetworkPlayerTurn() }
     }
 
     /**

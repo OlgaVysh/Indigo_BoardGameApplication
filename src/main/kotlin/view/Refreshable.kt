@@ -136,4 +136,9 @@ interface Refreshable {
      *  update the Gui with the status
      */
     fun refreshAfterOnJoinGameResponse(responseStatus: JoinGameResponseStatus) {}
+
+    /**
+     *  updated the gui with corrected button showing
+     */
+    fun refreshAfterNetworkPlayerTurn(){}
 }
