@@ -13,12 +13,25 @@ import view.components.Button
 import view.components.Label
 import view.components.NetworkPlayersView
 
+/**
+ * Represents a scene for creating a new player within the Indigo game application. This scene allows users to
+ * configure player details, such as name, age (optional), color (optional), turn order (optional), and specify
+ * whether the player is an AI or a human.
+ *
+ * Inherits from MenuScene and implements Refreshable for refreshing the scene components when needed.
+ *
+ * @property indigoApp The main application instance which this scene is a part of.
+ */
 class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
 
+    // Available colors and turns for players.
     val colors = mutableListOf("blue", "purple", "red", "white")
     val turns = mutableListOf(1, 2, 3, 4)
+
+    // Indicator for AI player selection.
     private var aiPlayer = false
 
+    // UI components for displaying information and receiving input from the user.
     private val label = Label(42, 80, 900, 116, "Configure Player", 96)
 
     private val nameLabel = Label(65, 293, 300, 98, text = "Name: ", fontSize = 48)
@@ -34,6 +47,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     private val yesLabel = Label(400, 693, width = 80, text = "yes", fontSize = 48)
     private val noLabel = Label(600, 693, width = 80, text = "no", fontSize = 48)
 
+    // Buttons for AI selection.
     private val toggleGroup = ToggleGroup()
     private val yesButton = RadioButton(posX = 350, posY = 710, toggleGroup = toggleGroup).apply {
         onMouseClicked = {
@@ -54,6 +68,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         }
     }
 
+    // Button for adding a new player
     private val addNewPlayerButton = Button(250, 780, 528, 207, "Add new player", 48).apply {
         isDisabled = playerName.text.isBlank()
         onMouseClicked = {
@@ -118,6 +133,13 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         colorBox.items = colors
     }
 
+    /**
+     * Adds a new player to the scene and updates the UI components accordingly.
+     * Handles both local and network players depending on the connection state.
+     *
+     * @param newPlayer The player object to be added to the scene.
+     * min. 2 player, max 4 player
+     */
     private fun addPlayerToTheScene(newPlayer: Player) {
         val connectionState = indigoApp.rootService.networkService.connectionState
         if (connectionState != ConnectionState.DISCONNECTED) {
