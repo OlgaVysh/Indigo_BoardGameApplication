@@ -5,8 +5,7 @@ import service.RootService
 import tools.aqua.bgw.core.BoardGameApplication
 import java.io.File
 import java.io.FileNotFoundException
-import entity.Player
-import entity.TokenColor
+import entity.*
 
 /**
  * Implementation of the BGW [BoardGameApplication] for the example game "Indigo"

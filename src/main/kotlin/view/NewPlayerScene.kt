@@ -15,8 +15,8 @@ import view.components.NetworkPlayersView
 
 class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
 
-    private val colors = mutableListOf("blue", "purple", "red", "white")
-    private val turns = mutableListOf(1, 2, 3, 4)
+    val colors = mutableListOf("blue", "purple", "red", "white")
+    val turns = mutableListOf(1, 2, 3, 4)
     private var aiPlayer = false
 
     private val label = Label(42, 80, 900, 116, "Configure Player", 96)
@@ -25,10 +25,10 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     private val ageLabel = Label(80, 393, 300, 98, text = "Age (opt): ", fontSize = 48)
 
     private val colorLabel = Label(80, 493, width = 300, text = "Color (opt): ", fontSize = 48)
-    private val colorBox = ComboBox<String>(360, 485, 454.34, 69, prompt = "Select your color!")
+    val colorBox = ComboBox<String>(360, 485, 454.34, 69, prompt = "Select your color!")
 
     private val turnLabel = Label(80, 593, width = 300, text = "Turn (opt): ", fontSize = 48)
-    private val turnBox = ComboBox<Int>(360, 585, 454.34, 69, prompt = "Select your turn!")
+    val turnBox = ComboBox<Int>(360, 585, 454.34, 69, prompt = "Select your turn!")
 
     private val aiLabel = Label(140, 693, width = 200, text = "AI : ", fontSize = 48)
     private val yesLabel = Label(400, 693, width = 80, text = "yes", fontSize = 48)
@@ -71,7 +71,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             if (aiPlayer) {
                 newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)
             }
-            val turn = turnBox.selectedItem?:(turns.removeFirst())
+            val turn = turnBox.selectedItem ?: (turns.removeFirst())
             when (turn) {
                 1 -> indigoApp.players[0] = newPlayer
                 2 -> indigoApp.players[1] = newPlayer
@@ -132,6 +132,11 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                         indigoApp.showMenuScene(indigoApp.configurePlayerXScene)
                     }
                 }
+                indigoApp.configurePlayerXScene.turnBox.items = turns
+                indigoApp.configurePlayerXScene.colorBox.items = colors
+                indigoApp.configurePlayerXScene.colors = colors
+                indigoApp.configurePlayerXScene.turn = turns
+                indigoApp.networkConfigureScene.grid[0,currentRows]!!.button.isDisabled = true
                 indigoApp.networkConfigureScene.addButton.isDisabled = grid.rows == 4
                 indigoApp.networkConfigureScene.startButton.isDisabled = grid.rows < 2
             }
