@@ -494,7 +494,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 return
             }
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
-            moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, (lastGemPosition + 3 % 6))
+            moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, ((lastGemPosition + 3) % 6))
         }
         if (neighbourTile == null) {
             return
