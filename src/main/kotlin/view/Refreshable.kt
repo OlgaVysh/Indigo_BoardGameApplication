@@ -145,5 +145,5 @@ interface Refreshable {
     /**
      * updated give the gui the correct handTile for variable PlaceTile
      */
-    fun refreshAfterReceivedTile() {}
+    fun refreshAfterReceivedTile(rotation :Int) {}
 }
