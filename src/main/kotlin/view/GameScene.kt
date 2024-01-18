@@ -33,14 +33,14 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var chosenRow: Int? = null
 
     //View von dem Tile vom currentPlayer (zum Platzieren)
-    private var tileToPlace: HexagonView? = null
+    private var tileToPlace: HexagonView? = null //braucht man nicht mehr
 
     // Hexagonal grid for the game board
     private val hexagonGrid: HexagonGrid<HexagonView> =
-        HexagonGrid(coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL, posX = 820, posY = 420)
+        HexagonGrid<HexagonView>(coordinateSystem = HexagonGrid.CoordinateSystem.AXIAL, posX = 820, posY = 420).apply { rotate(30) }
 
     // reserveStack component
-    private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
+   // private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
 
     // undoButton component
     private val undoButton =
@@ -119,16 +119,24 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     // PlayerHandTile components
     // player1 oben links player2 oben rechts player3 unten links player4 unten rechts
-    private var player1handTile = view.components.Label(posX = 127, posY = 184, text = "")
-    private var player2handTile = view.components.Label(posX = 1619, posY = 184, text = "")
-    private var player3handTile = view.components.Label(posX = 127, posY = 754, text = "")
-    private var player4handTile = view.components.Label(posX = 1619, posY = 754, text = "")
+    private var player1handTile = HexagonView(posX = 122, posY = 184,size= 70.0,visual = ImageVisual("tile1.png"))
+        .apply { rotate(30) }
+    private var player2handTile = HexagonView(posX = 1611, posY = 184,size= 70.0, visual = ImageVisual("tile1.png"))
+        .apply { rotate(30) }
+    private var player3handTile = HexagonView(posX = 122, posY = 754,size= 70.0,visual = ImageVisual("tile1.png"))
+        .apply { rotate(30) }
+    private var player4handTile = HexagonView(posX = 1611, posY = 754,size= 70.0, visual = ImageVisual("tile1.png"))
+        .apply { rotate(30) }
 
     // PlayerturnHighlight components (currentPlayer bekommt einen blauen Hintergrund (egal welcher Player))
-    private val player1turnHighlight = HexagonView(posX = 102, posY = 149, visual = ColorVisual(Color.BLUE))
-    private val player2turnHighlight = HexagonView(posX = 1595, posY = 149, visual = ColorVisual(Color.BLUE))
-    private val player3turnHighlight = HexagonView(posX = 102, posY = 719, visual = ColorVisual(Color.BLUE))
-    private val player4turnHighlight = HexagonView(posX = 1595, posY = 719, visual = ColorVisual(Color.BLUE))
+    private val player1turnHighlight = HexagonView(posX = 112, posY = 174,size=80.0, visual = ColorVisual(Color.BLUE))
+        .apply { rotate(30) }
+    private val player2turnHighlight = HexagonView(posX = 1600, posY = 174, size=80.0,visual = ColorVisual(Color.BLUE))
+        .apply { rotate(30) }
+    private val player3turnHighlight = HexagonView(posX = 112, posY = 744, size=80.0,visual = ColorVisual(Color.BLUE))
+        .apply { rotate(30) }
+    private val player4turnHighlight = HexagonView(posX = 1600, posY = 744,size=80.0, visual = ColorVisual(Color.BLUE))
+        .apply { rotate(30) }
 
     // PlayerRotateButton components
     private val player1leftButton =
@@ -203,14 +211,14 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     init {
         initializeGameBoardGrid()
-        hexagonGrid.rotate(60)
-        hexagonGrid.reposition(900, 340)
+        //hexagonGrid.rotate(60)
+        hexagonGrid.reposition(910, 380)
 
-        //initialize reserveStack
+        /*//initialize reserveStack
         reserveStack.rotate(30)
         reserveStack.resize(width = 110, height = 110)
         reserveStack.scaleY(0.6)
-        reserveStack.scaleX(0.6)
+        reserveStack.scaleX(0.6)*/
 
         //initialize tokenViews
         player1Token.visual = ImageVisual("tokenwhite.png")
@@ -243,7 +251,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
 
         //initialize handTileViews
-        player1handTile.rotate(30)
+       /* player1handTile.rotate(30)
         player2handTile.rotate(30)
         player3handTile.rotate(30)
         player4handTile.rotate(30)
@@ -264,7 +272,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         player1turnHighlight.resize(147.9, 171.7)
         player2turnHighlight.resize(147.9, 171.7)
         player3turnHighlight.resize(147.9, 171.7)
-        player4turnHighlight.resize(147.9, 171.7)
+        player4turnHighlight.resize(147.9, 171.7)*/
 
         //initialize gateTokenViews
         gate1Token1.visual = ImageVisual("tokenred.png")
@@ -289,7 +297,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         // Add the hexagonal grid to the components of the game scene
         addComponents(
             hexagonGrid,
-            reserveStack,
+            //reserveStack,
             undoButton,
             redoButton,
             saveButton,
@@ -393,14 +401,14 @@ class GameScene(val indigoApp: IndigoApplication) :
         for (i in 0 until count) {
             leftButtons[i].onMouseClicked = {
                 rootService.playerTurnService.rotateTileLeft(tile)
-                rotationDegree -= 60
+                rotationDegree--
             }
         }
 
         for (i in 0 until count) {
             rightButtons[i].onMouseClicked = {
                 rootService.playerTurnService.rotateTileRight(tile)
-                rotationDegree += 60
+                rotationDegree++
             }
         }
 
@@ -416,20 +424,20 @@ class GameScene(val indigoApp: IndigoApplication) :
         // Populate the hexagonal grid with HexagonView instances
         for (row in -4..4) {
             for (col in -4..4) {
-                val hexagon = HexagonView(visual = ImageVisual("plaintile.png")).apply {
+                val hexagon = HexagonView(size = 55.0,visual = ImageVisual("plaintile.png")).apply {
                     onMouseClicked = {
                         chooseTile(this, col, row)
                     }
                 }
 
-                hexagon.resize(width = 110, height = 110)
+               /* hexagon.resize(width = 110, height = 110)
                 hexagon.scaleY(0.6)
-                hexagon.scaleX(0.6)
+                hexagon.scaleX(0.6)*/
                 hexagonGrid[col, row] = hexagon
             }
         }
         // Rotate the hexagonal grid by -30 degrees
-        hexagonGrid.rotate(-30)
+       // hexagonGrid.rotate(-30)
         // Middle Tile
         hexagonGrid[0, 0]?.apply {
             visual = ImageVisual("middletile.png")
@@ -704,6 +712,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
             }
         }
+        rotationDegree=0
         refreshAfterMoveTile()
     }
 
@@ -791,13 +800,14 @@ class GameScene(val indigoApp: IndigoApplication) :
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
 
-        checkNotNull(tileToPlace) { "keine Ahnung wie" }
-        tileToPlace!!.rotate(rotationDegree)
-        hexagonGrid[col, row] = tileToPlace!! //wie kann es null sein
+        //checkNotNull(tileToPlace) { "keine Ahnung wie" }
+        //tileToPlace!!.rotate(rotationDegree)
+        //hexagonGrid[col, row] = tileToPlace!! //wie kann es null sein
 
-        rotationDegree = 0
+        //rotationDegree = 0
 
-        tileToPlace = null
+        //tileToPlace = null
+        hexagonGrid[col,row]= HexagonView(size=55.0,visual= tile.type.toImg()).apply { rotate(60*rotationDegree) }
     }
 
     /**
@@ -834,45 +844,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         checkNotNull(chosenPlace) { "Please, choose space on the board and press ✓" }
 
         val coordinates = Coordinate(chosenRow!!, chosenCol!!)
-        val currentPlayer = rootService.currentGame!!.currentPlayerIndex
-        when (currentPlayer) {
-            0 -> {
-                tileToPlace = HexagonView(visual = player1handTile.visual)
-                    .apply {
-                        resize(width = 110, height = 110)
-                        scaleY(0.6)
-                        scaleX(0.6)
-                    }
-            }
-
-            1 -> {
-                tileToPlace = HexagonView(visual = player2handTile.visual)
-                    .apply {
-                        resize(width = 110, height = 110)
-                        scaleY(0.6)
-                        scaleX(0.6)
-                    }
-            }
-
-            2 -> {
-                tileToPlace = HexagonView(visual = player3handTile.visual)
-                    .apply {
-                        resize(width = 110, height = 110)
-                        scaleY(0.6)
-                        scaleX(0.6)
-                    }
-            }
-
-            3 -> {
-                tileToPlace = HexagonView(visual = player4handTile.visual)
-                    .apply {
-                        resize(width = 110, height = 110)
-                        scaleY(0.6)
-                        scaleX(0.6)
-                    }
-            }
-        }
-
+        //tileToPlace= HexagonView(visual = tile.type.toImg())
         rootService.playerTurnService.placeRouteTile(coordinates, tile)
         if (indigoApp.networkMode) rootService.networkService.sendPlacedTile(tile, coordinates)
     }
