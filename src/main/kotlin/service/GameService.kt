@@ -67,10 +67,10 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             refreshAfterChangePlayer()
             refreshAfterStartGame()
         }
-      val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
-         val currentPlayer = players[currentPlayerIndex]
-        if(currentPlayer.isAI){
-            when(currentPlayer){
+        val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
+        val currentPlayer = players[currentPlayerIndex]
+        if (currentPlayer.isAI) {
+            when (currentPlayer) {
                 is CPUPlayer -> {
                     rootService.aiActionService.AiMove(currentPlayer.difficulty)
                 }
@@ -425,40 +425,51 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         currentGame.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
 
         // It's AI's turn
-        if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
-            val currentCPUPlayer = currentGame.players[currentGame.currentPlayerIndex] as? CPUPlayer
-            rootService.aiActionService.AiMove(currentCPUPlayer!!.difficulty)
 
-            /**if (currentCPUPlayer!!.difficulty.equals("easy")) {
-            AIService(rootService).makeRandomTurn()
-            } else {
-
-            val timeout = 10000L
-            val timer = Timer()
-
-            var resultCoordinate: Coordinate? = null
-
-            val thread = thread {
-            resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMove()
-            timer.cancel() // Cancel the timer if the task completes within the timeout
+        //Xue Code
+        val currentPlayer = currentGame.players[currentPlayerIndex]
+        if (currentPlayer.isAI) {
+            when (currentPlayer) {
+                is CPUPlayer -> {
+                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                }
             }
-
-            timer.schedule(timeout) {
-            thread.interrupt() // Interrupt the thread if the task exceeds the timeout
-            }
-
-            try {
-            thread.join()
-            } catch (e: InterruptedException) {
-            // implement maybe a simple MCTS that doesn't go through all the tree
-            resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMoveLimited(1000)
-            }
-            // Eventually placing the Tile
-            PlayerTurnService(rootService).placeRouteTile(resultCoordinate!!, currentCPUPlayer.handTile!!)
-            }
-             */
         }
 
+        //Meriem Code
+        /*if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
+            val currentCPUPlayer = currentGame.players[currentGame.currentPlayerIndex] as? CPUPlayer
+            rootService.aiActionService.AiMove(currentCPUPlayer!!.difficulty)
+            */
+        /**if (currentCPUPlayer!!.difficulty.equals("easy")) {
+        AIService(rootService).makeRandomTurn()
+        } else {
+
+        val timeout = 10000L
+        val timer = Timer()
+
+        var resultCoordinate: Coordinate? = null
+
+        val thread = thread {
+        resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMove()
+        timer.cancel() // Cancel the timer if the task completes within the timeout
+        }
+
+        timer.schedule(timeout) {
+        thread.interrupt() // Interrupt the thread if the task exceeds the timeout
+        }
+
+        try {
+        thread.join()
+        } catch (e: InterruptedException) {
+        // implement maybe a simple MCTS that doesn't go through all the tree
+        resultCoordinate = MCTS(rootService, currentPlayerIndex).findNextMoveLimited(1000)
+        }
+        // Eventually placing the Tile
+        PlayerTurnService(rootService).placeRouteTile(resultCoordinate!!, currentCPUPlayer.handTile!!)
+        }
+         */
+        //}
         onAllRefreshables { refreshAfterChangePlayer() }
     }
 
