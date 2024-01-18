@@ -647,7 +647,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
             }
         }
-        refreshAfterMove()
+        refreshAfterMoveTile()
     }
 
     /**
@@ -665,8 +665,8 @@ class GameScene(val indigoApp: IndigoApplication) :
         } else {
             playerTile[currentIndex].visual = currentHandTile.type.toImg()
             playerTile[currentIndex].isVisible = true
-            for (Tile in playerTile){
-                Tile.rotationProperty.value = 30.0
+            for (tile in playerTile){
+                tile.rotationProperty.value = 30.0
             }
         }
     }
@@ -717,7 +717,12 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     }
     */
-
+    /**
+     * Refreshes the GUI after placing a tile at a specified coordinate.
+     *
+     * @param coordinate The coordinate where the tile is placed.
+     * @param tile The tile to be placed.
+     */
     override fun refreshAfterPlaceTile(coordinate: Coordinate, tile: Tile) {
         val col = coordinate.column
         val row = coordinate.row
@@ -742,7 +747,7 @@ class GameScene(val indigoApp: IndigoApplication) :
      * Sets chosen space back after the player tried to place tile at the occupied space
      */
     override fun refreshAfterCheckPlacement() {
-        refreshAfterMove()
+        refreshAfterMoveTile()
     }
 
     /**
@@ -802,7 +807,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      * Sets chosen space back after the player tried to or placed his/her tile
      */
-    private fun refreshAfterMove()
+    private fun refreshAfterMoveTile()
     {
         if(chosenPlace!=null)
         {
@@ -815,6 +820,16 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     }
 
+
+    override fun refreshAfterMoveGems() {
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game) { "No game found." }
+       // TODO {/*to complete*/}
+    }
+    /**
+     * Refreshes the GUI after the network player's turn based on the current connection state.
+     * Updates the visibility and disabled state of rotation buttons for each player.
+     */
    override fun refreshAfterNetworkPlayerTurn(){
         val connectionState = indigoApp.rootService.networkService.connectionState
         val playerRotateRights = listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
