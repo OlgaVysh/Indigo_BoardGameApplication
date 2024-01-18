@@ -208,12 +208,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * Places a tile at the specified coordinate.
      * @param space The coordinate where the tile is to be placed.
      * @param tile The tile to be placed.
+     * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      */
-    fun placeTile(space: Coordinate, tile: Tile) {
+    fun placeTile(space: Coordinate, tile: Tile, isAiCalled: Boolean = false) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
-        onAllRefreshables { refreshAfterPlaceTile(space, tile) }
+        if (!isAiCalled) onAllRefreshables { refreshAfterPlaceTile(space, tile) }
     }
 
     /**
@@ -454,10 +455,12 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @param currentCoordinate The tile coordinate  to which gems are moved.
      * @param neighborCoordinate The tile coordinate from which gems are moved.
      * @param currentGemPosition is the Position of the current tile which is used to check for collision
+     * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      * if both are on the Edge
 
      */
-    fun moveGems(currentCoordinate: Coordinate, neighborCoordinate: Coordinate, currentGemPosition: Int) {
+    fun moveGems(currentCoordinate: Coordinate, neighborCoordinate: Coordinate, currentGemPosition: Int,
+                 isAiCalled : Boolean = false) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         val middleTile = currentGame.middleTile
@@ -526,16 +529,17 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         neighbourGems.remove(neighbourStart)
         removeGemsReachedGate(currentTile, currentCoordinate)
         moveGems(neighborCoordinates[currentEnd], currentCoordinate, (currentEnd + 3) % 6)
-        onAllRefreshables { refreshAfterMoveGems() }
+        if (!isAiCalled) onAllRefreshables { refreshAfterMoveGems() }
     }
 
 
     /**
      * function to give the current [Player] a new route [Tile] at the end of their turn (first in list)
      *
+     * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      * @throws IllegalStateException if currentGame in [rootService] is null or no route [Tile]s remain
      */
-    fun distributeNewTile() {
+    fun distributeNewTile(isAiCalled : Boolean = false) {
         val game = rootService.currentGame
         checkNotNull(game)
         if (game.routeTiles.isEmpty()) {
@@ -545,7 +549,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             val currentPlayerIndex = game.currentPlayerIndex
             game.settings.players[currentPlayerIndex].handTile = newHandTile
         }
-        onAllRefreshables { refreshAfterDistributeNewTile() }
+        if (!isAiCalled) onAllRefreshables { refreshAfterDistributeNewTile() }
     }
     /**
      * Initializes and returns a MutableList of Tile objects representing the game's tiles.
