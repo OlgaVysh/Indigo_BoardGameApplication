@@ -13,6 +13,7 @@ import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.visual.Visual
 import java.awt.Color
+import tools.aqua.bgw.util.BidirectionalMap
 
 /**
  * Represents the game scene containing a hexagonal grid.
@@ -20,7 +21,7 @@ import java.awt.Color
 
 class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
-
+    private val gemMap: BidirectionalMap<Gem, view.components.Label> = BidirectionalMap()
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
 
