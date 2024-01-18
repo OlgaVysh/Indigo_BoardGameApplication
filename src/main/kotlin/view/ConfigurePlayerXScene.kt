@@ -64,7 +64,7 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
             "red" -> color = TokenColor.RED
             "white" -> color = TokenColor.WHITE
             else -> {
-                indigoApp.avaibleColors[0]
+                color = indigoApp.avaibleColors[0]
                 colors.remove(mapToColorString(indigoApp.avaibleColors[0]))
                 indigoApp.newPlayerScene.colors.remove(mapToColorString(indigoApp.avaibleColors[0]))
             }
@@ -138,7 +138,8 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
 
         turn.remove(turnBox.selectedItem)
         turnBox.items = turn
+        indigoApp.newPlayerScene.turnBox.items = turn
         turnBox.selectedItem = null
-        indigoApp.networkConfigureScene.grid[0, currentRow]!!.button.isDisabled = true
+        indigoApp.networkConfigureScene.grid[0, currentRow-1]!!.button.isDisabled = true
     }
 }

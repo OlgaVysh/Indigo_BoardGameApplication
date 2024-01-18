@@ -95,6 +95,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                 this.button.onMouseClicked = {
                     indigoApp.showMenuScene(indigoApp.configurePlayerXScene)
                     indigoApp.configurePlayerXScene.playerName = hostName
+                    indigoApp.configurePlayerXScene.currentRow = 1
                 }
             }
         }
