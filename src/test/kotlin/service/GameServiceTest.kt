@@ -440,23 +440,23 @@ class GameServiceTest {
         //gate4 no gems after the method because is removed
         rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
         assertEquals(0, tile0.gemEndPosition.size)
-        assertEquals(2, players[3].gemCounter)
+        assertEquals(2, players[3].collectedGems.size)
         assertEquals(3, players[3].score)
-        assertEquals(2, players[1].gemCounter)
+        assertEquals(2, players[1].collectedGems.size)
         assertEquals(3, players[1].score)
         assertEquals(10, rootService.currentGame!!.gems.size)
         //gate3 only one Gem is there
         rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
         assertEquals(1, tile2.gemEndPosition.size)
-        assertEquals(3, players[3].gemCounter)
+        assertEquals(3, players[3].collectedGems.size)
         assertEquals(5, players[3].score)
-        assertEquals(1, players[0].gemCounter)
+        assertEquals(1, players[0].collectedGems.size)
         assertEquals(2, players[0].score)
 
         //gate2 both gems are in the tile
         rootService.gameService.removeGemsReachedGate(tile4, Coordinate(-2, 4))
         assertEquals(2, tile4.gemEndPosition.size)
-        assertEquals(0, players[2].gemCounter)
+        assertEquals(0, players[2].collectedGems.size)
         assertEquals(0, players[2].score)
 
         val twoPlayers = listOf(
@@ -497,19 +497,19 @@ class GameServiceTest {
         //gate4 no gems after the method because is removed
         rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
         assertEquals(0, tile0.gemEndPosition.size)
-        assertEquals(2, players[1].gemCounter)
+        assertEquals(2, players[1].collectedGems.size)
         assertEquals(3, players[1].score)
 
         //gate3 only on Gem is there
         rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
         assertEquals(1, tile2.gemEndPosition.size)
-        assertEquals(1, players[0].gemCounter)
+        assertEquals(1, players[0].collectedGems.size)
         assertEquals(2, players[0].score)
 
         //gate2 both gems are in the tile
         rootService.gameService.removeGemsReachedGate(tile4, Coordinate(-2, 4))
         assertEquals(2, tile4.gemEndPosition.size)
-        assertEquals(2, players[1].gemCounter)
+        assertEquals(2, players[1].collectedGems.size)
         assertEquals(3, players[1].score)
 
     }

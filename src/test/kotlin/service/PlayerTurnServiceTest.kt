@@ -27,7 +27,7 @@ class PlayerTurnServiceTest {
             Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),
             Pair(Edge.THREE, Edge.FIVE)
-        ),TileType.Type_0,
+        ), TileType.Type_0,
         mutableMapOf()
     )
 
@@ -116,10 +116,10 @@ class PlayerTurnServiceTest {
         for (i in testGame.players.indices) {
             assertEquals(testGame.players[i].name, actualGame.players[i].name)
             assertEquals(testGame.players[i].handTile, actualGame.players[i].handTile)
-            assertEquals(testGame.players[i].gemCounter, actualGame.players[i].gemCounter)
+            assertEquals(testGame.players[i].collectedGems, actualGame.players[i].collectedGems)
             assertEquals(testGame.players[i].color, actualGame.players[i].color)
             assertEquals(testGame.players[i].handTile, actualGame.players[i].handTile)
-            assertEquals(testGame.players[i].gemCounter, actualGame.players[i].gemCounter)
+            assertEquals(testGame.players[i].collectedGems, actualGame.players[i].collectedGems)
             assertEquals(testGame.players[i].age, actualGame.players[i].age)
             assertEquals(testGame.players[i].isAI, actualGame.players[i].isAI)
             assertEquals(testGame.players[i].score, actualGame.players[i].score)
@@ -152,10 +152,10 @@ class PlayerTurnServiceTest {
         for (i in testGame.players.indices) {
             assertEquals(testGame.players[i].name, actualGame.players[i].name)
             assertEquals(testGame.players[i].handTile, actualGame.players[i].handTile)
-            assertEquals(testGame.players[i].gemCounter, actualGame.players[i].gemCounter)
+            assertEquals(testGame.players[i].collectedGems, actualGame.players[i].collectedGems)
             assertEquals(testGame.players[i].color, actualGame.players[i].color)
             assertEquals(testGame.players[i].handTile, actualGame.players[i].handTile)
-            assertEquals(testGame.players[i].gemCounter, actualGame.players[i].gemCounter)
+            assertEquals(testGame.players[i].collectedGems, actualGame.players[i].collectedGems)
             assertEquals(testGame.players[i].age, actualGame.players[i].age)
             assertEquals(testGame.players[i].isAI, actualGame.players[i].isAI)
             assertEquals(testGame.players[i].score, actualGame.players[i].score)

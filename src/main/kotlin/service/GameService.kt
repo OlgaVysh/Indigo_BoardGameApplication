@@ -396,7 +396,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      */
     private fun assignGem(gem: Gem, player: Player) {
         player.score += gem.gemColor.ordinal + 1
-        player.gemCounter++
+        player.collectedGems.add(gem)
     }
 
     /**

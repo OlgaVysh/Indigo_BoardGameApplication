@@ -71,7 +71,7 @@ class AiActionService(private val rootService: RootService) : AbstractRefreshing
                 it.isAI
             ).apply {
                 score = it.score
-                gemCounter = it.gemCounter
+                collectedGems = it.collectedGems.toMutableList()
                 // Copy the handTile
                 handTile = it.handTile?.copy()
             }

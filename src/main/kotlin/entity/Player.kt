@@ -19,6 +19,6 @@ open class Player(val name: String, val age: Date = Date(0), var color: TokenCol
                   @JsonProperty("ai")
                   val isAI: Boolean = false) {
     var score = 0
-    var gemCounter = 0
+    var collectedGems = mutableListOf<Gem>()
     var handTile: Tile? = null
 }

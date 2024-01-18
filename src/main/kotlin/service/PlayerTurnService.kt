@@ -134,7 +134,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
                 it.isAI
             ).apply {
                 score = it.score
-                gemCounter = it.gemCounter
+                collectedGems = it.collectedGems.toMutableList()
                 // Copy the handTile
                 handTile = it.handTile?.copy()
             }

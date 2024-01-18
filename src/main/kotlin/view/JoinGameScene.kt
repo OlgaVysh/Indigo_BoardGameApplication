@@ -153,7 +153,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             val CPUPlayer = CPUPlayer(player!!.name, player.age, player.color, difficulty, simulationSpeed).apply {
                 handTile = player.handTile
                 score = player.score
-                gemCounter = player.gemCounter
+                collectedGems = player.collectedGems.toMutableList()
             }
             val newPlayers = mutableListOf<Player>()
             for (i in currentGame.players.indices) {
