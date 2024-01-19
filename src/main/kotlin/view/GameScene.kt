@@ -707,6 +707,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         val currentGame = indigoApp.rootService.currentGame
         rotationDegree = 0
         checkNotNull(currentGame)
+        invokeButtons(currentGame.players)
         val currentPlayerIndex = currentGame.currentPlayerIndex
         for (i in playerHighlights.indices) {
             if (i == currentPlayerIndex) {
