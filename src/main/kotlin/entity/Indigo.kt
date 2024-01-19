@@ -28,7 +28,7 @@ data class Indigo(
     var gems: MutableList<Gem>,
     var tokens: MutableList<Token>
 ) {
-    val players = settings.players
+    var players = settings.players
     var currentPlayerIndex = 0
     val middleTile = MiddleTile()
     val treasureTiles: List<Tile> = allTiles.take(6)

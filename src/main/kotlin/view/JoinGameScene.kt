@@ -164,14 +164,27 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
                 }
             }
             currentGame.settings.players = newPlayers.toList()
+            currentGame.players = newPlayers.toList()
         }
         indigoApp.showGameScene(indigoApp.gameScene)
         indigoApp.hideMenuScene()
         indigoApp.gameScene.refreshAfterStartGame()
+
+        val players = rootService.currentGame!!.players
+        val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
+        val currentPlayer = players[currentPlayerIndex]
+        if (currentPlayer.isAI) {
+            when (currentPlayer) {
+                is CPUPlayer -> {
+                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                }
+            }
+        }
     }
 
     fun startJoinGame() {
         indigoApp.rootService.networkService.joinGame(
-            name = nameInput.text, sessionID = idInput.text)
+            name = nameInput.text, sessionID = idInput.text
+        )
     }
 }

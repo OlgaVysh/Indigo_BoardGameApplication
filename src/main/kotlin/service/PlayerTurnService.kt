@@ -128,20 +128,6 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         copiedGameBoard.gateTokens = copiedGateTokens
         val copiedPlayers = settings.players.map { originalPlayer ->
             when (originalPlayer) {
-                is Player -> {
-                    Player(
-                        originalPlayer.name,
-                        originalPlayer.age,
-                        originalPlayer.color,
-                        originalPlayer.isAI
-                    ).apply {
-                        score = originalPlayer.score
-                        collectedGems = originalPlayer.collectedGems.toMutableList()
-                        // Copy the handTile
-                        handTile = originalPlayer.handTile?.copy()
-                    }
-                }
-
                 is CPUPlayer-> {
                     CPUPlayer(
                         originalPlayer.name,
@@ -158,7 +144,19 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
                         // ...
                     }
                 }
-                else -> originalPlayer
+                else -> {
+                    Player(
+                        originalPlayer.name,
+                        originalPlayer.age,
+                        originalPlayer.color,
+                        originalPlayer.isAI
+                    ).apply {
+                        score = originalPlayer.score
+                        collectedGems = originalPlayer.collectedGems.toMutableList()
+                        // Copy the handTile
+                        handTile = originalPlayer.handTile?.copy()
+                    }
+                }
             }
         }.toList()
         val copiedSettings = GameSettings(copiedPlayers)

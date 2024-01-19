@@ -2,6 +2,7 @@ package service
 
 import AI.MCTS
 import entity.*
+import service.network.ConnectionState
 import java.lang.Exception
 import java.util.*
 import kotlin.concurrent.thread
@@ -223,9 +224,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      */
     fun placeTile(space: Coordinate, tile: Tile, isAiCalled: Boolean = false) {
+        val connectionState = rootService.networkService.connectionState
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
+        if(connectionState==ConnectionState.PLAYING_MY_TURN){
+            rootService.networkService.sendPlacedTile(tile,space)
+        }
         if (!isAiCalled) onAllRefreshables { refreshAfterPlaceTile(space, tile) }
     }
 
