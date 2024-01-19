@@ -22,7 +22,6 @@ import view.components.Label
 
 class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
-
         private val gemMap: BidirectionalMap<Gem,Label> = BidirectionalMap()
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
@@ -126,13 +125,14 @@ class GameScene(val indigoApp: IndigoApplication) :
     // PlayerHandTile components
     // player1 oben links player2 oben rechts player3 unten links player4 unten rechts
     private var player1handTile = HexagonView(posX = 122, posY = 184, size = 70.0, visual = ImageVisual("tile1.png"))
-        .apply { rotate(30) }
+        .apply { rotate(-30)}
     private var player2handTile = HexagonView(posX = 1611, posY = 184, size = 70.0, visual = ImageVisual("tile1.png"))
-        .apply { rotate(30) }
+        .apply { rotate(-30) }
     private var player3handTile = HexagonView(posX = 122, posY = 754, size = 70.0, visual = ImageVisual("tile1.png"))
-        .apply { rotate(30) }
-    private var player4handTile = HexagonView(posX = 1611, posY = 754, size = 70.0, visual = ImageVisual("tile1.png"))
-        .apply { rotate(30) }
+        .apply { rotate(-30)}
+            private var player4handTile = HexagonView(posX = 1611, posY = 754, size = 70.0, visual = ImageVisual("tile1.png"))
+        .apply { rotate(-30)}
+
 
     // PlayerturnHighlight components (currentPlayer bekommt einen blauen Hintergrund (egal welcher Player))
     private val player1turnHighlight =
@@ -220,6 +220,7 @@ class GameScene(val indigoApp: IndigoApplication) :
      * Initializes the GameScene with default values and sets up the hexagonal grid.
      */
     init {
+
         initializeGameBoardGrid()
         //hexagonGrid.rotate(60)
         hexagonGrid.reposition(910, 380)
@@ -384,7 +385,6 @@ class GameScene(val indigoApp: IndigoApplication) :
             player4rightButton,
             player4checkButton
         )
-
     }
 
     /**
@@ -749,8 +749,6 @@ class GameScene(val indigoApp: IndigoApplication) :
         val currentGame = indigoApp.rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
-        //val currentIndex = currentGame.currentPlayerIndex
-        //val currentHandTile = players[currentIndex].handTile
         for(i in players.indices ) {
             if (players[i].handTile == null) {
                 playerTile[i].isVisible = false
@@ -758,8 +756,9 @@ class GameScene(val indigoApp: IndigoApplication) :
                 playerTile[i].visual = players[i].handTile!!.type.toImg()
                 playerTile[i].isVisible = true
                 for (tile in playerTile) {
-                    tile.rotationProperty.value = 30.0
+                   tile.rotationProperty.value = -30.0
                 }
+
             }
         }
     }
@@ -826,16 +825,10 @@ class GameScene(val indigoApp: IndigoApplication) :
 
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
-
-        //checkNotNull(tileToPlace) { "keine Ahnung wie" }
-        //tileToPlace!!.rotate(rotationDegree)
-        //hexagonGrid[col, row] = tileToPlace!! //wie kann es null sein
-
-        //rotationDegree = 0
-
-        //tileToPlace = null
-        hexagonGrid[col, row] =
-            HexagonView(size = 55.0, visual = tile.type.toImg()).apply { rotate(60 * rotationDegree) }
+        hexagonGrid[col,row] =
+            HexagonView(size = 55.0, visual = tile.type.toImg()).apply {
+                rotate(-60)
+                rotate(60 * rotationDegree) }
     }
 
     /**
@@ -872,8 +865,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     private fun callPlaceTile(tile: Tile) {
         checkNotNull(chosenPlace) { "Please, choose space on the board and press ✓" }
 
-        val coordinates = Coordinate(chosenRow!!, chosenCol!!)
-        //tileToPlace= HexagonView(visual = tile.type.toImg())
+        val coordinates = Coordinate(chosenRow!!,chosenCol!!)
         rootService.playerTurnService.placeRouteTile(coordinates, tile)
     }
 
