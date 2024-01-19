@@ -88,7 +88,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
         if (connectionState == ConnectionState.WAITING_FOR_GUEST) {
             val hostName = networkService.client!!.playerName
             indigoApp.players.add(
-                Player(name = hostName, color = TokenColor.BLUE)
+                Player(name = hostName, color = TokenColor.BLUE, isAI = indigoApp.aiGame)
             )
             grid[0, 0] = NetworkPlayersView().apply {
                 label.text = "Player " + grid.rows + ": " + hostName
