@@ -7,6 +7,7 @@ import java.lang.Exception
 import java.util.*
 import kotlin.concurrent.thread
 import kotlin.concurrent.schedule
+import kotlin.math.abs
 
 
 /**
@@ -60,10 +61,11 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             rootService.currentGame!!.gameBoard.gameBoardTiles[coordinate] = treasureTiles[i]
         }
         rootService.currentGame!!.routeTiles.shuffle()
-        for (i in players.indices) {
-            players[i].handTile = rootService.currentGame!!.routeTiles.removeFirst()
+        for (player in players) {
+            player.handTile = rootService.currentGame!!.routeTiles.removeFirst()
             onAllRefreshables { refreshAfterDistributeNewTile() }
         }
+
         onAllRefreshables {
             refreshAfterChangePlayer()
             refreshAfterStartGame()
@@ -241,13 +243,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         // Define coordinates for each gate
-        val gate1 = listOf(Coordinate(1, -4), Coordinate(2, -4), Coordinate(3, -4))
-        val gate2 = listOf(Coordinate(4, -3), Coordinate(4, -2), Coordinate(4, -1))
-        val gate3 = listOf(Coordinate(3, 1), Coordinate(2, 2), Coordinate(1, 3))
-        val gate4 = listOf(Coordinate(-1, 4), Coordinate(-2, 4), Coordinate(-3, 4))
-        val gate5 = listOf(Coordinate(-4, 3), Coordinate(-4, 2), Coordinate(-4, 1))
+        val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
+        val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
+        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 1))
+        val gate4 = listOf(Coordinate(4, -1), Coordinate(4, -2), Coordinate(4, -3))
+        val gate5 = listOf(Coordinate(3, -4), Coordinate(2, -4), Coordinate(1, -4))
         val gate6 = listOf(Coordinate(-3, -1), Coordinate(-2, -2), Coordinate(-1, -3))
-        val gates = listOf(gate1, gate2, gate3, gate4, gate5, gate6)
+        val gates = listOf(gate1,gate2, gate3, gate4, gate5, gate6)
 
         var position1 = 5
         var position2 = 0
@@ -555,7 +557,9 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
         removeGemsReachedGate(currentTile, currentCoordinate)
-        moveGems(neighborCoordinates[currentEnd], currentCoordinate, (currentEnd + 3) % 6)
+        moveGems(
+            neighborCoordinates[currentEnd], currentCoordinate, abs((currentEnd + 3)) % 6
+        )
         if (!isAiCalled) onAllRefreshables { refreshAfterMoveGems() }
     }
 
