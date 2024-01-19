@@ -14,6 +14,7 @@ import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.visual.Visual
 import java.awt.Color
 import tools.aqua.bgw.util.BidirectionalMap
+import view.components.Label
 
 /**
  * Represents the game scene containing a hexagonal grid.
@@ -21,7 +22,8 @@ import tools.aqua.bgw.util.BidirectionalMap
 
 class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
-    private val gemMap: BidirectionalMap<Gem, view.components.Label> = BidirectionalMap()
+
+        private val gemMap: BidirectionalMap<Gem,Label> = BidirectionalMap()
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
 
@@ -951,6 +953,23 @@ class GameScene(val indigoApp: IndigoApplication) :
          }
 
          */
+    }
+   fun mapGems(){
+       val gem0 = rootService.currentGame?.middleTile?.gemPosition?.get(0)
+       val gem1 = rootService.currentGame?.middleTile?.gemPosition?.get(1)
+       val gem2 = rootService.currentGame?.middleTile?.gemPosition?.get(2)
+       val gem3 = rootService.currentGame?.middleTile?.gemPosition?.get(3)
+       val gem4 = rootService.currentGame?.middleTile?.gemPosition?.get(4)
+       val gem5 = rootService.currentGame?.middleTile?.gemPosition?.get(5)
+       gemMap.addAll(
+           (gem0 to blueGem) as Pair<Gem, Label>,
+           (gem1 to greenGem1) as Pair<Gem, Label>,
+           (gem2 to greenGem2) as Pair<Gem, Label>,
+           (gem3 to greenGem3) as Pair<Gem, Label>,
+           (gem4 to greenGem4) as Pair<Gem, Label>,
+           (gem5 to greenGem5) as Pair<Gem, Label>
+
+       )
     }
 
 }
