@@ -75,53 +75,53 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     // Player components
     private var player1Label =
-        view.components.Label(posX = 110, posY = 68, width = 200, text = "Player 1", fontSize = 48)
+        Label(posX = 110, posY = 68, width = 200, text = "Player 1", fontSize = 48)
     private var player2Label =
-        view.components.Label(posX = 1573, posY = 68, width = 200, text = "Player 2", fontSize = 48)
+        Label(posX = 1573, posY = 68, width = 200, text = "Player 2", fontSize = 48)
     private var player3Label =
-        view.components.Label(posX = 143, posY = 917, width = 200, text = "Player 3", fontSize = 48)
+        Label(posX = 143, posY = 917, width = 200, text = "Player 3", fontSize = 48)
     private var player4Label =
-        view.components.Label(posX = 1579, posY = 917, width = 200, text = "Player 4", fontSize = 48)
+        Label(posX = 1579, posY = 917, width = 200, text = "Player 4", fontSize = 48)
 
     // PlayerScore components
     private var player1ScoreLabel =
-        view.components.Label(posX = 110, posY = 114, width = 200, text = "0 points", fontSize = 48)
+        Label(posX = 110, posY = 114, width = 200, text = "0 points", fontSize = 48)
     private var player2ScoreLabel =
-        view.components.Label(posX = 1573, posY = 114, width = 200, text = "0 points", fontSize = 48)
+        Label(posX = 1573, posY = 114, width = 200, text = "0 points", fontSize = 48)
     private var player3ScoreLabel =
-        view.components.Label(posX = 143, posY = 964, width = 200, text = "0 points", fontSize = 48)
+        Label(posX = 143, posY = 964, width = 200, text = "0 points", fontSize = 48)
     private var player4ScoreLabel =
-        view.components.Label(posX = 1579, posY = 964, width = 200, text = "0 points", fontSize = 48)
+        Label(posX = 1579, posY = 964, width = 200, text = "0 points", fontSize = 48)
 
     // PlayerToken components
-    private var player1Token = view.components.Label(posX = 60, posY = 70, text = "")
-    private var player2Token = view.components.Label(posX = 1523, posY = 70, text = "")
-    private var player3Token = view.components.Label(posX = 93, posY = 921, text = "")
-    private var player4Token = view.components.Label(posX = 1529, posY = 921, text = "")
+    private var player1Token = Label(posX = 60, posY = 70, text = "")
+    private var player2Token = Label(posX = 1523, posY = 70, text = "")
+    private var player3Token = Label(posX = 93, posY = 921, text = "")
+    private var player4Token = Label(posX = 1529, posY = 921, text = "")
 
-    // PlayergreenGem components
-    private var player1greenGem = view.components.Label(posX = 399, posY = 142, text = "", width = 81, height = 65)
-    private var player2greenGem = view.components.Label(posX = 1351, posY = 142, text = "", width = 81, height = 65)
-    private var player3greenGem = view.components.Label(posX = 399, posY = 830, text = "", width = 81, height = 65)
-    private var player4greenGem = view.components.Label(posX = 1351, posY = 830, text = "", width = 81, height = 65)
+    // PlayerGreenGem components
+    private var player1greenGem = Label(posX = 399, posY = 142, text = "", width = 81, height = 65)
+    private var player2greenGem = Label(posX = 1351, posY = 142, text = "", width = 81, height = 65)
+    private var player3greenGem = Label(posX = 399, posY = 830, text = "", width = 81, height = 65)
+    private var player4greenGem = Label(posX = 1351, posY = 830, text = "", width = 81, height = 65)
 
-    // PlayeryellowGem components
-    private var player1yellowGem = view.components.Label(posX = 490, posY = 86, text = "", width = 81, height = 65)
-    private var player2yellowGem = view.components.Label(posX = 1262, posY = 86, text = "", width = 81, height = 65)
-    private var player3yellowGem = view.components.Label(posX = 490, posY = 764, text = "", width = 81, height = 65)
-    private var player4yellowGem = view.components.Label(posX = 1262, posY = 764, text = "", width = 81, height = 65)
+    // PlayerYellowGem components
+    private var player1yellowGem = Label(posX = 490, posY = 86, text = "", width = 81, height = 65)
+    private var player2yellowGem = Label(posX = 1262, posY = 86, text = "", width = 81, height = 65)
+    private var player3yellowGem = Label(posX = 490, posY = 764, text = "", width = 81, height = 65)
+    private var player4yellowGem = Label(posX = 1262, posY = 764, text = "", width = 81, height = 65)
 
-    // PlayergreenGemCounter components
-    private var player1greenGemCounter = view.components.Label(posX = 413, posY = 95, text = "0", fontSize = 48)
-    private var player2greenGemCounter = view.components.Label(posX = 1365, posY = 95, text = "0", fontSize = 48)
-    private var player3greenGemCounter = view.components.Label(posX = 413, posY = 783, text = "0", fontSize = 48)
-    private var player4greenGemCounter = view.components.Label(posX = 1365, posY = 783, text = "0", fontSize = 48)
+    // PlayerGreenGemCounter components
+    private var player1greenGemCounter = Label(posX = 413, posY = 95, text = "0", fontSize = 48)
+    private var player2greenGemCounter = Label(posX = 1365, posY = 95, text = "0", fontSize = 48)
+    private var player3greenGemCounter = Label(posX = 413, posY = 783, text = "0", fontSize = 48)
+    private var player4greenGemCounter = Label(posX = 1365, posY = 783, text = "0", fontSize = 48)
 
-    // PlayeryellowGemCounter components
-    private var player1yellowGemCounter = view.components.Label(posX = 504, posY = 39, text = "0", fontSize = 48)
-    private var player2yellowGemCounter = view.components.Label(posX = 1276, posY = 39, text = "0", fontSize = 48)
-    private var player3yellowGemCounter = view.components.Label(posX = 504, posY = 717, text = "0", fontSize = 48)
-    private var player4yellowGemCounter = view.components.Label(posX = 1276, posY = 717, text = "0", fontSize = 48)
+    // PlayerYellowGemCounter components
+    private var player1yellowGemCounter = Label(posX = 504, posY = 39, text = "0", fontSize = 48)
+    private var player2yellowGemCounter = Label(posX = 1276, posY = 39, text = "0", fontSize = 48)
+    private var player3yellowGemCounter = Label(posX = 504, posY = 717, text = "0", fontSize = 48)
+    private var player4yellowGemCounter = Label(posX = 1276, posY = 717, text = "0", fontSize = 48)
 
     // PlayerHandTile components
     // player1 oben links player2 oben rechts player3 unten links player4 unten rechts
@@ -180,41 +180,41 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     // GateToken components
     //gate oben links und dann im Uhrzeigersinn
-    private var gate1Token1 = view.components.Label(posX = 666, posY = 105, text = "")
-    private var gate1Token2 = view.components.Label(posX = 748, posY = 57, text = "")
+    private var gate1Token1 = Label(posX = 666, posY = 105, text = "")
+    private var gate1Token2 = Label(posX = 748, posY = 57, text = "")
 
-    private var gate2Token1 = view.components.Label(posX = 1065, posY = 57, text = "")
-    private var gate2Token2 = view.components.Label(posX = 1147, posY = 105, text = "")
+    private var gate2Token1 = Label(posX = 1065, posY = 57, text = "")
+    private var gate2Token2 = Label(posX = 1147, posY = 105, text = "")
 
-    private var gate3Token1 = view.components.Label(posX = 1306, posY = 385, text = "")
-    private var gate3Token2 = view.components.Label(posX = 1306, posY = 475, text = "")
+    private var gate3Token1 = Label(posX = 1306, posY = 385, text = "")
+    private var gate3Token2 = Label(posX = 1306, posY = 475, text = "")
 
-    private var gate4Token1 = view.components.Label(posX = 1147, posY = 750, text = "")
-    private var gate4Token2 = view.components.Label(posX = 1065, posY = 797, text = "")
+    private var gate4Token1 = Label(posX = 1147, posY = 750, text = "")
+    private var gate4Token2 = Label(posX = 1065, posY = 797, text = "")
 
-    private var gate5Token1 = view.components.Label(posX = 748, posY = 797, text = "")
-    private var gate5Token2 = view.components.Label(posX = 666, posY = 750, text = "")
+    private var gate5Token1 = Label(posX = 748, posY = 797, text = "")
+    private var gate5Token2 = Label(posX = 666, posY = 750, text = "")
 
-    private var gate6Token1 = view.components.Label(posX = 510, posY = 475, text = "")
-    private var gate6Token2 = view.components.Label(posX = 510, posY = 385, text = "")
+    private var gate6Token1 = Label(posX = 510, posY = 475, text = "")
+    private var gate6Token2 = Label(posX = 510, posY = 385, text = "")
 
     // GameboardGem components
-    private var blueGem = view.components.Label(posX = 911, posY = 432, text = "", width = 40, height = 32)
+    private var blueGem = Label(posX = 911, posY = 432, text = "", width = 40, height = 32)
 
     //oben links im Uhrzeigersinn
-    private var greenGem1 = view.components.Label(posX = 890, posY = 405, text = "", width = 40, height = 32)
-    private var greenGem2 = view.components.Label(posX = 930, posY = 402, text = "", width = 40, height = 32)
-    private var greenGem3 = view.components.Label(posX = 944, posY = 439, text = "", width = 40, height = 32)
-    private var greenGem4 = view.components.Label(posX = 912, posY = 465, text = "", width = 40, height = 32)
-    private var greenGem5 = view.components.Label(posX = 875, posY = 438, text = "", width = 40, height = 32)
+    private var greenGem1 = Label(posX = 890, posY = 405, text = "", width = 40, height = 32)
+    private var greenGem2 = Label(posX = 930, posY = 402, text = "", width = 40, height = 32)
+    private var greenGem3 = Label(posX = 944, posY = 439, text = "", width = 40, height = 32)
+    private var greenGem4 = Label(posX = 912, posY = 465, text = "", width = 40, height = 32)
+    private var greenGem5 = Label(posX = 875, posY = 438, text = "", width = 40, height = 32)
 
     //oben im Uhrzeigersinn
-    private var yellowGem1 = view.components.Label(posX = 910, posY = 70, text = "", width = 40, height = 32)
-    private var yellowGem2 = view.components.Label(posX = 1226, posY = 248, text = "", width = 40, height = 32)
-    private var yellowGem3 = view.components.Label(posX = 1226, posY = 612, text = "", width = 40, height = 32)
-    private var yellowGem4 = view.components.Label(posX = 910, posY = 797, text = "", width = 40, height = 32)
-    private var yellowGem5 = view.components.Label(posX = 590, posY = 613, text = "", width = 40, height = 32)
-    private var yellowGem6 = view.components.Label(posX = 590, posY = 246, text = "", width = 40, height = 32)
+    private var yellowGem1 = Label(posX = 910, posY = 70, text = "", width = 40, height = 32)
+    private var yellowGem2 = Label(posX = 1226, posY = 248, text = "", width = 40, height = 32)
+    private var yellowGem3 = Label(posX = 1226, posY = 612, text = "", width = 40, height = 32)
+    private var yellowGem4 = Label(posX = 910, posY = 797, text = "", width = 40, height = 32)
+    private var yellowGem5 = Label(posX = 590, posY = 613, text = "", width = 40, height = 32)
+    private var yellowGem6 = Label(posX = 590, posY = 246, text = "", width = 40, height = 32)
 
     /**
      * Initializes the GameScene with default values and sets up the hexagonal grid.
@@ -690,7 +690,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      * Sets Token-Label with an Image of the given TokenColor
      */
-    private fun getGem(label: view.components.Label, color: TokenColor) {
+    private fun getGem(label: Label, color: TokenColor) {
         when (color) {
             TokenColor.WHITE -> label.apply { visual = ImageVisual("tokenwhite.png") }
 

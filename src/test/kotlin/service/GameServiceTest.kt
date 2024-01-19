@@ -24,6 +24,7 @@ class GameServiceTest {
         Player("Bob", Date(0), TokenColor.PURPLE, false),
         Player("Emily", Date(0), TokenColor.BLUE, false),
         Player("Jack", Date(0), TokenColor.RED, false)
+
     )
 
     private val tile0 = Tile(
@@ -179,7 +180,7 @@ class GameServiceTest {
         //tileID 2 initialisieren
         val tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
-            TileType.Type_2 ,
+            TileType.Type_2,
             mutableMapOf(Pair(1, Gem(EMERALD)))
         )
 
@@ -262,58 +263,58 @@ class GameServiceTest {
         assertFalse(rootService.gameService.checkCollision(tile3))
     }
 
-        /**
-         * Test the saveGame function.
-         */
+    /**
+     * Test the saveGame function.
+     */
 
-        @Test
-        fun saveGameTest() {
+    @Test
+    fun saveGameTest() {
 
-            rootService.gameService.startGame(fourPlayers.toMutableList())
-            val gameToSave = rootService.currentGame
-            assertNotNull(gameToSave)
-            val testPath = "src/main/resources/gameToSave.json"
-            rootService.gameService.saveGame(testPath)
+        rootService.gameService.startGame(fourPlayers.toMutableList())
+        val gameToSave = rootService.currentGame
+        assertNotNull(gameToSave)
+        val testPath = "src/main/resources/gameToSave.json"
+        rootService.gameService.saveGame(testPath)
 
-            assertNotNull(File(testPath))
-            assertEquals(gameToSave,rootService.currentGame)
-            assertEquals(gameToSave?.players,rootService.currentGame?.players)
-        }
+        assertNotNull(File(testPath))
+        assertEquals(gameToSave, rootService.currentGame)
+        assertEquals(gameToSave?.players, rootService.currentGame?.players)
+    }
+
+    /**
+     * Test the loadGame function.
+     */
+    @Test
+    fun loadGameTest() {
+        /* assertNull(rootService.currentGame)
+
+         val testPath = "src/main/resources/gameToSave.json"
+         rootService.gameService.loadGame(testPath)
+         assertNotNull(rootService.currentGame)*/
 
 
+        /*
+                    //Updating test for loadGame
+                    rootService.gameService.startGame(fourPlayers.toMutableList())
+                    rootService.gameService.changePlayer()
 
-        /**
-         * Test the loadGame function.
-         */
-        @Test
-        fun loadGameTest() {
-           /* assertNull(rootService.currentGame)
+                    val gameToSave = rootService.currentGame
+                    assertNotNull(gameToSave)
+                    val testPath = "src/main/resources/gameToSave.json"
+                    rootService.gameService.saveGame(testPath)
 
-            val testPath = "/Users/mohammadkarkanawi/IdeaProjects/Projekt2-gruppe1/src/test/resources/
-            rootService.gameService.loadGame(testPath)
-            assertNotNull(rootService.currentGame)*/
-
-/*
-
-            //Updating test for loadGame
-            rootService.gameService.startGame(fourPlayers.toMutableList())
-            val gameToSave = rootService.currentGame
-            assertNotNull(gameToSave)
-            val testPath = "src/main/resources/gameToSave.json"
-            rootService.gameService.saveGame(testPath)
-
-            rootService.gameService.endGame()
-            //rootService.currentGame = rootService.ioService.readGameFromFile(testPath)
-            //checkNotNull(rootService.currentGame)
-            rootService.gameService.loadGame(testPath)
-            val loadedGame = rootService.currentGame
-            assertNotNull(loadedGame)
-//            assertEquals(gameToSave,loadedGame)
-            assertEquals(gameToSave?.players,loadedGame?.players)
-            assertEquals(gameToSave?.allTiles,loadedGame?.allTiles)
-            assertEquals(gameToSave?.previousGameState,loadedGame?.previousGameState)
-*/
-        }
+                    rootService.gameService.endGame()
+                    //rootService.currentGame = rootService.ioService.readGameFromFile(testPath)
+                    //checkNotNull(rootService.currentGame)
+                    rootService.gameService.loadGame(testPath)
+                    val loadedGame = rootService.currentGame
+                    assertNotNull(loadedGame)
+                    assertEquals(gameToSave,loadedGame)
+                   // assertEquals(gameToSave?.players,loadedGame?.players)
+                    assertEquals(gameToSave?.allTiles,loadedGame?.allTiles)
+                    assertEquals(gameToSave?.previousGameState,loadedGame?.previousGameState)
+        */
+    }
 
     /**
      * Test the changePlayer function.
@@ -530,7 +531,7 @@ class GameServiceTest {
                             Edge.values()[(Edge.values().size + gemPos - 1) % 6],
                             Edge.values()[(Edge.values().size + gemPos + 1) % 6]
                         )
-                    ), TileType.Type_0,mutableMapOf(Pair(gemPos, Gem(AMBER)))
+                    ), TileType.Type_0, mutableMapOf(Pair(gemPos, Gem(AMBER)))
                 )
             )
         }
@@ -620,5 +621,30 @@ class GameServiceTest {
         }
     }
 
-}
+    @Test
+    fun testSecondPlayerIsKI() {
+        assertNull(rootService.currentGame)
 
+        val twoPlayer = mutableListOf(
+            Player("Alice", Date(0), TokenColor.WHITE, false),
+            Player("Bob", Date(0), TokenColor.PURPLE, true)
+        )
+        rootService.gameService.startGame(twoPlayer)
+        val testGame = rootService.currentGame
+        assertNotNull(testGame)
+        //tileID 0 initialisieren
+        val tile0 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            TileType.Type_0,
+            mutableMapOf(Pair(1, Gem(EMERALD)))
+        )
+        assertEquals(true,testGame!!.players[1].isAI)
+        assertEquals(false,testGame.players[0].isAI)
+        rootService.playerTurnService.placeRouteTile(Coordinate(-2,4), tile0)
+        assertEquals(true,testGame.players[1].isAI)
+        assertEquals(false,testGame.players[0].isAI)
+        rootService.playerTurnService.placeRouteTile(Coordinate(-1,4), tile0)
+        assertEquals(true,testGame.players[1].isAI)
+        assertEquals(false,testGame.players[0].isAI)
+    }
+}

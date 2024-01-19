@@ -125,6 +125,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @return True if placement is valid, false otherwise.
      * @throws Exception if the space is already occupied or the tile blocks an exit.
      */
+
     fun checkPlacement(space: Coordinate, tile: Tile, isAiCalled: Boolean = false): Boolean {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
