@@ -86,7 +86,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
      */
     fun rotateTileLeft(tile: Tile) {    // Add the first edge to the end of the list
         val game = rootService.currentGame
-        checkNotNull(game) { "No game found."}
+        checkNotNull(game) { "No game found." }
 
         tile.edges.addAll(tile.edges.subList(0, 1))
         // Remove the original first edge
@@ -100,9 +100,9 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
      * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating an AI move, defaults to false
      * @throws IllegalStateException if no game is running
      */
-    fun rotateTileRight(tile: Tile,isAiCalled: Boolean = false) {    // Add the last edge to the beginning of the list
+    fun rotateTileRight(tile: Tile, isAiCalled: Boolean = false) {    // Add the last edge to the beginning of the list
         val game = rootService.currentGame
-        checkNotNull(game) { "No game found."}
+        checkNotNull(game) { "No game found." }
 
         tile.edges.addAll(0, tile.edges.subList(tile.edges.size - 1, tile.edges.size))
         // Remove the original last edge
@@ -126,17 +126,39 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         val copiedGameBoard = GameBoard()
         copiedGameBoard.gameBoardTiles.putAll(copiedGameBoardTiles)
         copiedGameBoard.gateTokens = copiedGateTokens
-        val copiedPlayers = settings.players.map {
-            Player(
-                it.name,
-                it.age,
-                it.color,
-                it.isAI
-            ).apply {
-                score = it.score
-                collectedGems = it.collectedGems.toMutableList()
-                // Copy the handTile
-                handTile = it.handTile?.copy()
+        val copiedPlayers = settings.players.map { originalPlayer ->
+            when (originalPlayer) {
+                is Player -> {
+                    Player(
+                        originalPlayer.name,
+                        originalPlayer.age,
+                        originalPlayer.color,
+                        originalPlayer.isAI
+                    ).apply {
+                        score = originalPlayer.score
+                        collectedGems = originalPlayer.collectedGems.toMutableList()
+                        // Copy the handTile
+                        handTile = originalPlayer.handTile?.copy()
+                    }
+                }
+
+                is CPUPlayer-> {
+                    CPUPlayer(
+                        originalPlayer.name,
+                        originalPlayer.age,
+                        originalPlayer.color,
+                        originalPlayer.difficulty,
+                        originalPlayer.simulationSpeed
+                    ).apply {
+                        score = originalPlayer.score
+                        collectedGems = originalPlayer.collectedGems.toMutableList()
+                        // Copy the handTile
+                        handTile = originalPlayer.handTile?.copy()
+                        // Additional properties specific to CPUPlayer
+                        // ...
+                    }
+                }
+                else -> originalPlayer
             }
         }.toList()
         val copiedSettings = GameSettings(copiedPlayers)
