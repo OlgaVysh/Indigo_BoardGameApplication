@@ -335,7 +335,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val gatesListe = mutableListOf(gate1, gate2, gate3, gate4, gate5, gate6)
         for (i in 0 until 6) {
             if (gatesListe[i].contains(coordinate)) {
-                //check existenz of two gems not of the same path of tile, but on the two edges beyond the gate.
+                //check existence of two gems not of the same path of tile, but on the two edges beyond the gate.
                 val gem1 = tile.gemEndPosition[(0 + i) % 6]
                 val gem2 = tile.gemEndPosition[(5 + i) % 6]
                 val gems = mutableListOf<Gem>()
