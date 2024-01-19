@@ -547,6 +547,7 @@ class GameScene(val indigoApp: IndigoApplication) :
             startHandTile.add(player.handTile)
         }
         println(startHandTile.toString())
+        mapGems()
     }
 
     /**
@@ -895,6 +896,20 @@ class GameScene(val indigoApp: IndigoApplication) :
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
         // TODO {/*to complete*/}
+    }
+
+    override fun refreshAfterRemoveGems() {
+        val gameBoard = rootService.currentGame?.gameBoard
+
+
+        val gemsOnBoard = mutableSetOf<Gem>()
+        for ((_, tile) in gameBoard?.gameBoardTiles ?: emptyMap()) {
+            if (tile.gemEndPosition.isNotEmpty()) {
+                gemsOnBoard.addAll(tile.gemEndPosition.values)
+            }
+        }
+        //gemMap.removeForward()
+
     }
 
     /**
