@@ -34,7 +34,6 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         checkNotNull(game)
         val player = game.players[game.currentPlayerIndex]
         checkNotNull(player.handTile)
-        val gameService = root.gameService
         val playerTurnService = root.playerTurnService
         gatherInformation()
         var bestDistanceDelta: Int = Int.MIN_VALUE
@@ -48,9 +47,8 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         for (i in 0 until moveValues[bestMoveIndex].first) playerTurnService.rotateTileRight(player.handTile!!)
         println("[SimpleAI DEBUG] gemTile: "+gemTiles[bestMoveIndex]+" move: " +
                 moves[bestMoveIndex]+"rotation:"+moveValues[bestMoveIndex].first)
-        gameService.placeTile(moves[bestMoveIndex],player.handTile!!)
+        playerTurnService.placeRouteTile(moves[bestMoveIndex],player.handTile!!)
         onAllRefreshables { refreshAfterAITurn() }
-        root.gameService.changePlayer()
     }
     /**
      * Simulates where a [Gem] ends up after each move in [moves] with each possible rotation
