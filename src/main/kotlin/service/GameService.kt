@@ -48,12 +48,12 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         rootService.currentGame!!.gameBoard.gateTokens = createGateTokens(players, notSharedGate)
         val treasureTiles = rootService.currentGame!!.treasureTiles
         val listCoordinate = listOf(
+            Coordinate(-4, 0),
             Coordinate(-4, 4),
             Coordinate(0, 4),
             Coordinate(4, 0),
             Coordinate(4, -4),
-            Coordinate(0, -4),
-            Coordinate(-4, 0)
+            Coordinate(0, -4)
         )
         for (i in listCoordinate.indices) {
             val coordinate = listCoordinate[i]
