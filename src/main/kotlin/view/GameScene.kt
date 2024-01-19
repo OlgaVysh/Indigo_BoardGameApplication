@@ -863,7 +863,6 @@ class GameScene(val indigoApp: IndigoApplication) :
         val coordinates = Coordinate(chosenRow!!, chosenCol!!)
         //tileToPlace= HexagonView(visual = tile.type.toImg())
         rootService.playerTurnService.placeRouteTile(coordinates, tile)
-        if (indigoApp.networkMode) rootService.networkService.sendPlacedTile(tile, coordinates)
     }
 
     /**

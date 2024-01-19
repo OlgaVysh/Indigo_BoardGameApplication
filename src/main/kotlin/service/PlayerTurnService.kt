@@ -1,6 +1,7 @@
 package service
 
 import entity.*
+import service.network.ConnectionState
 import java.lang.Exception
 
 /**
@@ -36,6 +37,12 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
             lastGame?.previousGameState = firstAppearance
             rootService.currentGame?.nextGameState = lastGame
             rootService.currentGame = rootService.currentGame?.nextGameState
+
+            //if is your turn in the NetworkMode
+            val connectionState = rootService.networkService.connectionState
+            if (connectionState == ConnectionState.PLAYING_MY_TURN) {
+                rootService.networkService.sendPlacedTile(tile, space)
+            }
             if (rootService.gameService.endGame()) {
                 onAllRefreshables { refreshAfterEndGame() }
             }
@@ -128,7 +135,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         copiedGameBoard.gateTokens = copiedGateTokens
         val copiedPlayers = settings.players.map { originalPlayer ->
             when (originalPlayer) {
-                is CPUPlayer-> {
+                is CPUPlayer -> {
                     CPUPlayer(
                         originalPlayer.name,
                         originalPlayer.age,
@@ -144,6 +151,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
                         // ...
                     }
                 }
+
                 else -> {
                     Player(
                         originalPlayer.name,

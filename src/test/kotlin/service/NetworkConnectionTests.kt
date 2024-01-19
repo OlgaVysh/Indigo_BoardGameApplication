@@ -375,14 +375,12 @@ class NetworkConnectionTests {
             val currentPlayerIndex = hostRootService.currentGame!!.currentPlayerIndex
             var testTile = hostRootService.currentGame!!.players[currentPlayerIndex].handTile
             hostRootService.playerTurnService.placeRouteTile(coordinate, testTile!!)
-            host.sendPlacedTile(testTile, coordinate)
             Thread.sleep(5000)
             Property(host.connectionState).await(ConnectionState.PLAYING_MY_TURN)
             testTile = hostRootService.currentGame!!.players[1].handTile
             hostRootService.playerTurnService.rotateTileLeft(testTile!!)
             coordinate = Coordinate(0, -1)
             hostRootService.playerTurnService.placeRouteTile(coordinate, testTile)
-            host.sendPlacedTile(testTile, coordinate)
             Thread.sleep(5000)
             Property(host.connectionState).await(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             latch.countDown()
