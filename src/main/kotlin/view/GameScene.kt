@@ -542,6 +542,11 @@ class GameScene(val indigoApp: IndigoApplication) :
         setPlayers(players)
         initialzeGateTokens()
         invokeButtons(players)
+        val startHandTile = mutableListOf<Tile?>()
+        for(player in players){
+            startHandTile.add(player.handTile)
+        }
+        println(startHandTile.toString())
     }
 
     /**
@@ -743,15 +748,17 @@ class GameScene(val indigoApp: IndigoApplication) :
         val currentGame = indigoApp.rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
-        val currentIndex = currentGame.currentPlayerIndex
-        val currentHandTile = players[currentIndex].handTile
-        if (currentHandTile == null) {
-            playerTile[currentIndex].isVisible = false
-        } else {
-            playerTile[currentIndex].visual = currentHandTile.type.toImg()
-            playerTile[currentIndex].isVisible = true
-            for (tile in playerTile) {
-                tile.rotationProperty.value = 30.0
+        //val currentIndex = currentGame.currentPlayerIndex
+        //val currentHandTile = players[currentIndex].handTile
+        for(i in players.indices ) {
+            if (players[i].handTile == null) {
+                playerTile[i].isVisible = false
+            } else {
+                playerTile[i].visual = players[i].handTile!!.type.toImg()
+                playerTile[i].isVisible = true
+                for (tile in playerTile) {
+                    tile.rotationProperty.value = 30.0
+                }
             }
         }
     }
@@ -852,6 +859,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         chosenPlace = tile
         chosenRow = row
         chosenCol = col
+
 
     }
 
