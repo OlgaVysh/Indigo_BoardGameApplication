@@ -171,6 +171,10 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         val networkPlayers = rootService.networkMappingService.toNetworkPlayer()
         val gameMode = rootService.networkMappingService.toGameMode()
         val tileList = rootService.networkMappingService.toTileTypeList()
+        println(networkPlayers.toString())
+        println(gameMode)
+        println(tileList.size.toString())
+
         val message = GameInitMessage(
             networkPlayers, gameMode, tileList
         )
