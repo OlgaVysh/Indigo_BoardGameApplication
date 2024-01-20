@@ -44,12 +44,11 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
                 } else {
                     player?.let { it1 -> actualPlayer.add(it1) }
                 }
-
             }
             if (indigoApp.networkMode) {
                 val connectionState = indigoApp.rootService.networkService.connectionState
                 if (connectionState == ConnectionState.DISCONNECTED) {
-                    indigoApp.joinGameScene.difficulty = speed4Label.text
+                    indigoApp.joinGameScene.difficulty = aiDiff()
                     indigoApp.joinGameScene.simulationSpeed = aiSpeed()
                     indigoApp.hideMenuScene()
                     indigoApp.showMenuScene(indigoApp.joinGameScene)
