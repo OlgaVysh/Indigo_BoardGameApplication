@@ -878,7 +878,7 @@ class GameScene(val indigoApp: IndigoApplication) :
             val yellowGems = game.players[i-1].collectedGems.count {
                 it.gemColor == GemColor.AMBER
             }
-            var greenGems = game.players[i-1].collectedGems.count {
+            val greenGems = game.players[i-1].collectedGems.count {
                 it.gemColor == GemColor.EMERALD
             }
 
