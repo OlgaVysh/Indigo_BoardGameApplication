@@ -502,11 +502,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         if (currentTile == null) {
             return
         }
+
+        // if in the middle are no more Gems
         if (neighborCoordinate.row == 0 && neighborCoordinate.column == 0) {
             val amountOfGems = middleTile.gemPosition.size
             if (amountOfGems <= 0) {
                 return
             }
+
             val currentTileGem = currentTile.gemEndPosition[currentGemPosition]
             if (currentTileGem != null) {
                 currentGame.gems.remove(middleTile.gemPosition[amountOfGems - 1])
@@ -553,6 +556,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 neighbourGems.remove(neighborEnd)
                 return
             }
+
         }
         if (!neighbourTile.gemEndPosition.contains(neighbourStart)) return
         val currentEdge = currentTile.edges[currentGemPosition]
