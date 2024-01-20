@@ -558,14 +558,45 @@ class GameScene(val indigoApp: IndigoApplication) :
      * For every player set a view of name and token color and disable superfluous players views
      */
     private fun setPlayers(players: List<Player>) {
+        val currentGame = indigoApp.rootService.currentGame
+        checkNotNull(currentGame)
+
         val count = players.size
 
         for(i in count downTo 1 step 1) {
             playerlabels[i-1].text = players[i-1].name
             getGem(playerTokens[i-1], players[i-1].color)
-
         }
+        for(i in count downTo 2 step 1) {
+            playerlabels[i-1].text = players[i-1].name
+            getGem(playerTokens[i-1], players[i-1].color)
 
+            playerlabels[i-1].apply {
+                isVisible = true
+            }
+            playerScores[i-1].apply {
+                isVisible = true
+            }
+            playerTokens[i-1].apply {
+                isVisible = true
+            }
+            playerGreenGems[i-1].apply {
+                isVisible = true
+            }
+            playerGreenGemCounters[i-1].apply {
+                isVisible = true
+            }
+            playerYellowGems[i-1].apply {
+                isVisible = true
+            }
+            playerYellowGemCounters[i-1].apply {
+                isVisible = true
+            }
+            playerHandtiles[i-1].apply {
+                isVisible = true
+            }
+        }
+        refreshAfterChangePlayer()
         for (a in count until 4) {
             when (a) {
                 2 -> {
