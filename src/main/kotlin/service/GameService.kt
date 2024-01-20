@@ -61,8 +61,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             rootService.currentGame!!.gameBoard.gameBoardTiles[coordinate] = treasureTiles[i]
         }
         rootService.currentGame!!.routeTiles.shuffle()
-        for (player in players) {
-            player.handTile = rootService.currentGame!!.routeTiles.removeFirst()
+        for (i in 0 until players.size) {
+            players[i].handTile = rootService.currentGame!!.routeTiles.removeAt(0)
             onAllRefreshables { refreshAfterDistributeNewTile() }
         }
 
@@ -70,15 +70,20 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             refreshAfterChangePlayer()
             refreshAfterStartGame()
         }
-        val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
-        val currentPlayer = players[currentPlayerIndex]
-        if (currentPlayer.isAI) {
-            when (currentPlayer) {
-                is CPUPlayer -> {
-                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+
+        val connectionState = rootService.networkService.connectionState
+        if(connectionState == ConnectionState.DISCONNECTED) {
+            val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
+            val currentPlayer = players[currentPlayerIndex]
+            if (currentPlayer.isAI) {
+                when (currentPlayer) {
+                    is CPUPlayer -> {
+                        rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                    }
                 }
             }
         }
+        println(rootService.currentGame!!.routeTiles.size)
     }
 
     /**
@@ -251,8 +256,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val gate6 = listOf(Coordinate(-3, -1), Coordinate(-2, -2), Coordinate(-1, -3))
         val gates = listOf(gate1,gate2, gate3, gate4, gate5, gate6)
 
-        var position1 = 5
-        var position2 = 0
+        var position1 = 0
+        var position2 = 1
         // Check which gate the space belongs to
         for (i in gates.indices) {
             if (gates[i].contains(space)) {
@@ -340,7 +345,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             if (gatesListe[i].contains(coordinate)) {
                 //check existence of two gems not of the same path of tile, but on the two edges beyond the gate.
                 val gem1 = tile.gemEndPosition[(0 + i) % 6]
-                val gem2 = tile.gemEndPosition[(5 + i) % 6]
+                val gem2 = tile.gemEndPosition[(1 + i) % 6]
                 val gems = mutableListOf<Gem>()
                 if (gem1 != null) {
                     gems.add(gem1)
@@ -688,13 +693,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
         val neighbors = mutableListOf<Coordinate>()
         //hexagonal grid
-
+        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
         neighbors.add(Coordinate(coordinate.row - 1, coordinate.column + 1))  // Top-right
         neighbors.add(Coordinate(coordinate.row, coordinate.column + 1))      // Bottom-right
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column))      // Below
         neighbors.add(Coordinate(coordinate.row + 1, coordinate.column - 1))  // Bottom-left
         neighbors.add(Coordinate(coordinate.row, coordinate.column - 1)) // Top-left
-        neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
+
         return neighbors
     }
     /*
