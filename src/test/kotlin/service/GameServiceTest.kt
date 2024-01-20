@@ -341,30 +341,46 @@ class GameServiceTest {
     /**
      * Test the moveGems function.
      */
-    //@Test
+    @Test
     fun moveGemsTest() {
         assertThrows<IllegalStateException> {
             gameService.moveGems(Coordinate(0, 1), Coordinate(1, 1), 2)
         }
-        gameService.startGame(fourPlayers.toMutableList())
-        rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), tile0)
-        val treasureTile2 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
-        val firstPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]
-
+        //firstTile Typ 1 initialisieren
         val testTile1 = Tile(
             listOf(
-                Pair(Edge.ZERO, Edge.TWO),
+                Pair(Edge.ZERO, Edge.THREE),
                 Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.THREE, Edge.FIVE)
+                Pair(Edge.TWO, Edge.FIVE)
             ),
-            TileType.Type_0
+            TileType.Type_1
         )
-        rootService.playerTurnService.placeRouteTile(Coordinate(0, 3), testTile1)
-        val secondPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]
-        assertNotNull(firstPlacedTile!!.gemEndPosition[4])
-        assertNull(secondPlacedTile!!.gemEndPosition[4])
-        assertEquals(0, treasureTile2!!.gemEndPosition.size)
+        //secondTile Typ 1 initialisieren
         val testTile2 = Tile(
+            listOf(
+                Pair(Edge.ZERO, Edge.THREE),
+                Pair(Edge.ONE, Edge.FOUR),
+                Pair(Edge.TWO, Edge.FIVE)
+            ),
+            TileType.Type_1
+        )
+        gameService.startGame(fourPlayers.toMutableList())
+        val treasureTile1 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
+
+        rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), testTile1)
+        val firstPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]
+
+
+        rootService.playerTurnService.placeRouteTile(Coordinate(0, 3), testTile2)
+        val secondPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]
+        assertEquals(0, treasureTile1!!.gemEndPosition.size)
+        assertEquals(0, secondPlacedTile!!.gemEndPosition.size)
+        assertEquals(1, firstPlacedTile!!.gemEndPosition.size)
+
+        assertNotNull(firstPlacedTile.gemEndPosition[5])
+        assertNull(secondPlacedTile.gemEndPosition[5])
+        //thirdTile Typ 0 initialisieren
+        val testTile3 = Tile(
             listOf(
                 Pair(Edge.ZERO, Edge.TWO),
                 Pair(Edge.ONE, Edge.FOUR),
@@ -372,32 +388,38 @@ class GameServiceTest {
             ),
             TileType.Type_0
         )
-        rootService.playerTurnService.placeRouteTile(Coordinate(0, 1), testTile2)
+        rootService.playerTurnService.rotateTileRight(testTile3)
+        rootService.playerTurnService.placeRouteTile(Coordinate(0, 1), testTile3)
+        val thirdPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 1)]
         assertEquals(10, rootService.currentGame!!.gems.size)
         assertEquals(5, rootService.currentGame!!.middleTile.gemPosition.size)
-        val placedTile2 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 1)]
-        assertNotNull(placedTile2)
-        assertEquals(0, placedTile2!!.gemEndPosition.size)
+        assertNotNull(thirdPlacedTile)
+        assertEquals(0, thirdPlacedTile!!.gemEndPosition.size)
+
         testTile2.gemEndPosition.clear()
         testTile1.gemEndPosition.clear()
         testTile1.gemEndPosition[1] = Gem(AMBER)
-        testTile2.gemEndPosition[4] = Gem(AMBER)
-        rootService.playerTurnService.placeRouteTile(Coordinate(2, 2), testTile1)
-        rootService.playerTurnService.placeRouteTile(Coordinate(2, 3), testTile2)
+        testTile2.gemEndPosition[1] = Gem(AMBER)
+
+        rootService.playerTurnService.placeRouteTile(Coordinate(-3, -1), testTile1)
+        rootService.playerTurnService.placeRouteTile(Coordinate(-2, -2), testTile2)
         assertEquals(0, testTile2.gemEndPosition.size)
         assertEquals(0, testTile1.gemEndPosition.size)
         assertEquals(8, rootService.currentGame!!.gems.size)
 
         testTile2.gemEndPosition.clear()
         testTile1.gemEndPosition.clear()
+
         testTile1.gemEndPosition[1] = Gem(AMBER)
         testTile2.gemEndPosition[1] = Gem(AMBER)
-        rootService.playerTurnService.placeRouteTile(Coordinate(-2, 3), testTile1)
-        rootService.playerTurnService.placeRouteTile(Coordinate(-2, 2), testTile2)
+        rootService.playerTurnService.placeRouteTile(Coordinate(-2, 0), testTile1)
+        rootService.playerTurnService.placeRouteTile(Coordinate(-1, -1), testTile2)
         assertEquals(0, testTile2.gemEndPosition.size)
         assertEquals(0, testTile1.gemEndPosition.size)
         assertEquals(6, rootService.currentGame!!.gems.size)
+
     }
+
 
     /**
      * Test the removeGems function.
@@ -638,13 +660,13 @@ class GameServiceTest {
             TileType.Type_0,
             mutableMapOf(Pair(1, Gem(EMERALD)))
         )
-        assertEquals(true,testGame!!.players[1].isAI)
-        assertEquals(false,testGame.players[0].isAI)
-        rootService.playerTurnService.placeRouteTile(Coordinate(-2,4), tile0)
-        assertEquals(true,testGame.players[1].isAI)
-        assertEquals(false,testGame.players[0].isAI)
-        rootService.playerTurnService.placeRouteTile(Coordinate(-1,4), tile0)
-        assertEquals(true,testGame.players[1].isAI)
-        assertEquals(false,testGame.players[0].isAI)
+        assertEquals(true, testGame!!.players[1].isAI)
+        assertEquals(false, testGame.players[0].isAI)
+        rootService.playerTurnService.placeRouteTile(Coordinate(-2, 4), tile0)
+        assertEquals(true, testGame.players[1].isAI)
+        assertEquals(false, testGame.players[0].isAI)
+        rootService.playerTurnService.placeRouteTile(Coordinate(-1, 4), tile0)
+        assertEquals(true, testGame.players[1].isAI)
+        assertEquals(false, testGame.players[0].isAI)
     }
 }
