@@ -560,31 +560,11 @@ class GameScene(val indigoApp: IndigoApplication) :
     private fun setPlayers(players: List<Player>) {
         val count = players.size
 
-        for (n in 0 until count) {
+        for(i in count downTo 1 step 1) {
+            playerlabels[i-1].text = players[i-1].name
+            getGem(playerTokens[i-1], players[i-1].color)
 
-            when (n) {
-                0 -> {
-                    player1Label.text = players[0].name
-                    getGem(player1Token, players[0].color)
-                }
-
-                1 -> {
-                    player2Label.text = players[1].name
-                    getGem(player2Token, players[1].color)
-                }
-
-                2 -> {
-                    player3Label.text = players[2].name
-                    getGem(player3Token, players[2].color)
-                }
-
-                3 -> {
-                    player4Label.text = players[3].name
-                    getGem(player4Token, players[3].color)
-                }
-            }
         }
-
 
         for (a in count until 4) {
             when (a) {
@@ -759,7 +739,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
             }
         }
-        if(currentGame.routeTiles.isNotEmpty()){
+        if(currentGame.routeTiles.isEmpty()){
             reserveStack.isVisible = false
         }
     }
@@ -824,13 +804,10 @@ class GameScene(val indigoApp: IndigoApplication) :
         val col = coordinate.column
         val row = coordinate.row
 
-        val game = indigoApp.rootService.currentGame
-        checkNotNull(game) { "No game found." }
         hexagonGrid[col,row] =
             HexagonView(size = 55.0, visual = tile.type.toImg()).apply {
                 rotate(-60)
                 rotate(60 * rotationDegree) }
-
     }
 
     /**
@@ -893,9 +870,27 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     override fun refreshAfterRemoveGems() {
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game) { "No game found." }
+
+        val count = game.players.size
+        for(i in count downTo 1 step 1) {
+            val yellowGems = game.players[i-1].collectedGems.count {
+                it.gemColor == GemColor.AMBER
+            }
+            var greenGems = game.players[i-1].collectedGems.count {
+                it.gemColor == GemColor.EMERALD
+            }
+
+            playerScores[i - 1].text = game.players[i - 1].score.toString()
+            playerYellowGemCounters[i-1].text = yellowGems.toString()
+            playerGreenGemCounters[i-1].text = greenGems.toString()
+
+        }
+
         val gameBoard = rootService.currentGame?.gameBoard
 
-
++
         val gemsOnBoard = mutableSetOf<Gem>()
         for ((_, tile) in gameBoard?.gameBoardTiles ?: emptyMap()) {
             if (tile.gemEndPosition.isNotEmpty()) {
@@ -905,6 +900,8 @@ class GameScene(val indigoApp: IndigoApplication) :
         //gemMap.removeForward()
 
     }
+
+
 
     /**
      * Refreshes the GUI after the network player's turn based on the current connection state.
