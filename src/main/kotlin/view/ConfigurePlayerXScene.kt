@@ -57,7 +57,7 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
     }
 
     private fun configuredPlayer() {
-        var color: TokenColor
+        val color: TokenColor
         when (colorBox.selectedItem) {
             "blue" -> color = TokenColor.BLUE
             "purple" -> color = TokenColor.PURPLE
