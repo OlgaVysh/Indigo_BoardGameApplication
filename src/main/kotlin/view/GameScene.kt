@@ -890,7 +890,6 @@ class GameScene(val indigoApp: IndigoApplication) :
 
         val gameBoard = rootService.currentGame?.gameBoard
 
-+
         val gemsOnBoard = mutableSetOf<Gem>()
         for ((_, tile) in gameBoard?.gameBoardTiles ?: emptyMap()) {
             if (tile.gemEndPosition.isNotEmpty()) {
