@@ -45,7 +45,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         ).apply { rotate(30) }
 
     // reserveStack component
-    // private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
+    private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
 
     // undoButton component
     private val undoButton =
@@ -216,6 +216,20 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var yellowGem5 = Label(posX = 590, posY = 613, text = "", width = 40, height = 32)
     private var yellowGem6 = Label(posX = 590, posY = 246, text = "", width = 40, height = 32)
 
+    //GameComponents listed
+    val playerlabels = listOf(player1Label, player2Label, player3Label, player4Label)
+    val playerScores = listOf(player1ScoreLabel, player2ScoreLabel, player3ScoreLabel, player4ScoreLabel)
+    val playerGreenGemCounters = listOf(player1greenGemCounter, player2greenGemCounter, player3greenGemCounter, player4greenGemCounter)
+    val playerYellowGemCounters = listOf(player1yellowGemCounter, player2yellowGemCounter, player3yellowGemCounter, player4yellowGemCounter)
+    val playerGreenGems = listOf(player1greenGem, player2greenGem, player3greenGem, player4greenGem)
+    val playerYellowGems = listOf(player1yellowGem, player2yellowGem, player3yellowGem, player4yellowGem)
+    val playerTurnHighlights = listOf(player1turnHighlight, player2turnHighlight, player3turnHighlight, player4turnHighlight)
+    val playerLeftButtons = listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
+    val playerRightButtons = listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
+    val playerCheckButtons = listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
+    val playerHandtiles = listOf(player1handTile, player2handTile, player3handTile, player4handTile)
+    val playerTokens = listOf(player1Token, player2Token, player3Token, player4Token)
+
     /**
      * Initializes the GameScene with default values and sets up the hexagonal grid.
      */
@@ -225,11 +239,11 @@ class GameScene(val indigoApp: IndigoApplication) :
         //hexagonGrid.rotate(60)
         hexagonGrid.reposition(910, 380)
 
-        /*//initialize reserveStack
+        //initialize reserveStack
         reserveStack.rotate(30)
         reserveStack.resize(width = 110, height = 110)
         reserveStack.scaleY(0.6)
-        reserveStack.scaleX(0.6)*/
+        reserveStack.scaleX(0.6)
 
         //initialize tokenViews
         player1Token.visual = ImageVisual("tokenwhite.png")
@@ -308,7 +322,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         // Add the hexagonal grid to the components of the game scene
         addComponents(
             hexagonGrid,
-            //reserveStack,
+            reserveStack,
             undoButton,
             redoButton,
             saveButton,
@@ -393,18 +407,8 @@ class GameScene(val indigoApp: IndigoApplication) :
     private fun invokeButtons(players: List<Player>) {
         val count = players.size
 
-
-        val leftButtons =
-            listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
-
-        val rightButtons =
-            listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
-
-        val checkButtons =
-            listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
-
         for (i in 0 until count) {
-            leftButtons[i].onMouseClicked = {
+            playerLeftButtons[i].onMouseClicked = {
                 val game = indigoApp.rootService.currentGame!!
                 val index = game.currentPlayerIndex
                 val tile = players[index].handTile!!
@@ -414,7 +418,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
 
         for (i in 0 until count) {
-            rightButtons[i].onMouseClicked = {
+            playerRightButtons[i].onMouseClicked = {
                 val game = indigoApp.rootService.currentGame!!
                 val index = game.currentPlayerIndex
                 val tile = players[index].handTile!!
@@ -424,7 +428,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
 
         for (i in 0 until count) {
-            checkButtons[i].onMouseClicked = {
+            playerCheckButtons[i].onMouseClicked = {
                 val game = indigoApp.rootService.currentGame!!
                 val index = game.currentPlayerIndex
                 val tile = players[index].handTile!!
@@ -707,33 +711,28 @@ class GameScene(val indigoApp: IndigoApplication) :
      * Update the Gui highlight after refresh called
      */
     override fun refreshAfterChangePlayer() {
-        val playerHighlights =
-            listOf(player1turnHighlight, player2turnHighlight, player3turnHighlight, player4turnHighlight)
-        val playerRotateRights = listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
-        val playerRotateLefts = listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
-        val playerRotateCheck = listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
         val currentGame = indigoApp.rootService.currentGame
         rotationDegree = 0
         checkNotNull(currentGame)
         invokeButtons(currentGame.players)
         val currentPlayerIndex = currentGame.currentPlayerIndex
-        for (i in playerHighlights.indices) {
+        for (i in playerTurnHighlights.indices) {
             if (i == currentPlayerIndex) {
-                playerHighlights[i].isVisible = true
-                playerRotateRights[i].isVisible = true
-                playerRotateRights[i].isDisabled = false
-                playerRotateLefts[i].isVisible = true
-                playerRotateLefts[i].isDisabled = false
-                playerRotateCheck[i].isVisible = true
-                playerRotateCheck[i].isDisabled = false
+                playerTurnHighlights[i].isVisible = true
+                playerRightButtons[i].isVisible = true
+                playerRightButtons[i].isDisabled = false
+                playerLeftButtons[i].isVisible = true
+                playerLeftButtons[i].isDisabled = false
+                playerCheckButtons[i].isVisible = true
+                playerCheckButtons[i].isDisabled = false
             } else {
-                playerHighlights[i].isVisible = false
-                playerRotateRights[i].isVisible = false
-                playerRotateRights[i].isDisabled = true
-                playerRotateLefts[i].isVisible = false
-                playerRotateLefts[i].isDisabled = true
-                playerRotateCheck[i].isVisible = false
-                playerRotateCheck[i].isDisabled = true
+                playerTurnHighlights[i].isVisible = false
+                playerRightButtons[i].isVisible = false
+                playerRightButtons[i].isDisabled = true
+                playerLeftButtons[i].isVisible = false
+                playerLeftButtons[i].isDisabled = true
+                playerCheckButtons[i].isVisible = false
+                playerCheckButtons[i].isDisabled = true
 
             }
         }
@@ -745,21 +744,23 @@ class GameScene(val indigoApp: IndigoApplication) :
      *  Update the GameScene with the new tile from the currentplayer
      */
     override fun refreshAfterDistributeNewTile() {
-        val playerTile = listOf(player1handTile, player2handTile, player3handTile, player4handTile)
         val currentGame = indigoApp.rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
         for(i in players.indices ) {
             if (players[i].handTile == null) {
-                playerTile[i].isVisible = false
+                playerHandtiles[i].isVisible = false
             } else {
-                playerTile[i].visual = players[i].handTile!!.type.toImg()
-                playerTile[i].isVisible = true
-                for (tile in playerTile) {
+                playerHandtiles[i].visual = players[i].handTile!!.type.toImg()
+                playerHandtiles[i].isVisible = true
+                for (tile in playerHandtiles) {
                    tile.rotationProperty.value = -30.0
                 }
 
             }
+        }
+        if(currentGame.routeTiles.isNotEmpty()){
+            reserveStack.isVisible = false
         }
     }
 
@@ -829,6 +830,7 @@ class GameScene(val indigoApp: IndigoApplication) :
             HexagonView(size = 55.0, visual = tile.type.toImg()).apply {
                 rotate(-60)
                 rotate(60 * rotationDegree) }
+
     }
 
     /**
