@@ -5,13 +5,14 @@ import entity.Indigo
 import entity.Tile
 import service.RootService
 import service.network.ConnectionState
+import service.*
 
 /**
  * The class [RandomAI] provides functionality for the AI player
  *
  * @property rootService The [RootService]
  */
-class RandomAI(val rootService: RootService) {
+class RandomAI(val rootService: RootService): AbstractRefreshingService() {
 
     /**
      * Makes a random turn for the AI player.
@@ -21,6 +22,11 @@ class RandomAI(val rootService: RootService) {
         // Get the current game state
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
+
+        // Check if game ended
+        if (rootService.gameService.endGame()) {
+            onAllRefreshables { refreshAfterEndGame() }
+        }
 
         // Get the available moves for the current player
         val availableMoves = findAvailableMoves(currentGame)
