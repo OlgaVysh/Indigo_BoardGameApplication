@@ -26,7 +26,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
 
     // Available colors and turns for players.
     val colors = mutableListOf("blue", "purple", "red", "white")
-    val turns = mutableListOf(1, 2, 3, 4)
+    var turns = mutableListOf(1, 2, 3, 4)
 
     // Indicator for AI player selection.
     private var aiPlayer = false

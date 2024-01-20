@@ -16,7 +16,8 @@ class GameSavedMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080,
 
     // Button for starting a new game after saving
     private val newGameButton = Button(1100, 642, 528, 207, "Start new game", 48).
-    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.startScene) }}
+    apply { onMouseClicked = {indigoApp.configurePlayersScene.clearPlayerView()
+        indigoApp.showMenuScene(indigoApp.startScene) }}
 
     // Label indicating that the game has been saved
     private val label1 = Label(587, 271, 736, 155, "Game saved!", 120)

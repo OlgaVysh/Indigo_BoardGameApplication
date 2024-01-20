@@ -20,7 +20,7 @@ import view.components.Label
  * The layout and design of these components are defined in this class.
  *
  */
-class ConfigurePlayersGameScene1(indigoApp: IndigoApplication) : BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
+class ConfigurePlayersGameScene1(val indigoApp: IndigoApplication) : BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
     // UI components for configuring players
 
 
@@ -69,6 +69,20 @@ class ConfigurePlayersGameScene1(indigoApp: IndigoApplication) : BoardGameScene(
         addComponents(players)
 
     }
+    /**
+     * clears the ComponentView of players after a game was saved or ended
+     * is called by the Scenes: GameSavedMenuScene and soon as well EndGameScene
+     */
+    fun clearPlayerView(){
+          for(i in players.rows-1 downTo 0 step 1) {
+                players.removeRow(i)
+            }
+        players.addColumns(0,5)
+        indigoApp.avaibleColors = mutableListOf(TokenColor.BLUE,TokenColor.RED,TokenColor.WHITE,TokenColor.PURPLE)
+        indigoApp.avaibleColors.shuffle()
+        indigoApp.newPlayerScene.turns = mutableListOf(1, 2, 3, 4)
+        indigoApp.newPlayerScene.turns.shuffle()
+        }
 
     /*fun addPlayer(indigoApp : IndigoApplication,name : String, color:String, turn:Int?)
     {
