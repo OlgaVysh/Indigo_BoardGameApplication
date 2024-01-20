@@ -22,7 +22,7 @@ import view.components.Label
 
 class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
-    private val gemMap: BidirectionalMap<Gem, Label> = BidirectionalMap()
+    private val gemMap =  mutableMapOf<Gem, Label>()
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
 
@@ -561,6 +561,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
         println(startHandTile.toString())
         mapGems()
+        fillMap()
     }
 
     /**
@@ -903,11 +904,14 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     }
 
-
+    /**
+     * Moves the view of a gem to its new position on the scene
+     */
     override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate) {
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
-        // TODO {/*to complete*/}
+        val position = coordMap[coordinate]
+        gemMap[gem]!!.reposition(position!!.x,position.y)
     }
 
     override fun refreshAfterRemoveGems() {
@@ -1009,21 +1013,21 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     private fun mapGems() {
-        val gem0 = rootService.currentGame?.middleTile?.gemPosition?.get(0)
-        val gem1 = rootService.currentGame?.middleTile?.gemPosition?.get(1)
-        val gem2 = rootService.currentGame?.middleTile?.gemPosition?.get(2)
-        val gem3 = rootService.currentGame?.middleTile?.gemPosition?.get(3)
-        val gem4 = rootService.currentGame?.middleTile?.gemPosition?.get(4)
-        val gem5 = rootService.currentGame?.middleTile?.gemPosition?.get(5)
-        gemMap.addAll(
-            (gem0 to blueGem) as Pair<Gem, Label>,
-            (gem1 to greenGem1) as Pair<Gem, Label>,
-            (gem2 to greenGem2) as Pair<Gem, Label>,
-            (gem3 to greenGem3) as Pair<Gem, Label>,
-            (gem4 to greenGem4) as Pair<Gem, Label>,
-            (gem5 to greenGem5) as Pair<Gem, Label>
+        val game = rootService.currentGame
+        checkNotNull(game)
+        val gem0 = game.middleTile.gemPosition[0]
+        val gem1 = game.middleTile.gemPosition[1]
+        val gem2 = game.middleTile.gemPosition[2]
+        val gem3 = game.middleTile.gemPosition[3]
+        val gem4 = game.middleTile.gemPosition[4]
+        val gem5 = game.middleTile.gemPosition[5]
 
-        )
+        gemMap[gem0!!] = blueGem
+        gemMap[gem1!!] = greenGem1
+        gemMap[gem2!!] = greenGem2
+        gemMap[gem3!!] = greenGem3
+        gemMap[gem4!!] = greenGem4
+        gemMap[gem5!!] = greenGem5
     }
 
     /**
