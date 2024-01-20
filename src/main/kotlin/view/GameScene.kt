@@ -882,7 +882,7 @@ class GameScene(val indigoApp: IndigoApplication) :
                 it.gemColor == GemColor.EMERALD
             }
 
-            playerScores[i - 1].text = game.players[i - 1].score.toString()
+            playerScores[i - 1].text = game.players[i - 1].score.toString()+" points"
             playerYellowGemCounters[i-1].text = yellowGems.toString()
             playerGreenGemCounters[i-1].text = greenGems.toString()
 
