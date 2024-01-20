@@ -23,10 +23,10 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
 
         //maryem code
         // Check if game ended
-        if (rootService.gameService.endGame()) {
+        /*if (rootService.gameService.endGame()) {
             onAllRefreshables { refreshAfterEndGame() }
         }
-
+        */
         val firstAppearance = currentGame.copyTo()
         // Check if the tile placement is valid
         if (rootService.gameService.checkPlacement(space, tile)) {
@@ -51,9 +51,9 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
                 rootService.networkService.sendPlacedTile(tile, space)
             }
             //spiellogik team code
-            /*if (rootService.gameService.endGame()) {
+            if (rootService.gameService.endGame()) {
                 onAllRefreshables { refreshAfterEndGame() }
-            }*/
+            }
         } else {
             throw Exception("Invalid space, choose another space please")
         }
