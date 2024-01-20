@@ -562,6 +562,9 @@ class GameScene(val indigoApp: IndigoApplication) :
         println(startHandTile.toString())
         mapGems()
         fillMap()
+        for(i in 0 ..3){
+            playerScores[i].text = "0 points"
+        }
     }
 
     /**

@@ -25,7 +25,7 @@ import view.components.NetworkPlayersView
 class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
 
     // Available colors and turns for players.
-    val colors = mutableListOf("blue", "purple", "red", "white")
+    var colors = mutableListOf("blue", "purple", "red", "white")
     var turns = mutableListOf(1, 2, 3, 4)
 
     // Indicator for AI player selection.
@@ -38,10 +38,10 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     private val ageLabel = Label(80, 393, 300, 98, text = "Age (opt): ", fontSize = 48)
 
     private val colorLabel = Label(80, 493, width = 300, text = "Color (opt): ", fontSize = 48)
-    val colorBox = ComboBox<String>(360, 485, 454.34, 69, prompt = "Select your color!")
+    var colorBox = ComboBox<String>(360, 485, 454.34, 69, prompt = "Select your color!")
 
     private val turnLabel = Label(80, 593, width = 300, text = "Turn (opt): ", fontSize = 48)
-    val turnBox = ComboBox<Int>(360, 585, 454.34, 69, prompt = "Select your turn!")
+    var turnBox = ComboBox<Int>(360, 585, 454.34, 69, prompt = "Select your turn!")
 
     private val aiLabel = Label(140, 693, width = 200, text = "AI : ", fontSize = 48)
     private val yesLabel = Label(400, 693, width = 80, text = "yes", fontSize = 48)
@@ -79,9 +79,10 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                     "blue" -> TokenColor.BLUE
                     "red" -> TokenColor.RED
                     "white " -> TokenColor.WHITE
-                    else -> indigoApp.avaibleColors[0]
+                    else -> indigoApp.availableColors[0]
                 }
-            indigoApp.avaibleColors.remove(newPlayerColor)
+            indigoApp.availableColors.remove(newPlayerColor)
+
             var newPlayer = Player(name = playerName.text, color = newPlayerColor)
             if (aiPlayer) {
                 newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)

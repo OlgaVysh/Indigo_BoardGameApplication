@@ -78,13 +78,17 @@ class ConfigurePlayersGameScene1(val indigoApp: IndigoApplication) : BoardGameSc
                 players.removeRow(i)
             }
         players.addColumns(0,5)
-        indigoApp.avaibleColors = mutableListOf(TokenColor.BLUE,TokenColor.RED,TokenColor.WHITE,TokenColor.PURPLE)
-        indigoApp.avaibleColors.shuffle()
+        indigoApp.availableColors = mutableListOf(TokenColor.BLUE,TokenColor.RED,TokenColor.WHITE,TokenColor.PURPLE)
+        indigoApp.availableColors.shuffle()
+        indigoApp.newPlayerScene.turnBox.items = mutableListOf(1, 2, 3, 4)
+        indigoApp.newPlayerScene.colorBox.items = mutableListOf("blue", "purple", "red", "white")
         indigoApp.newPlayerScene.turns = mutableListOf(1, 2, 3, 4)
-        indigoApp.newPlayerScene.turns.shuffle()
+        indigoApp.newPlayerScene.colors = mutableListOf("blue", "purple", "red", "white")
+        indigoApp.newPlayerScene.colors.shuffle()
         indigoApp.players = mutableListOf(null,null,null,null)
         addNewPlayerButton.isDisabled = false
         startGameButton.isDisabled = true
+
         }
 
     /*fun addPlayer(indigoApp : IndigoApplication,name : String, color:String, turn:Int?)
