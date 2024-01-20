@@ -26,6 +26,9 @@ class GameScene(val indigoApp: IndigoApplication) :
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
 
+    //maps the grid coordinates auf (posX,posY) on the Scene where the middle of the tile would be
+    private val coordMap = mutableMapOf<Coordinate,Position>()
+
     //view von dem angeklickten Place am GameBoard (für Highlighten)
     private var chosenPlace: HexagonView? = null
 
@@ -983,6 +986,84 @@ class GameScene(val indigoApp: IndigoApplication) :
            (gem5 to greenGem5) as Pair<Gem, Label>
 
        )
+    }
+
+    /**
+     * fills the [coordMap] with keys (Coordinate) and values (Position)
+     */
+    private fun fillMap()
+    {
+        //Aufpassen : bei Grid[col,row] und Coord(row,col)
+        var y1= 257.0 //y9
+        var y2= 211.0 //y8
+        var y3= 163.0 //y7
+        var y4= 114.0 //y6
+        var y5 = 68.0
+
+
+
+        //Reihe 1
+        for (i in 0..4)
+        {
+            coordMap[Coordinate(i,-4)] = Position(592.0,y1+i*95)
+        }
+
+        //Reihe 9
+        for(i in -4..0)
+        {
+            var count = i+4
+            coordMap[Coordinate(i,4)] = Position(1248.0,y1+count*95)
+
+        }
+
+        //Reihe 2
+        for (i in -1..4)
+        {
+            var count = i+1
+            coordMap[Coordinate(i,-3)] = Position(647.0,y2+count*95)
+        }
+
+        //Reihe 8
+        for (i in -4..1)
+        {
+            var count = i+4
+            coordMap[Coordinate(i,3)] = Position(1166.0,y2+count*95)
+        }
+
+        //Reihe 3
+        for (i in -2..4)
+        {
+            var count = i+2
+            coordMap[Coordinate(i,-2)] = Position(756.0,y3+count*95)
+        }
+
+        //Reihe 7
+        for (i in -4..2)
+        {
+            var count = i+4
+            coordMap[Coordinate(i,2)] = Position(1084.0,y3+count*95)
+        }
+
+        //Reihe 4
+        for (i in -3..4)
+        {
+            var count = i+3
+            coordMap[Coordinate(i,-1)] = Position(838.0,y4+count*95)
+        }
+
+        //Reihe 6
+        for (i in -4..3)
+        {
+            var count = i+4
+            coordMap[Coordinate(i,1)] = Position(1002.0,y4+count*95)
+        }
+
+        //Reihe 5
+        for (i in -4..4)
+        {
+            var count = i+4
+            coordMap[Coordinate(i,0)] = Position(920.0,y5+count*95)
+        }
     }
 
 }
