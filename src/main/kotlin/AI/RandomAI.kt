@@ -62,7 +62,7 @@ class RandomAI(val rootService: RootService) {
                 val playerTile = currentGame.players[currentGame.currentPlayerIndex].handTile ?: continue
 
                 // Check if placing the tile at the coordinate is a valid move
-                if (rootService.gameService.checkPlacementAI(coordinate, playerTile)) {
+                if (rootService.gameService.checkPlacement(coordinate, playerTile,true)) {
                     availableMoves.add(Pair(coordinate, playerTile))
                 }
             }
