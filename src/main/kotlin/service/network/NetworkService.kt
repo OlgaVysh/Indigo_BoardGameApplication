@@ -99,6 +99,15 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         rootService.gameService.startGame(players, notSharedGates, random)
         sendGameInitMessage()
         onAllRefreshables { refreshAfterNetworkPlayerTurn() }
+        val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
+        val currentPlayer = players[currentPlayerIndex]
+        if (currentPlayer.isAI) {
+            when (currentPlayer) {
+                is CPUPlayer -> {
+                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                }
+            }
+        }
     }
 
 
@@ -140,12 +149,13 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         )
         rootService.currentGame?.gameBoard?.gateTokens = gateTokens
         val listCoordinate = listOf(
+            Coordinate(-4, 0),
             Coordinate(-4, 4),
             Coordinate(0, 4),
             Coordinate(4, 0),
             Coordinate(4, -4),
             Coordinate(0, -4),
-            Coordinate(-4, 0)
+
         )
         for (i in listCoordinate.indices) {
             val coordinate = listCoordinate[i]
