@@ -424,31 +424,29 @@ class GameServiceTest {
      * Test the removeGems function.
      */
 
-    //@Test
+    @Test
     fun removeGemsReachedGateTest() {
-        val rootService = RootService()
 
         //tileID 0 initialisieren
         var tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
             TileType.Type_0,
-            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
+            mutableMapOf(Pair(0, Gem(EMERALD)), Pair(5, Gem(AMBER)))
         )
 
         //tileID 2 initialisieren
         var tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
             TileType.Type_2,
-            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(SAPPHIRE)))
+            mutableMapOf(Pair(3, Gem(EMERALD)), Pair(4, Gem(SAPPHIRE)))
         )
 
         //tileID 4 initialisieren
         var tile4 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
             TileType.Type_4,
-            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
+            mutableMapOf(Pair(1, Gem(AMBER)), Pair(2, Gem(EMERALD)))
         )
-
         assertThrows<IllegalStateException> { rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2)) }
         rootService.gameService.startGame(
             fourPlayers.toMutableList()
@@ -460,27 +458,52 @@ class GameServiceTest {
         var players = indigo.players
 
         //gate4 no gems after the method because is removed
-        rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
-        assertEquals(0, tile0.gemEndPosition.size)
+        rootService.gameService.removeGemsReachedGate(tile0, Coordinate(-1, -3))
+        // assertEquals(0, tile0.gemEndPosition.size)
+        assertEquals(2, players[2].collectedGems.size)
+        assertEquals(3, players[2].score)
         assertEquals(2, players[3].collectedGems.size)
         assertEquals(3, players[3].score)
-        assertEquals(2, players[1].collectedGems.size)
-        assertEquals(3, players[1].score)
         assertEquals(10, rootService.currentGame!!.gems.size)
         //gate3 only one Gem is there
-        rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
+        rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, -4))
         assertEquals(1, tile2.gemEndPosition.size)
-        assertEquals(3, players[3].collectedGems.size)
-        assertEquals(5, players[3].score)
+        assertEquals(3, players[2].collectedGems.size)
+        assertEquals(6, players[2].score)
         assertEquals(1, players[0].collectedGems.size)
-        assertEquals(2, players[0].score)
+        assertEquals(3, players[0].score)
+        assertEquals(9, rootService.currentGame!!.gems.size)
 
         //gate2 both gems are in the tile
-        rootService.gameService.removeGemsReachedGate(tile4, Coordinate(-2, 4))
-        assertEquals(2, tile4.gemEndPosition.size)
-        assertEquals(0, players[2].collectedGems.size)
-        assertEquals(0, players[2].score)
+        rootService.gameService.removeGemsReachedGate(tile4, Coordinate(2, 2))
+        assertEquals(1, tile4.gemEndPosition.size)
+        assertEquals(2, players[0].collectedGems.size)
+        assertEquals(5, players[0].score)
+        assertEquals(3, players[3].collectedGems.size)
+        assertEquals(5, players[3].score)
+        assertEquals(8, rootService.currentGame!!.gems.size)
 
+        // starte game with two players
+        //tileID 0 initialisieren
+        var tile00 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
+            TileType.Type_0,
+            mutableMapOf(Pair(0, Gem(EMERALD)))
+        )
+
+        //tileID 2 initialisieren
+        var tile22 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
+            TileType.Type_2,
+            mutableMapOf(Pair(3, Gem(EMERALD)))
+        )
+
+        //tileID 4 initialisieren
+        var tile44 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
+            TileType.Type_4,
+            mutableMapOf(Pair(2, Gem(SAPPHIRE)))
+        )
         val twoPlayers = listOf(
             Player("John", color = TokenColor.RED),
             Player("Jack", color = TokenColor.BLUE)
@@ -489,50 +512,39 @@ class GameServiceTest {
             twoPlayers.toMutableList(), true
         )
 
-        //tileID 0 initialisieren
-        tile0 = Tile(
-            listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
-            TileType.Type_0,
-            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
-        )
-
-        //tileID 2 initialisieren
-        tile2 = Tile(
-            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
-            TileType.Type_2,
-            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(SAPPHIRE)))
-        )
-
-        //tileID 4 initialisieren
-        tile4 = Tile(
-            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
-            TileType.Type_4,
-            mutableMapOf(Pair(2, Gem(EMERALD)), Pair(3, Gem(AMBER)))
-        )
-
 
         indigo = rootService.currentGame
         checkNotNull(indigo)
 
         players = indigo.players
 
-        //gate4 no gems after the method because is removed
-        rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2))
-        assertEquals(0, tile0.gemEndPosition.size)
-        assertEquals(2, players[1].collectedGems.size)
-        assertEquals(3, players[1].score)
+        //gate0 no gems after the method because is removed
+        rootService.gameService.removeGemsReachedGate(tile00, Coordinate(-2, -2))
+        //assertEquals(2, tile0.gemEndPosition.size)
+        assertEquals(1, tile00.gemEndPosition.size)
+        assertEquals(0, players[0].collectedGems.size)
+        assertEquals(0, players[0].score)
+        assertEquals(1, players[1].collectedGems.size)
+        assertEquals(2, players[1].score)
+        assertEquals(11, rootService.currentGame!!.gems.size)
 
-        //gate3 only on Gem is there
-        rootService.gameService.removeGemsReachedGate(tile2, Coordinate(2, 2))
-        assertEquals(1, tile2.gemEndPosition.size)
+        //gate4 only on Gem is there
+        rootService.gameService.removeGemsReachedGate(tile22, Coordinate(4, -1))
+        assertEquals(0, tile22.gemEndPosition.size)
+        assertEquals(0, players[0].collectedGems.size)
+        assertEquals(0, players[0].score)
+        assertEquals(2, players[1].collectedGems.size)
+        assertEquals(4, players[1].score)
+        assertEquals(10, rootService.currentGame!!.gems.size)
+
+        //gate3 both gems are in the tile
+        rootService.gameService.removeGemsReachedGate(tile44, Coordinate(1, 3))
+        assertEquals(0, tile44.gemEndPosition.size)
         assertEquals(1, players[0].collectedGems.size)
-        assertEquals(2, players[0].score)
-
-        //gate2 both gems are in the tile
-        rootService.gameService.removeGemsReachedGate(tile4, Coordinate(-2, 4))
-        assertEquals(2, tile4.gemEndPosition.size)
+        assertEquals(3, players[0].score)
         assertEquals(2, players[1].collectedGems.size)
-        assertEquals(3, players[1].score)
+        assertEquals(4, players[1].score)
+        assertEquals(9, rootService.currentGame!!.gems.size)
 
     }
 

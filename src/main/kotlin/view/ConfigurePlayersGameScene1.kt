@@ -82,6 +82,9 @@ class ConfigurePlayersGameScene1(val indigoApp: IndigoApplication) : BoardGameSc
         indigoApp.avaibleColors.shuffle()
         indigoApp.newPlayerScene.turns = mutableListOf(1, 2, 3, 4)
         indigoApp.newPlayerScene.turns.shuffle()
+        indigoApp.players = mutableListOf(null,null,null,null)
+        addNewPlayerButton.isDisabled = false
+        startGameButton.isDisabled = true
         }
 
     /*fun addPlayer(indigoApp : IndigoApplication,name : String, color:String, turn:Int?)
