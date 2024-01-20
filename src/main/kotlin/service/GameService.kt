@@ -430,17 +430,18 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         currentGame.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
 
         // It's AI's turn
-
-        //Xue Code
-        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
-        if (currentPlayer.isAI) {
-            when (currentPlayer) {
-                is CPUPlayer -> {
-                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+        val connectionState = rootService.networkService.connectionState
+        if(connectionState==ConnectionState.DISCONNECTED) {
+            //Xue Code
+            val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
+            if (currentPlayer.isAI) {
+                when (currentPlayer) {
+                    is CPUPlayer -> {
+                        rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                    }
                 }
             }
         }
-
         //Meriem Code
         /*if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
             val currentCPUPlayer = currentGame.players[currentGame.currentPlayerIndex] as? CPUPlayer
@@ -558,7 +559,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentEnd = getAnotherEdge(currentEdge, currentTile)
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
-        if (!isAiCalled) onAllRefreshables { refreshAfterMoveGems(neighbourGems[neighbourStart]!!, currentCoordinate) }
+        if(neighbourGems[neighbourStart] != null) {
+            if (!isAiCalled) onAllRefreshables {
+                refreshAfterMoveGems(
+                    neighbourGems[neighbourStart]!!,
+                    currentCoordinate
+                )
+            }
+        }
         removeGemsReachedGate(currentTile, currentCoordinate)
 
         moveGems(

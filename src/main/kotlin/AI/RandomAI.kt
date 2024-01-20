@@ -49,7 +49,7 @@ class RandomAI(val rootService: RootService): AbstractRefreshingService() {
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
             val connectionState = rootService.networkService.connectionState
-            if(connectionState == ConnectionState.PLAYING_MY_TURN){
+            if(connectionState != ConnectionState.DISCONNECTED){
                 rootService.networkService.sendPlacedTile(tile,coordinate)
             }
         }

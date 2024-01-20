@@ -129,12 +129,12 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         val setting = GameSettings(players)
 
         val allTiles = mutableListOf(
-            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)),TileType.Type_5, mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.TWO, Edge.FOUR)), TileType.Type_5, mutableMapOf(Pair(3, Gem(GemColor.AMBER)))),
             Tile(listOf(Pair(Edge.THREE, Edge.FIVE)), TileType.Type_5, mutableMapOf(Pair(4, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)),TileType.Type_5, mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ONE, Edge.FIVE)),TileType.Type_5, mutableMapOf(Pair(0, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ZERO, Edge.TWO)),TileType.Type_5, mutableMapOf(Pair(1, Gem(GemColor.AMBER)))),
-            Tile(listOf(Pair(Edge.ONE, Edge.THREE)), TileType.Type_5,mutableMapOf(Pair(2, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ZERO, Edge.FOUR)), TileType.Type_5, mutableMapOf(Pair(5, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ONE, Edge.FIVE)), TileType.Type_5, mutableMapOf(Pair(0, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ZERO, Edge.TWO)), TileType.Type_5, mutableMapOf(Pair(1, Gem(GemColor.AMBER)))),
+            Tile(listOf(Pair(Edge.ONE, Edge.THREE)), TileType.Type_5, mutableMapOf(Pair(2, Gem(GemColor.AMBER)))),
         )
         allTiles.addAll(routeTiles)
 
@@ -156,7 +156,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
             Coordinate(4, -4),
             Coordinate(0, -4),
 
-        )
+            )
         for (i in listCoordinate.indices) {
             val coordinate = listCoordinate[i]
             rootService.currentGame!!.gameBoard.gameBoardTiles[coordinate] = allTiles[i]
@@ -188,13 +188,13 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         val message = GameInitMessage(
             networkPlayers, gameMode, tileList
         )
+        client?.sendGameActionMessage(message)
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
         for (otherPlayer in client?.otherPlayers!!) {
             if (networkPlayers[0].name == otherPlayer) {
                 updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             }
         }
-        client?.sendGameActionMessage(message)
     }
 
 
@@ -252,12 +252,19 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         rootService.playerTurnService.placeRouteTile(space, handTile)
         currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
         updateConnectionState(ConnectionState.PLAYING_MY_TURN)
-        for (otherPlayer in client?.otherPlayers!!) {
-            if (currentGame.players[currentPlayerIndex].name == otherPlayer) {
-                updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
-            }
+        if (client?.otherPlayers!!.contains(currentGame.players[currentPlayerIndex].name)) {
+            updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
         }
         onAllRefreshables { refreshAfterNetworkPlayerTurn() }
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
+        if (currentPlayer.isAI) {
+            when (currentPlayer) {
+                is CPUPlayer -> {
+                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                }
+            }
+        }
+        println(connectionState.toString())
     }
 
     /**
@@ -293,22 +300,22 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
     /**
      * The function trigger the refresh function for refreshAfterPlayerJoined
      */
-    fun refreshAfterPlayerJoined(playerJoinedName : String){
-        onAllRefreshables {refreshAfterPlayerJoined(playerJoinedName) }
+    fun refreshAfterPlayerJoined(playerJoinedName: String) {
+        onAllRefreshables { refreshAfterPlayerJoined(playerJoinedName) }
     }
 
     /**
      * The function trigger the refresh function for refreshAfterPlayerJoined
      */
-    fun refreshAfterPlayerLeft(playerLeftName : String){
+    fun refreshAfterPlayerLeft(playerLeftName: String) {
         onAllRefreshables { refreshAfterPlayerLeft(playerLeftName) }
     }
 
-    fun refreshAfterOnCreateGameResponse(sessionID : String? ){
-        onAllRefreshables { refreshAfterOnCreateGameResponse(sessionID)}
+    fun refreshAfterOnCreateGameResponse(sessionID: String?) {
+        onAllRefreshables { refreshAfterOnCreateGameResponse(sessionID) }
     }
 
-    fun refreshAfterOnJoinGameResponse(responseStatus: JoinGameResponseStatus){
+    fun refreshAfterOnJoinGameResponse(responseStatus: JoinGameResponseStatus) {
         onAllRefreshables { refreshAfterOnJoinGameResponse(responseStatus) }
     }
 }
