@@ -4,6 +4,7 @@ import entity.Coordinate
 import entity.Indigo
 import entity.Tile
 import service.RootService
+import service.network.ConnectionState
 
 /**
  * The class [RandomAI] provides functionality for the AI player
@@ -41,6 +42,10 @@ class RandomAI(val rootService: RootService) {
 
             rootService.gameService.distributeNewTile()
             rootService.gameService.changePlayer()
+            val connectionState = rootService.networkService.connectionState
+            if(connectionState == ConnectionState.PLAYING_MY_TURN){
+                rootService.networkService.sendPlacedTile(tile,coordinate)
+            }
         }
     }
 
