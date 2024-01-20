@@ -1,6 +1,7 @@
 package view
 
 import entity.Coordinate
+import entity.Gem
 import entity.Tile
 import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
 
@@ -43,7 +44,7 @@ interface Refreshable {
     /**
      * Refreshes the state after moving gems.
      */
-    fun refreshAfterMoveGems() {}
+    fun refreshAfterMoveGems(gem: Gem,coordinate: Coordinate ) {}
 
     /**
      * Refreshes the state after the player win the gem, and then the gem will be removed from game board.

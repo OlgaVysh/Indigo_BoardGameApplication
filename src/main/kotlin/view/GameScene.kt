@@ -884,7 +884,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
 
-    override fun refreshAfterMoveGems() {
+    override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate) {
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
         // TODO {/*to complete*/}

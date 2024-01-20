@@ -1,12 +1,8 @@
 package service
 
-import AI.MCTS
 import entity.*
 import service.network.ConnectionState
 import java.lang.Exception
-import java.util.*
-import kotlin.concurrent.thread
-import kotlin.concurrent.schedule
 import kotlin.math.abs
 
 
@@ -528,6 +524,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 return
             }
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
+            if(!isAiCalled) onAllRefreshables {refreshAfterMoveGems(middleTileGem,currentCoordinate)}
             moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, ((lastGemPosition + 3) % 6))
         }
         if (neighbourTile == null) {
@@ -561,11 +558,12 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentEnd = getAnotherEdge(currentEdge, currentTile)
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
+        if (!isAiCalled) onAllRefreshables { refreshAfterMoveGems(neighbourGems[neighbourStart]!!, currentCoordinate) }
         removeGemsReachedGate(currentTile, currentCoordinate)
+
         moveGems(
             neighborCoordinates[currentEnd], currentCoordinate, abs((currentEnd + 3)) % 6
         )
-        if (!isAiCalled) onAllRefreshables { refreshAfterMoveGems() }
     }
 
 

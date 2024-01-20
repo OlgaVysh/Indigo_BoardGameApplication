@@ -2,6 +2,7 @@ package service
 
 //import entity.*
 import entity.Coordinate
+import entity.Gem
 import entity.Tile
 import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
 import view.Refreshable
@@ -142,7 +143,7 @@ class RefreshableTest : Refreshable {
         refreshAfterPlaceTileCalled = true
     }
 
-    override fun refreshAfterMoveGems() {
+    override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate) {
         refreshAfterMoveGemsCalled = true
     }
 
