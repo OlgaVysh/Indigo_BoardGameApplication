@@ -196,7 +196,7 @@ class GameServiceTest {
         assertFalse(rootService.gameService.checkPlacement(Coordinate(0, 0), tile4))
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-3, -1), tile0))
         val exception1 = assertThrows<Exception> {
-            rootService.gameService.checkPlacement(Coordinate(-1, -3), tile2)
+            rootService.gameService.checkPlacement(Coordinate(-3, -1), tile2)
         }
         assertEquals(exception1.message, "this place is occupied")
 
@@ -428,21 +428,21 @@ class GameServiceTest {
     fun removeGemsReachedGateTest() {
 
         //tileID 0 initialisieren
-        var tile0 = Tile(
+        val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
             TileType.Type_0,
             mutableMapOf(Pair(0, Gem(EMERALD)), Pair(5, Gem(AMBER)))
         )
 
         //tileID 2 initialisieren
-        var tile2 = Tile(
+        val tile2 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
             TileType.Type_2,
             mutableMapOf(Pair(3, Gem(EMERALD)), Pair(4, Gem(SAPPHIRE)))
         )
 
         //tileID 4 initialisieren
-        var tile4 = Tile(
+        val tile4 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
             TileType.Type_4,
             mutableMapOf(Pair(1, Gem(AMBER)), Pair(2, Gem(EMERALD)))
@@ -485,21 +485,21 @@ class GameServiceTest {
 
         // starte game with two players
         //tileID 0 initialisieren
-        var tile00 = Tile(
+        val tile00 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
             TileType.Type_0,
             mutableMapOf(Pair(0, Gem(EMERALD)))
         )
 
         //tileID 2 initialisieren
-        var tile22 = Tile(
+        val tile22 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
             TileType.Type_2,
             mutableMapOf(Pair(3, Gem(EMERALD)))
         )
 
         //tileID 4 initialisieren
-        var tile44 = Tile(
+        val tile44 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
             TileType.Type_4,
             mutableMapOf(Pair(2, Gem(SAPPHIRE)))
@@ -654,7 +654,7 @@ class GameServiceTest {
         }
     }
 
-    //@Test
+    @Test
     fun testSecondPlayerIsKI() {
         assertNull(rootService.currentGame)
 
@@ -664,14 +664,14 @@ class GameServiceTest {
         )
         rootService.gameService.startGame(twoPlayer)
         val testGame = rootService.currentGame
-        assertNotNull(testGame)
+        checkNotNull(testGame)
         //tileID 0 initialisieren
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
             TileType.Type_0,
             mutableMapOf(Pair(1, Gem(EMERALD)))
         )
-        assertEquals(true, testGame!!.players[1].isAI)
+        assertEquals(true, testGame.players[1].isAI)
         assertEquals(false, testGame.players[0].isAI)
         rootService.playerTurnService.placeRouteTile(Coordinate(-2, 4), tile0)
         assertEquals(true, testGame.players[1].isAI)

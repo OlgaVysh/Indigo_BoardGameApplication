@@ -129,7 +129,7 @@ interface Refreshable {
     fun refreshAfterHostGame() {}
 
     /**
-     * After receiving a Game Responese update the view Layer
+     * After receiving a Game Response update the view Layer
      */
     fun refreshAfterOnCreateGameResponse(sessionID: String?) {}
 

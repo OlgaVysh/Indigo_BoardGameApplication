@@ -22,12 +22,12 @@ import view.components.Label
 
 class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
-        private val gemMap: BidirectionalMap<Gem,Label> = BidirectionalMap()
+    private val gemMap: BidirectionalMap<Gem, Label> = BidirectionalMap()
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
 
     //maps the grid coordinates auf (posX,posY) on the Scene where the middle of the tile would be
-    private val coordMap = mutableMapOf<Coordinate,Position>()
+    private val coordMap = mutableMapOf<Coordinate, Position>()
 
     //view von dem angeklickten Place am GameBoard (für Highlighten)
     private var chosenPlace: HexagonView? = null
@@ -128,13 +128,13 @@ class GameScene(val indigoApp: IndigoApplication) :
     // PlayerHandTile components
     // player1 oben links player2 oben rechts player3 unten links player4 unten rechts
     private var player1handTile = HexagonView(posX = 122, posY = 184, size = 70.0, visual = ImageVisual("tile1.png"))
-        .apply { rotate(-30)}
+        .apply { rotate(-30) }
     private var player2handTile = HexagonView(posX = 1611, posY = 184, size = 70.0, visual = ImageVisual("tile1.png"))
         .apply { rotate(-30) }
     private var player3handTile = HexagonView(posX = 122, posY = 754, size = 70.0, visual = ImageVisual("tile1.png"))
-        .apply { rotate(-30)}
-            private var player4handTile = HexagonView(posX = 1611, posY = 754, size = 70.0, visual = ImageVisual("tile1.png"))
-        .apply { rotate(-30)}
+        .apply { rotate(-30) }
+    private var player4handTile = HexagonView(posX = 1611, posY = 754, size = 70.0, visual = ImageVisual("tile1.png"))
+        .apply { rotate(-30) }
 
 
     // PlayerturnHighlight components (currentPlayer bekommt einen blauen Hintergrund (egal welcher Player))
@@ -220,18 +220,23 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var yellowGem6 = Label(posX = 590, posY = 246, text = "", width = 40, height = 32)
 
     //GameComponents listed
-    val playerlabels = listOf(player1Label, player2Label, player3Label, player4Label)
-    val playerScores = listOf(player1ScoreLabel, player2ScoreLabel, player3ScoreLabel, player4ScoreLabel)
-    val playerGreenGemCounters = listOf(player1greenGemCounter, player2greenGemCounter, player3greenGemCounter, player4greenGemCounter)
-    val playerYellowGemCounters = listOf(player1yellowGemCounter, player2yellowGemCounter, player3yellowGemCounter, player4yellowGemCounter)
-    val playerGreenGems = listOf(player1greenGem, player2greenGem, player3greenGem, player4greenGem)
-    val playerYellowGems = listOf(player1yellowGem, player2yellowGem, player3yellowGem, player4yellowGem)
-    val playerTurnHighlights = listOf(player1turnHighlight, player2turnHighlight, player3turnHighlight, player4turnHighlight)
-    val playerLeftButtons = listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
-    val playerRightButtons = listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
-    val playerCheckButtons = listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
-    val playerHandtiles = listOf(player1handTile, player2handTile, player3handTile, player4handTile)
-    val playerTokens = listOf(player1Token, player2Token, player3Token, player4Token)
+    private val playerlabels = listOf(player1Label, player2Label, player3Label, player4Label)
+    private val playerScores = listOf(player1ScoreLabel, player2ScoreLabel, player3ScoreLabel, player4ScoreLabel)
+    private val playerGreenGemCounters =
+        listOf(player1greenGemCounter, player2greenGemCounter, player3greenGemCounter, player4greenGemCounter)
+    private val playerYellowGemCounters =
+        listOf(player1yellowGemCounter, player2yellowGemCounter, player3yellowGemCounter, player4yellowGemCounter)
+    private val playerGreenGems = listOf(player1greenGem, player2greenGem, player3greenGem, player4greenGem)
+    private val playerYellowGems = listOf(player1yellowGem, player2yellowGem, player3yellowGem, player4yellowGem)
+    private val playerTurnHighlights =
+        listOf(player1turnHighlight, player2turnHighlight, player3turnHighlight, player4turnHighlight)
+    private val playerLeftButtons = listOf(player1leftButton, player2leftButton, player3leftButton, player4leftButton)
+    private val playerRightButtons =
+        listOf(player1rightButton, player2rightButton, player3rightButton, player4rightButton)
+    private val playerCheckButtons =
+        listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
+    private val playerHandtiles = listOf(player1handTile, player2handTile, player3handTile, player4handTile)
+    private val playerTokens = listOf(player1Token, player2Token, player3Token, player4Token)
 
     /**
      * Initializes the GameScene with default values and sets up the hexagonal grid.
@@ -438,7 +443,8 @@ class GameScene(val indigoApp: IndigoApplication) :
                 println(index)
                 println(players[index].handTile!!.toString())
                 println(tile.toString())
-                callPlaceTile(tile) }
+                callPlaceTile(tile)
+            }
         }
     }
 
@@ -550,7 +556,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         initialzeGateTokens()
         invokeButtons(players)
         val startHandTile = mutableListOf<Tile?>()
-        for(player in players){
+        for (player in players) {
             startHandTile.add(player.handTile)
         }
         println(startHandTile.toString())
@@ -566,36 +572,36 @@ class GameScene(val indigoApp: IndigoApplication) :
 
         val count = players.size
 
-        for(i in count downTo 1 step 1) {
-            playerlabels[i-1].text = players[i-1].name
-            getGem(playerTokens[i-1], players[i-1].color)
+        for (i in count downTo 1 step 1) {
+            playerlabels[i - 1].text = players[i - 1].name
+            getGem(playerTokens[i - 1], players[i - 1].color)
         }
-        for(i in count downTo 2 step 1) {
-            playerlabels[i-1].text = players[i-1].name
-            getGem(playerTokens[i-1], players[i-1].color)
+        for (i in count downTo 2 step 1) {
+            playerlabels[i - 1].text = players[i - 1].name
+            getGem(playerTokens[i - 1], players[i - 1].color)
 
-            playerlabels[i-1].apply {
+            playerlabels[i - 1].apply {
                 isVisible = true
             }
-            playerScores[i-1].apply {
+            playerScores[i - 1].apply {
                 isVisible = true
             }
-            playerTokens[i-1].apply {
+            playerTokens[i - 1].apply {
                 isVisible = true
             }
-            playerGreenGems[i-1].apply {
+            playerGreenGems[i - 1].apply {
                 isVisible = true
             }
-            playerGreenGemCounters[i-1].apply {
+            playerGreenGemCounters[i - 1].apply {
                 isVisible = true
             }
-            playerYellowGems[i-1].apply {
+            playerYellowGems[i - 1].apply {
                 isVisible = true
             }
-            playerYellowGemCounters[i-1].apply {
+            playerYellowGemCounters[i - 1].apply {
                 isVisible = true
             }
-            playerHandtiles[i-1].apply {
+            playerHandtiles[i - 1].apply {
                 isVisible = true
             }
         }
@@ -761,19 +767,19 @@ class GameScene(val indigoApp: IndigoApplication) :
         val currentGame = indigoApp.rootService.currentGame
         checkNotNull(currentGame)
         val players = currentGame.players
-        for(i in players.indices ) {
+        for (i in players.indices) {
             if (players[i].handTile == null) {
                 playerHandtiles[i].isVisible = false
             } else {
                 playerHandtiles[i].visual = players[i].handTile!!.type.toImg()
                 playerHandtiles[i].isVisible = true
                 for (tile in playerHandtiles) {
-                   tile.rotationProperty.value = -30.0
+                    tile.rotationProperty.value = -30.0
                 }
 
             }
         }
-        if(currentGame.routeTiles.isEmpty()){
+        if (currentGame.routeTiles.isEmpty()) {
             reserveStack.isVisible = false
         }
     }
@@ -838,10 +844,11 @@ class GameScene(val indigoApp: IndigoApplication) :
         val col = coordinate.column
         val row = coordinate.row
 
-        hexagonGrid[col,row] =
+        hexagonGrid[col, row] =
             HexagonView(size = 55.0, visual = tile.type.toImg()).apply {
                 rotate(-60)
-                rotate(60 * rotationDegree) }
+                rotate(60 * rotationDegree)
+            }
     }
 
     /**
@@ -878,7 +885,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     private fun callPlaceTile(tile: Tile) {
         checkNotNull(chosenPlace) { "Please, choose space on the board and press ✓" }
 
-        val coordinates = Coordinate(chosenRow!!,chosenCol!!)
+        val coordinates = Coordinate(chosenRow!!, chosenCol!!)
         rootService.playerTurnService.placeRouteTile(coordinates, tile)
     }
 
@@ -908,17 +915,17 @@ class GameScene(val indigoApp: IndigoApplication) :
         checkNotNull(game) { "No game found." }
 
         val count = game.players.size
-        for(i in count downTo 1 step 1) {
-            val yellowGems = game.players[i-1].collectedGems.count {
+        for (i in count downTo 1 step 1) {
+            val yellowGems = game.players[i - 1].collectedGems.count {
                 it.gemColor == GemColor.AMBER
             }
-            val greenGems = game.players[i-1].collectedGems.count {
+            val greenGems = game.players[i - 1].collectedGems.count {
                 it.gemColor == GemColor.EMERALD
             }
 
-            playerScores[i - 1].text = game.players[i - 1].score.toString()+" points"
-            playerYellowGemCounters[i-1].text = yellowGems.toString()
-            playerGreenGemCounters[i-1].text = greenGems.toString()
+            playerScores[i - 1].text = game.players[i - 1].score.toString() + " points"
+            playerYellowGemCounters[i - 1].text = yellowGems.toString()
+            playerGreenGemCounters[i - 1].text = greenGems.toString()
 
         }
 
@@ -933,7 +940,6 @@ class GameScene(val indigoApp: IndigoApplication) :
         //gemMap.removeForward()
 
     }
-
 
 
     /**
@@ -1001,99 +1007,89 @@ class GameScene(val indigoApp: IndigoApplication) :
 
          */
     }
-   fun mapGems(){
-       val gem0 = rootService.currentGame?.middleTile?.gemPosition?.get(0)
-       val gem1 = rootService.currentGame?.middleTile?.gemPosition?.get(1)
-       val gem2 = rootService.currentGame?.middleTile?.gemPosition?.get(2)
-       val gem3 = rootService.currentGame?.middleTile?.gemPosition?.get(3)
-       val gem4 = rootService.currentGame?.middleTile?.gemPosition?.get(4)
-       val gem5 = rootService.currentGame?.middleTile?.gemPosition?.get(5)
-       gemMap.addAll(
-           (gem0 to blueGem) as Pair<Gem, Label>,
-           (gem1 to greenGem1) as Pair<Gem, Label>,
-           (gem2 to greenGem2) as Pair<Gem, Label>,
-           (gem3 to greenGem3) as Pair<Gem, Label>,
-           (gem4 to greenGem4) as Pair<Gem, Label>,
-           (gem5 to greenGem5) as Pair<Gem, Label>
 
-       )
+    private fun mapGems() {
+        val gem0 = rootService.currentGame?.middleTile?.gemPosition?.get(0)
+        val gem1 = rootService.currentGame?.middleTile?.gemPosition?.get(1)
+        val gem2 = rootService.currentGame?.middleTile?.gemPosition?.get(2)
+        val gem3 = rootService.currentGame?.middleTile?.gemPosition?.get(3)
+        val gem4 = rootService.currentGame?.middleTile?.gemPosition?.get(4)
+        val gem5 = rootService.currentGame?.middleTile?.gemPosition?.get(5)
+        gemMap.addAll(
+            (gem0 to blueGem) as Pair<Gem, Label>,
+            (gem1 to greenGem1) as Pair<Gem, Label>,
+            (gem2 to greenGem2) as Pair<Gem, Label>,
+            (gem3 to greenGem3) as Pair<Gem, Label>,
+            (gem4 to greenGem4) as Pair<Gem, Label>,
+            (gem5 to greenGem5) as Pair<Gem, Label>
+
+        )
     }
 
     /**
      * fills the [coordMap] with keys (Coordinate) and values (Position)
      */
-    private fun fillMap()
-    {
+    private fun fillMap() {
         //Aufpassen : bei Grid[col,row] und Coord(row,col)
-        var y1= 257.0 //y9
-        var y2= 211.0 //y8
-        var y3= 163.0 //y7
-        var y4= 114.0 //y6
-        var y5 = 68.0
-
+        val y1 = 257.0 //y9
+        val y2 = 211.0 //y8
+        val y3 = 163.0 //y7
+        val y4 = 114.0 //y6
+        val y5 = 68.0
 
 
         //Reihe 1
-        for (i in 0..4)
-        {
-            coordMap[Coordinate(i,-4)] = Position(592.0,y1+i*95)
+        for (i in 0..4) {
+            coordMap[Coordinate(i, -4)] = Position(592.0, y1 + i * 95)
         }
 
         //Reihe 9
-        for(i in -4..0)
-        {
-            var count = i+4
-            coordMap[Coordinate(i,4)] = Position(1248.0,y1+count*95)
+        for (i in -4..0) {
+            val count = i + 4
+            coordMap[Coordinate(i, 4)] = Position(1248.0, y1 + count * 95)
 
         }
 
         //Reihe 2
-        for (i in -1..4)
-        {
-            var count = i+1
-            coordMap[Coordinate(i,-3)] = Position(647.0,y2+count*95)
+        for (i in -1..4) {
+            val count = i + 1
+            coordMap[Coordinate(i, -3)] = Position(647.0, y2 + count * 95)
         }
 
         //Reihe 8
-        for (i in -4..1)
-        {
-            var count = i+4
-            coordMap[Coordinate(i,3)] = Position(1166.0,y2+count*95)
+        for (i in -4..1) {
+            val count = i + 4
+            coordMap[Coordinate(i, 3)] = Position(1166.0, y2 + count * 95)
         }
 
         //Reihe 3
-        for (i in -2..4)
-        {
-            var count = i+2
-            coordMap[Coordinate(i,-2)] = Position(756.0,y3+count*95)
+        for (i in -2..4) {
+            val count = i + 2
+            coordMap[Coordinate(i, -2)] = Position(756.0, y3 + count * 95)
         }
 
         //Reihe 7
-        for (i in -4..2)
-        {
-            var count = i+4
-            coordMap[Coordinate(i,2)] = Position(1084.0,y3+count*95)
+        for (i in -4..2) {
+            val count = i + 4
+            coordMap[Coordinate(i, 2)] = Position(1084.0, y3 + count * 95)
         }
 
         //Reihe 4
-        for (i in -3..4)
-        {
-            var count = i+3
-            coordMap[Coordinate(i,-1)] = Position(838.0,y4+count*95)
+        for (i in -3..4) {
+            val count = i + 3
+            coordMap[Coordinate(i, -1)] = Position(838.0, y4 + count * 95)
         }
 
         //Reihe 6
-        for (i in -4..3)
-        {
-            var count = i+4
-            coordMap[Coordinate(i,1)] = Position(1002.0,y4+count*95)
+        for (i in -4..3) {
+            val count = i + 4
+            coordMap[Coordinate(i, 1)] = Position(1002.0, y4 + count * 95)
         }
 
         //Reihe 5
-        for (i in -4..4)
-        {
-            var count = i+4
-            coordMap[Coordinate(i,0)] = Position(920.0,y5+count*95)
+        for (i in -4..4) {
+            val count = i + 4
+            coordMap[Coordinate(i, 0)] = Position(920.0, y5 + count * 95)
         }
     }
 

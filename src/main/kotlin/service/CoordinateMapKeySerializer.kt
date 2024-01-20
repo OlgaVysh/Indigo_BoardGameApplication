@@ -8,9 +8,13 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import entity.Coordinate
 import java.io.IOException
 import kotlin.jvm.Throws
-
+/**
+ * Custom key serializer for serializing Coordinate objects into a JSON-compatible String.
+ *
+ * This class uses Jackson ObjectMapper with KotlinModule for serialization.
+ */
 class CoordinateMapKeySerializer: JsonSerializer<Coordinate>() {
-    val kMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
+    private val kMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
 
 
     //val serializedCoordinate = kMapper.writeValueAsString(coordinates)

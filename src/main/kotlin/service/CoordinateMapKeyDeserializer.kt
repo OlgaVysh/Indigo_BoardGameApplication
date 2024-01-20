@@ -1,4 +1,4 @@
-package service;
+package service
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.KeyDeserializer
 import com.fasterxml.jackson.databind.DeserializationContext
@@ -9,8 +9,16 @@ import java.io.IOException
 import entity.Coordinate
 import kotlin.jvm.Throws
 
+
+/**
+ * Custom key deserializer for deserializing String keys into Coordinate objects.
+ *
+ * This class provides two different implementations for deserialization:
+ * 1. Using Jackson ObjectMapper with KotlinModule.
+ * 2. Using manual parsing of the key String.
+ */
 class CoordinateMapKeyDeserializer: KeyDeserializer() {
-    val kMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
+    private val kMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
 
     //
     //    return key?.let {kMapper.readValue<Coordinate>(key)}

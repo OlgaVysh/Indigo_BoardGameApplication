@@ -4,16 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Date
 
 /**
- * class modelling a Player
+ * Represents a player in the Indigo game.
  *
- * @constructor returns a Player with the given customizations
- *
- * @param name [String] for the Player's name
- * @param age (optional) [Date] for the Player's birthdate, defaults to Unix time 0
- * @param color [TokenColor] for the Player's assigned Tokens
- * @param isAI (optional) [Boolean] to check if any given Player is CPU controlled, defaults to false
- * @property score [Int] to keep track of accumulated points, initially 0
- * @property gemCounter [Int] to keep track of accumulated gems, initially 0
+ * @property name The name of the player.
+ * @property age The age of the player, default is Date(0).
+ * @property color The color assigned to the player.
+ * @property isAI Indicates whether the player is controlled by AI, default is false.
+ * @property score The score of the player.
+ * @property collectedGems A list of gems collected by the player.
+ * @property handTile The tile currently held by the player.
  */
 open class Player(val name: String, val age: Date = Date(0), var color: TokenColor,
                   @JsonProperty("ai")

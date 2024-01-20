@@ -99,11 +99,10 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
     }
 
     private fun aiDiff(): String {
-        if(aiDiff.selectedItem != null) {
-            return aiDiff.selectedItem.toString()
-        }
-        else {
-            return "easy"
+        return if(aiDiff.selectedItem != null) {
+            this.aiDiff.selectedItem.toString()
+        } else {
+            "easy"
         }
     }
 

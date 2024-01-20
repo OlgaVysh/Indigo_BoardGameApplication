@@ -245,12 +245,13 @@ class NetworkMappingService(private val rootService: RootService) : AbstractRefr
     }
 
     /**
-     *  The function [toGateTokens] make the GameMode to the entity GateTokens
-     * @param players The players which are participate the game
-     * @param notSharedGates  The [notSharedGates] is two decide which you have
+     * Converts the player information to gate tokens based on the specified game mode.
      *
-     * @return A mutable list of token as gateTokens
+     * @param players List of players.
+     * @param gameMode The game mode.
+     * @return A mutable list of gate tokens.
      */
+
     fun toGateTokens(players: List<entity.Player>, gameMode: GameMode): MutableList<Token> {
         var notSharedGates = false
         when (gameMode) {

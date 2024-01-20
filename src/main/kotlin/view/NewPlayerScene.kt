@@ -86,8 +86,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             if (aiPlayer) {
                 newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)
             }
-            val turn = turnBox.selectedItem ?: (turns.removeFirst())
-            when (turn) {
+            when (turnBox.selectedItem ?: (turns.removeFirst())) {
                 1 -> indigoApp.players[0] = newPlayer
                 2 -> indigoApp.players[1] = newPlayer
                 3 -> indigoApp.players[2] = newPlayer

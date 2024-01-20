@@ -1,6 +1,5 @@
 package service
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.module.SimpleModule
 import entity.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper

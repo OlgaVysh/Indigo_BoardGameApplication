@@ -27,6 +27,6 @@ enum class TileType {
             Type_2 -> ImageVisual("tile2.png")
             Type_3 -> ImageVisual("tile3.png")
             Type_4 -> ImageVisual("tile4.png")
-            Type_5 -> ImageVisual("gatetile1.png") //stimmt fuer nur ein gate da aufgeteilt in 6 Bilder
+            Type_5 -> ImageVisual("gatetile1.png") //stimmt für nur ein gate da aufgeteilt in 6 Bilder
         }
 }
