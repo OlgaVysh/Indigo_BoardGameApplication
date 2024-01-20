@@ -13,7 +13,7 @@ import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.visual.Visual
 import java.awt.Color
-import tools.aqua.bgw.util.BidirectionalMap
+//import tools.aqua.bgw.util.BidirectionalMap
 import view.components.Label
 
 /**
