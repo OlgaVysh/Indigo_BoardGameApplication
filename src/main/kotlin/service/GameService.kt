@@ -525,7 +525,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 return
             }
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
-            if(!isAiCalled) onAllRefreshables {refreshAfterMoveGems(middleTileGem,currentCoordinate)}
+            if(!isAiCalled) onAllRefreshables {refreshAfterMoveGems(currentTile.gemEndPosition[lastGemPosition]!!,currentCoordinate)}
             moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, ((lastGemPosition + 3) % 6))
         }
         if (neighbourTile == null) {
@@ -562,7 +562,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         if(neighbourGems[neighbourStart] != null) {
             if (!isAiCalled) onAllRefreshables {
                 refreshAfterMoveGems(
-                    neighbourGems[neighbourStart]!!,
+                    currentTile.gemEndPosition[currentEnd]!!,
                     currentCoordinate
                 )
             }
