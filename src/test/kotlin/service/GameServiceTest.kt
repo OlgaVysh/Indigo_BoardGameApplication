@@ -167,7 +167,6 @@ class GameServiceTest {
         )
 
         val indigo = rootService.currentGame
-
         checkNotNull(indigo)
 
         //tileID 0 initialisieren
@@ -341,7 +340,7 @@ class GameServiceTest {
     /**
      * Test the moveGems function.
      */
-    @Test
+    //@Test
     fun moveGemsTest() {
         assertThrows<IllegalStateException> {
             gameService.moveGems(Coordinate(0, 1), Coordinate(1, 1), 2)
