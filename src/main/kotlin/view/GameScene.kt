@@ -952,6 +952,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     override fun refreshAfterRemoveGems() {
+        //gemToRemoveList: MutableList<Gem> als parameter??
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
 
@@ -969,7 +970,27 @@ class GameScene(val indigoApp: IndigoApplication) :
             playerGreenGemCounters[i - 1].text = greenGems.toString()
 
         }
+/*        val entityGems = game.gems
+        val gemViewList = mutableListOf(greenGem1,greenGem2,greenGem3,greenGem4,greenGem5,
+            yellowGem1,yellowGem2,yellowGem3,yellowGem4,yellowGem5,
+            blueGem)
+        // val gemToRemoveList<Gem> =
+        for(gem in entityGems){
+            if (!gemMap.containsKey(gem)){
+                gemToRemoveList.add(gem)
+            }
+        }
+        for(gemToRemove in gemToRemoveList) {
+            val gemToRemoveView = gemMap[gemToRemove]
+            gemToRemoveView?.let {
+                //gemView.removeFromParent()
+                it.removeFromParent()
 
+                //gemToRemoveView.visual = Visual.EMPTY
+                //gemViewList.remove(gemToRemoveView)
+                gemMap.remove(gemToRemove)
+            }
+        }*/
         val gameBoard = rootService.currentGame?.gameBoard
 
         val gemsOnBoard = mutableSetOf<Gem>()
