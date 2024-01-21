@@ -415,6 +415,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     private fun assignGem(gem: Gem, player: Player) {
         player.score += gem.gemColor.ordinal + 1
         player.collectedGems.add(gem)
+        println("assign Gem : " + gem.gemColor.toString() )
+        println(player.collectedGems.toString() )
     }
 
     /**
@@ -529,6 +531,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             }
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
             if(!isAiCalled) onAllRefreshables {refreshAfterMoveGems(currentTile.gemEndPosition[lastGemPosition]!!,currentCoordinate)}
+            println(currentCoordinate.toString())
+            println(lastGemPosition)
             moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, ((lastGemPosition + 3) % 6))
         }
         if (neighbourTile == null) {
@@ -571,6 +575,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 )
             }
         }
+        println(currentCoordinate.toString())
+        println(currentEnd)
         removeGemsReachedGate(currentTile, currentCoordinate)
 
         moveGems(

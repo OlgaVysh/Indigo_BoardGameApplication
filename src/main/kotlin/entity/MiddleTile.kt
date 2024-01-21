@@ -10,9 +10,9 @@ package entity
 class MiddleTile {
     val gemPosition: MutableMap<Int,Gem> = mutableMapOf(
         0 to Gem(GemColor.SAPPHIRE),
-        1 to Gem(GemColor.AMBER),
-        2 to Gem(GemColor.AMBER),
-        3 to Gem(GemColor.AMBER),
-        4 to Gem(GemColor.AMBER),
-        5 to Gem(GemColor.AMBER))
+        1 to Gem(GemColor.EMERALD),
+        2 to Gem(GemColor.EMERALD),
+        3 to Gem(GemColor.EMERALD),
+        4 to Gem(GemColor.EMERALD),
+        5 to Gem(GemColor.EMERALD))
 }
