@@ -31,7 +31,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         2 to Position(28.0,19.0),
         3 to Position(0.0,36.0),
         4 to Position(-34.0,19.0),
-        5 to Position(-34.0,19.0)
+        5 to Position(-34.0,-19.0)
     )
 
     //maps the grid coordinates auf (posX,posY) on the Scene where the middle of the tile would be

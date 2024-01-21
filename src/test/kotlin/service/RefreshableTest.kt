@@ -143,7 +143,7 @@ class RefreshableTest : Refreshable {
         refreshAfterPlaceTileCalled = true
     }
 
-    override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate) {
+    override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate, exit: Int) {
         refreshAfterMoveGemsCalled = true
     }
 

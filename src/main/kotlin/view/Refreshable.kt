@@ -44,7 +44,7 @@ interface Refreshable {
     /**
      * Refreshes the state after moving gems.
      */
-    fun refreshAfterMoveGems(gem: Gem,coordinate: Coordinate ) {}
+    fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate, exit: Int) {}
 
     /**
      * Refreshes the state after the player win the gem, and then the gem will be removed from game board.
@@ -141,10 +141,10 @@ interface Refreshable {
     /**
      *  updated the gui with corrected button showing
      */
-    fun refreshAfterNetworkPlayerTurn(){}
+    fun refreshAfterNetworkPlayerTurn() {}
 
     /**
      * updated give the gui the correct handTile for variable PlaceTile
      */
-    fun refreshAfterReceivedTile(rotation :Int) {}
+    fun refreshAfterReceivedTile(rotation: Int) {}
 }

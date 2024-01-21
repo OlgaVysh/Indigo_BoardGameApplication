@@ -68,7 +68,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         }
 
         val connectionState = rootService.networkService.connectionState
-        if(connectionState == ConnectionState.DISCONNECTED) {
+        if (connectionState == ConnectionState.DISCONNECTED) {
             val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
             val currentPlayer = players[currentPlayerIndex]
             if (currentPlayer.isAI) {
@@ -250,7 +250,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val gate4 = listOf(Coordinate(4, -1), Coordinate(4, -2), Coordinate(4, -3))
         val gate5 = listOf(Coordinate(3, -4), Coordinate(2, -4), Coordinate(1, -4))
         val gate6 = listOf(Coordinate(-3, -1), Coordinate(-2, -2), Coordinate(-1, -3))
-        val gates = listOf(gate1,gate2, gate3, gate4, gate5, gate6)
+        val gates = listOf(gate1, gate2, gate3, gate4, gate5, gate6)
 
         var position1 = 0
         var position2 = 1
@@ -375,7 +375,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                                 tile.gemEndPosition.remove((0 + i) % 6)
                         }
                     }
-                    currentGame.gems.remove(gem)
+                    val removedElement = currentGame.gems.find { it.gemColor == gem.gemColor }
+                    currentGame.gems.remove(removedElement)
                 }
             }
         }
@@ -415,8 +416,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     private fun assignGem(gem: Gem, player: Player) {
         player.score += gem.gemColor.ordinal + 1
         player.collectedGems.add(gem)
-        println("assign Gem : " + gem.gemColor.toString() )
-        println(player.collectedGems.toString() )
+        println("assign Gem : " + gem.gemColor.toString())
+        println(player.collectedGems.toString())
     }
 
     /**
@@ -433,7 +434,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         // It's AI's turn
         val connectionState = rootService.networkService.connectionState
-        if(connectionState==ConnectionState.DISCONNECTED) {
+        if (connectionState == ConnectionState.DISCONNECTED) {
             //Xue Code
             val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
             if (currentPlayer.isAI) {
@@ -524,13 +525,22 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
             middleTile.gemPosition.remove(amountOfGems - 1)
             if (currentTile.gemEndPosition[lastGemPosition] != null) {
-                currentGame.gems.remove(middleTileGem)
-                currentGame.gems.remove(currentTile.gemEndPosition[lastGemPosition])
+                val removedElement = currentGame.gems.find { it.gemColor == middleTileGem!!.gemColor }
+                currentGame.gems.remove(removedElement)
+                val removedGem =
+                    currentGame.gems.find { it.gemColor == currentTile.gemEndPosition[lastGemPosition]!!.gemColor }
+                currentGame.gems.remove(removedGem)
                 currentTile.gemEndPosition.remove(lastGemPosition)
                 return
             }
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
-            if(!isAiCalled) onAllRefreshables {refreshAfterMoveGems(currentTile.gemEndPosition[lastGemPosition]!!,currentCoordinate)}
+            if (!isAiCalled) onAllRefreshables {
+                refreshAfterMoveGems(
+                    currentTile.gemEndPosition[lastGemPosition]!!,
+                    currentCoordinate,
+                    lastGemPosition
+                )
+            }
             println(currentCoordinate.toString())
             println(lastGemPosition)
             moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, ((lastGemPosition + 3) % 6))
@@ -546,16 +556,22 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         if (tileGems.contains(currentGemPosition)) {
             if (neighbourGems.contains(neighbourStart)) {
-                currentGame.gems.remove(tileGems[currentGemPosition])
-                currentGame.gems.remove(neighbourGems[neighbourStart])
+                val removedElement = currentGame.gems.find { it.gemColor == tileGems[currentGemPosition]!!.gemColor }
+                currentGame.gems.remove(removedElement)
+                val removedGem =
+                    currentGame.gems.find { it.gemColor == neighbourGems[neighbourStart]!!.gemColor }
+                currentGame.gems.remove(removedGem)
                 tileGems.remove(currentGemPosition)
                 neighbourGems.remove(neighbourStart)
                 return
             }
 
             if (neighbourGems.contains(neighborEnd)) {
-                currentGame.gems.remove(tileGems[currentGemPosition])
-                currentGame.gems.remove(neighbourGems[neighborEnd])
+                val removedElement = currentGame.gems.find { it.gemColor == tileGems[currentGemPosition]!!.gemColor }
+                currentGame.gems.remove(removedElement)
+                val removedGem =
+                    currentGame.gems.find { it.gemColor == neighbourGems[neighborEnd]!!.gemColor }
+                currentGame.gems.remove(removedGem)
                 tileGems.remove(currentGemPosition)
                 neighbourGems.remove(neighborEnd)
                 return
@@ -567,11 +583,12 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentEnd = getAnotherEdge(currentEdge, currentTile)
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
-        if(neighbourGems[neighbourStart] != null) {
+        if (neighbourGems[neighbourStart] != null) {
             if (!isAiCalled) onAllRefreshables {
                 refreshAfterMoveGems(
                     currentTile.gemEndPosition[currentEnd]!!,
-                    currentCoordinate
+                    currentCoordinate,
+                    currentEnd
                 )
             }
         }
