@@ -310,7 +310,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 //Two gems are colliding
                 tile.gemEndPosition.remove(path.first.ordinal)
                 tile.gemEndPosition.remove(path.second.ordinal)
-                onAllRefreshables { refreshAfterCollision(gem1 = gemAtBeginning, gem2 = gemAtEnd) }
+                onAllRefreshables { refreshAfterCollision(gemAtEnd,gemAtBeginning) }
                 return true
             }
         }
@@ -331,7 +331,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val gateTokens = currentGame.gameBoard.gateTokens
         val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
         val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
-        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 1))
+        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 3))
         val gate4 = listOf(Coordinate(4, -1), Coordinate(4, -2), Coordinate(4, -3))
         val gate5 = listOf(Coordinate(1, -4), Coordinate(2, -4), Coordinate(3, -4))
         val gate6 = listOf(Coordinate(-1, -3), Coordinate(-2, -2), Coordinate(-3, -1))
@@ -501,7 +501,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val middleTile = currentGame.middleTile
         val currentTile = currentGame.gameBoard.gameBoardTiles[currentCoordinate]
         val neighbourTile = currentGame.gameBoard.gameBoardTiles[neighborCoordinate]
-        var neighbourStart = (currentGemPosition + 3) % 6
+        val neighbourStart = (currentGemPosition + 3) % 6
         val neighborCoordinates = getNeighboringCoordinates(currentCoordinate)
         if (currentTile == null) {
             return
@@ -514,80 +514,30 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 return
             }
 
-            var currentTileGem = currentTile.gemEndPosition[currentGemPosition]
-            if (currentTileGem != null && neighbourStart != 0) {
-                if (middleTile.gemPosition[neighbourStart] == null) neighbourStart = (neighbourStart + 1) % 6
-                onAllRefreshables {
-                    refreshAfterCollision(
-                        middleTile.gemPosition[neighbourStart]!!,
-                        currentTileGem!!
-                    )
-                }
-                val removedElement =
-                    currentGame.gems.find { it.gemColor == middleTile.gemPosition[neighbourStart - 1]!!.gemColor }
+            val currentTileGem = currentTile.gemEndPosition[currentGemPosition]
+            if (currentTileGem != null) {
+                val removedElement = currentGame.gems.find { it.gemColor == middleTile.gemPosition[amountOfGems - 1]!!.gemColor }
                 currentGame.gems.remove(removedElement)
                 val removedGem =
                     currentGame.gems.find { it.gemColor == currentTile.gemEndPosition[currentGemPosition]!!.gemColor }
                 currentGame.gems.remove(removedGem)
-                middleTile.gemPosition.remove(neighbourStart)
+                middleTile.gemPosition.remove(amountOfGems - 1)
                 currentTile.gemEndPosition.remove(currentGemPosition)
-                return
-            } else {
-                neighbourStart = (neighbourStart + 1) % 6
-            }
-            currentTileGem = currentTile.gemEndPosition[currentGemPosition]
-            if (currentTileGem != null && neighbourStart != 0) {
-                onAllRefreshables {
-                    refreshAfterCollision(
-                        middleTile.gemPosition[neighbourStart]!!,
-                        currentTile.gemEndPosition[currentGemPosition]!!
-                    )
-                }
-                val removedElement =
-                    currentGame.gems.find { it.gemColor == middleTile.gemPosition[neighbourStart]!!.gemColor }
-                currentGame.gems.remove(removedElement)
-                val removedGem =
-                    currentGame.gems.find { it.gemColor == currentTile.gemEndPosition[currentGemPosition]!!.gemColor }
-                currentGame.gems.remove(removedGem)
-                middleTile.gemPosition.remove(neighbourStart)
-                currentTile.gemEndPosition.remove(currentGemPosition)
+                onAllRefreshables { refreshAfterCollision(middleTile.gemPosition[amountOfGems - 1]!!,currentTile.gemEndPosition[currentGemPosition]!!) }
                 return
             }
-            if (neighbourStart == 0 && amountOfGems != 1) {
-                neighbourStart = (neighbourStart + 5) % 6
-            }
-            if (amountOfGems == 1) {
-                neighbourStart = 0
-            }
-            var middleTileGem = middleTile.gemPosition[neighbourStart]
+            val middleTileGem = middleTile.gemPosition[amountOfGems - 1]
             val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
-            middleTile.gemPosition.remove(neighbourStart)
+            middleTile.gemPosition.remove(amountOfGems - 1)
             if (currentTile.gemEndPosition[lastGemPosition] != null) {
-                onAllRefreshables {
-                    refreshAfterCollision(
-                        middleTileGem!!,
-                        currentTile.gemEndPosition[lastGemPosition]!!
-                    )
-                }
                 val removedElement = currentGame.gems.find { it.gemColor == middleTileGem!!.gemColor }
                 currentGame.gems.remove(removedElement)
                 val removedGem =
                     currentGame.gems.find { it.gemColor == currentTile.gemEndPosition[lastGemPosition]!!.gemColor }
                 currentGame.gems.remove(removedGem)
                 currentTile.gemEndPosition.remove(lastGemPosition)
+                onAllRefreshables { refreshAfterCollision(middleTile.gemPosition[amountOfGems - 1]!!,currentTile.gemEndPosition[lastGemPosition]!!) }
                 return
-            }
-            if (middleTileGem == null && neighbourStart != 0) {
-                neighbourStart = (neighbourStart +1 )% 6
-                middleTileGem = middleTile.gemPosition[neighbourStart]
-            }
-            if (middleTileGem == null&& neighbourStart != 0) {
-                neighbourStart = (neighbourStart-2 + 6)% 6
-                middleTileGem = middleTile.gemPosition[neighbourStart]
-            }
-            if(neighbourStart==0 && amountOfGems != 1){
-                neighbourStart = (neighbourStart +1 )% 6
-                middleTileGem = middleTile.gemPosition[neighbourStart]
             }
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
             if (!isAiCalled) onAllRefreshables {
@@ -612,12 +562,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         if (tileGems.contains(currentGemPosition)) {
             if (neighbourGems.contains(neighbourStart)) {
-                onAllRefreshables {
-                    refreshAfterCollision(
-                        tileGems[currentGemPosition]!!,
-                        neighbourGems[neighbourStart]!!
-                    )
-                }
+                onAllRefreshables {refreshAfterCollision(tileGems[currentGemPosition]!!,neighbourGems[neighbourStart]!!) }
                 val removedElement = currentGame.gems.find { it.gemColor == tileGems[currentGemPosition]!!.gemColor }
                 currentGame.gems.remove(removedElement)
                 val removedGem =
@@ -629,12 +574,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             }
 
             if (neighbourGems.contains(neighborEnd)) {
-                onAllRefreshables {
-                    refreshAfterCollision(
-                        tileGems[currentGemPosition]!!,
-                        neighbourGems[neighborEnd]!!
-                    )
-                }
+                onAllRefreshables { refreshAfterCollision(tileGems[currentGemPosition]!!, neighbourGems[neighborEnd]!!) }
                 val removedElement = currentGame.gems.find { it.gemColor == tileGems[currentGemPosition]!!.gemColor }
                 currentGame.gems.remove(removedElement)
                 val removedGem =
@@ -651,8 +591,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentEnd = getAnotherEdge(currentEdge, currentTile)
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
-        if (!isAiCalled) {
-            onAllRefreshables {
+        if (currentTile.gemEndPosition[currentEnd] != null) {
+            if (!isAiCalled) onAllRefreshables {
                 refreshAfterMoveGems(
                     currentTile.gemEndPosition[currentEnd]!!,
                     currentCoordinate,
@@ -663,6 +603,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         println(currentCoordinate.toString())
         println(currentEnd)
         removeGemsReachedGate(currentTile, currentCoordinate)
+
         moveGems(
             neighborCoordinates[currentEnd], currentCoordinate, abs((currentEnd + 3)) % 6
         )
