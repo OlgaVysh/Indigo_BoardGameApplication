@@ -562,11 +562,35 @@ class GameScene(val indigoApp: IndigoApplication) :
         println(startHandTile.toString())
         mapGems()
         fillMap()
-        for(i in 0 ..3){
-            playerScores[i].text = "0 points"
-        }
+        cleanGameScene()
     }
 
+    /**
+     * private function to clean the game scene components
+     *
+     */
+    private fun cleanGameScene(){
+        for(i in 0 ..3){
+            playerScores[i].text = "0 points"
+            playerGreenGemCounters[i].text = "0"
+            playerYellowGemCounters[i].text = "0"
+        }
+        initializeGameBoardGrid()
+        blueGem.reposition(911,432)
+        greenGem1.reposition(890,405)
+        greenGem2.reposition(930,402)
+        greenGem3.reposition(944, 439)
+        greenGem4.reposition(912,465)
+        greenGem5.reposition(875,438)
+        yellowGem1.reposition(910,70)
+        yellowGem2.reposition(1226, 248)
+        yellowGem3.reposition(1226,612)
+        yellowGem4.reposition(910,797)
+        yellowGem5.reposition(590,613)
+        yellowGem6.reposition(590,246)
+
+
+    }
     /**
      * For every player set a view of name and token color and disable superfluous players views
      */

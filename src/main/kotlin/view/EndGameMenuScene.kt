@@ -51,7 +51,12 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
             indigoApp.exit()
         }
     }
-    private val newGameButton = Button(1180, 780, 532, 207, "Start new game", 48)
+    private val newGameButton = Button(1180, 780, 532, 207, "Start new game", 48).apply {
+        onMouseClicked = {
+            indigoApp.configurePlayersScene.clearPlayerView()
+            indigoApp.showMenuScene(indigoApp.startScene)
+        }
+    }
 
     // Setting the background and adding components to the scene.
     init {
