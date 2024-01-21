@@ -310,7 +310,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 //Two gems are colliding
                 tile.gemEndPosition.remove(path.first.ordinal)
                 tile.gemEndPosition.remove(path.second.ordinal)
-                onAllRefreshables { refreshAfterCollision() }
+                onAllRefreshables { refreshAfterCollision(gem1 =gemAtBeginning , gem2 =gemAtEnd ) }
                 return true
             }
         }

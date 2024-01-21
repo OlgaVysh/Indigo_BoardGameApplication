@@ -54,7 +54,7 @@ interface Refreshable {
     /**
      * Refreshes the state after a collision in the game.
      */
-    fun refreshAfterCollision() {}
+    fun refreshAfterCollision(gem1: Gem,gem2: Gem) {}
 
     /**
      * Refreshes the state after left rotating tile.

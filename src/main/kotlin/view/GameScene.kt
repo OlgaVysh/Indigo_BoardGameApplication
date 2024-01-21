@@ -3,7 +3,6 @@ package view
 import entity.*
 import entity.Coordinate
 import service.network.ConnectionState
-import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.components.uicomponents.Button
@@ -953,6 +952,27 @@ class GameScene(val indigoApp: IndigoApplication) :
         gemMap[gem]!!.reposition(posX,posY)
     }
 
+    override fun refreshAfterCollision(gem1: Gem,gem2: Gem) {
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game) { "No game found." }
+        val gemLabel1 = gemMap[gem1]
+        gemLabel1?.apply {
+            isVisible = false
+        }
+        val gemLabel2 = gemMap[gem2]
+        gemLabel2?.apply {
+            isVisible = false
+        }
+        val gameBoard = rootService.currentGame?.gameBoard
+
+        val gemsOnBoard = mutableSetOf<Gem>()
+        for ((_, tile) in gameBoard?.gameBoardTiles ?: emptyMap()) {
+            if (tile.gemEndPosition.isNotEmpty()) {
+                gemsOnBoard.addAll(tile.gemEndPosition.values)
+            }
+        }
+
+    }
     override fun refreshAfterRemoveGems(gem: Gem) {
         //gemToRemoveList: MutableList<Gem> als parameter??
         val game = indigoApp.rootService.currentGame
@@ -972,14 +992,15 @@ class GameScene(val indigoApp: IndigoApplication) :
             playerGreenGemCounters[i - 1].text = greenGems.toString()
 
         }
-/*        val entityGems = game.gems
+        val entityGems = game.gems
         val gemViewList = mutableListOf(greenGem1,greenGem2,greenGem3,greenGem4,greenGem5,
             yellowGem1,yellowGem2,yellowGem3,yellowGem4,yellowGem5,
             blueGem)
         // val gemToRemoveList<Gem> =
-        for(gem in entityGems){
+/*        for(gem in entityGems){
             if (!gemMap.containsKey(gem)){
-                gemToRemoveList.add(gem)
+                //gemToRemoveList.add(gem)
+                val gemToR
             }
         }
         for(gemToRemove in gemToRemoveList) {
