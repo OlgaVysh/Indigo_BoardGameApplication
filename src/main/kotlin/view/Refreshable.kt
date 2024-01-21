@@ -49,7 +49,7 @@ interface Refreshable {
     /**
      * Refreshes the state after the player win the gem, and then the gem will be removed from game board.
      */
-    fun refreshAfterRemoveGems() {}
+    fun refreshAfterRemoveGems(gem: Gem) {}
 
     /**
      * Refreshes the state after a collision in the game.

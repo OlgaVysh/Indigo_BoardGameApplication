@@ -375,12 +375,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                                 tile.gemEndPosition.remove((0 + i) % 6)
                         }
                     }
+                    onAllRefreshables { refreshAfterRemoveGems(gem) }
                     val removedElement = currentGame.gems.find { it.gemColor == gem.gemColor }
                     currentGame.gems.remove(removedElement)
                 }
             }
         }
-        onAllRefreshables { refreshAfterRemoveGems() }
+
     }
 
     /**
@@ -583,21 +584,18 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentEnd = getAnotherEdge(currentEdge, currentTile)
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
-        if (currentTile.gemEndPosition[currentEnd] != null) {
-            if (!isAiCalled) {
-                onAllRefreshables {
-                    refreshAfterMoveGems(
-                        currentTile.gemEndPosition[currentEnd]!!,
-                        currentCoordinate,
-                        currentEnd
-                    )
-                }
+        if (!isAiCalled) {
+            onAllRefreshables {
+                refreshAfterMoveGems(
+                    currentTile.gemEndPosition[currentEnd]!!,
+                    currentCoordinate,
+                    currentEnd
+                )
             }
         }
         println(currentCoordinate.toString())
         println(currentEnd)
         removeGemsReachedGate(currentTile, currentCoordinate)
-
         moveGems(
             neighborCoordinates[currentEnd], currentCoordinate, abs((currentEnd + 3)) % 6
         )

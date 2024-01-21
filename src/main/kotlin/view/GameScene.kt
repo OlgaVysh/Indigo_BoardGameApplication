@@ -3,6 +3,7 @@ package view
 import entity.*
 import entity.Coordinate
 import service.network.ConnectionState
+import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.components.uicomponents.Button
@@ -21,17 +22,17 @@ import view.components.Label
 
 class GameScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
-    private val gemMap =  mutableMapOf<Gem, Label>()
+    private val gemMap = mutableMapOf<Gem, Label>()
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
 
     private val gemEndPos = mutableMapOf(
-        0 to Position(0.0,-36.0),
-        1 to Position(28.0,-19.0),
-        2 to Position(28.0,19.0),
-        3 to Position(0.0,36.0),
-        4 to Position(-34.0,19.0),
-        5 to Position(-34.0,-19.0)
+        0 to Position(0.0, -36.0),
+        1 to Position(28.0, -19.0),
+        2 to Position(28.0, 19.0),
+        3 to Position(0.0, 36.0),
+        4 to Position(-34.0, 19.0),
+        5 to Position(-34.0, -19.0)
     )
 
     //maps the grid coordinates auf (posX,posY) on the Scene where the middle of the tile would be
@@ -221,8 +222,8 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     //oben im Uhrzeigersinn
     private var yellowGem1 = Label(posX = 914, posY = 70, text = "", width = 30, height = 30)
-    private var yellowGem2 = Label(posX = 1230, posY = 254, text = "", width = 30,height = 30)
-    private var yellowGem3 = Label(posX = 1230, posY = 619, text = "", width = 30, height =30)
+    private var yellowGem2 = Label(posX = 1230, posY = 254, text = "", width = 30, height = 30)
+    private var yellowGem3 = Label(posX = 1230, posY = 619, text = "", width = 30, height = 30)
     private var yellowGem4 = Label(posX = 914, posY = 801, text = "", width = 30, height = 30)
     private var yellowGem5 = Label(posX = 590, posY = 619, text = "", width = 30, height = 30)
     private var yellowGem6 = Label(posX = 590, posY = 254, text = "", width = 30, height = 30)
@@ -577,28 +578,29 @@ class GameScene(val indigoApp: IndigoApplication) :
      * private function to clean the game scene components
      *
      */
-    private fun cleanGameScene(){
-        for(i in 0 ..3){
+    private fun cleanGameScene() {
+        for (i in 0..3) {
             playerScores[i].text = "0 points"
             playerGreenGemCounters[i].text = "0"
             playerYellowGemCounters[i].text = "0"
         }
         initializeGameBoardGrid()
-        blueGem.reposition(916,438)
-        greenGem1.reposition(894,410)
-        greenGem2.reposition(933,408)
+        blueGem.reposition(916, 438)
+        greenGem1.reposition(894, 410)
+        greenGem2.reposition(933, 408)
         greenGem3.reposition(948, 442)
-        greenGem4.reposition(914,468)
-        greenGem5.reposition(881,443)
-        yellowGem1.reposition(914,70)
+        greenGem4.reposition(914, 468)
+        greenGem5.reposition(881, 443)
+        yellowGem1.reposition(914, 70)
         yellowGem2.reposition(1230, 254)
-        yellowGem3.reposition(1230,619)
-        yellowGem4.reposition(914,801)
-        yellowGem5.reposition(590,619)
-        yellowGem6.reposition(590,254)
+        yellowGem3.reposition(1230, 619)
+        yellowGem4.reposition(914, 801)
+        yellowGem5.reposition(590, 619)
+        yellowGem6.reposition(590, 254)
 
 
     }
+
     /**
      * For every player set a view of name and token color and disable superfluous players views
      */
@@ -951,7 +953,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         gemMap[gem]!!.reposition(posX,posY)
     }
 
-    override fun refreshAfterRemoveGems() {
+    override fun refreshAfterRemoveGems(gem: Gem) {
         //gemToRemoveList: MutableList<Gem> als parameter??
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
@@ -991,6 +993,10 @@ class GameScene(val indigoApp: IndigoApplication) :
                 gemMap.remove(gemToRemove)
             }
         }*/
+        val gemLabel = gemMap[gem]
+        gemLabel?.apply {
+            isVisible = false
+        }
         val gameBoard = rootService.currentGame?.gameBoard
 
         val gemsOnBoard = mutableSetOf<Gem>()
