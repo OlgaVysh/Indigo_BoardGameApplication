@@ -147,7 +147,7 @@ class RefreshableTest : Refreshable {
         refreshAfterMoveGemsCalled = true
     }
 
-    override fun refreshAfterRemoveGems() {
+    override fun refreshAfterRemoveGems(gem:Gem) {
         refreshAfterRemoveGemsCalled = true
     }
 
