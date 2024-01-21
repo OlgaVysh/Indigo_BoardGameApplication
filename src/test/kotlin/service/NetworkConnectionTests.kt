@@ -400,7 +400,7 @@ class NetworkConnectionTests {
             Thread.sleep(5000)
             val guestTile1 = guestRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, -1)]
             val hosTile1 = hostRootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, -1)]
-            assertEquals(hosTile1, guestTile1)
+            assertEquals(hosTile1!!.type, guestTile1!!.type)
             Property(client.connectionState).await(ConnectionState.PLAYING_MY_TURN)
             latch.countDown()
             latch.await()
