@@ -516,6 +516,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
             val currentTileGem = currentTile.gemEndPosition[currentGemPosition]
             if (currentTileGem != null) {
+                onAllRefreshables { refreshAfterCollision(middleTile.gemPosition[amountOfGems - 1]!!,currentTile.gemEndPosition[currentGemPosition]!!) }
                 val removedElement = currentGame.gems.find { it.gemColor == middleTile.gemPosition[amountOfGems - 1]!!.gemColor }
                 currentGame.gems.remove(removedElement)
                 val removedGem =
@@ -523,20 +524,19 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 currentGame.gems.remove(removedGem)
                 middleTile.gemPosition.remove(amountOfGems - 1)
                 currentTile.gemEndPosition.remove(currentGemPosition)
-                onAllRefreshables { refreshAfterCollision(middleTile.gemPosition[amountOfGems - 1]!!,currentTile.gemEndPosition[currentGemPosition]!!) }
                 return
             }
             val middleTileGem = middleTile.gemPosition[amountOfGems - 1]
             val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
             middleTile.gemPosition.remove(amountOfGems - 1)
             if (currentTile.gemEndPosition[lastGemPosition] != null) {
+                onAllRefreshables { refreshAfterCollision(middleTile.gemPosition[amountOfGems - 1]!!,currentTile.gemEndPosition[lastGemPosition]!!) }
                 val removedElement = currentGame.gems.find { it.gemColor == middleTileGem!!.gemColor }
                 currentGame.gems.remove(removedElement)
                 val removedGem =
                     currentGame.gems.find { it.gemColor == currentTile.gemEndPosition[lastGemPosition]!!.gemColor }
                 currentGame.gems.remove(removedGem)
                 currentTile.gemEndPosition.remove(lastGemPosition)
-                onAllRefreshables { refreshAfterCollision(middleTile.gemPosition[amountOfGems - 1]!!,currentTile.gemEndPosition[lastGemPosition]!!) }
                 return
             }
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
