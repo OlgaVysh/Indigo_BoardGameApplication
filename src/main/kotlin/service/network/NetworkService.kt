@@ -260,6 +260,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         if (currentPlayer.isAI) {
             when (currentPlayer) {
                 is CPUPlayer -> {
+                    if(rootService.gameService.endGame())onAllRefreshables { refreshAfterEndGame() }
                     rootService.aiActionService.AiMove(currentPlayer.difficulty)
                 }
             }

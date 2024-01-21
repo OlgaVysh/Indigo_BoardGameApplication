@@ -41,4 +41,73 @@ data class Indigo(
         else settings.playerIndex
     }
 
+    /**
+     *  the extension function [copyTo] is a function wich create a deep copy of Indigo
+     *  with the necessary data
+     *
+     *  @return Returning a new [Indigo] which are independent of the current game
+     */
+    fun copyTo(): Indigo {
+        val copiedGems = mutableListOf<Gem>()
+        for (gem in gems) {
+            copiedGems.add(gem)
+        }
+        val copiedGameBoardTiles = gameBoard.gameBoardTiles.toMutableMap()
+        val copiedGateTokens = this.gameBoard.gateTokens.toList()
+        val copiedGameBoard = GameBoard()
+        copiedGameBoard.gameBoardTiles.putAll(copiedGameBoardTiles)
+        copiedGameBoard.gateTokens = copiedGateTokens
+        val copiedPlayers = settings.players.map { originalPlayer ->
+            when (originalPlayer) {
+                is CPUPlayer -> {
+                    CPUPlayer(
+                        originalPlayer.name,
+                        originalPlayer.age,
+                        originalPlayer.color,
+                        originalPlayer.difficulty,
+                        originalPlayer.simulationSpeed
+                    ).apply {
+                        score = originalPlayer.score
+                        collectedGems = originalPlayer.collectedGems.toMutableList()
+                        // Copy the handTile
+                        handTile = originalPlayer.handTile?.copy()
+                        // Additional properties specific to CPUPlayer
+                        // ...
+                    }
+                }
+
+                else -> {
+                    Player(
+                        originalPlayer.name,
+                        originalPlayer.age,
+                        originalPlayer.color,
+                        originalPlayer.isAI
+                    ).apply {
+                        score = originalPlayer.score
+                        collectedGems = originalPlayer.collectedGems.toMutableList()
+                        // Copy the handTile
+                        handTile = originalPlayer.handTile?.copy()
+                    }
+                }
+            }
+        }.toList()
+        val copiedSettings = GameSettings(copiedPlayers)
+        val copiedIndigo = Indigo(
+            copiedSettings,
+            copiedGameBoard,
+            this.allTiles,
+            copiedGems,
+            this.tokens
+        )
+        copiedIndigo.currentPlayerIndex = this.currentPlayerIndex
+        copiedIndigo.nextGameState = this.nextGameState
+        copiedIndigo.previousGameState = this.previousGameState
+        copiedIndigo.middleTile.gemPosition.clear()
+        for ((key,value ) in this.middleTile.gemPosition) {
+            copiedIndigo.middleTile.gemPosition[key] =value
+        }
+        copiedIndigo.routeTiles = this.routeTiles.toMutableList()
+        return copiedIndigo
+    }
+
 }
