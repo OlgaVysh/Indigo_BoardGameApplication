@@ -187,9 +187,8 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         copiedIndigo.nextGameState = this.nextGameState
         copiedIndigo.previousGameState = this.previousGameState
         copiedIndigo.middleTile.gemPosition.clear()
-        for (i in 0 until this.middleTile.gemPosition.size) {
-            val gem = this.middleTile.gemPosition[i]
-            copiedIndigo.middleTile.gemPosition[i] = gem!!
+        for ((key,value ) in this.middleTile.gemPosition) {
+            copiedIndigo.middleTile.gemPosition[key] =value
         }
         copiedIndigo.routeTiles = this.routeTiles.toMutableList()
         return copiedIndigo

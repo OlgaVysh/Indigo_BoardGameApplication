@@ -501,7 +501,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val middleTile = currentGame.middleTile
         val currentTile = currentGame.gameBoard.gameBoardTiles[currentCoordinate]
         val neighbourTile = currentGame.gameBoard.gameBoardTiles[neighborCoordinate]
-        val neighbourStart = (currentGemPosition + 3) % 6
+        var neighbourStart = (currentGemPosition + 3) % 6
         val neighborCoordinates = getNeighboringCoordinates(currentCoordinate)
         if (currentTile == null) {
             return
@@ -514,17 +514,29 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 return
             }
 
-            val currentTileGem = currentTile.gemEndPosition[currentGemPosition]
-            if (currentTileGem != null) {
+            var currentTileGem = currentTile.gemEndPosition[currentGemPosition]
+            if(currentTileGem != null && neighbourStart!=0) {
                 currentGame.gems.remove(middleTile.gemPosition[amountOfGems - 1])
-                currentGame.gems.remove(currentTile.gemEndPosition[currentGemPosition])
-                middleTile.gemPosition.remove(amountOfGems - 1)
+                currentGame.gems.remove(currentTile.gemEndPosition[neighbourStart])
+                middleTile.gemPosition.remove(neighbourStart)
                 currentTile.gemEndPosition.remove(currentGemPosition)
                 return
             }
-            val middleTileGem = middleTile.gemPosition[amountOfGems - 1]
+            else{
+                neighbourStart = (neighbourStart+1)%6
+            }
+            currentTileGem = currentTile.gemEndPosition[currentGemPosition]
+            if(currentTileGem != null && neighbourStart!=0) {
+                currentGame.gems.remove(middleTile.gemPosition[amountOfGems - 1])
+                currentGame.gems.remove(currentTile.gemEndPosition[neighbourStart])
+                middleTile.gemPosition.remove(neighbourStart)
+                currentTile.gemEndPosition.remove(currentGemPosition)
+                return
+            }
+            if(amountOfGems ==1){neighbourStart == 0}
+            val middleTileGem = middleTile.gemPosition[neighbourStart]
             val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
-            middleTile.gemPosition.remove(amountOfGems - 1)
+            middleTile.gemPosition.remove(neighbourStart)
             if (currentTile.gemEndPosition[lastGemPosition] != null) {
                 val removedElement = currentGame.gems.find { it.gemColor == middleTileGem!!.gemColor }
                 currentGame.gems.remove(removedElement)
