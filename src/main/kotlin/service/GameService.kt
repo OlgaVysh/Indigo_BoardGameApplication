@@ -331,7 +331,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val gateTokens = currentGame.gameBoard.gateTokens
         val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
         val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
-        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 3))
+        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 1))
         val gate4 = listOf(Coordinate(4, -1), Coordinate(4, -2), Coordinate(4, -3))
         val gate5 = listOf(Coordinate(1, -4), Coordinate(2, -4), Coordinate(3, -4))
         val gate6 = listOf(Coordinate(-1, -3), Coordinate(-2, -2), Coordinate(-3, -1))
