@@ -272,7 +272,7 @@ class GameServiceTest {
         rootService.gameService.startGame(fourPlayers.toMutableList())
         val gameToSave = rootService.currentGame
         assertNotNull(gameToSave)
-        val testPath = "src/main/resources/gameToSave.json"
+        val testPath = "gameToSave.json"
         rootService.gameService.saveGame(testPath)
 
         assertNotNull(File(testPath))
@@ -287,19 +287,14 @@ class GameServiceTest {
     fun loadGameTest() {
          assertNull(rootService.currentGame)
 
-         val testPath = "src/main/resources/gameToSave.json"
-         rootService.gameService.loadGame(testPath)
-         assertNotNull(rootService.currentGame)
+         val testPath = "gameToSave.json"
 
-
-        /*
                     //Updating test for loadGame
                     rootService.gameService.startGame(fourPlayers.toMutableList())
                     rootService.gameService.changePlayer()
 
                     val gameToSave = rootService.currentGame
                     assertNotNull(gameToSave)
-                    val testPath = "src/main/resources/gameToSave.json"
                     rootService.gameService.saveGame(testPath)
 
                     rootService.gameService.endGame()
@@ -312,7 +307,7 @@ class GameServiceTest {
                    // assertEquals(gameToSave?.players,loadedGame?.players)
                     assertEquals(gameToSave?.allTiles,loadedGame?.allTiles)
                     assertEquals(gameToSave?.previousGameState,loadedGame?.previousGameState)
-        */
+
     }
 
     /**
