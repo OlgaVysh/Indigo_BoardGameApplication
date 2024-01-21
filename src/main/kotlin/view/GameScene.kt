@@ -13,7 +13,6 @@ import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.visual.Visual
 import java.awt.Color
-//import tools.aqua.bgw.util.BidirectionalMap
 import view.components.Label
 
 /**
@@ -25,6 +24,15 @@ class GameScene(val indigoApp: IndigoApplication) :
     private val gemMap =  mutableMapOf<Gem, Label>()
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
+
+    private val gemEndPos = mutableMapOf(
+        0 to Position(0.0,-36.0),
+        1 to Position(28.0,-19.0),
+        2 to Position(28.0,19.0),
+        3 to Position(0.0,36.0),
+        4 to Position(-34.0,19.0),
+        5 to Position(-34.0,19.0)
+    )
 
     //maps the grid coordinates auf (posX,posY) on the Scene where the middle of the tile would be
     private val coordMap = mutableMapOf<Coordinate, Position>()
@@ -202,14 +210,14 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var gate6Token2 = Label(posX = 510, posY = 385, text = "")
 
     // GameboardGem components
-    private var blueGem = Label(posX = 911, posY = 432, text = "", width = 40, height = 32)
+    private var blueGem = Label(posX = 911, posY = 432, text = "", width = 30, height = 30)
 
     //oben links im Uhrzeigersinn
-    private var greenGem1 = Label(posX = 890, posY = 405, text = "", width = 40, height = 32)
-    private var greenGem2 = Label(posX = 930, posY = 402, text = "", width = 40, height = 32)
-    private var greenGem3 = Label(posX = 944, posY = 439, text = "", width = 40, height = 32)
-    private var greenGem4 = Label(posX = 912, posY = 465, text = "", width = 40, height = 32)
-    private var greenGem5 = Label(posX = 875, posY = 438, text = "", width = 40, height = 32)
+    private var greenGem1 = Label(posX = 890, posY = 405, text = "", width = 30, height = 30)
+    private var greenGem2 = Label(posX = 930, posY = 402, text = "", width = 30, height = 30)
+    private var greenGem3 = Label(posX = 944, posY = 439, text = "", width = 30, height = 30)
+    private var greenGem4 = Label(posX = 912, posY = 465, text = "", width = 30, height = 30)
+    private var greenGem5 = Label(posX = 875, posY = 438, text = "", width = 30, height = 30)
 
     //oben im Uhrzeigersinn
     private var yellowGem1 = Label(posX = 910, posY = 70, text = "", width = 40, height = 32)
@@ -934,11 +942,13 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      * Moves the view of a gem to its new position on the scene
      */
-    override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate) {
+    override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate, exit : Int) {
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
         val position = coordMap[coordinate]
-        gemMap[gem]!!.reposition(position!!.x,position.y)
+        val posX = position!!.x+gemEndPos[exit]!!.x
+        val posY = position.y+gemEndPos[exit]!!.y
+        gemMap[gem]!!.reposition(posX,posY)
     }
 
     override fun refreshAfterRemoveGems() {
