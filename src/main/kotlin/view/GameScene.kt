@@ -210,22 +210,22 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var gate6Token2 = Label(posX = 510, posY = 385, text = "")
 
     // GameboardGem components
-    private var blueGem = Label(posX = 911, posY = 432, text = "", width = 30, height = 30)
+    private var blueGem = Label(posX = 916, posY = 438, text = "", width = 30, height = 30)
 
     //oben links im Uhrzeigersinn
-    private var greenGem1 = Label(posX = 890, posY = 405, text = "", width = 30, height = 30)
-    private var greenGem2 = Label(posX = 930, posY = 402, text = "", width = 30, height = 30)
-    private var greenGem3 = Label(posX = 944, posY = 439, text = "", width = 30, height = 30)
-    private var greenGem4 = Label(posX = 912, posY = 465, text = "", width = 30, height = 30)
-    private var greenGem5 = Label(posX = 875, posY = 438, text = "", width = 30, height = 30)
+    private var greenGem1 = Label(posX = 894, posY = 410, text = "", width = 30, height = 30)
+    private var greenGem2 = Label(posX = 933, posY = 408, text = "", width = 30, height = 30)
+    private var greenGem3 = Label(posX = 948, posY = 442, text = "", width = 30, height = 30)
+    private var greenGem4 = Label(posX = 914, posY = 468, text = "", width = 30, height = 30)
+    private var greenGem5 = Label(posX = 881, posY = 443, text = "", width = 30, height = 30)
 
     //oben im Uhrzeigersinn
-    private var yellowGem1 = Label(posX = 910, posY = 70, text = "", width = 40, height = 32)
-    private var yellowGem2 = Label(posX = 1226, posY = 248, text = "", width = 40, height = 32)
-    private var yellowGem3 = Label(posX = 1226, posY = 612, text = "", width = 40, height = 32)
-    private var yellowGem4 = Label(posX = 910, posY = 797, text = "", width = 40, height = 32)
-    private var yellowGem5 = Label(posX = 590, posY = 613, text = "", width = 40, height = 32)
-    private var yellowGem6 = Label(posX = 590, posY = 246, text = "", width = 40, height = 32)
+    private var yellowGem1 = Label(posX = 914, posY = 70, text = "", width = 30, height = 30)
+    private var yellowGem2 = Label(posX = 1230, posY = 254, text = "", width = 30,height = 30)
+    private var yellowGem3 = Label(posX = 1230, posY = 619, text = "", width = 30, height =30)
+    private var yellowGem4 = Label(posX = 914, posY = 801, text = "", width = 30, height = 30)
+    private var yellowGem5 = Label(posX = 590, posY = 619, text = "", width = 30, height = 30)
+    private var yellowGem6 = Label(posX = 590, posY = 254, text = "", width = 30, height = 30)
 
     //GameComponents listed
     private val playerlabels = listOf(player1Label, player2Label, player3Label, player4Label)
@@ -584,18 +584,18 @@ class GameScene(val indigoApp: IndigoApplication) :
             playerYellowGemCounters[i].text = "0"
         }
         initializeGameBoardGrid()
-        blueGem.reposition(911,432)
-        greenGem1.reposition(890,405)
-        greenGem2.reposition(930,402)
-        greenGem3.reposition(944, 439)
-        greenGem4.reposition(912,465)
-        greenGem5.reposition(875,438)
-        yellowGem1.reposition(910,70)
-        yellowGem2.reposition(1226, 248)
-        yellowGem3.reposition(1226,612)
-        yellowGem4.reposition(910,797)
-        yellowGem5.reposition(590,613)
-        yellowGem6.reposition(590,246)
+        blueGem.reposition(916,438)
+        greenGem1.reposition(894,410)
+        greenGem2.reposition(933,408)
+        greenGem3.reposition(948, 442)
+        greenGem4.reposition(914,468)
+        greenGem5.reposition(881,443)
+        yellowGem1.reposition(914,70)
+        yellowGem2.reposition(1230, 254)
+        yellowGem3.reposition(1230,619)
+        yellowGem4.reposition(914,801)
+        yellowGem5.reposition(590,619)
+        yellowGem6.reposition(590,254)
 
 
     }
