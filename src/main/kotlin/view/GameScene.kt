@@ -1058,6 +1058,13 @@ class GameScene(val indigoApp: IndigoApplication) :
         val gem3 = game.middleTile.gemPosition[3]
         val gem4 = game.middleTile.gemPosition[4]
         val gem5 = game.middleTile.gemPosition[5]
+        val yellowgem1 = game.treasureTiles[0].gemEndPosition[3]
+        val yellowgem2 = game.treasureTiles[1].gemEndPosition[4]
+        val yellowgem3 = game.treasureTiles[2].gemEndPosition[5]
+        val yellowgem4 = game.treasureTiles[3].gemEndPosition[0]
+        val yellowgem5 = game.treasureTiles[4].gemEndPosition[1]
+        val yellowgem6 = game.treasureTiles[5].gemEndPosition[2]
+
 
         gemMap[gem0!!] = blueGem
         gemMap[gem1!!] = greenGem1
@@ -1065,6 +1072,12 @@ class GameScene(val indigoApp: IndigoApplication) :
         gemMap[gem3!!] = greenGem3
         gemMap[gem4!!] = greenGem4
         gemMap[gem5!!] = greenGem5
+        gemMap[yellowgem1!!] = yellowGem1
+        gemMap[yellowgem2!!] = yellowGem2
+        gemMap[yellowgem3!!] = yellowGem3
+        gemMap[yellowgem4!!] = yellowGem4
+        gemMap[yellowgem5!!] = yellowGem5
+        gemMap[yellowgem6!!] = yellowGem6
     }
 
     /**

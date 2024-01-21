@@ -584,12 +584,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
         if (currentTile.gemEndPosition[currentEnd] != null) {
-            if (!isAiCalled) onAllRefreshables {
-                refreshAfterMoveGems(
-                    currentTile.gemEndPosition[currentEnd]!!,
-                    currentCoordinate,
-                    currentEnd
-                )
+            if (!isAiCalled) {
+                onAllRefreshables {
+                    refreshAfterMoveGems(
+                        currentTile.gemEndPosition[currentEnd]!!,
+                        currentCoordinate,
+                        currentEnd
+                    )
+                }
             }
         }
         println(currentCoordinate.toString())
