@@ -332,7 +332,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val gateTokens = currentGame.gameBoard.gateTokens
         val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
         val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
-        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 3))
+        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 1))
         val gate4 = listOf(Coordinate(4, -1), Coordinate(4, -2), Coordinate(4, -3))
         val gate5 = listOf(Coordinate(1, -4), Coordinate(2, -4), Coordinate(3, -4))
         val gate6 = listOf(Coordinate(-1, -3), Coordinate(-2, -2), Coordinate(-3, -1))
@@ -356,7 +356,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                             if (player.color == gateTokens[(i * 2)].color) {
                                 assignGem(gem, player)
                                 if (gem == gem2)
-                                    tile.gemEndPosition.remove((5 + i) % 6)
+                                    tile.gemEndPosition.remove((1 + i) % 6)
                                 if (gem == gem1)
                                     tile.gemEndPosition.remove((0 + i) % 6)
                             }
@@ -371,18 +371,18 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                                 assignGem(gem, player)
                             }
                             if (gem == gem2)
-                                tile.gemEndPosition.remove((5 + i) % 6)
+                                tile.gemEndPosition.remove((1 + i) % 6)
                             if (gem == gem1)
                                 tile.gemEndPosition.remove((0 + i) % 6)
                         }
                     }
                     onAllRefreshables { refreshAfterRemoveGems(gem) }
+                    println(gem.gemColor)
                     val removedElement = currentGame.gems.find { it.gemColor == gem.gemColor }
                     currentGame.gems.remove(removedElement)
                 }
             }
         }
-
     }
 
     /**
@@ -540,6 +540,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 currentTile.gemEndPosition.remove(lastGemPosition)
                 return
             }
+
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
             println(currentCoordinate.toString())
             println(lastGemPosition)
@@ -648,7 +649,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 Tile(
                     listOf(
                         Pair(
-                            Edge.values()[(Edge.values().size + gemPos - 1) % 6],
+                            Edge.values()[(Edge.values().size + gemPos - 1+6) % 6],
                             Edge.values()[(Edge.values().size + gemPos + 1) % 6]
                         )
                     ), TileType.Type_5, mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))

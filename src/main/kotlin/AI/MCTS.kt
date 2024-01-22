@@ -75,7 +75,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
             }
             expandNode(node)
             val nodeToExplore = selectPromisingNode(node)
-            simulateRandomPlayout(nodeToExplore,200)
+            simulateRandomPlayout(nodeToExplore,1000)
             backpropagation(nodeToExplore, true)
         }
 
@@ -177,7 +177,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
 
 
     fun makeMove() {
-        val resultcoordinate=findNextMoveLimited(300)
+        val resultcoordinate=findNextMoveLimited(1000)
         if (resultcoordinate.equals(Coordinate(0,0))){makeMove()}
         println("resultatcoordinate $resultcoordinate")
         PlayerTurnService(rootService).placeRouteTile(resultcoordinate,rootService.currentGame!!.players[aiIndex].handTile!!)
