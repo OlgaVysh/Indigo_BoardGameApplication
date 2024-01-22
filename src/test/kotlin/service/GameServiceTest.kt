@@ -10,14 +10,14 @@ import entity.GemColor.*
 import org.junit.jupiter.api.*
 import java.io.File
 
-
 /**
  * Test class for testing the methods in GameService
  */
 class GameServiceTest {
 
-    private var rootService: RootService = RootService()
-    private var gameService: GameService = rootService.gameService
+
+    private lateinit var rootService: RootService
+    private lateinit var gameService: GameService
 
     private val fourPlayers = listOf(
         Player("Alice", Date(0), TokenColor.WHITE, false),
@@ -43,6 +43,7 @@ class GameServiceTest {
     fun setUp() {
         rootService = RootService()
         gameService = GameService(rootService)
+
     }
 
     /**
@@ -50,10 +51,16 @@ class GameServiceTest {
      */
     @Test
     fun startGameTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterStartGameCalled)
         assertNull(rootService.currentGame)
         rootService.gameService.startGame(
             fourPlayers.toMutableList()
         )
+        assertTrue(refreshableTest.refreshAfterStartGameCalled)
+        refreshableTest.reset()
+
         var testGame = rootService.currentGame
         assertNotNull(testGame)
 
@@ -76,9 +83,11 @@ class GameServiceTest {
 
 
         rootService.gameService.startGame(fourPlayers.toMutableList(), random = true)
+        assertTrue(refreshableTest.refreshAfterStartGameCalled)
+        refreshableTest.reset()
         testGame = rootService.currentGame
         assertEquals(playerListe.size, testGame!!.players.size)
-        assertNotEquals(fourPlayers.toMutableList(), testGame.players)
+        assertNotEquals(fourPlayers, testGame.players)
         for (i in playerListe.indices) {
             assertNotNull(testGame.players[i].handTile)
         }
@@ -89,10 +98,15 @@ class GameServiceTest {
      */
     @Test
     fun restartGameTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterRestartGameCalled)
         assertNull(rootService.currentGame)
         rootService.gameService.restartGame(
             fourPlayers.toMutableList(), notSharedGate = false, random = false
         )
+        assertTrue(refreshableTest.refreshAfterRestartGameCalled)
+        refreshableTest.reset()
         var testGame = rootService.currentGame
         assertNotNull(rootService.currentGame)
 
@@ -114,6 +128,9 @@ class GameServiceTest {
         assertEquals(50, testGame.routeTiles.size)
 
         rootService.gameService.restartGame(fourPlayers.toMutableList(), notSharedGate = true, random = true)
+        assertTrue(refreshableTest.refreshAfterRestartGameCalled)
+        refreshableTest.reset()
+
         testGame = rootService.currentGame
         assertEquals(playerListe.size, testGame!!.players.size)
         assertNotEquals(fourPlayers.toMutableList(), testGame.players)
@@ -127,19 +144,24 @@ class GameServiceTest {
      */
     @Test
     fun endGameTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterEndGameCalled)
+
         assertThrows<IllegalStateException> { gameService.endGame() }
         gameService.startGame(fourPlayers.toMutableList())
+        //assertTrue(refreshableTest.refreshAfterStartGameCalled)
         assertFalse(gameService.endGame())
-
-        //no more gems in the field
         rootService.currentGame!!.gems.clear()
         assertTrue(gameService.endGame())
-
+        gameService.endGame()
+        //assertTrue(refreshableTest.refreshAfterEndGameCalled)
+        //refreshableTest.reset()
         //no more routeTiles in the game
         gameService.startGame(fourPlayers.toMutableList())
         rootService.currentGame!!.routeTiles.clear()
         repeat(4) {
-            gameService.distributeNewTile()
+            gameService.distributeNewTile(false)
             gameService.changePlayer()
         }
         assertTrue(gameService.endGame())
@@ -148,6 +170,10 @@ class GameServiceTest {
         gameService.startGame(fourPlayers.toMutableList())
         rootService.currentGame!!.routeTiles.clear()
         rootService.currentGame!!.gems.clear()
+        rootService.gameService.endGame()
+        assertTrue(refreshableTest.refreshAfterEndGameCalled)
+        refreshableTest.reset()
+
         repeat(4) {
             gameService.distributeNewTile()
             gameService.changePlayer()
@@ -160,11 +186,16 @@ class GameServiceTest {
      */
     //@Test
     fun checkPlacementTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterCheckPlacementCalled)
         val rootService = RootService()
         assertNull(rootService.currentGame)
         rootService.gameService.startGame(
             mutableListOf(Player("a", color = TokenColor.BLUE), Player("b", color = TokenColor.PURPLE))
         )
+        assertTrue(refreshableTest.refreshAfterStartGameCalled)
+        refreshableTest.reset()
 
         val indigo = rootService.currentGame
         checkNotNull(indigo)
@@ -190,8 +221,12 @@ class GameServiceTest {
             mutableMapOf(Pair(1, Gem(EMERALD)))
         )
 
-        //rotate tile0 and place it in (-1,-3) ,dann check that the place is occupied for other tile.
+        //rotate tile0 and place it in (-1,-3) ,then check that the place is occupied for other tile.
+        assertFalse(refreshableTest.refreshAfterRightRotationCalled)
         rootService.playerTurnService.rotateTileRight(tile0)
+        assertTrue(refreshableTest.refreshAfterRightRotationCalled)
+        refreshableTest.reset()
+
         assertFalse(rootService.gameService.checkPlacement(Coordinate(0, 0), tile4))
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-3, -1), tile0))
         val exception1 = assertThrows<Exception> {
@@ -200,7 +235,11 @@ class GameServiceTest {
         assertEquals(exception1.message, "this place is occupied")
 
         //rotate tile2 and place it in (-2,-2) ,dann check that the gate is blocked, then rotate right and place it,then the place is occupied for other tile.
+        assertFalse(refreshableTest.refreshAfterLeftRotationCalled)
         rootService.playerTurnService.rotateTileLeft(tile2)
+        assertTrue(refreshableTest.refreshAfterLeftRotationCalled)
+        refreshableTest.reset()
+
         val exception2 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2)
         }
@@ -220,6 +259,12 @@ class GameServiceTest {
         assertEquals(exception4.message, "tile blocks exit, please rotate Tile")
 
         rootService.playerTurnService.rotateTileRight(tile4)
+
+        //test refresh after check placement called
+        assertFalse(refreshableTest.refreshAfterCheckPlacementCalled)
+        rootService.gameService.checkPlacement(Coordinate(-3, -1), tile4)
+        assertTrue(refreshableTest.refreshAfterCheckPlacementCalled)
+
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-3, -1), tile4))
         val exception5 = assertThrows<Exception> {
             rootService.gameService.checkPlacement(Coordinate(-3, -1), tile0)
@@ -234,6 +279,9 @@ class GameServiceTest {
      */
     @Test
     fun checkCollisionTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterCollisionCalled)
         val rootService = RootService()
         assertNull(rootService.currentGame)
         rootService.gameService.startGame(
@@ -249,7 +297,11 @@ class GameServiceTest {
             TileType.Type_0,
             mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(AMBER)))
         )
+        assertFalse(refreshableTest.refreshAfterCollisionCalled)
         assertTrue(rootService.gameService.checkCollision(tile0))
+        rootService.gameService.checkCollision(tile0)
+        //assertTrue(refreshableTest.refreshAfterCollisionCalled)
+        refreshableTest.reset()
         //checkCollision for tile0 after removeGems
         assertFalse(rootService.gameService.checkCollision(tile0))
 
@@ -260,6 +312,8 @@ class GameServiceTest {
             mutableMapOf(Pair(1, Gem(EMERALD)), Pair(5, Gem(SAPPHIRE)))
         )
         assertFalse(rootService.gameService.checkCollision(tile3))
+
+
     }
 
     /**
@@ -268,6 +322,9 @@ class GameServiceTest {
 
     @Test
     fun saveGameTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterSaveGameCalled)
         val rootService = RootService()
 
         rootService.gameService.startGame(fourPlayers.toMutableList())
@@ -275,8 +332,10 @@ class GameServiceTest {
         val gameToSave = rootService.currentGame
         assertNotNull(gameToSave)
         val testPath = "gameToSave.json"
+        assertFalse(refreshableTest.refreshAfterSaveGameCalled)
         rootService.gameService.saveGame(testPath)
-
+        //assertTrue(refreshableTest.refreshAfterSaveGameCalled)
+        refreshableTest.reset()
         assertNotNull(File(testPath))
         assertEquals(gameToSave, rootService.currentGame)
         assertEquals(gameToSave?.players, rootService.currentGame?.players)
@@ -287,10 +346,15 @@ class GameServiceTest {
      */
     @Test
     fun loadGameTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterLoadGameCalled)
         assertNull(rootService.currentGame)
         val testPath = "gameToSave.json"
-
+        assertFalse(refreshableTest.refreshAfterLoadGameCalled)
         gameService.loadGame(testPath)
+        //assertTrue(refreshableTest.refreshAfterLoadGameCalled)
+        refreshableTest.reset()
         val loadedGame = rootService.currentGame
 
         rootService.gameService.startGame(fourPlayers.toMutableList())
@@ -300,10 +364,10 @@ class GameServiceTest {
         //assertEquals(loadedGame!!.allTiles, thisGame!!.allTiles)
         assertEquals(loadedGame!!.players.size, thisGame!!.players.size)
         for (i in 0 until 4) {
-            assertEquals(loadedGame!!.players[i].name, thisGame!!.players[i].name)
-            assertEquals(loadedGame!!.players[i].color, thisGame!!.players[i].color)
-            assertEquals(loadedGame!!.players[i].collectedGems, thisGame!!.players[i].collectedGems)
-            assertEquals(loadedGame!!.players[i].score, thisGame!!.players[i].score)
+            assertEquals(loadedGame.players[i].name, thisGame.players[i].name)
+            assertEquals(loadedGame.players[i].color, thisGame.players[i].color)
+            assertEquals(loadedGame.players[i].collectedGems, thisGame.players[i].collectedGems)
+            assertEquals(loadedGame.players[i].score, thisGame.players[i].score)
         }
     }
 
@@ -313,6 +377,9 @@ class GameServiceTest {
 
     @Test
     fun changePlayerTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterChangePlayerCalled)
         assertThrows<IllegalStateException> {
             rootService.gameService.changePlayer()
         }
@@ -320,6 +387,8 @@ class GameServiceTest {
         val testGame = rootService.currentGame
         checkNotNull(testGame)
         rootService.gameService.changePlayer()
+        assertTrue(refreshableTest.refreshAfterChangePlayerCalled)
+        refreshableTest.reset()
         var currentPlayerIndex = testGame.currentPlayerIndex
         assertEquals(1, currentPlayerIndex)
         repeat(3) {
@@ -334,6 +403,10 @@ class GameServiceTest {
      */
     @Test
     fun moveGemsTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterPlaceTileCalled)
+        assertFalse(refreshableTest.refreshAfterMoveGemsCalled)
         assertThrows<IllegalStateException> {
             gameService.moveGems(Coordinate(0, 1), Coordinate(1, 1), 2)
         }
@@ -359,6 +432,9 @@ class GameServiceTest {
         val treasureTile1 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
 
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), testTile1)
+        //test refreshable
+        assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
+        refreshableTest.reset()
         val firstPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]
 
 
@@ -367,6 +443,8 @@ class GameServiceTest {
         assertEquals(0, treasureTile1!!.gemEndPosition.size)
         assertEquals(0, secondPlacedTile!!.gemEndPosition.size)
         assertEquals(1, firstPlacedTile!!.gemEndPosition.size)
+        assertTrue(refreshableTest.refreshAfterMoveGemsCalled)
+        refreshableTest.reset()
 
         assertNotNull(firstPlacedTile.gemEndPosition[5])
         assertNull(secondPlacedTile.gemEndPosition[5])
@@ -384,8 +462,9 @@ class GameServiceTest {
         val thirdPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 1)]
         //assertEquals(10, rootService.currentGame!!.gems.size)
         assertEquals(5, rootService.currentGame!!.middleTile.gemPosition.size)
-        assertNotNull(thirdPlacedTile)
         assertEquals(0, thirdPlacedTile!!.gemEndPosition.size)
+        assertTrue(refreshableTest.refreshAfterMoveGemsCalled)
+        refreshableTest.reset()
 
         testTile2.gemEndPosition.clear()
         testTile1.gemEndPosition.clear()
@@ -393,7 +472,11 @@ class GameServiceTest {
         testTile2.gemEndPosition[4] = Gem(AMBER)
 
         rootService.playerTurnService.placeRouteTile(Coordinate(-3, -1), testTile2)
+        assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
+        refreshableTest.reset()
         rootService.playerTurnService.placeRouteTile(Coordinate(-2, -2), testTile1)
+        assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
+        refreshableTest.reset()
         assertEquals(0, testTile2.gemEndPosition.size)
         assertEquals(0, testTile1.gemEndPosition.size)
         assertEquals(8, rootService.currentGame!!.gems.size)
@@ -405,6 +488,8 @@ class GameServiceTest {
         testTile2.gemEndPosition[1] = Gem(AMBER)
         rootService.playerTurnService.placeRouteTile(Coordinate(-2, 0), testTile1)
         rootService.playerTurnService.placeRouteTile(Coordinate(-1, -1), testTile2)
+        assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
+        refreshableTest.reset()
         assertEquals(0, testTile2.gemEndPosition.size)
         assertEquals(0, testTile1.gemEndPosition.size)
         assertEquals(6, rootService.currentGame!!.gems.size)
@@ -417,7 +502,9 @@ class GameServiceTest {
 
     @Test
     fun removeGemsReachedGateTest() {
-
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterRemoveGemsCalled)
         //tileID 0 initialisieren
         val tile0 = Tile(
             listOf(Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)),
@@ -450,6 +537,9 @@ class GameServiceTest {
 
         //gate4 no gems after the method because is removed
         rootService.gameService.removeGemsReachedGate(tile0, Coordinate(-1, -3))
+        //test refreshable
+        assertTrue(refreshableTest.refreshAfterRemoveGemsCalled)
+        refreshableTest.reset()
         // assertEquals(0, tile0.gemEndPosition.size)
         assertEquals(2, players[2].collectedGems.size)
         assertEquals(3, players[2].score)
@@ -511,6 +601,8 @@ class GameServiceTest {
 
         //gate0 no gems after the method because is removed
         rootService.gameService.removeGemsReachedGate(tile00, Coordinate(-2, -2))
+        assertTrue(refreshableTest.refreshAfterRemoveGemsCalled)
+        refreshableTest.reset()
         //assertEquals(2, tile0.gemEndPosition.size)
         assertEquals(1, tile00.gemEndPosition.size)
         assertEquals(0, players[0].collectedGems.size)
@@ -544,6 +636,9 @@ class GameServiceTest {
      */
     @Test
     fun distributeNewTileTest() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterDistributeNewTileCalled)
         assertThrows<IllegalStateException> { rootService.gameService.distributeNewTile() }
         val allTiles = mutableListOf<Tile>()
         for (i in 0 until 6) {
@@ -571,7 +666,13 @@ class GameServiceTest {
         )
         val testGame = rootService.currentGame
         testGame!!.gameBoard.gateTokens = createTestGateTokens(testGame, false)
+
+        // test refreshable
+        assertFalse(refreshableTest.refreshAfterDistributeNewTileCalled)
         rootService.gameService.distributeNewTile()
+        assertTrue(refreshableTest.refreshAfterDistributeNewTileCalled)
+        refreshableTest.reset()
+
         var testTile = testGame.players[0].handTile
         assertNotNull(testTile)
         assertEquals(tile0, testTile)
@@ -647,6 +748,9 @@ class GameServiceTest {
 
     @Test
     fun testSecondPlayerIsKI() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        assertFalse(refreshableTest.refreshAfterAITurnCalled)
         assertNull(rootService.currentGame)
 
         val twoPlayer = mutableListOf(
@@ -654,6 +758,9 @@ class GameServiceTest {
             Player("Bob", Date(0), TokenColor.PURPLE, true)
         )
         rootService.gameService.startGame(twoPlayer)
+        rootService.gameService.changePlayer()
+        //assertTrue(refreshableTest.refreshAfterAITurnCalled)
+        refreshableTest.reset()
         val testGame = rootService.currentGame
         checkNotNull(testGame)
         //tileID 0 initialisieren
