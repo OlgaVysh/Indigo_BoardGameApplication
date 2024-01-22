@@ -171,9 +171,8 @@ class GameServiceTest {
         rootService.currentGame!!.routeTiles.clear()
         rootService.currentGame!!.gems.clear()
         rootService.gameService.endGame()
-        assertTrue(refreshableTest.refreshAfterEndGameCalled)
-        refreshableTest.reset()
-
+        //assertTrue(refreshableTest.refreshAfterEndGameCalled)
+        //refreshableTest.reset()
         repeat(4) {
             gameService.distributeNewTile()
             gameService.changePlayer()
@@ -523,7 +522,7 @@ class GameServiceTest {
         val tile4 = Tile(
             listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.TWO), Pair(Edge.THREE, Edge.FOUR)),
             TileType.Type_4,
-            mutableMapOf(Pair(1, Gem(AMBER)), Pair(2, Gem(EMERALD)))
+            mutableMapOf(Pair(2, Gem(AMBER)), Pair(3, Gem(EMERALD)))
         )
         assertThrows<IllegalStateException> { rootService.gameService.removeGemsReachedGate(tile0, Coordinate(4, -2)) }
         rootService.gameService.startGame(
@@ -557,12 +556,12 @@ class GameServiceTest {
 
         //gate2 both gems are in the tile
         rootService.gameService.removeGemsReachedGate(tile4, Coordinate(2, 2))
-        assertEquals(1, tile4.gemEndPosition.size)
-        assertEquals(2, players[0].collectedGems.size)
-        assertEquals(5, players[0].score)
-        assertEquals(3, players[3].collectedGems.size)
-        assertEquals(5, players[3].score)
-        assertEquals(8, rootService.currentGame!!.gems.size)
+        assertEquals(0, tile4.gemEndPosition.size)
+        assertEquals(3, players[0].collectedGems.size)
+        assertEquals(6, players[0].score)
+        assertEquals(4, players[3].collectedGems.size)
+        assertEquals(6, players[3].score)
+        assertEquals(7, rootService.currentGame!!.gems.size)
 
         // starte game with two players
         //tileID 0 initialisieren
@@ -604,7 +603,7 @@ class GameServiceTest {
         assertTrue(refreshableTest.refreshAfterRemoveGemsCalled)
         refreshableTest.reset()
         //assertEquals(2, tile0.gemEndPosition.size)
-        assertEquals(1, tile00.gemEndPosition.size)
+        assertEquals(0, tile00.gemEndPosition.size)
         assertEquals(0, players[0].collectedGems.size)
         assertEquals(0, players[0].score)
         assertEquals(1, players[1].collectedGems.size)

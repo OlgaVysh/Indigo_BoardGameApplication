@@ -23,11 +23,6 @@ class RandomAI(val rootService: RootService): AbstractRefreshingService() {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
 
-        // Check if game ended
-        if (rootService.gameService.endGame()) {
-            onAllRefreshables { refreshAfterEndGame() }
-        }
-
         // Get the available moves for the current player
         val availableMoves = findAvailableMoves(currentGame)
 
@@ -51,6 +46,11 @@ class RandomAI(val rootService: RootService): AbstractRefreshingService() {
             val connectionState = rootService.networkService.connectionState
             if(connectionState != ConnectionState.DISCONNECTED){
                 rootService.networkService.sendPlacedTile(tile,coordinate)
+            }
+
+            // Check if game ended
+            if (rootService.gameService.endGame()) {
+                onAllRefreshables { refreshAfterEndGame() }
             }
         }
     }
