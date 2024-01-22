@@ -35,7 +35,7 @@ class RootService {
      * Adds the provided [newRefreshable] to all services connected
      * to this root service
      */
-    private fun addRefreshable(newRefreshable: Refreshable) {
+    fun addRefreshable(newRefreshable: Refreshable) {
 
         networkService.addRefreshable(newRefreshable)
         networkMappingService.addRefreshable(newRefreshable)
