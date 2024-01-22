@@ -60,6 +60,10 @@ class SerivceAi {
                     val coordinate = Coordinate(row, col)
 
                     // Check if placing the tile at the coordinate is a valid move
+                    // depth
+                     //drtaw stack
+                    // postions
+
                     if (state.gameBoard.gameBoardTiles[coordinate] == null) {
                         availableMoves.add(Coordinate(row, col))
                     }

@@ -10,6 +10,7 @@ import service.network.ConnectionState
 import java.util.*
 import kotlin.concurrent.schedule
 import kotlin.concurrent.thread
+import entity.*
 
 /**
  * The MCTS: Monte Carlo Tree Search algorithm to find the best player moves
@@ -102,7 +103,9 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
             }
 
             // Find the index of the child with the maximum UCT value
+            // movement next node  but not the game state
             val selectedChildIndex = uctValues.indexOf(uctValues.maxOrNull())
+          //  setcurrentstate ()
 
             // Move to the child with the maximum UCT value
             current = current.children[selectedChildIndex]
@@ -113,6 +116,10 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
     }
 
 
+/*    fun setcurrentstate (indigo :Indigo ){
+        val game =rootService.currentGame
+        game.gameBoard=indigo.gameBoard
+    }*/
     /**
      * expandNode - a function that expands the given node by adding its possible moves as children
      * @param node: the node to be expanded
@@ -125,7 +132,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
             val child = Node(rootService, node, it)
             node.children.add(child)
         }
-        node.children.shuffle()
+        //node.children.shuffle()
         return node.children.isEmpty()
     }
 
