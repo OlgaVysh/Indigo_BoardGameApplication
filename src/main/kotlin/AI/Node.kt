@@ -1,6 +1,6 @@
 package AI
-import entity.Coordinate
-import entity.Indigo
+import entity.*
+import service.PlayerTurnService
 import service.RootService
 
 /**
@@ -13,27 +13,22 @@ import service.RootService
 
 
 data class Node(val rootService: RootService, val parent: Node?, val coordinate: Coordinate) {
+
+    // List to store child nodes of this node
     val children: MutableList<Node> = mutableListOf()
-    val aiActionService = rootService.aiActionService
-    val gameService = rootService.gameService
-    /**the state property is initialized based on whether the node is the root node or has a parent.
-     * If it has a parent, the game state is updated by the move made from the parent node.
-     * If it is the root node, the game state is initialized based on the current game obtained from the rootService.
-     */
 
-    val state: Indigo =
-        if (parent != null) aiActionService.doMove(parent.state, coordinate) else
-            Indigo (rootService.currentGame!!.settings,
-                rootService.currentGame!!.gameBoard,
-                rootService.currentGame!!.allTiles,
-                rootService.currentGame!!.gems,
-                rootService.currentGame!!.tokens
-            )
-
+    // Variables to track statistics for the MCTS algorithm
     var winCount = 0.0
     var visitCount = 0.0
 
-    // Initialize current player index if the node is the root node
+    // The game state associated with this node
+    var state: Indigo =
+        // If there is a parent, apply the move associated with this node to derive the new game state
+        if (parent != null) SerivceAi.doMove(parent.state, coordinate)
+        // If this is the root node, initialize the state from the current game in the root service
+        else rootService.currentGame!!.copyTo()
+
+    // Initialize the current player index if this is the root node
     init {
         if (parent == null) state.currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
     }
@@ -45,16 +40,17 @@ data class Node(val rootService: RootService, val parent: Node?, val coordinate:
      */
     fun getPossibleMoves(): MutableList<Coordinate> {
         val availableMoves:MutableList<Coordinate> = mutableListOf()
+        if (state.players[state.currentPlayerIndex].handTile == null) return availableMoves
 
         // If the current player has no hand tile, return an empty list of moves
-        val playerTile= state.players[state.currentPlayerIndex].handTile ?: return availableMoves
+        val playerTile= state.players[state.currentPlayerIndex].handTile
 
         // Iterate over the game board and find available moves
         for (row in -4..4) {
-            for (col in -4..4) {
+            for (col in Integer.max(-4, -row - 4)..Integer.min(4, -row + 4)) {
                 val coordinate = Coordinate(row, col)
                 // Check if placing the tile at the coordinate is a valid move
-                if (gameService.checkPlacement(coordinate, playerTile)) {
+                if (servicee(state).checkPlacement(coordinate, playerTile!!,true)) {
                     availableMoves.add(Coordinate(row,col))
                 }
             }

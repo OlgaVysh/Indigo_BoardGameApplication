@@ -1,6 +1,15 @@
 package AI
 import entity.Coordinate
+import entity.Edge
+import entity.Tile
+import entity.TileType
 import service.AbstractRefreshingService
+import service.GameService
+import service.PlayerTurnService
+import service.network.ConnectionState
+import java.util.*
+import kotlin.concurrent.schedule
+import kotlin.concurrent.thread
 
 /**
  * The MCTS: Monte Carlo Tree Search algorithm to find the best player moves
@@ -11,8 +20,6 @@ import service.AbstractRefreshingService
  */
 class MCTS (private val rootService: service.RootService, private val aiIndex: Int): AbstractRefreshingService() {
 
-    private val aiActionService = rootService.aiActionService
-
     /**
      * This method initiates the MCTS algorithm to find the next best move for the AI player.
      * It starts with a root node and iteratively performs selection, expansion, simulation, and backpropagation
@@ -20,24 +27,32 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
      *
      * @return A [Coordinate] object representing the best move for the AI player.
      */
-    fun findNextMove() : Coordinate {
-        val defaultMove = Coordinate( -1, -1)
+    fun findNextMove(): Coordinate {
+
+        var iterations=0
+        val defaultMove = Coordinate(-1, -1)
         val root = Node(rootService, null, defaultMove)
 
         var terminateCondition = false
+
+
         while (true) {
+            iterations++
+            println("iterasion $iterations")
+            println("Still Thinking")
             val node = selectPromisingNode(root)
-            if (aiActionService.isGameOver(node.state) || terminateCondition) {
+            if (SerivceAi.isGameOver(node.state) || terminateCondition) {
                 backpropagation(node, true)
+                println("Decisiom Made")
                 return node.coordinate
             }
+
             terminateCondition = expandNode(node)
             val nodeToExplore = selectPromisingNode(node)
-            val aiWon = simulateRandomPlayout(nodeToExplore)
+            val aiWon = simulateRandomPlayout(nodeToExplore,200)
             backpropagation(nodeToExplore, aiWon)
         }
     }
-
 
     /**
      * A simplified version of findNextMove that doesn't go through all the tree.
@@ -46,24 +61,25 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
      * @param maxIterations The maximum number of iterations to perform.
      * @return A [Coordinate] object representing the best move for the AI player.
      */
+
+
     fun findNextMoveLimited(maxIterations: Int): Coordinate {
         val defaultMove = Coordinate(-1, -1)
         val root = Node(rootService, null, defaultMove)
 
         repeat(maxIterations) {
             val node = selectPromisingNode(root)
-            if (aiActionService.isGameOver(node.state)) {
+            if (SerivceAi.isGameOver(node.state) ) {
                 return node.coordinate
             }
             expandNode(node)
             val nodeToExplore = selectPromisingNode(node)
-            simulateRandomPlayout(nodeToExplore)
+            simulateRandomPlayout(nodeToExplore,200)
             backpropagation(nodeToExplore, true)
         }
 
         return root.children.maxByOrNull { it.visitCount }?.coordinate ?: defaultMove
     }
-
 
 
     /**
@@ -74,14 +90,28 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
      */
     private fun selectPromisingNode(node: Node): Node {
         var current = node
+
         while (current.children.isNotEmpty()) {
-            current = current.children.maxByOrNull {
-                if (it.visitCount != 0.0) it.winCount / it.visitCount + Math.sqrt(2.0 * Math.log(node.visitCount) / it.visitCount)
-                else Double.POSITIVE_INFINITY
-            }!!
+
+            // Calculate UCT values for children
+            val uctValues = current.children.map { child ->
+                if (child.visitCount != 0.0)
+                    child.winCount / child.visitCount + Math.sqrt(2.0 * Math.log(current.visitCount) / child.visitCount)
+                else
+                    Double.POSITIVE_INFINITY
+            }
+
+            // Find the index of the child with the maximum UCT value
+            val selectedChildIndex = uctValues.indexOf(uctValues.maxOrNull())
+
+            // Move to the child with the maximum UCT value
+            current = current.children[selectedChildIndex]
         }
+
+        println("Selected promising node: $current")
         return current
     }
+
 
     /**
      * expandNode - a function that expands the given node by adding its possible moves as children
@@ -98,21 +128,29 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
         node.children.shuffle()
         return node.children.isEmpty()
     }
+
     /**
      * simulateRandomPlayout - a function that simulates a random playout from the given node
      * @param node: the starting node for the simulation
      * @return Boolean: returns true if the AI won the simulation, false otherwise
      */
-    private fun simulateRandomPlayout(node: Node): Boolean {
+    private fun simulateRandomPlayout(node: Node, maxSimulations: Int): Boolean {
         var tempNode = node.copy()
         var stop = false
-        while (!aiActionService.isGameOver(tempNode.state) && !stop) {
+        var simulations = 0
+
+        while (!SerivceAi.isGameOver(tempNode.state) && !stop && simulations < maxSimulations) {
             stop = expandNode(tempNode)
             tempNode = selectPromisingNode(tempNode)
+            simulations++
+            println("simulations $simulations")
         }
 
-        return tempNode.state.players[aiIndex].score >= tempNode.state.players.maxOf { it.score }
+        val aiWon = tempNode.state.players[aiIndex].score >= tempNode.state.players.maxOf { it.score }
+        return aiWon
     }
+
+
     /**
      * backpropagation the result of the simulation up the tree to update the statistics
      * of each node.
@@ -130,4 +168,13 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
         }
     }
 
+
+    fun makeMove() {
+        val resultcoordinate=findNextMoveLimited(300)
+        if (resultcoordinate.equals(Coordinate(0,0))){makeMove()}
+        println("resultatcoordinate $resultcoordinate")
+        PlayerTurnService(rootService).placeRouteTile(resultcoordinate,rootService.currentGame!!.players[aiIndex].handTile!!)
+        println("tileplaced ")
+
+    }
 }
