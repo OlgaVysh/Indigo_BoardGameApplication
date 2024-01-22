@@ -3,6 +3,7 @@ package view
 import entity.*
 import entity.Coordinate
 import service.network.ConnectionState
+import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.container.HexagonGrid
 import tools.aqua.bgw.components.gamecomponentviews.HexagonView
 import tools.aqua.bgw.components.uicomponents.Button
@@ -949,7 +950,12 @@ class GameScene(val indigoApp: IndigoApplication) :
         val position = coordMap[coordinate]
         val posX = position!!.x+gemEndPos[exit]!!.x
         val posY = position.y+gemEndPos[exit]!!.y
-        gemMap[gem]!!.reposition(posX,posY)
+        lock()
+        playAnimation(DelayAnimation(1000).apply {
+            gemMap[gem]!!.reposition(posX,posY)
+            unlock()
+        } )
+
     }
 
     override fun refreshAfterCollision(gem1: Gem,gem2: Gem) {
