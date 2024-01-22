@@ -383,7 +383,6 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 }
             }
         }
-
     }
 
     /**
@@ -531,7 +530,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             val middleTileGem = middleTile.gemPosition[amountOfGems - 1]
             val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
             middleTile.gemPosition.remove(amountOfGems - 1)
-            /*if (currentTile.gemEndPosition[lastGemPosition] != null) {
+            if (currentTile.gemEndPosition[lastGemPosition] != null) {
                 onAllRefreshables { refreshAfterCollision(middleTile.gemPosition[amountOfGems - 1]!!,currentTile.gemEndPosition[lastGemPosition]!!) }
                 val removedElement = currentGame.gems.find { it.gemColor == middleTileGem!!.gemColor }
                 currentGame.gems.remove(removedElement)
@@ -540,7 +539,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 currentGame.gems.remove(removedGem)
                 currentTile.gemEndPosition.remove(lastGemPosition)
                 return
-            }*/
+            }
 
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
             println(currentCoordinate.toString())
@@ -576,7 +575,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 return
             }
 
-            /*if (neighbourGems.contains(neighborEnd)) {
+            if (neighbourGems.contains(neighborEnd)) {
                 onAllRefreshables { refreshAfterCollision(tileGems[currentGemPosition]!!, neighbourGems[neighborEnd]!!) }
                 val removedElement = currentGame.gems.find { it.gemColor == tileGems[currentGemPosition]!!.gemColor }
                 currentGame.gems.remove(removedElement)
@@ -586,7 +585,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 tileGems.remove(currentGemPosition)
                 neighbourGems.remove(neighborEnd)
                 return
-            }*/
+            }
 
         }
         if (!neighbourTile.gemEndPosition.contains(neighbourStart)) return
