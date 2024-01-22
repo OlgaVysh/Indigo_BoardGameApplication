@@ -109,5 +109,4 @@ data class Indigo(
         copiedIndigo.routeTiles = this.routeTiles.toMutableList()
         return copiedIndigo
     }
-
 }
