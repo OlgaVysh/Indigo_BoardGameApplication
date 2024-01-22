@@ -649,7 +649,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 Tile(
                     listOf(
                         Pair(
-                            Edge.values()[(Edge.values().size + gemPos - 1) % 6],
+                            Edge.values()[(Edge.values().size + gemPos - 1+6) % 6],
                             Edge.values()[(Edge.values().size + gemPos + 1) % 6]
                         )
                     ), TileType.Type_5, mutableMapOf(Pair(gemPos, Gem(GemColor.AMBER)))
