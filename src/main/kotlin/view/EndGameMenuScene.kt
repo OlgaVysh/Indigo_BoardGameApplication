@@ -18,17 +18,16 @@ import view.components.Label
  * @property indigoApp to get an instance of the RootService to access game-related functionalities.
  */
 class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Refreshable {
-   // private val game = indigoApp.rootService.currentGame
 
     // Label to display the "Game Over" Header.
     private val gameOverLabel = Label(650, 48, 620, 155, "Game Over", 120)
 
     private val betweenGemsLabel = Label(502, 307, 961, 77, "Player 1 has won with XY Points", 64)
-    val player1 = Label(719, 417, 771, 59, "Player 1 has XY Points.", 48).apply {
+    private val player1 = Label(719, 417, 771, 59, "Player 1 has XY Points.", 48).apply {
         isVisible = false
         alignment = Alignment.CENTER_LEFT
     }
-    val player2 = Label(
+    private val player2 = Label(
         width = 771, height = 59, posX = 719, posY = 503, fontSize = 48, text = "Player 2 has XY Points."
     ).apply { alignment = Alignment.CENTER_LEFT }
     private val player3 = Label(
@@ -46,16 +45,30 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
 
 
     // Button for exiting and starting a new game.
-    private val exitButton = Button(185, 780, 532, 207, "Exit", 48).apply {
+    private val exitButton = Button(1331, 871, 440, 158, "Exit", 38).apply {
         onMouseClicked = {
             indigoApp.exit()
         }
     }
-    private val newGameButton = Button(1180, 780, 532, 207, "Start new game", 48).apply {
+    private val newGameButton = Button(143, 871, 440, 158, "Start new game", 38).apply {
         onMouseClicked = {
             indigoApp.configurePlayersScene.clearPlayerView()
             indigoApp.showMenuScene(indigoApp.startScene)
         }
+    }
+
+    private val restartButton = Button(737, 871, 440, 158, "Restart game", 38).
+    apply { onMouseClicked = {
+
+        val newPlayers = mutableListOf<Player>()
+        for(player in indigoApp.rootService.currentGame!!.players)
+        {
+                player.score=0
+                newPlayers.add(player)
+        }
+        indigoApp.rootService.gameService.startGame(newPlayers,indigoApp.notSharedGates,false)
+        indigoApp.hideMenuScene()
+    }
     }
 
     // Setting the background and adding components to the scene.
@@ -63,7 +76,7 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
         background = ImageVisual("FiveGemsBackGround.png")
         opacity = 1.0
         addComponents(
-            betweenGemsLabel, player1, player2, player3, player4, gameOverLabel, exitButton, newGameButton
+            betweenGemsLabel, player1, player2, player3, player4, gameOverLabel, exitButton, newGameButton, restartButton
         )
     }
 
