@@ -6,6 +6,7 @@ import tools.aqua.bgw.components.uicomponents.TextField
 import tools.aqua.bgw.components.uicomponents.ToggleGroup
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.visual.ImageVisual
+import view.components.BackPfeil
 import view.components.Button
 import view.components.Label
 
@@ -92,6 +93,13 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         isDisabled = true
     }
 
+    private val backPfeil = BackPfeil (100, 40 ,70, 60).apply {
+        onMouseClicked = {
+            indigoApp.showMenuScene(indigoApp.networkScene)
+        }
+    }
+
+
     // Setting the scene's opacity and adding all components
     init {
         opacity = 0.5
@@ -107,7 +115,8 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             noLabel,
             aiLabel,
             yesButton,
-            noButton
+            noButton,
+            backPfeil
         )
     }
 

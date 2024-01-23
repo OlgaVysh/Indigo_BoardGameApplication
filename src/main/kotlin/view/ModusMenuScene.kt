@@ -2,6 +2,7 @@ package view
 
 import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.visual.ImageVisual
+import view.components.BackPfeil
 import view.components.Button
 import view.components.Label
 
@@ -27,6 +28,12 @@ class ModusMenuScene(indigoApp: IndigoApplication) :
         }
     }
 
+    private val backPfeil = BackPfeil ().apply {
+        onMouseClicked = {
+            indigoApp.showMenuScene(indigoApp.startScene)
+        }
+    }
+
     // Labels for providing instructions
     private val modusLabel1 = Label(639, 388, 642, 85, "Please, choose your", 60)
     private val modusLabel2 = Label(639, 455, 642, 85, "game mode:", 60)
@@ -38,6 +45,6 @@ class ModusMenuScene(indigoApp: IndigoApplication) :
         // Set the initial opacity of the scene
         opacity = 1.0
         // Add components to the scene
-        addComponents(modusLabel1, modusLabel2, networkButton, hotSeatButton)
+        addComponents(modusLabel1, modusLabel2, networkButton, hotSeatButton, backPfeil)
     }
 }

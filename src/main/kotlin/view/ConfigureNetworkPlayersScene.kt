@@ -141,10 +141,15 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
         }
     }
 
+    private val backPfeil = BackPfeil ().apply {
+        onMouseClicked = {
+            indigoApp.showMenuScene(indigoApp.hostGameScene)
+        }
+    }
+
     /**
      * Initializes the ConfigureNetworkPlayersScene.
      */
-
     init {
         // Populate the grid with NetworkPlayersView instances
 
@@ -154,7 +159,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
         }
         //}
         // Add components to the scene
-        addComponents(label, grid, addButton, startButton)
+        addComponents(label, grid, addButton, startButton, backPfeil)
     }
 
     /**

@@ -8,6 +8,7 @@ import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
 import tools.aqua.bgw.visual.ImageVisual
+import view.components.BackPfeil
 import view.components.Button
 import view.components.Label
 
@@ -75,25 +76,21 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         isDisabled = true
     }
 
-    /**
-     * Initializes the JoinGameScene with default values and sets up UI components.
-     */
+    private val backPfeil = BackPfeil (100, 40 ,70, 60).apply {
+        onMouseClicked = {
+            indigoApp.showMenuScene(indigoApp.networkScene)
+        }
+    }
+
+    //Initializes the JoinGameScene with default values and sets up UI components.
     init {
         // Set the initial opacity of the scene
         opacity = 0.5
         // Add components to the scene
-        addComponents(titleLabel)
-        addComponents(idLabel)
-        addComponents(nameLabel)
-        addComponents(aiLabel)
-        addComponents(nameInput)
-        addComponents(idInput)
-        addComponents(yesButton)
-        addComponents(noButton)
-        addComponents(yesLabel)
-        addComponents(noLabel)
-        addComponents(joinButton)
-        addComponents(textMessageLabel)
+        addComponents(
+            titleLabel, idLabel, nameLabel, aiLabel, nameInput,
+            idInput, yesButton, noButton, yesLabel, noLabel,
+            joinButton, textMessageLabel, backPfeil)
 
         // Set alignment for specific labels
         nameLabel.alignment = Alignment.CENTER_LEFT

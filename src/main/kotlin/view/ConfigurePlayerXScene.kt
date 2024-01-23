@@ -5,6 +5,7 @@ package view
 import entity.TokenColor
 import tools.aqua.bgw.components.uicomponents.ComboBox
 import tools.aqua.bgw.core.MenuScene
+import view.components.BackPfeil
 import view.components.Button
 import view.components.Label
 
@@ -44,14 +45,16 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
     var turn = mutableListOf(1, 2, 3, 4)
     var colors = mutableListOf("blue", "purple", "red", "white")
 
+    private val backPfeil = BackPfeil ().apply {
+        onMouseClicked = {
+            indigoApp.showGameScene(indigoApp.networkConfigureScene)
+        }
+    }
+
     init {
         opacity = 0.5
-        addComponents(titleLabel)
-        addComponents(saveChangeButton)
-        addComponents(turnBox)
-        addComponents(turnLabel)
-        addComponents(colorLabel)
-        addComponents(colorBox)
+        addComponents(
+            titleLabel,saveChangeButton,turnBox,turnLabel,colorLabel,colorBox, backPfeil)
         turnBox.items = turn
         colorBox.items = colors
     }

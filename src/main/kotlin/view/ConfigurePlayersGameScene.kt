@@ -6,6 +6,7 @@ import tools.aqua.bgw.components.ComponentView
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.components.layoutviews.GridPane
 import tools.aqua.bgw.core.BoardGameScene
+import view.components.BackPfeil
 import view.components.Button
 import view.components.Label
 
@@ -51,14 +52,18 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameSce
 
     val players = GridPane<ComponentView>(posX = 300, posY = 300, layoutFromCenter = false, rows = 0, columns = 5, spacing = 50)
 
-    /**
-     * Initializes the NewPlayerMenuScene with default values and sets up UI components.
-     */
+    private val backPfeil = BackPfeil ().apply {
+        onMouseClicked = {
+            indigoApp.showGameScene(indigoApp.modusScene)
+        }
+    }
+
+    //Initializes the NewPlayerMenuScene with default values and sets up UI components.
     init {
         // Set the initial opacity of the scene
         opacity = 1.0
         // Add components to the scene
-        addComponents(titleLabel, startGameButton, addNewPlayerButton)
+        addComponents(titleLabel, startGameButton, addNewPlayerButton, backPfeil)
 
         // Create a grid for displaying player information
         addComponents(players)
