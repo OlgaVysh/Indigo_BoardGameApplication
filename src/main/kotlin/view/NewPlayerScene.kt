@@ -2,7 +2,6 @@ package view
 
 import entity.CPUPlayer
 import entity.Player
-import entity.Token
 import entity.TokenColor
 import service.network.ConnectionState
 import tools.aqua.bgw.components.uicomponents.ComboBox
@@ -39,10 +38,10 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     private val ageLabel = Label(80, 393, 300, 98, text = "Age (opt): ", fontSize = 48)
 
     private val colorLabel = Label(80, 493, width = 300, text = "Color (opt): ", fontSize = 48)
-    var colorBox = ComboBox<String>(360, 485, 454.34, 69, prompt = "Select your color!")
+    var colorBox = ComboBox(360, 485, 454.34, 69, prompt = "Select your color!", items = colors)
 
     private val turnLabel = Label(80, 593, width = 300, text = "Turn (opt): ", fontSize = 48)
-    var turnBox = ComboBox<Int>(360, 585, 454.34, 69, prompt = "Select your turn!")
+    var turnBox = ComboBox(360, 585, 454.34, 69, prompt = "Select your turn!", items = turns)
 
     private val aiLabel = Label(140, 693, width = 200, text = "AI : ", fontSize = 48)
     private val yesLabel = Label(400, 693, width = 80, text = "yes", fontSize = 48)
@@ -85,7 +84,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                     "purple" -> TokenColor.PURPLE
                     "blue" -> TokenColor.BLUE
                     "red" -> TokenColor.RED
-                    "white " -> TokenColor.WHITE
+                    "white" -> TokenColor.WHITE
                     else -> indigoApp.availableColors[0]
                 }
             indigoApp.availableColors.remove(newPlayerColor)
@@ -139,8 +138,6 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             playerName,
             playerAge
         )
-        turnBox.items = turns
-        colorBox.items = colors
     }
 
     /**
@@ -203,7 +200,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         aiPlayer = false
     }
 
-    fun toColorText(color :TokenColor):String{
+    private fun toColorText(color :TokenColor):String{
         when(color){
             TokenColor.WHITE -> {
                 return "white"

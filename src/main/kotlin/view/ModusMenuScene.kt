@@ -24,6 +24,13 @@ class ModusMenuScene(indigoApp: IndigoApplication) :
     private val networkButton = Button(1100, 642, 528, 207, "Network", 48).apply {
         onMouseClicked = {
             indigoApp.networkMode = true
+            indigoApp.gameScene.saveButton.apply{ isVisible = false
+            isDisabled = true}
+
+            indigoApp.gameScene.redoButton.apply { isVisible = false
+                isDisabled = true }
+            indigoApp.gameScene.undoButton.apply { isVisible = false
+                isDisabled = true }
             indigoApp.showMenuScene(indigoApp.networkScene)
         }
     }
