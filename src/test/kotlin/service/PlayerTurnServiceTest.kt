@@ -22,14 +22,15 @@ class PlayerTurnServiceTest {
     )
     // Sample test tile with specific edge configurations
 
-    private val testTile = Tile(
+    val testTile = Tile(
         listOf(
             Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),
             Pair(Edge.THREE, Edge.FIVE)
-        ), TileType.Type_0,
-        mutableMapOf()
+        ), TileType.Type_3,
+        mutableMapOf(Pair(0, Gem(GemColor.AMBER)))
     )
+
 
     /**
      * Set up the test environment before each test case.
@@ -45,46 +46,63 @@ class PlayerTurnServiceTest {
     /**
      * Test the functionality of placing a route tile on the game board.
      */
-    //@Test
+    @Test
     fun testPlaceRouteTile() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
         assertFalse(refreshableTest.refreshAfterPlaceTileCalled)
-        // Initialize a test tile with specific configurations, including gem positions
-        val tile = testTile
-        testTile.gemEndPosition[2] = Gem(GemColor.AMBER)
-        // Attempt to place the tile at an invalid coordinate and expect an IllegalStateException
-        val coordinate = Coordinate(-1, 1)
-        assertThrows<IllegalStateException> { playerTurnService.placeRouteTile(coordinate, testTile) }
+
+        assertThrows<IllegalStateException> { playerTurnService.placeRouteTile(Coordinate(0, 0), testTile) }
         // Start a game and attempt to place the tile at another invalid coordinate, expecting an exception
         rootService.gameService.startGame(players, true)
-        assertThrows<Exception> { playerTurnService.placeRouteTile(Coordinate(0, 0), tile) }
-        playerTurnService.rotateTileLeft(tile)
-        // Rotate the tile left, place it at a valid coordinate, and verify the changes in the game state
+        assertThrows<Exception> { playerTurnService.placeRouteTile(Coordinate(-4, 0), testTile) }
 
-        playerTurnService.placeRouteTile(Coordinate(-1, 0), tile)
-        //test refreshable
+        // initialise tiles
+        val tile1 = Tile(
+            listOf(
+                Pair(Edge.ZERO, Edge.TWO),
+                Pair(Edge.ONE, Edge.FOUR),
+                Pair(Edge.THREE, Edge.FIVE)
+            ), TileType.Type_3, mutableMapOf(Pair(0, Gem(GemColor.AMBER)))
+        )
+
+        val tile2 = Tile(
+            listOf(
+                Pair(Edge.ZERO, Edge.TWO),
+                Pair(Edge.ONE, Edge.FOUR),
+                Pair(Edge.THREE, Edge.FIVE)
+            ), TileType.Type_3, mutableMapOf(Pair(0, Gem(GemColor.AMBER)))
+        )
+
+        playerTurnService.placeRouteTile(Coordinate(-4, 1), tile1)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
+        rootService.gameService.removeGemsReachedGate(tile1, Coordinate(-4, 1))
+        assertEquals(0, tile1.gemEndPosition.size)
+        assertTrue(refreshableTest.refreshAfterRemoveGemsCalled)
         refreshableTest.reset()
 
-        var middleTileGem = rootService.currentGame!!.middleTile.gemPosition
-        assertEquals(5, middleTileGem.size)
-        var placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, 0)]
-        assertNotNull(placedTile)
-        assertEquals(0, placedTile!!.gemEndPosition.size)
-        assertEquals(10, rootService.currentGame!!.gems.size)
-        // Rotate the tile right, modify its gem configuration, place it at another valid coordinate, and verify changes
 
-        playerTurnService.rotateTileRight(tile)
-        tile.gemEndPosition.clear()
-        tile.gemEndPosition[4] = Gem(GemColor.AMBER)
-        playerTurnService.placeRouteTile(Coordinate(0, -1), tile)
-        middleTileGem = rootService.currentGame!!.middleTile.gemPosition
-        assertEquals(4, middleTileGem.size)
-        placedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, -1)]
-        assertNotNull(placedTile)
-        assertEquals(0, placedTile!!.gemEndPosition.size)
-        assertEquals(8, rootService.currentGame!!.gems.size)
+        //second placed tile
+        playerTurnService.rotateTileRight(tile2)
+        playerTurnService.placeRouteTile(Coordinate(-2, 0), tile2)
+        assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
+        refreshableTest.reset()
+        val middleTileGem = rootService.currentGame!!.middleTile.gemPosition
+        assertEquals(6, middleTileGem.size)
+        val secondPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-2, 0)]
+        assertEquals(1, secondPlacedTile!!.gemEndPosition.size)
+
+        //third placed tile
+        val tile3 = testTile
+        playerTurnService.placeRouteTile(Coordinate(-1, 0), tile3)
+        val thirdPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, 0)]
+        assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
+        refreshableTest.reset()
+        assertEquals(5, middleTileGem.size)
+        assertEquals(2, thirdPlacedTile!!.gemEndPosition.size)
+        assertEquals(1, secondPlacedTile.gemEndPosition.size)
+        assertEquals(11, rootService.currentGame!!.gems.size)
+
     }
 
     /**
@@ -106,16 +124,20 @@ class PlayerTurnServiceTest {
         val player1HandTile = testGame!!.players[0].handTile
         println(player1HandTile.toString())
         assertNotNull(testGame)
+        assertNull(testGame.previousGameState)
         // Perform actions to change the game state and then undo and redo
         //test refreshable
+        // Place a route tile and observe the changes in the game state
+        playerTurnService.placeRouteTile(Coordinate(-1, 1), testTile)
+        assertNotNull(rootService.currentGame!!.previousGameState)
         playerTurnService.undo()
+        //assertTrue(refreshableTest.refreshAfterUndoCalled)
         refreshableTest.reset()
         //test refreshable
         playerTurnService.redo()
+        //assertTrue(refreshableTest.refreshAfterRedoCalled)
+        refreshableTest.reset()
 
-
-        // Place a route tile and observe the changes in the game state
-        playerTurnService.placeRouteTile(Coordinate(0, -1), testTile)
         var actualGame = rootService.currentGame
         val newPlayer1handTile = rootService.currentGame!!.players[0].handTile
         println(player1HandTile.toString())
@@ -144,7 +166,7 @@ class PlayerTurnServiceTest {
         assertEquals(51, actualGame.routeTiles.size)
         // Undo the last action and observe the changes in the game state
 
-        playerTurnService.undo()
+        rootService.playerTurnService.undo()
         //assertTrue(refreshableTest.refreshAfterUndoCalled)
         refreshableTest.reset()
         actualGame = rootService.currentGame
@@ -173,8 +195,6 @@ class PlayerTurnServiceTest {
             assertEquals(testGame.players[i].handTile, actualGame.players[i].handTile)
             assertEquals(testGame.players[i].collectedGems, actualGame.players[i].collectedGems)
             assertEquals(testGame.players[i].color, actualGame.players[i].color)
-            assertEquals(testGame.players[i].handTile, actualGame.players[i].handTile)
-            assertEquals(testGame.players[i].collectedGems, actualGame.players[i].collectedGems)
             assertEquals(testGame.players[i].age, actualGame.players[i].age)
             assertEquals(testGame.players[i].isAI, actualGame.players[i].isAI)
             assertEquals(testGame.players[i].score, actualGame.players[i].score)
