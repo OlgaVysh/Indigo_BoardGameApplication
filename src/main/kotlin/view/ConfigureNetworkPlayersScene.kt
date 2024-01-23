@@ -50,6 +50,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
             if (sameColor) {
                 val randomColorPlayers = indigoApp.players.map { players ->
                     val randomColor = color.random()
+                    color.remove(randomColor)
                     when (players) {
                         is CPUPlayer -> CPUPlayer(
                             players.name,
@@ -69,6 +70,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
                         else -> {
                             players
                         }
+
                     }
                 }
                 indigoApp.players = randomColorPlayers.toMutableList()
@@ -138,7 +140,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
     }
 
     fun resetSettings(){
-        for(i in grid.rows-1 downTo  0){
+        for(i in grid.rows-1 downTo  1){
             grid.removeRow(i)
         }
         startButton.isDisabled = true

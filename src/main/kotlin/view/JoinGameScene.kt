@@ -78,6 +78,8 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
 
     private val backPfeil = BackPfeil (100, 40 ,70, 60).apply {
         onMouseClicked = {
+            reset()
+            indigoApp.rootService.networkService.disconnect()
             indigoApp.showMenuScene(indigoApp.networkScene)
         }
     }
@@ -163,6 +165,8 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             currentGame.settings.players = newPlayers.toList()
             currentGame.players = newPlayers.toList()
         }
+
+        reset()
         indigoApp.showGameScene(indigoApp.gameScene)
         indigoApp.hideMenuScene()
         indigoApp.gameScene.refreshAfterStartGame()
@@ -183,5 +187,13 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         indigoApp.rootService.networkService.joinGame(
             name = nameInput.text, sessionID = idInput.text
         )
+    }
+
+    fun reset(){
+        nameInput.text = ""
+        joinButton.isDisabled = true
+        idInput.text = ""
+        yesButton.isSelected =false
+        noButton.isSelected = true
     }
 }

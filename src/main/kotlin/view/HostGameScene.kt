@@ -96,6 +96,8 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     private val backPfeil = BackPfeil (100, 40 ,70, 60).apply {
         onMouseClicked = {
             indigoApp.showMenuScene(indigoApp.networkScene)
+            resetSettings()
+            indigoApp.rootService.networkService.disconnect()
         }
     }
 
@@ -144,11 +146,19 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
                 textMessageLabel.isVisible = false
                 textMessageLabel.isDisabled = true
                 if (sessionID != null) {
+                    resetSettings()
                     indigoApp.hideMenuScene()
                     indigoApp.showGameScene(indigoApp.networkConfigureScene)
                 }
             }
         }
         )
+    }
+
+    fun resetSettings(){
+        hostName.text = ""
+        sessionId.text = ""
+        yesButton.isSelected = false
+        noButton.isSelected = true
     }
 }
