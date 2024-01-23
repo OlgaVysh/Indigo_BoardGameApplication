@@ -139,7 +139,7 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             textMessageLabel.text = "Session ID: $sessionID"
         }
 
-        playAnimation(DelayAnimation(duration = 2000).apply {
+        playAnimation(DelayAnimation(duration = 4000).apply {
             onFinished = {
                 textMessageLabel.isVisible = false
                 textMessageLabel.isDisabled = true

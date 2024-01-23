@@ -85,7 +85,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                     "purple" -> TokenColor.PURPLE
                     "blue" -> TokenColor.BLUE
                     "red" -> TokenColor.RED
-                    "white " -> TokenColor.WHITE
+                    "white" -> TokenColor.WHITE
                     else -> indigoApp.availableColors[0]
                 }
             indigoApp.availableColors.remove(newPlayerColor)

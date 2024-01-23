@@ -186,6 +186,14 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
         }
     }
 
+    fun resetSettings(){
+        for(i in grid.rows-1 downTo  1){
+            grid.removeRow(i)
+        }
+        startButton.isDisabled = true
+        addButton.isDisabled = false
+    }
+
     /**
      *  The Methode [refreshAfterPlayerJoined] added in the grid the new joined Player
      *

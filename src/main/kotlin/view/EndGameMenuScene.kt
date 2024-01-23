@@ -52,6 +52,8 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
     }
     private val newGameButton = Button(143, 871, 440, 158, "Start new game", 38).apply {
         onMouseClicked = {
+            indigoApp.networkConfigureScene.resetSettings()
+            indigoApp.rootService.networkService.disconnect()
             indigoApp.configurePlayersScene.clearPlayerView()
             indigoApp.showMenuScene(indigoApp.startScene)
         }
