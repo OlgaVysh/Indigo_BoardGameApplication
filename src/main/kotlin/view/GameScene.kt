@@ -60,29 +60,22 @@ class GameScene(val indigoApp: IndigoApplication) :
     private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
 
     // undoButton component
-    private val undoButton =
+     val undoButton =
         view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40).apply {
-            if (indigoApp.networkMode) {
-                isVisible = false
-                isDisabled = true
-            }
             onMouseClicked = { indigoApp.rootService.playerTurnService.undo() }
         }
 
     // redoButton component
-    private val redoButton =
+     val redoButton =
         view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40).apply {
-            if (indigoApp.networkMode) {
-                isVisible = false
-                isDisabled = true
-            }
             onMouseClicked = { indigoApp.rootService.playerTurnService.redo() }
         }
 
     // saveButton component
-    private val saveButton =
+     val saveButton =
         view.components.Button(posX = 1055, posY = 980, width = 160, height = 68, text = "Save", fontSize = 40)
-            .apply { onMouseClicked = { indigoApp.showMenuScene(indigoApp.saveGameScene) } }
+            .apply {
+                onMouseClicked = { indigoApp.showMenuScene(indigoApp.saveGameScene) } }
 
     // Player components
     private var player1Label =
