@@ -167,7 +167,7 @@ class PlayerTurnServiceTest {
         // Undo the last action and observe the changes in the game state
 
         rootService.playerTurnService.undo()
-        //assertTrue(refreshableTest.refreshAfterUndoCalled)
+        assertTrue(refreshableTest.refreshAfterUndoCalled)
         refreshableTest.reset()
         actualGame = rootService.currentGame
         assertNull(actualGame!!.previousGameState)
@@ -178,12 +178,12 @@ class PlayerTurnServiceTest {
         assertEquals(6, actualGame.middleTile.gemPosition.size)
         // Redo the last undone action and validate the game state
 
-        playerTurnService.redo()
-        //assertTrue(refreshableTest.refreshAfterRedoCalled)
-        refreshableTest.reset()
+        rootService.playerTurnService.redo()
         actualGame = rootService.currentGame
         assertNull(actualGame!!.nextGameState)
         assertNotNull(actualGame.previousGameState)
+        assertTrue(refreshableTest.refreshAfterRedoCalled)
+        refreshableTest.reset()
         assertEquals(testGame.gameBoard.gateTokens, actualGame.gameBoard.gateTokens)
         assertEquals(testGame.gameBoard.gameBoardTiles, actualGame.gameBoard.gameBoardTiles)
         assertEquals(testGame.gems, actualGame.gems)
