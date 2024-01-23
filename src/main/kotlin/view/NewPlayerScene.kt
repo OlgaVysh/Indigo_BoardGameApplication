@@ -161,10 +161,12 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                         indigoApp.showMenuScene(indigoApp.configurePlayerXScene)
                     }
                 }
-                indigoApp.configurePlayerXScene.turnBox.items = turns
-                indigoApp.configurePlayerXScene.colorBox.items = colors
+                turns.remove(turnBox.selectedItem)
                 indigoApp.configurePlayerXScene.colors = colors
                 indigoApp.configurePlayerXScene.turn = turns
+                indigoApp.configurePlayerXScene.turnBox.items = turns
+                indigoApp.configurePlayerXScene.colorBox.items = colors
+
                 indigoApp.networkConfigureScene.grid[0,currentRows]!!.button.isDisabled = true
                 indigoApp.networkConfigureScene.addButton.isDisabled = grid.rows == 4
                 indigoApp.networkConfigureScene.startButton.isDisabled = grid.rows < 2
