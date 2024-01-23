@@ -177,7 +177,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
 
 
     fun makeMove() {
-        val resultcoordinate=findNextMoveLimited(1000)
+        val resultcoordinate=findNextMoveLimited(200)
         if (resultcoordinate.equals(Coordinate(0,0))){makeMove()}
         println("resultatcoordinate $resultcoordinate")
         PlayerTurnService(rootService).placeRouteTile(resultcoordinate,rootService.currentGame!!.players[aiIndex].handTile!!)
