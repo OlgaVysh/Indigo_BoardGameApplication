@@ -55,7 +55,13 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             indigoApp.aiGame = true
         }
     }
-    private val noButton = RadioButton(posX = 550, posY = 710, isSelected = true, toggleGroup = toggleGroup)
+    private val noButton = RadioButton(posX = 550, posY = 710, isSelected = true, toggleGroup = toggleGroup).
+    apply {
+        onMouseClicked = {
+            aiPlayer = false
+        }
+    }
+
 
     private val playerName: TextField = TextField(
         width = 350,
@@ -94,6 +100,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                 4 -> indigoApp.players[3] = newPlayer
             }
             addPlayerToTheScene(newPlayer)
+            indigoApp.aiGame = indigoApp.aiGame||aiPlayer
             refreshScene()
             //refreshAfterAddNewPlayer()
         }
