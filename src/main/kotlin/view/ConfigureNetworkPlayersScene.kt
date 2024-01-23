@@ -1,5 +1,6 @@
 package view
 
+import entity.CPUPlayer
 import entity.Player
 import entity.TokenColor
 import service.RootService
@@ -38,6 +39,38 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
         isDisabled = grid.rows<2
         onMouseClicked = {
             //indigoApp.showGameScene(indigoApp.gameScene)
+            val color = mutableListOf(TokenColor.BLUE,TokenColor.RED,TokenColor.WHITE,TokenColor.PURPLE)
+            indigoApp.players = indigoApp.players.filter { it!= null }.toMutableList()
+            val sameColor = true
+            for(i in 0 until indigoApp.players.size-1){
+                if(indigoApp.players[i]?.color !=indigoApp.players[i+1]?.color) sameColor == false
+            }
+            if(sameColor){
+                indigoApp.players.clear()
+                indigoApp.players.map {
+                    for (players in indigoApp.players) {
+                        val randomColor = color.random()
+                        when (players) {
+                            is CPUPlayer -> CPUPlayer(
+                                players.name,
+                                players.age,
+                                randomColor,
+                                players.difficulty,
+                                players.simulationSpeed
+                            )
+                            is Player -> Player(
+                                players.name,
+                                players.age,
+                                randomColor,
+                            )
+                            else -> {
+                                continue
+                            }
+                        }
+                        color.remove(randomColor)
+                    }
+                }
+            }
             val players = mutableListOf<Player>()
             for(player in indigoApp.players){
                 if(player!=null){
