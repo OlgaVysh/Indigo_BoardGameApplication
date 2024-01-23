@@ -190,6 +190,9 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     }
 
     fun reset(){
+        textMessageLabel.isVisible = false
+        textMessageLabel.isDisabled = true
+        joinButton.isDisabled = false
         nameInput.text = ""
         joinButton.isDisabled = true
         idInput.text = ""
