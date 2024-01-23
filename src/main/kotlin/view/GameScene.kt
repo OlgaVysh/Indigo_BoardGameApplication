@@ -430,7 +430,6 @@ class GameScene(val indigoApp: IndigoApplication) :
                 val index = game.currentPlayerIndex
                 val tile = players[index].handTile!!
                 rootService.playerTurnService.rotateTileLeft(tile)
-                rotationDegree--
             }
         }
 
@@ -440,7 +439,6 @@ class GameScene(val indigoApp: IndigoApplication) :
                 val index = game.currentPlayerIndex
                 val tile = players[index].handTile!!
                 rootService.playerTurnService.rotateTileRight(tile)
-                rotationDegree++
             }
         }
 
@@ -844,6 +842,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         val handTileLabels =
             listOf(player1handTile, player2handTile, player3handTile, player4handTile)
         handTileLabels[currentPlayerIndex].rotate(-60)
+        rotationDegree--
     }
 
     /**
@@ -857,6 +856,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         val handTileLabels =
             listOf(player1handTile, player2handTile, player3handTile, player4handTile)
         handTileLabels[currentPlayerIndex].rotate(60)
+        rotationDegree++
     }
 
     /*override fun refreshAfterRedo() {
