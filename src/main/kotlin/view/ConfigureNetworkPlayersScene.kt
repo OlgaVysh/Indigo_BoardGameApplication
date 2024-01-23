@@ -186,9 +186,10 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
      *  @param playerLeftName is a String which contains the name of the left Player
      */
     override fun refreshAfterPlayerLeft(playerLeftName: String) {
-        for (i in 0 until grid.rows) {
+        for (i in 1 until grid.rows) {
             val networkPlayer = grid[0, i] ?: continue
-            if (networkPlayer.label.name.contains(playerLeftName)) {
+            val name = networkPlayer.label.text.substringAfter(": ")
+            if (name.equals(playerLeftName)) {
                 grid.removeRow(i)
                 break
             }

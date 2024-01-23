@@ -133,6 +133,7 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
     }
 
     private fun refreshScene() {
+
         colors.remove(colorBox.selectedItem)
         colorBox.items = colors
         indigoApp.newPlayerScene.colorBox.items = colors
@@ -144,5 +145,13 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
         indigoApp.newPlayerScene.turnBox.items = turn
         turnBox.selectedItem = null
         indigoApp.networkConfigureScene.grid[0, currentRow-1]!!.button.isDisabled = true
+    }
+
+    fun reset(){
+        turn = mutableListOf(1, 2, 3, 4)
+        colors = mutableListOf("blue", "purple", "red", "white")
+        colorBox.items = colors
+        turnBox.items = turn
+        refreshScene()
     }
 }
