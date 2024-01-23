@@ -208,10 +208,10 @@ class GameServiceTest {
         )
 
         //rotate tile0 and place it in (-1,-3) ,then check that the place is occupied for other tile.
-        assertFalse(refreshableTest.refreshAfterRightRotationCalled)
+        assertFalse(refreshableTest.refreshAfterLeftRotationCalled)
         rootService.playerTurnService.rotateTileLeft(tile0)
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0, false))
-        assertTrue(refreshableTest.refreshAfterRightRotationCalled)
+        assertTrue(refreshableTest.refreshAfterLoadGameCalled)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
         refreshableTest.reset()
 

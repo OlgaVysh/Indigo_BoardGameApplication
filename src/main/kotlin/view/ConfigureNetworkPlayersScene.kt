@@ -44,84 +44,34 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
             println(indigoApp.players.toString())
             var sameColor = false
             for (i in 0 until indigoApp.players.size - 1) {
-                println(indigoApp.players[i]?.color.toString() + indigoApp.players[i+1]?.color.toString())
+                println(indigoApp.players[i]?.color.toString() + indigoApp.players[i + 1]?.color.toString())
                 if (indigoApp.players[i]?.color == indigoApp.players[i + 1]?.color) sameColor = true
             }
             if (sameColor) {
-                val randomColorPlayers  = indigoApp.players.map { players ->
-                        val randomColor = color.random()
-                        when (players) {
-                            is CPUPlayer -> CPUPlayer(
-                                players.name,
-                                players.age,
-                                randomColor,
-                                players.difficulty,
-                                players.simulationSpeed
-                            )
-                            is Player -> Player(
-                                players.name,
-                                players.age,
-                                randomColor,
-                                players.isAI
-                            )
-                            else->{players}
+                val randomColorPlayers = indigoApp.players.map { players ->
+                    val randomColor = color.random()
+                    when (players) {
+                        is CPUPlayer -> CPUPlayer(
+                            players.name,
+                            players.age,
+                            randomColor,
+                            players.difficulty,
+                            players.simulationSpeed
+                        )
+
+                        is Player -> Player(
+                            players.name,
+                            players.age,
+                            randomColor,
+                            players.isAI
+                        )
+
+                        else -> {
+                            players
                         }
                     }
-                //indigoApp.showGameScene(indigoApp.gameScene)
-                val color = mutableListOf(TokenColor.BLUE, TokenColor.RED, TokenColor.WHITE, TokenColor.PURPLE)
-                indigoApp.players = indigoApp.players.filterNotNull().toMutableList()
-                println(indigoApp.players.toString())
-                var sameColor = false
-                for (i in 0 until indigoApp.players.size - 1) {
-                    println(indigoApp.players[i]?.color.toString() + indigoApp.players[i+1]?.color.toString())
-                    if (indigoApp.players[i]?.color == indigoApp.players[i + 1]?.color) sameColor = true
                 }
-                if (sameColor) {
-                    indigoApp.players.map { players ->
-                        val randomColor = color.random()
-                        when (players) {
-                            is CPUPlayer -> CPUPlayer(
-                                players.name,
-                                players.age,
-                                randomColor,
-                                players.difficulty,
-                                players.simulationSpeed
-                            )
-
-                            is Player -> Player(
-                                players.name,
-                                players.age,
-                                randomColor,
-                            )
-
-                            else -> {
-                            }
-                        }
-                        color.remove(randomColor)
-                    }
-                    indigoApp.players = randomColorPlayers.toMutableList()
-                }
-                for(player in indigoApp.players) {
-                    println(player?.color)
-                }
-                val players = indigoApp.players.filterNotNull().toMutableList()
-                indigoApp.notSharedGates = true
-                if (players.size == 4) indigoApp.notSharedGates = false
-                if (players.size == 3) {
-                    indigoApp.showMenuScene(indigoApp.gatesScene)
-                } else {
-                    if (indigoApp.aiGame) {
-                        indigoApp.hideMenuScene()
-                        indigoApp.showMenuScene(indigoApp.aiMenuScene)
-                    } else {
-                        val notSharedGates = indigoApp.notSharedGates
-                        val isRandom = indigoApp.isRandom
-                        indigoApp.rootService.networkService.startNewHostedGame(players, notSharedGates, isRandom)
-                    }
-                }
-            }
-            for(player in indigoApp.players) {
-                println(player?.color)
+                indigoApp.players = randomColorPlayers.toMutableList()
             }
             val players = indigoApp.players.filterNotNull().toMutableList()
             indigoApp.notSharedGates = true
@@ -140,6 +90,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
             }
         }
     }
+
 
     private val backPfeil = BackPfeil ().apply {
         onMouseClicked = {
@@ -187,7 +138,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
     }
 
     fun resetSettings(){
-        for(i in grid.rows-1 downTo  1){
+        for(i in grid.rows-1 downTo  0){
             grid.removeRow(i)
         }
         startButton.isDisabled = true

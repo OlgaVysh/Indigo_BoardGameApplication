@@ -70,11 +70,13 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         if (currentGame.previousGameState != null) {
             //currentGame.nextGameState = currentGame
             rootService.currentGame = currentGame.previousGameState
+            onAllRefreshables { refreshAfterUndo() }
+            println("UNDO")
+
 
         } else {
             println("Previous game state doesn't exist, cannot undo the move")
         }
-        onAllRefreshables { refreshAfterUndo() }
     }
 
 
@@ -88,10 +90,12 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         if (currentGame.nextGameState != null) {
             //currentGame.previousGameState = currentGame
             rootService.currentGame = currentGame.nextGameState
+            onAllRefreshables { refreshAfterRedo() }
+            println("REDO")
         } else {
             println("Next game state doesn't exist, cannot redo the move")
         }
-        onAllRefreshables { refreshAfterRedo() }
+
     }
 
     /**

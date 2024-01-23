@@ -109,12 +109,10 @@ class PlayerTurnServiceTest {
         // Perform actions to change the game state and then undo and redo
         //test refreshable
         playerTurnService.undo()
-        //assertTrue(refreshableTest.refreshAfterUndoCalled)
         refreshableTest.reset()
         //test refreshable
         playerTurnService.redo()
-        //assertTrue(refreshableTest.refreshAfterRedoCalled)
-        refreshableTest.reset()
+
 
         // Place a route tile and observe the changes in the game state
         playerTurnService.placeRouteTile(Coordinate(0, -1), testTile)
