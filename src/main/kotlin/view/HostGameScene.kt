@@ -20,6 +20,7 @@ import view.components.Label
  */
 class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
 
+    private var aiHost = false
     private val rootService = indigoApp.rootService
     //private val game = indigoApp.rootService.currentGame
 
@@ -61,16 +62,20 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     private val toggleGroup = ToggleGroup()
     private val yesButton = RadioButton(posX = 390, posY = 693, toggleGroup = toggleGroup).apply {
         onMouseClicked = {
-            indigoApp.aiGame = true
+            aiHost = true
         }
     }
-    private val noButton = RadioButton(posX = 590, posY = 693, isSelected = true,toggleGroup = toggleGroup)
+    private val noButton = RadioButton(posX = 590, posY = 693, isSelected = true,toggleGroup = toggleGroup).apply{
+    onMouseClicked = {
+        aiHost = false
+    }}
 
     // Button for host to game.
     private val hostGameButton = Button(247, 798, 532, 207, "Host game", 48).apply {
         isDisabled = hostName.text.isBlank()
         onMouseClicked = {
             indigoApp.rootService.networkService.hostGame(name = hostName.text, sessionID = sessionId.text)
+            indigoApp.aiGame=aiHost
         }
     }
 
