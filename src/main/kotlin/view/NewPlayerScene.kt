@@ -2,6 +2,7 @@ package view
 
 import entity.CPUPlayer
 import entity.Player
+import entity.Token
 import entity.TokenColor
 import service.network.ConnectionState
 import tools.aqua.bgw.components.uicomponents.ComboBox
@@ -88,7 +89,9 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                     else -> indigoApp.availableColors[0]
                 }
             indigoApp.availableColors.remove(newPlayerColor)
-
+            val colorText = toColorText(newPlayerColor)
+            colors.remove(colorText)
+            colorBox.items = colors
             var newPlayer = Player(name = playerName.text, color = newPlayerColor)
             if (aiPlayer) {
                 newPlayer = CPUPlayer(name = playerName.text, color = newPlayerColor)
@@ -198,5 +201,22 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         turnBox.selectedItem = null
         addNewPlayerButton.isDisabled = true
         aiPlayer = false
+    }
+
+    fun toColorText(color :TokenColor):String{
+        when(color){
+            TokenColor.WHITE -> {
+                return "white"
+            }
+            TokenColor.RED -> {
+                return "red"
+            }
+            TokenColor.BLUE -> {
+                return "blue"
+            }
+            TokenColor.PURPLE -> {
+                return "purple"
+            }
+        }
     }
 }

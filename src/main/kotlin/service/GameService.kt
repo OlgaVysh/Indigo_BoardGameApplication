@@ -646,8 +646,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 )
             }
         }
-        println(currentCoordinate.toString())
-        println(currentEnd)
+        println( currentCoordinate.toString())
+        println("currentend $currentEnd")
         removeGemsReachedGate(currentTile, currentCoordinate)
 
         moveGems(
