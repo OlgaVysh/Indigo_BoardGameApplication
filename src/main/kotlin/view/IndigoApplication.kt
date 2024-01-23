@@ -25,7 +25,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
 
     val startScene = NewGameMenuScene(this)
     val modusScene = ModusMenuScene(this)
-    val configurePlayersScene = ConfigurePlayersGameScene1(this)
+    val configurePlayersScene = ConfigurePlayersGameScene(this)
 
     val gatesScene = GateMenuScene(this)
     val networkScene = NetworkMenuScene(this)
