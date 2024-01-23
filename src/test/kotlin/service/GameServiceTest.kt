@@ -151,7 +151,7 @@ class GameServiceTest {
 
         assertThrows<IllegalStateException> { gameService.endGame() }
         gameService.startGame(fourPlayers.toMutableList())
-        //assertTrue(refreshableTest.refreshAfterStartGameCalled)
+        assertTrue(refreshableTest.refreshAfterStartGameCalled)
         assertFalse(gameService.endGame())
         rootService.currentGame!!.gems.clear()
         rootService.playerTurnService.placeRouteTile(Coordinate(-3, 1), tile0)
@@ -164,7 +164,6 @@ class GameServiceTest {
         assertFalse(gameService.endGame())
         rootService.playerTurnService.placeRouteTile(Coordinate(-4, 1), tile0)
         rootService.currentGame!!.players[rootService.currentGame!!.currentPlayerIndex].handTile = null
-        //assertTrue(refreshableTest.refreshAfterEndGameCalled)
         assertTrue(gameService.endGame())
         refreshableTest.reset()
     }
@@ -172,7 +171,7 @@ class GameServiceTest {
     /**
      * Test the checkPlacement function.
      */
-    //@Test
+    @Test
     fun checkPlacementTest() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
@@ -210,9 +209,8 @@ class GameServiceTest {
 
         //rotate tile0 and place it in (-1,-3) ,then check that the place is occupied for other tile.
         assertFalse(refreshableTest.refreshAfterRightRotationCalled)
-        rootService.playerTurnService.rotateTileRight(tile0)
+        rootService.playerTurnService.rotateTileLeft(tile0)
         assertTrue(rootService.gameService.checkPlacement(Coordinate(-1, -3), tile0, false))
-        //rootService.playerTurnService.placeRouteTile(Coordinate(-1, -3), tile0)
         assertTrue(refreshableTest.refreshAfterRightRotationCalled)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
         refreshableTest.reset()
@@ -308,6 +306,7 @@ class GameServiceTest {
 
         rootService.gameService.startGame(fourPlayers.toMutableList())
         rootService.gameService.changePlayer()
+        //rootService.playerTurnService.placeRouteTile(Coordinate(0,1),tile0 )
         rootService.currentGame!!.gems.clear()
         rootService.currentGame!!.tokens.clear()
 
@@ -438,7 +437,6 @@ class GameServiceTest {
         assertEquals(1, firstPlacedTile!!.gemEndPosition.size)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
         assertTrue(refreshableTest.refreshAfterMoveGemsCalled)
-        //assertTrue(refreshableTest.refreshAfterCollisionCalled)
 
         refreshableTest.reset()
 
@@ -456,10 +454,11 @@ class GameServiceTest {
         rootService.playerTurnService.rotateTileRight(testTile3)
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 1), testTile3)
         val thirdPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 1)]
-        //assertEquals(10, rootService.currentGame!!.gems.size)
+        assertEquals(10, rootService.currentGame!!.gems.size)
         assertEquals(5, rootService.currentGame!!.middleTile.gemPosition.size)
         assertEquals(0, thirdPlacedTile!!.gemEndPosition.size)
         assertTrue(refreshableTest.refreshAfterMoveGemsCalled)
+        assertTrue(refreshableTest.refreshAfterCollisionCalled)
         refreshableTest.reset()
 
         testTile2.gemEndPosition.clear()
