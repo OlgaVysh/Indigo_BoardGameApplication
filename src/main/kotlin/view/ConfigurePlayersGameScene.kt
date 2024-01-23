@@ -20,10 +20,8 @@ import view.components.Label
  * The layout and design of these components are defined in this class.
  *
  */
-class ConfigurePlayersGameScene1(val indigoApp: IndigoApplication) : BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
+class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
     // UI components for configuring players
-
-
 
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)
     private val startGameButton = Button(1047, 755, 528, 207, "Start game", 48)
@@ -60,15 +58,12 @@ class ConfigurePlayersGameScene1(val indigoApp: IndigoApplication) : BoardGameSc
         // Set the initial opacity of the scene
         opacity = 1.0
         // Add components to the scene
-        addComponents(titleLabel)
-        addComponents(startGameButton)
-        addComponents(addNewPlayerButton)
+        addComponents(titleLabel, startGameButton, addNewPlayerButton)
+
         // Create a grid for displaying player information
-
-
         addComponents(players)
-
     }
+
     /**
      * clears the ComponentView of players after a game was saved or ended
      * is called by the Scenes: GameSavedMenuScene and soon as well EndGameScene
