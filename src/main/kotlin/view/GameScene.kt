@@ -904,7 +904,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
         repositionGems()
         refreshAfterChangePlayer()
-        checkUndoRedo()
+
     }
 
 
@@ -914,7 +914,6 @@ class GameScene(val indigoApp: IndigoApplication) :
         //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
         //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()
         refreshAfterChangePlayer()
-        checkUndoRedo()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val previousTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
         val differingTileEntry = previousTiles.entries.find { entry ->
@@ -935,6 +934,9 @@ class GameScene(val indigoApp: IndigoApplication) :
 
 
     }
+
+
+
 
     fun checkUndoRedo() {
         if (indigoApp.rootService.currentGame!!.nextGameState == null) {
