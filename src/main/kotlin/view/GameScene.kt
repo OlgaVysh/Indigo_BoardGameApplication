@@ -11,7 +11,6 @@ import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.style.BorderColor
 import tools.aqua.bgw.style.BorderWidth
 import tools.aqua.bgw.visual.ColorVisual
-import tools.aqua.bgw.visual.CompoundVisual
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.visual.Visual
 import java.awt.Color
@@ -946,7 +945,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
 
 
-    fun repositionGems() {
+    private fun repositionGems() {
 
     }
 
@@ -1243,7 +1242,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         //Reihe 2
         for (i in -1..4) {
             val count = i + 1
-            coordMap[Coordinate(i, -3)] = Position(647.0, y2 + count * 95)
+            coordMap[Coordinate(i, -3)] = Position(674.0, y2 + count * 95)
         }
 
         //Reihe 8
