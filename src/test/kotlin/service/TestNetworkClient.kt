@@ -28,11 +28,11 @@ class TestNetworkClient(
     // Callbacks for various network events
     var onGameActionResponse: ((GameActionResponse) -> Unit)? = null
     var onCreateGameResponse: ((CreateGameResponse) -> Unit)? = null
-    var onInitMessage: ((GameInitMessage, String) -> Unit)? = null
-    var onPlayerJoined: ((PlayerJoinedNotification) -> Unit)? = null
-    var onPlayerLeft: ((PlayerLeftNotification) -> Unit)? = null
-    var onJoinedGameResponse: ((JoinGameResponse) -> Unit)? = null
-    var onTilePlacedReceived: ((TilePlacedMessage, String) -> Unit)? = null
+    private var onInitMessage: ((GameInitMessage, String) -> Unit)? = null
+    private var onPlayerJoined: ((PlayerJoinedNotification) -> Unit)? = null
+    private var onPlayerLeft: ((PlayerLeftNotification) -> Unit)? = null
+    private var onJoinedGameResponse: ((JoinGameResponse) -> Unit)? = null
+    private var onTilePlacedReceived: ((TilePlacedMessage, String) -> Unit)? = null
 
     // Accessor for the TestNetworkService
     private val testNetworkService: TestNetworkService?
