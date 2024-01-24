@@ -877,7 +877,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         labelsListe.add(player1ScoreLabel)
         labelsListe.add(player2ScoreLabel)
         labelsListe.add(player3ScoreLabel)
-        labelsListe.add(player4Label)
+        labelsListe.add(player4ScoreLabel)
         val players = indigoApp.rootService.currentGame!!.players
         for (i in players.indices) {
             labelsListe[i].text = players[i].score.toString() + " points"
@@ -920,7 +920,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         labelsListe.add(player1ScoreLabel)
         labelsListe.add(player2ScoreLabel)
         labelsListe.add(player3ScoreLabel)
-        labelsListe.add(player4Label)
+        labelsListe.add(player4ScoreLabel)
         val players = indigoApp.rootService.currentGame!!.players
         for (i in players.indices) {
             labelsListe[i].text = players[i].score.toString() + " points"
