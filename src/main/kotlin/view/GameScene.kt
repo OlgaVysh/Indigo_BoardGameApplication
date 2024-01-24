@@ -915,20 +915,27 @@ class GameScene(val indigoApp: IndigoApplication) :
         refreshAfterChangePlayer()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val previousTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
-        val differingTileEntry = previousTiles.entries.find { entry ->
+        val differingTileEntries = previousTiles.entries.filter { entry ->
             !currentTiles.containsKey(entry.key)
         }
 
-        if (differingTileEntry != null) {
-            val differingCoordinate = differingTileEntry.key
-            val differingTile = differingTileEntry.value
-            println("Found differing tile at coordinate $differingCoordinate with tile $differingTile")
-            val tileCol = differingTileEntry.key.column
-            val tileRow = differingTileEntry.key.row
-            hexagonGrid[tileCol, tileRow].apply { this!!.visual = ImageVisual("plaintile.png") }
-        } else {
-            println("No differing tile found.")
+        if (differingTileEntries.isNotEmpty()) {
+            differingTileEntries.forEach { differingTileEntry ->
+                val differingCoordinate = differingTileEntry.key
+                val differingTile = differingTileEntry.value
+                println("Found differing tile at coordinate $differingCoordinate with tile $differingTile")
+                val tileCol = differingCoordinate.column
+                val tileRow = differingCoordinate.row
+                hexagonGrid[tileCol, tileRow]?.apply { this.visual = ImageVisual("plaintile.png")
+                    onMouseClicked = {
+                        chooseTile(this, differingCoordinate.column, differingCoordinate.row)
+                    }
+                } }
+            }
+         else {
+            println("No differing tiles found.")
         }
+
         repositionGems()
 
 
@@ -940,17 +947,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
 
     fun repositionGems() {
-        val gameBoardTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
-        val tilesWithGems = mutableListOf<Triple<Gem, Coordinate, Int>>()
 
-        for ((coordinate, tile) in gameBoardTiles) {
-            for ((exit, gem) in tile.gemEndPosition) {
-                tilesWithGems.add(Triple(gem, coordinate, exit))
-            }
-        }
-        for ((gem, coordinate, exit) in tilesWithGems) {
-            refreshAfterMoveGems(gem, coordinate, exit)
-        }
     }
 
 
