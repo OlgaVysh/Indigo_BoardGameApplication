@@ -268,6 +268,7 @@ class PlayerTurnServiceTest {
         val expectedTileRightRotated = testTile
         expectedTile.edges.add(0, expectedTile.edges.removeAt(expectedTile.edges.size - 1))
         // Rotate the tile to the right and check the result
+
         //refreshable test
         rootService.playerTurnService.rotateTileRight(testTile)
         assertTrue(refreshableTest.refreshAfterRightRotationCalled)

@@ -347,6 +347,7 @@ class GameServiceTest {
         val toSaveGame = rootService.currentGame
         assertNotNull(toSaveGame)
 
+
         rootService.gameService.saveGame(testPath)
         assertTrue(refreshableTest.refreshAfterSaveGameCalled)
         rootService.gameService.endGame()
