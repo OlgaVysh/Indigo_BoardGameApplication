@@ -82,7 +82,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
 
     // saveButton component
-     val saveButton =
+    val saveButton =
         view.components.Button(posX = 1055, posY = 980, width = 160, height = 68, text = "Save", fontSize = 40)
             .apply { onMouseClicked = { indigoApp.showMenuScene(indigoApp.saveGameScene) } }
 
@@ -597,17 +597,17 @@ class GameScene(val indigoApp: IndigoApplication) :
         yellowGem4.reposition(914, 801)
         yellowGem5.reposition(590, 619)
         yellowGem6.reposition(590, 254)
-        blueGem.isVisible =true
+        blueGem.isVisible = true
         greenGem1.isVisible = true
         greenGem2.isVisible = true
-        greenGem3.isVisible  = true
-        greenGem4.isVisible =true
+        greenGem3.isVisible = true
+        greenGem4.isVisible = true
         greenGem5.isVisible = true
         yellowGem1.isVisible = true
         yellowGem2.isVisible = true
-        yellowGem3.isVisible =true
+        yellowGem3.isVisible = true
         yellowGem4.isVisible = true
-        yellowGem5.isVisible =true
+        yellowGem5.isVisible = true
         yellowGem6.isVisible = true
 
 
@@ -873,36 +873,38 @@ class GameScene(val indigoApp: IndigoApplication) :
         rotationDegree++
     }
 
-     override fun refreshAfterRedo() {
-         player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
-         player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
-         //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
-         //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()
-         refreshAfterChangePlayer()
-         checkUndoRedo()
-         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
-         val nextTiles = indigoApp.rootService.currentGame!!.previousGameState!!.gameBoard.gameBoardTiles
+    override fun refreshAfterRedo() {
+        player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
+        player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
+        //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
+        //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()
+        refreshAfterChangePlayer()
+        checkUndoRedo()
+        val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
+        val nextTiles = indigoApp.rootService.currentGame!!.previousGameState!!.gameBoard.gameBoardTiles
 
-         val differingTileEntry = currentTiles.entries.find { entry ->
-             !nextTiles.containsKey(entry.key)
-         }
+        val differingTileEntry = currentTiles.entries.find { entry ->
+            !nextTiles.containsKey(entry.key)
+        }
 
-         if (differingTileEntry != null) {
-             val differingCoordinate = differingTileEntry.key
-             val differingTile = differingTileEntry.value
-             val rotation = differingTile.edges.indexOf(Edge.ZERO)
-             println("Found differing tile at coordinate $differingCoordinate with tile $differingTile")
-             val tileCol = differingTileEntry.key.column
-             val tileRow = differingTileEntry.key.row
-             hexagonGrid[tileCol, tileRow] =
-                 HexagonView(size = 55, visual = differingTile.type.toImg()).apply{
-                 rotate(60 * rotation)}
-         } else {
-             println("No differing tile found.")
-         }
-         repositionGems()
-         refreshAfterChangePlayer()
-         checkUndoRedo()
+        if (differingTileEntry != null) {
+            val differingCoordinate = differingTileEntry.key
+            val differingTile = differingTileEntry.value
+            val rotation = differingTile.edges.indexOf(Edge.ZERO)
+            println("Found differing tile at coordinate $differingCoordinate with tile $differingTile")
+            val tileCol = differingTileEntry.key.column
+            val tileRow = differingTileEntry.key.row
+            hexagonGrid[tileCol, tileRow] =
+                HexagonView(size = 55, visual = differingTile.type.toImg()).apply {
+                    rotate(-60)
+                    rotate(60 * rotation)
+                }
+        } else {
+            println("No differing tile found.")
+        }
+        repositionGems()
+        refreshAfterChangePlayer()
+        checkUndoRedo()
     }
 
 
@@ -912,8 +914,8 @@ class GameScene(val indigoApp: IndigoApplication) :
         //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
         //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()
         refreshAfterChangePlayer()
-       checkUndoRedo()
-       val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
+        checkUndoRedo()
+        val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val previousTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
         val differingTileEntry = previousTiles.entries.find { entry ->
             !currentTiles.containsKey(entry.key)
@@ -934,23 +936,19 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     }
 
-    fun checkUndoRedo(){
-        if(indigoApp.rootService.currentGame!!.nextGameState == null){
+    fun checkUndoRedo() {
+        if (indigoApp.rootService.currentGame!!.nextGameState == null) {
             redoButton.isDisabled = true
             redoButton.isVisible = false
-        }
-        else
-        {
+        } else {
             redoButton.isDisabled = false
             redoButton.isVisible = true
         }
 
-        if(indigoApp.rootService.currentGame!!.previousGameState == null){
+        if (indigoApp.rootService.currentGame!!.previousGameState == null) {
             undoButton.isDisabled = true
             undoButton.isVisible = false
-        }
-        else
-        {
+        } else {
             undoButton.isDisabled = false
             undoButton.isVisible = true
         }
@@ -965,12 +963,10 @@ class GameScene(val indigoApp: IndigoApplication) :
                 tilesWithGems.add(Triple(gem, coordinate, exit))
             }
         }
-        for ((gem, coordinate, exit) in tilesWithGems){
+        for ((gem, coordinate, exit) in tilesWithGems) {
             refreshAfterMoveGems(gem, coordinate, exit)
         }
-        }
-
-
+    }
 
 
     /**
@@ -1045,21 +1041,21 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      * Moves the view of a gem to its new position on the scene
      */
-    override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate, exit : Int) {
+    override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate, exit: Int) {
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
         val position = coordMap[coordinate]
-        val posX = position!!.x+gemEndPos[exit]!!.x
-        val posY = position.y+gemEndPos[exit]!!.y
+        val posX = position!!.x + gemEndPos[exit]!!.x
+        val posY = position.y + gemEndPos[exit]!!.y
         lock()
         playAnimation(DelayAnimation(1000).apply {
-            gemMap[gem]!!.reposition(posX,posY)
+            gemMap[gem]!!.reposition(posX, posY)
             unlock()
-        } )
+        })
 
     }
 
-    override fun refreshAfterCollision(gem1: Gem,gem2: Gem) {
+    override fun refreshAfterCollision(gem1: Gem, gem2: Gem) {
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
         val gemLabel1 = gemMap[gem1]
@@ -1080,6 +1076,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
 
     }
+
     override fun refreshAfterRemoveGems(gem: Gem) {
         //gemToRemoveList: MutableList<Gem> als parameter??
         val game = indigoApp.rootService.currentGame
@@ -1100,27 +1097,29 @@ class GameScene(val indigoApp: IndigoApplication) :
 
         }
         val entityGems = game.gems
-        val gemViewList = mutableListOf(greenGem1,greenGem2,greenGem3,greenGem4,greenGem5,
-            yellowGem1,yellowGem2,yellowGem3,yellowGem4,yellowGem5,
-            blueGem)
+        val gemViewList = mutableListOf(
+            greenGem1, greenGem2, greenGem3, greenGem4, greenGem5,
+            yellowGem1, yellowGem2, yellowGem3, yellowGem4, yellowGem5,
+            blueGem
+        )
         // val gemToRemoveList<Gem> =
-/*        for(gem in entityGems){
-            if (!gemMap.containsKey(gem)){
-                //gemToRemoveList.add(gem)
-                val gemToR
-            }
-        }
-        for(gemToRemove in gemToRemoveList) {
-            val gemToRemoveView = gemMap[gemToRemove]
-            gemToRemoveView?.let {
-                //gemView.removeFromParent()
-                it.removeFromParent()
+        /*        for(gem in entityGems){
+                    if (!gemMap.containsKey(gem)){
+                        //gemToRemoveList.add(gem)
+                        val gemToR
+                    }
+                }
+                for(gemToRemove in gemToRemoveList) {
+                    val gemToRemoveView = gemMap[gemToRemove]
+                    gemToRemoveView?.let {
+                        //gemView.removeFromParent()
+                        it.removeFromParent()
 
-                //gemToRemoveView.visual = Visual.EMPTY
-                //gemViewList.remove(gemToRemoveView)
-                gemMap.remove(gemToRemove)
-            }
-        }*/
+                        //gemToRemoveView.visual = Visual.EMPTY
+                        //gemViewList.remove(gemToRemoveView)
+                        gemMap.remove(gemToRemove)
+                    }
+                }*/
         val gemLabel = gemMap[gem]
         gemLabel?.apply {
             isVisible = false
