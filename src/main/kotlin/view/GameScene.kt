@@ -61,7 +61,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
 
     // undoButton component
-    private val undoButton =
+    val undoButton =
         view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40).apply {
             if (indigoApp.networkMode) {
                 isVisible = false
@@ -72,7 +72,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
 
     // redoButton component
-    private val redoButton =
+    val redoButton =
         view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40).apply {
             if (indigoApp.networkMode) {
                 isVisible = false
@@ -82,7 +82,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
 
     // saveButton component
-    private val saveButton =
+     val saveButton =
         view.components.Button(posX = 1055, posY = 980, width = 160, height = 68, text = "Save", fontSize = 40)
             .apply { onMouseClicked = { indigoApp.showMenuScene(indigoApp.saveGameScene) } }
 
@@ -597,6 +597,18 @@ class GameScene(val indigoApp: IndigoApplication) :
         yellowGem4.reposition(914, 801)
         yellowGem5.reposition(590, 619)
         yellowGem6.reposition(590, 254)
+        blueGem.isVisible =true
+        greenGem1.isVisible = true
+        greenGem2.isVisible = true
+        greenGem3.isVisible  = true
+        greenGem4.isVisible =true
+        greenGem5.isVisible = true
+        yellowGem1.isVisible = true
+        yellowGem2.isVisible = true
+        yellowGem3.isVisible =true
+        yellowGem4.isVisible = true
+        yellowGem5.isVisible =true
+        yellowGem6.isVisible = true
 
 
     }
@@ -869,7 +881,8 @@ class GameScene(val indigoApp: IndigoApplication) :
          refreshAfterChangePlayer()
          checkUndoRedo()
          val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
-         val nextTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
+         val nextTiles = indigoApp.rootService.currentGame!!.previousGameState!!.gameBoard.gameBoardTiles
+
          val differingTileEntry = currentTiles.entries.find { entry ->
              !nextTiles.containsKey(entry.key)
          }
