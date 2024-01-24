@@ -873,10 +873,19 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     override fun refreshAfterRedo() {
-        player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
+        val labelsListe = mutableListOf<Label>()
+        labelsListe.add(player1ScoreLabel)
+        labelsListe.add(player2ScoreLabel)
+        labelsListe.add(player3ScoreLabel)
+        labelsListe.add(player4Label)
+        val players = indigoApp.rootService.currentGame!!.players
+        for (i in players.indices) {
+            labelsListe[i].text = players[i].score.toString() + " points"
+        }
+        /*  player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
         player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
         //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
-        //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()
+        //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()*/
         refreshAfterChangePlayer()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val nextTiles = indigoApp.rootService.currentGame!!.previousGameState!!.gameBoard.gameBoardTiles
@@ -907,10 +916,19 @@ class GameScene(val indigoApp: IndigoApplication) :
 
 
     override fun refreshAfterUndo() {
-        player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
-        player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
-        //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
-        //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()
+        val labelsListe = mutableListOf<Label>()
+        labelsListe.add(player1ScoreLabel)
+        labelsListe.add(player2ScoreLabel)
+        labelsListe.add(player3ScoreLabel)
+        labelsListe.add(player4Label)
+        val players = indigoApp.rootService.currentGame!!.players
+        for (i in players.indices) {
+            labelsListe[i].text = players[i].score.toString() + " points"
+        }
+        /*player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
+    player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
+    //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
+    //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()*/
         refreshAfterChangePlayer()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val previousTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
@@ -925,13 +943,14 @@ class GameScene(val indigoApp: IndigoApplication) :
                 println("Found differing tile at coordinate $differingCoordinate with tile $differingTile")
                 val tileCol = differingCoordinate.column
                 val tileRow = differingCoordinate.row
-                hexagonGrid[tileCol, tileRow]?.apply { this.visual = ImageVisual("plaintile.png")
+                hexagonGrid[tileCol, tileRow]?.apply {
+                    this.visual = ImageVisual("plaintile.png")
                     onMouseClicked = {
                         chooseTile(this, differingCoordinate.column, differingCoordinate.row)
                     }
-                } }
+                }
             }
-         else {
+        } else {
             println("No differing tiles found.")
         }
 
@@ -939,10 +958,6 @@ class GameScene(val indigoApp: IndigoApplication) :
 
 
     }
-
-
-
-
 
 
     private fun repositionGems() {
