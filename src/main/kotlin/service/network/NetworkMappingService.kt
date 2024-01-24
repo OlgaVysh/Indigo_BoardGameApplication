@@ -69,27 +69,27 @@ class NetworkMappingService(private val rootService: RootService) : AbstractRefr
         val tile0 = listOf(
             Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),
-            Pair(Edge.THREE, Edge.FIVE)
+            Pair(Edge.THREE, Edge.FIVE),TileType.TYPE_0
         )
         val tile1 = listOf(
             Pair(Edge.TWO, Edge.FIVE),
             Pair(Edge.ONE, Edge.FOUR),
-            Pair(Edge.ZERO, Edge.THREE)
+            Pair(Edge.ZERO, Edge.THREE),TileType.TYPE_1
         )
         val tile2 = listOf(
             Pair(Edge.ZERO, Edge.FIVE),
             Pair(Edge.ONE, Edge.FOUR),
-            Pair(Edge.TWO, Edge.THREE)
+            Pair(Edge.TWO, Edge.THREE),TileType.TYPE_2
         )
         val tile3 = listOf(
             Pair(Edge.ZERO, Edge.FIVE),
             Pair(Edge.ONE, Edge.THREE),
-            Pair(Edge.TWO, Edge.FOUR)
+            Pair(Edge.TWO, Edge.FOUR),TileType.TYPE_3
         )
         val tile4 = listOf(
             Pair(Edge.ZERO, Edge.FIVE),
             Pair(Edge.ONE, Edge.TWO),
-            Pair(Edge.THREE, Edge.FOUR)
+            Pair(Edge.THREE, Edge.FOUR),TileType.TYPE_4
         )
         for (routeTile in routeTiles) {
             when (routeTile.paths) {

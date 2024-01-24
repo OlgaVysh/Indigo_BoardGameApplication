@@ -450,7 +450,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         /*if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
             val currentCPUPlayer = currentGame.players[currentGame.currentPlayerIndex] as? CPUPlayer
             rootService.aiActionService.AiMove(currentCPUPlayer!!.difficulty)
-            */
+            }*/
         /**if (currentCPUPlayer!!.difficulty.equals("easy")) {
         AIService(rootService).makeRandomTurn()
         } else {
@@ -517,7 +517,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             else {
                 neighbourStart++
             }
-            println("Neighbour Start before change"+neighbourStart)
+            println("Neighbour Start before change$neighbourStart")
             val currentTileGem = currentTile.gemEndPosition[currentGemPosition]
             if (middleTile.gemPosition[neighbourStart] == null) {
                 neighbourStart = (neighbourStart + 1) % 6
@@ -573,7 +573,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 currentTile.gemEndPosition.remove(lastGemPosition)
                 return
             }
-            println("Gem Postion" + neighbourStart)
+            println("Gem Postion$neighbourStart")
             println("middleTileGem ${middleTileGem?.gemColor}")
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
             println(currentCoordinate.toString())

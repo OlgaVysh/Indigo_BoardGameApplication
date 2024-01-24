@@ -115,7 +115,7 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameSce
         players[0,currentRows] = Label(text = "Player ${players.rows} :", width = 200, height = 65, fontSize = 40)
         players[1,currentRows] = Label(text = name, width = 200, height = 65, fontSize = 40)
         getGem(currentRows, color)
-        players[3,currentRows] = Label(text = "turn : " + turnOutput, width = 400, height = 65, fontSize = 40)
+        players[3,currentRows] = Label(text = "turn : $turnOutput", width = 400, height = 65, fontSize = 40)
         players[4,currentRows] = Label(text = aiOutput, width = 200, height = 65, fontSize = 40)
 
         startGameButton.isDisabled = players.rows<2

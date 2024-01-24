@@ -106,7 +106,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
     init {
         // Populate the grid with NetworkPlayersView instances
 
-        //  for (i in 0..size) {
+        //  for (i in 0.size) {
         grid[0, 0] = NetworkPlayersView().apply {
             this.button.onMouseClicked = { indigoApp.showMenuScene(indigoApp.configurePlayerXScene) }
         }
@@ -189,7 +189,7 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
         for (i in 1 until grid.rows) {
             val networkPlayer = grid[0, i] ?: continue
             val name = networkPlayer.label.text.substringAfter(": ")
-            if (name.equals(playerLeftName)) {
+            if (name == playerLeftName) {
                 grid.removeRow(i)
                 break
             }

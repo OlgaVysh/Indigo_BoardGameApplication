@@ -22,7 +22,7 @@ class PlayerTurnServiceTest {
     )
     // Sample test tile with specific edge configurations
 
-    val testTile = Tile(
+    private val testTile = Tile(
         listOf(
             Pair(Edge.ZERO, Edge.TWO),
             Pair(Edge.ONE, Edge.FOUR),

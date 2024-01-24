@@ -14,11 +14,10 @@ import java.util.Date
  * @param simulationSpeed (optional) [Int] to set the CPU Player action speed/delay
  * @property isAI to check if any player is CPU controlled, always set to true
  * @property score [Int] to keep track of accumulated points, initially 0
- * @property gemCounter [Int] to keep track of accumulated gems, initially 0
  */
 class CPUPlayer(name: String,
                 age: Date = Date(0),
                 color: TokenColor,
                 var difficulty:String = "easy",
                 var simulationSpeed:Int = 1)
-                : Player(name,age,color,true){}
+                : Player(name,age,color,true)

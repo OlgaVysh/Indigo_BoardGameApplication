@@ -1,3 +1,4 @@
+package service
 import entity.Edge
 import entity.Tile
 import entity.TileType

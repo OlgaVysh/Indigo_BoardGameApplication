@@ -203,18 +203,21 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     }
 
     private fun toColorText(color :TokenColor):String{
-        when(color){
+        return when(color){
             TokenColor.WHITE -> {
-                return "white"
+                "white"
             }
+
             TokenColor.RED -> {
-                return "red"
+                "red"
             }
+
             TokenColor.BLUE -> {
-                return "blue"
+                "blue"
             }
+
             TokenColor.PURPLE -> {
-                return "purple"
+                "purple"
             }
         }
     }

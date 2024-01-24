@@ -155,7 +155,7 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         )
     }
 
-    fun resetSettings(){
+    private fun resetSettings(){
         textMessageLabel.isVisible = false
         textMessageLabel.isDisabled = true
         hostName.text = ""
