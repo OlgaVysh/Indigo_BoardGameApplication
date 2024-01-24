@@ -44,6 +44,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
             lastGame?.previousGameState = firstAppearance
             rootService.currentGame?.nextGameState = lastGame
             rootService.currentGame = rootService.currentGame?.nextGameState
+            rootService.currentGame?.nextGameState = null
 
             //if is your turn in the NetworkMode
             val connectionState = rootService.networkService.connectionState

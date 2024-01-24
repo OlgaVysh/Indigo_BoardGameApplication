@@ -201,6 +201,10 @@ class PlayerTurnServiceTest {
         }
         // Validate route tiles and their count after redo
         assertEquals(51, actualGame.routeTiles.size)
+
+        rootService.playerTurnService.undo()
+        rootService.playerTurnService.placeRouteTile(Coordinate(3,3),testTile)
+        assertNull(rootService.currentGame!!.nextGameState)
     }
 
 

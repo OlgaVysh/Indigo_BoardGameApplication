@@ -220,7 +220,7 @@ class NetworkMappingServiceTest {
             TileType.TYPE_3,
             TileType.TYPE_0
         )
-        val testRoutetiles = listOf(
+        val testRouteTiles = listOf(
             Tile(tile1,entity.TileType.Type_1 ,mutableMapOf()),
             Tile(tile2,entity.TileType.Type_2 ,mutableMapOf()),
             Tile(tile4,entity.TileType.Type_4 ,mutableMapOf()),
@@ -228,7 +228,7 @@ class NetworkMappingServiceTest {
             Tile(tile0,entity.TileType.Type_0,mutableMapOf())
         )
         val allTiles = treasureTiles.take(6).toMutableList()
-        allTiles.addAll(testRoutetiles)
+        allTiles.addAll(testRouteTiles)
         testGame.currentGame = Indigo(
             gameSetting,
             allTiles = allTiles,
