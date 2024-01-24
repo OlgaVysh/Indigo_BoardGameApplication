@@ -879,7 +879,6 @@ class GameScene(val indigoApp: IndigoApplication) :
         //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
         //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()
         refreshAfterChangePlayer()
-        checkUndoRedo()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val nextTiles = indigoApp.rootService.currentGame!!.previousGameState!!.gameBoard.gameBoardTiles
 
@@ -938,23 +937,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
 
 
-    fun checkUndoRedo() {
-        if (indigoApp.rootService.currentGame!!.nextGameState == null) {
-            redoButton.isDisabled = true
-            redoButton.isVisible = false
-        } else {
-            redoButton.isDisabled = false
-            redoButton.isVisible = true
-        }
 
-        if (indigoApp.rootService.currentGame!!.previousGameState == null) {
-            undoButton.isDisabled = true
-            undoButton.isVisible = false
-        } else {
-            undoButton.isDisabled = false
-            undoButton.isVisible = true
-        }
-    }
 
     fun repositionGems() {
         val gameBoardTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
