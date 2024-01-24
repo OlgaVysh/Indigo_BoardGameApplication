@@ -11,6 +11,7 @@ import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.style.BorderColor
 import tools.aqua.bgw.style.BorderWidth
 import tools.aqua.bgw.visual.ColorVisual
+import tools.aqua.bgw.visual.CompoundVisual
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.visual.Visual
 import java.awt.Color
@@ -60,22 +61,30 @@ class GameScene(val indigoApp: IndigoApplication) :
     private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
 
     // undoButton component
-     val undoButton =
+    private val undoButton =
         view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40).apply {
+            if (indigoApp.networkMode) {
+                isVisible = false
+                isDisabled = true
+            }
+
             onMouseClicked = { indigoApp.rootService.playerTurnService.undo() }
         }
 
     // redoButton component
-     val redoButton =
+    private val redoButton =
         view.components.Button(posX = 650, posY = 980, width = 160, height = 68, text = "Redo", fontSize = 40).apply {
+            if (indigoApp.networkMode) {
+                isVisible = false
+                isDisabled = true
+            }
             onMouseClicked = { indigoApp.rootService.playerTurnService.redo() }
         }
 
     // saveButton component
-     val saveButton =
+    private val saveButton =
         view.components.Button(posX = 1055, posY = 980, width = 160, height = 68, text = "Save", fontSize = 40)
-            .apply {
-                onMouseClicked = { indigoApp.showMenuScene(indigoApp.saveGameScene) } }
+            .apply { onMouseClicked = { indigoApp.showMenuScene(indigoApp.saveGameScene) } }
 
     // Player components
     private var player1Label =
@@ -852,19 +861,84 @@ class GameScene(val indigoApp: IndigoApplication) :
         rotationDegree++
     }
 
-    /*override fun refreshAfterRedo() {
-        val coordinate = chosenCol?.let { chosenRow?.let { it1 -> Coordinate(it, it1) } }
-        if (coordinate != null) {
-            refreshAfterPlaceTile(coordinate)
+     override fun refreshAfterRedo() {
+         player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
+         player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
+         //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
+         //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()
+         refreshAfterChangePlayer()
+         checkUndoRedo()
+         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
+         val nextTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
+         val differingTileEntry = currentTiles.entries.find { entry ->
+             !nextTiles.containsKey(entry.key)
+         }
+
+         if (differingTileEntry != null) {
+             val differingCoordinate = differingTileEntry.key
+             val differingTile = differingTileEntry.value
+             println("Found differing tile at coordinate $differingCoordinate with tile $differingTile")
+             val tileCol = differingTileEntry.key.column
+             val tileRow = differingTileEntry.key.row
+             hexagonGrid[tileCol, tileRow] =
+                 HexagonView(size = 55, visual = differingTile.type.toImg()).apply { this!!.visual = ImageVisual("tile0.png") }
+         } else {
+             println("No differing tile found.")
+         }
+         refreshAfterChangePlayer()
+         checkUndoRedo()
+    }
+
+
+    override fun refreshAfterUndo() {
+        player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
+        player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
+        //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
+        //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()
+        refreshAfterChangePlayer()
+       checkUndoRedo()
+       val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
+        val previousTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
+        val differingTileEntry = previousTiles.entries.find { entry ->
+            !currentTiles.containsKey(entry.key)
+        }
+
+        if (differingTileEntry != null) {
+            val differingCoordinate = differingTileEntry.key
+            val differingTile = differingTileEntry.value
+            println("Found differing tile at coordinate $differingCoordinate with tile $differingTile")
+            val tileCol = differingTileEntry.key.column
+            val tileRow = differingTileEntry.key.row
+            hexagonGrid[tileCol, tileRow].apply { this!!.visual = ImageVisual("plaintile.png") }
+        } else {
+            println("No differing tile found.")
+        }
+
+
+    }
+
+    fun checkUndoRedo(){
+        if(indigoApp.rootService.currentGame!!.nextGameState == null){
+            redoButton.isDisabled = true
+            redoButton.isVisible = false
+        }
+        else
+        {
+            redoButton.isDisabled = false
+            redoButton.isVisible = true
+        }
+
+        if(indigoApp.rootService.currentGame!!.previousGameState == null){
+            undoButton.isDisabled = true
+            undoButton.isVisible = false
+        }
+        else
+        {
+            undoButton.isDisabled = false
+            undoButton.isVisible = true
         }
     }
-    */
 
-    /*override fun refreshAfterUndo() {
-
-
-    }
-    */
     /**
      * Refreshes the GUI after placing a tile at a specified coordinate.
      *
