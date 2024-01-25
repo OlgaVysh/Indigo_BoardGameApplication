@@ -8,21 +8,21 @@ import service.*
 class SimpleAI(private val root: RootService): AbstractRefreshingService() {
 
 //these do not change during the course of a game
-    /** these [Coordinate]s do not exist on the board but are used for distance calculation */
-    private val allGates = listOf(Coordinate(-6,3),Coordinate(-3,6),Coordinate(3,3),
-        Coordinate(6,-3),Coordinate(3,-6),Coordinate(-3,-3))
     /** gates owned by the player */
     private val ownGates : List<Int> = findOwnGates()
+    /** gates not owned by the player */
+    private val enemyGates: List<Int> = mutableListOf(0,1,2,3,4,5).filterNot { ownGates.contains(it) }.toList()
 
 //these all change and need to be updated each move
     /** all [Coordinate]s found to contain [Gem]s on their tiles */
     private var gemTiles: List<Coordinate> = listOf()
     /** Positions of [Gem]s on their respective Tile */
-    private var gemPositions: List<Int> = listOf()
+    private var gemPositions: List<Pair<Int,Gem>> = listOf()
     /** all [Coordinate]s that extend the path of a [Gem] */
     private var moves: List<Coordinate> = listOf()
     /** Nearest Gate index and distance to gate for each gem */
     private var nearestGates: List<Pair<Int,Int>> = listOf()
+    private var nearestEnemyGates: List<Pair<Int,Int>> = listOf()
     /** [List] of [Pair]s consisting of the best rotation for each move and the Distance delta for that move */
     private var moveValues: List<Pair<Int,Int>> = listOf()
 
@@ -30,24 +30,32 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      * finds the best move for the strategy and places the tile accordingly
      */
     fun makeMove() {
+        val randomAI = RandomAI(root)
         val game = root.currentGame
         checkNotNull(game)
         val player = game.players[game.currentPlayerIndex]
-        checkNotNull(player.handTile)
+        if (player.handTile==null) onAllRefreshables { refreshAfterEndGame() }
         val playerTurnService = root.playerTurnService
         gatherInformation()
-        var bestDistanceDelta: Int = Int.MIN_VALUE
-        var bestMoveIndex = 0
-        for (i in moveValues.indices){
-            if (moveValues[i].second > bestDistanceDelta){
-                bestDistanceDelta = moveValues[i].second
-                bestMoveIndex = i
+        if (gemTiles.isNotEmpty()){
+            var bestDistanceDelta: Int = Int.MIN_VALUE
+            var bestMoveIndex = 0
+            for (i in moveValues.indices){
+                if (moveValues[i].second > bestDistanceDelta){
+                    bestDistanceDelta = moveValues[i].second
+                    bestMoveIndex = i
+                }
             }
+            for (i in 0 until moveValues[bestMoveIndex].first){
+                playerTurnService.rotateTileRight(player.handTile!!)
+            }
+            println("[SimpleAI DEBUG] gemTile: "+gemTiles[bestMoveIndex]+" move: " +
+                    moves[bestMoveIndex]+"rotation:"+moveValues[bestMoveIndex].first)
+            playerTurnService.placeRouteTile(moves[bestMoveIndex],player.handTile!!)
+        }else{
+            val randomMove = randomAI.findAvailableMoves(root.currentGame!!).shuffled().first().first
+            playerTurnService.placeRouteTile(randomMove,player.handTile!!)
         }
-        for (i in 0 until moveValues[bestMoveIndex].first) playerTurnService.rotateTileRight(player.handTile!!)
-        println("[SimpleAI DEBUG] gemTile: "+gemTiles[bestMoveIndex]+" move: " +
-                moves[bestMoveIndex]+"rotation:"+moveValues[bestMoveIndex].first)
-        playerTurnService.placeRouteTile(moves[bestMoveIndex],player.handTile!!)
         onAllRefreshables { refreshAfterAITurn() }
     }
     /**
@@ -65,24 +73,28 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         val playerTurnService = root.playerTurnService
         val gameService = root.gameService
         var newEndPos: Int
-        var tempNewDist: Int
-        var minDist: Int
+        var tempNewOwnDist: Int
+        var tempNewEnemyDist: Int
+        var bestValue: Int
         var bestRotation = 0
         val result: MutableList<Pair<Int,Int>> = mutableListOf()
         for (i in moves.indices){
-            minDist = Int.MAX_VALUE
+            bestValue = Int.MIN_VALUE
             for (j in 0..5){
                 if (gameService.checkPlacement(moves[i],player.handTile!!,true)) {   //handTile checked above
                     newEndPos = calculateNewEndPosition(i,j)
-                    tempNewDist = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),nearestGates[i].first)
-                    if (tempNewDist< minDist){
-                        minDist = tempNewDist
+                    tempNewOwnDist = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),
+                        nearestGates[i].first)-nearestGates[i].second
+                    tempNewEnemyDist = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),
+                        nearestEnemyGates[i].first)-nearestEnemyGates[i].second
+                    if ((tempNewEnemyDist-(tempNewOwnDist*2))*(gemPositions[i].second.gemColor.ordinal+1)> bestValue){
+                        bestValue = (tempNewEnemyDist-(tempNewOwnDist*2))*(gemPositions[i].second.gemColor.ordinal+1)
                         bestRotation = (j).mod(6)
                     }
                 }
                 playerTurnService.rotateTileRight(player.handTile!!,true)           //handTile checked above
             }
-            result.add(Pair(bestRotation,nearestGates[i].second-minDist))
+            result.add(Pair(bestRotation,bestValue))
         }
         return result.toList()
     }
@@ -98,7 +110,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         checkNotNull(game)
         val player = game.players[game.currentPlayerIndex]
         checkNotNull(player.handTile)
-        val gemStartPosition = (gemPositions[index]+3+rotation).mod(6)
+        val gemStartPosition = (gemPositions[index].first+3+rotation).mod(6)
         for (path in player.handTile!!.paths){
             if (path.first.ordinal == gemStartPosition){
                 return path.second.ordinal
@@ -117,25 +129,32 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         for (element in gemTiles){
             println("[SimpleAI DEBUG] $element")
         }
-        gemPositions = findGemPositions()
-        println("[SimpleAI DEBUG] gemPos size: "+gemPositions.size)
-        for (element in gemPositions){
-            println("[SimpleAI DEBUG] $element")
-        }
-        moves = findMoves()
-        println("[SimpleAI DEBUG] moves size: "+moves.size)
-        for (element in moves){
-            println("[SimpleAI DEBUG] $element")
-        }
-        nearestGates = findNearestGate()
-        println("[SimpleAI DEBUG] nearestGates (GATE, DISTANCE) size: "+nearestGates.size)
-        for (element in nearestGates){
-            println("[SimpleAI DEBUG] $element")
-        }
-        moveValues = tryOrientations()
-        println("[SimpleAI DEBUG] values (ROTATION, DISTANCEDELTA) size: "+moveValues.size)
-        for (element in moveValues){
-            println("[SimpleAI DEBUG] $element")
+        if (gemTiles.isNotEmpty()){
+            gemPositions = findGemPositions()
+            println("[SimpleAI DEBUG] gemPos size: "+gemPositions.size)
+            for (element in gemPositions){
+                println("[SimpleAI DEBUG] $element")
+            }
+            moves = findMoves()
+            println("[SimpleAI DEBUG] moves size: "+moves.size)
+            for (element in moves){
+                println("[SimpleAI DEBUG] $element")
+            }
+            nearestGates = findNearestGate(ownGates)
+            println("[SimpleAI DEBUG] nearestGates (GATE, DISTANCE) size: "+nearestGates.size)
+            for (element in nearestGates){
+                println("[SimpleAI DEBUG] $element")
+            }
+            nearestEnemyGates = findNearestGate(enemyGates)
+            println("[SimpleAI DEBUG] nearestEnemyGates (GATE, DISTANCE) size: "+nearestEnemyGates.size)
+            for (element in nearestEnemyGates){
+                println("[SimpleAI DEBUG] $element")
+            }
+            moveValues = tryOrientations()
+            println("[SimpleAI DEBUG] values (ROTATION, VALUE) size: "+moveValues.size)
+            for (element in moveValues){
+                println("[SimpleAI DEBUG] $element")
+            }
         }
     }
     /**
@@ -143,7 +162,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      *
      * @return [Pair] of Gate Index [Int] and distance [Int] in that order
      */
-    private fun findNearestGate() : List<Pair<Int,Int>>{
+    private fun findNearestGate(gates: List<Int>) : List<Pair<Int,Int>>{
         val game = root.currentGame
         checkNotNull(game)
         val result : MutableList<Pair<Int,Int>> = mutableListOf()
@@ -153,7 +172,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
 
         for (move in moves){
             minDist = Int.MAX_VALUE
-            for (gate in ownGates){
+            for (gate in gates){
                 tempDist = calculateDistance(move,gate)
                 if (tempDist < minDist){
                     minDist = tempDist
@@ -166,7 +185,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
     }
 
     /**
-     * calculates the Distance between a given Point and the imaginary [Coordinate] of a given Gate from [allGates]
+     * calculates the Distance between a given Point and the imaginary [Coordinate] of a given Gate
      *
      * @param position [Coordinate] from which to calculate the Distance
      * @param gate [Int] representing the Gate to which the Distance is calculated
@@ -193,9 +212,20 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         val game = root.currentGame
         checkNotNull(game)
         val result : MutableList<Coordinate> = mutableListOf()
-        for (gemTile in gemTiles){
-            for (gemPos in game.gameBoard.gameBoardTiles[gemTile]!!.gemEndPosition.keys){
-                result.add(findNeighbor(gemTile,gemPos))
+        for (gemTile in gemTiles.distinct()){
+            if (gemTile == Coordinate(0,0)){
+                if (game.gameBoard.gameBoardTiles[Coordinate(-1,0)] == null) result.add(Coordinate(-1,0))
+                if (game.gameBoard.gameBoardTiles[Coordinate(-1,1)] == null) result.add(Coordinate(-1,1))
+                if (game.gameBoard.gameBoardTiles[Coordinate(0,1)] == null) result.add(Coordinate(0,1))
+                if (game.gameBoard.gameBoardTiles[Coordinate(1,0)] == null) result.add(Coordinate(1,0))
+                if (game.gameBoard.gameBoardTiles[Coordinate(1,-1)] == null) result.add(Coordinate(1,-1))
+                if (game.gameBoard.gameBoardTiles[Coordinate(0,-1)] == null) result.add(Coordinate(0,-1))
+            }else{
+                for (gemPos in game.gameBoard.gameBoardTiles[gemTile]!!.gemEndPosition.keys){
+                    println("[SimpleAI DEBUG] tile: $gemTile gems: " +
+                            "${game.gameBoard.gameBoardTiles[gemTile]!!.gemEndPosition.size}")
+                    result.add(findNeighbor(gemTile,gemPos))
+                }
             }
         }
         return result.toList()
@@ -226,14 +256,25 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
      *
      * @return [List] of [Int] representing the [Tile.gemEndPosition]
      */
-    private fun findGemPositions(): List<Int>{
+    private fun findGemPositions(): List<Pair<Int,Gem>>{
         val game = root.currentGame
         checkNotNull(game)
         check(gemTiles.isNotEmpty())
-        val result: MutableList<Int> = mutableListOf()
-        for (i in gemTiles.indices){
-            for (key in game.gameBoard.gameBoardTiles[gemTiles.distinct()[i]]!!.gemEndPosition.keys){ //Tile must exist
-                result.add(key)
+        val result: MutableList<Pair<Int,Gem>> = mutableListOf()
+        var middleGem = Gem(GemColor.EMERALD)
+        for (i in gemTiles.distinct().indices) {
+            if (gemTiles.distinct()[i] == Coordinate(0, 0)) {
+                if (game.middleTile.gemPosition.size == 1) middleGem = Gem(GemColor.SAPPHIRE)
+                if (game.gameBoard.gameBoardTiles[Coordinate(-1,0)] == null) result.add(Pair(0,middleGem))
+                if (game.gameBoard.gameBoardTiles[Coordinate(-1,1)] == null) result.add(Pair(1,middleGem))
+                if (game.gameBoard.gameBoardTiles[Coordinate(0,1)] == null) result.add(Pair(2,middleGem))
+                if (game.gameBoard.gameBoardTiles[Coordinate(1,0)] == null) result.add(Pair(3,middleGem))
+                if (game.gameBoard.gameBoardTiles[Coordinate(1,-1)] == null) result.add(Pair(4,middleGem))
+                if (game.gameBoard.gameBoardTiles[Coordinate(0,-1)] == null) result.add(Pair(5,middleGem))
+            }else{
+                for (gem in game.gameBoard.gameBoardTiles[gemTiles.distinct()[i]]!!.gemEndPosition) { //Tile must exist
+                    result.add(Pair(gem.key,gem.value))
+                }
             }
         }
         return result.toList()
@@ -247,9 +288,14 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         val game = root.currentGame
         checkNotNull(game)
         val result : MutableList<Coordinate> = mutableListOf()
+        if (root.currentGame!!.middleTile.gemPosition.isNotEmpty()){
+            for (i in 0 until root.currentGame!!.middleTile.gemPosition.size){
+                result.add(Coordinate(0,0))
+            }
+        }
         for (coordinate in game.gameBoard.gameBoardTiles.keys){
             if (game.gameBoard.gameBoardTiles[coordinate]?.gemEndPosition?.isNotEmpty() == true){
-                for (i in 0 until game.gameBoard.gameBoardTiles[coordinate]!!.gemEndPosition.size) {//exists as per if statement above
+                for (i in 0 until game.gameBoard.gameBoardTiles[coordinate]!!.gemEndPosition.size){
                     result.add(coordinate)
                 }
             }
