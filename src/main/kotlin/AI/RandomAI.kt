@@ -58,7 +58,7 @@ class RandomAI(val rootService: RootService): AbstractRefreshingService() {
     /**
      * Finds available moves on the game board.
      */
-    private fun findAvailableMoves(currentGame: Indigo): List<Pair<Coordinate, Tile>> {
+    fun findAvailableMoves(currentGame: Indigo): List<Pair<Coordinate, Tile>> {
         val availableMoves = mutableListOf<Pair<Coordinate, Tile>>()
 
         // Iterate over the game board and find available moves
