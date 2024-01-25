@@ -814,6 +814,6 @@ class GameServiceTest {
         rootService.playerTurnService.undo()
         assertNull(rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, 3)])
         assertNotNull(rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)])
-    //    assertEquals(1, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]!!.gemEndPosition.size)
+        assertEquals(1, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]!!.gemEndPosition.size)
     }
 }

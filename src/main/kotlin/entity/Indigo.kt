@@ -52,9 +52,20 @@ data class Indigo(
         for (gem in gems) {
             copiedGems.add(gem)
         }
-        val copiedGameBoardTiles = gameBoard.gameBoardTiles.toMutableMap()
+        val copiedGameBoardTiles = mutableMapOf<Coordinate,Tile>()
+        for((key, value ) in this.gameBoard.gameBoardTiles ){
+            val gemEndPosition = value.gemEndPosition.toMutableMap()
+            val egdes = value.edges.toMutableList()
+            val paths = value.paths.toMutableList()
+            val copiedTile = Tile(paths,value.type,gemEndPosition).apply {
+                this.edges.clear()
+                this.edges.addAll(egdes)
+            }
+            copiedGameBoardTiles[key] = copiedTile
+        }
         val copiedGateTokens = this.gameBoard.gateTokens.toList()
         val copiedGameBoard = GameBoard()
+        copiedGameBoard.gameBoardTiles.clear()
         copiedGameBoard.gameBoardTiles.putAll(copiedGameBoardTiles)
         copiedGameBoard.gateTokens = copiedGateTokens
         val copiedPlayers = settings.players.map { originalPlayer ->
@@ -103,7 +114,7 @@ data class Indigo(
         copiedIndigo.nextGameState = this.nextGameState
         copiedIndigo.previousGameState = this.previousGameState
         copiedIndigo.middleTile.gemPosition.clear()
-        for ((key,value ) in this.middleTile.gemPosition) {
+       for ((key,value ) in this.middleTile.gemPosition) {
             copiedIndigo.middleTile.gemPosition[key] =value
         }
         copiedIndigo.routeTiles = this.routeTiles.toMutableList()
