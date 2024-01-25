@@ -131,7 +131,7 @@ class GameServiceTest {
 
         testGame = rootService.currentGame
         assertEquals(playerListe.size, testGame!!.players.size)
-       // assertEquals(fourPlayers, testGame.players)
+        // assertEquals(fourPlayers, testGame.players)
         for (i in playerListe.indices) {
             assertNotNull(testGame.players[i].handTile)
         }
@@ -222,10 +222,10 @@ class GameServiceTest {
         rootService.playerTurnService.rotateTileLeft(tile2)
         assertTrue(refreshableTest.refreshAfterLeftRotationCalled)
         refreshableTest.reset()
-/*
-        val exception2 = assertThrows<Exception> {
-            rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2)
-        }*/
+        /*
+                val exception2 = assertThrows<Exception> {
+                    rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2)
+                }*/
         //assertEquals(exception2.message, "tile blocks exit, please rotate Tile")
         assertFalse(refreshableTest.refreshAfterRightRotationCalled)
         rootService.playerTurnService.rotateTileRight(tile2)
@@ -778,4 +778,42 @@ class GameServiceTest {
         assertEquals(false, testGame.players[0].isAI)
     }
 
+    @Test
+    fun test() {
+        val refreshableTest = RefreshableTest()
+        rootService.addRefreshable(refreshableTest)
+        //tileID 2 initialise
+        val tile2 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
+            TileType.Type_2,
+            mutableMapOf(Pair(1, Gem(EMERALD)))
+        )
+        // second tileID 2 initialise
+        val tile3 = Tile(
+            listOf(Pair(Edge.ZERO, Edge.FIVE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.THREE)),
+            TileType.Type_2,
+        )
+        val game = rootService.currentGame
+        assertNull(game)
+
+        val twoPlayer = mutableListOf(
+            Player("Alice", Date(0), TokenColor.WHITE, false),
+            Player("Bob", Date(0), TokenColor.PURPLE, true)
+        )
+        rootService.gameService.startGame(twoPlayer)
+        checkNotNull(rootService.currentGame)
+        rootService.currentGame!!.players[0].handTile = tile2
+        val player1HandTile = rootService.currentGame!!.players[0].handTile
+
+        rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), tile2)
+        rootService.currentGame!!.players[1].handTile = tile3
+        rootService.playerTurnService.placeRouteTile(Coordinate(-1, 3), tile3)
+        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]!!.gemEndPosition.size)
+        assertEquals(1, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, 3)]!!.gemEndPosition.size)
+
+        rootService.playerTurnService.undo()
+        assertNull(rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, 3)])
+        assertNotNull(rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)])
+    //    assertEquals(1, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]!!.gemEndPosition.size)
+    }
 }
