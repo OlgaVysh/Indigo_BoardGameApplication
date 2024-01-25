@@ -45,16 +45,30 @@ data class Node(val rootService: RootService, val parent: Node?, val coordinate:
         val playerTile= state.players[state.currentPlayerIndex].handTile
 
         // Iterate over the game board and find available moves
+        // Iterate over the game board and find available moves
         for (row in -4..4) {
             for (col in Integer.max(-4, -row - 4)..Integer.min(4, -row + 4)) {
                 val coordinate = Coordinate(row, col)
                 // Check if placing the tile at the coordinate is a valid move
-                if (servicee(state).checkPlacement(coordinate, playerTile!!,true)) {
-                    availableMoves.add(Coordinate(row,col))
+                if (servicee(state).checkPlacement(coordinate, playerTile!!,true)) { //even when it blocks an exist it return true because we ll rotate the tile later
+                    availableMoves.add(Coordinate(row, col))
                 }
             }
         }
         return availableMoves
     }
 
+
+
+
+
+
+    fun rotateTileLeft(tile: Tile, isAiCalled: Boolean = false) {    // Add the first edge to the end of the list
+
+
+        tile.edges.addAll(tile.edges.subList(0, 1))
+        // Remove the original first edge
+        tile.edges.removeAll(tile.edges.subList(0, 1))
+        //if (!isAiCalled) onAllRefreshables { refreshAfterLeftRotation(game.currentPlayerIndex) }
+    }
 }

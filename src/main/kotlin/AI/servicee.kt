@@ -2,47 +2,39 @@ package AI
 
 import entity.Indigo
 import entity.*
+import java.lang.Exception
 import kotlin.math.abs
 
-class servicee (var currentGame: Indigo){
+class servicee (var currentGame: Indigo) {
 
 
     fun checkPlacement(space: Coordinate, tile: Tile, isAiCalled: Boolean = false): Boolean {
         //val currentGame = rootService.currentGame
         //checkNotNull(currentGame)
         if (space == Coordinate(0, 0)) {
-            if (!isAiCalled) //onAllRefreshables { refreshAfterCheckPlacement() }
+            //if (!isAiCalled) //onAllRefreshables { refreshAfterCheckPlacement() }
             return false
         }
         // Check if the space is occupied
         if (currentGame.gameBoard.gameBoardTiles[space] != null) {
-
-            if (!isAiCalled) {
-               // onAllRefreshables { refreshAfterCheckPlacement() }
-                throw Exception("this place is occupied")
-            } else return false
-
+            return false
         }
         // Check if the space has an exit
         return if (!coordinateHasExit(space)) {
-            if (!isAiCalled) placeTile(space, tile)
             true
-
         } else {
             // Check if the tile blocks an exit
             return if (!tileBlocksExit(space, tile)) {
-                if (!isAiCalled) placeTile(space, tile)
-                true
+              true
             } else {
                 if (!isAiCalled) {
-                    //onAllRefreshables { refreshAfterCheckPlacement() }
-                    throw Exception("tile blocks exit, please rotate Tile")
-                } else return false
+                    return false
+                } else return true
             }
         }
     }
 
-/*
+    /*
     //for AI returning false instead of throwing exception
     fun checkPlacementAI(space: Coordinate, tile: Tile): Boolean {
       //  val currentGame = rootService.currentGame
@@ -109,7 +101,7 @@ class servicee (var currentGame: Indigo){
         //val currentGame = rootService.currentGame
         //checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
-       // if (!isAiCalled) onAllRefreshables { refreshAfterPlaceTile(space, tile) }
+        // if (!isAiCalled) onAllRefreshables { refreshAfterPlaceTile(space, tile) }
     }
 
     /**
@@ -119,8 +111,8 @@ class servicee (var currentGame: Indigo){
      * @return True if placement blocks an exit, false otherwise.
      */
     private fun tileBlocksExit(space: Coordinate, tile: Tile): Boolean {
-       // val currentGame = rootService.currentGame
-       // checkNotNull(currentGame)
+        // val currentGame = rootService.currentGame
+        // checkNotNull(currentGame)
         // Define coordinates for each gate
         val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
         val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
@@ -128,7 +120,7 @@ class servicee (var currentGame: Indigo){
         val gate4 = listOf(Coordinate(4, -1), Coordinate(4, -2), Coordinate(4, -3))
         val gate5 = listOf(Coordinate(3, -4), Coordinate(2, -4), Coordinate(1, -4))
         val gate6 = listOf(Coordinate(-3, -1), Coordinate(-2, -2), Coordinate(-1, -3))
-        val gates = listOf(gate1,gate2, gate3, gate4, gate5, gate6)
+        val gates = listOf(gate1, gate2, gate3, gate4, gate5, gate6)
 
         var position1 = 0
         var position2 = 1
@@ -179,7 +171,7 @@ class servicee (var currentGame: Indigo){
      * @param tile The tile to check for gem collisions.
      * @return `true` if a collision is detected and resolved, `false` otherwise.
      */
-    fun checkCollision(tile: Tile): Boolean {
+    fun checkCollision(tile: Tile): Boolean {//done
         for (path in tile.paths) {
             val gemAtBeginning = tile.gemEndPosition[path.first.ordinal]
             val gemAtEnd = tile.gemEndPosition[path.second.ordinal]
@@ -188,7 +180,7 @@ class servicee (var currentGame: Indigo){
                 //Two gems are colliding
                 tile.gemEndPosition.remove(path.first.ordinal)
                 tile.gemEndPosition.remove(path.second.ordinal)
-                //onAllRefreshables { refreshAfterCollision() }
+                //onAllRefreshables { refreshAfterCollision(gemAtEnd, gemAtBeginning) }
                 return true
             }
         }
@@ -201,15 +193,15 @@ class servicee (var currentGame: Indigo){
      * @param coordinate The coordinate of the tile.
      */
 
-    fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {
+    fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {//done
         //val currentGame = rootService.currentGame
-        //checkNotNull(currentGame)
+       // checkNotNull(currentGame)
         val players = currentGame.players
 
         val gateTokens = currentGame.gameBoard.gateTokens
         val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
         val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
-        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 3))
+        val gate3 = listOf(Coordinate(1, 3), Coordinate(2, 2), Coordinate(3, 1))
         val gate4 = listOf(Coordinate(4, -1), Coordinate(4, -2), Coordinate(4, -3))
         val gate5 = listOf(Coordinate(1, -4), Coordinate(2, -4), Coordinate(3, -4))
         val gate6 = listOf(Coordinate(-1, -3), Coordinate(-2, -2), Coordinate(-3, -1))
@@ -233,7 +225,7 @@ class servicee (var currentGame: Indigo){
                             if (player.color == gateTokens[(i * 2)].color) {
                                 assignGem(gem, player)
                                 if (gem == gem2)
-                                    tile.gemEndPosition.remove((5 + i) % 6)
+                                    tile.gemEndPosition.remove((1 + i) % 6)
                                 if (gem == gem1)
                                     tile.gemEndPosition.remove((0 + i) % 6)
                             }
@@ -248,18 +240,19 @@ class servicee (var currentGame: Indigo){
                                 assignGem(gem, player)
                             }
                             if (gem == gem2)
-                                tile.gemEndPosition.remove((5 + i) % 6)
+                                tile.gemEndPosition.remove((1 + i) % 6)
                             if (gem == gem1)
                                 tile.gemEndPosition.remove((0 + i) % 6)
                         }
                     }
-                    currentGame.gems.remove(gem)
+                   // onAllRefreshables { refreshAfterRemoveGems(gem) }
+                    println(gem.gemColor)
+                    val removedElement = currentGame.gems.find { it.gemColor == gem.gemColor }
+                    currentGame.gems.remove(removedElement)
                 }
             }
         }
-        //onAllRefreshables { refreshAfterRemoveGems() }
     }
-
 
 
     /**
@@ -275,7 +268,7 @@ class servicee (var currentGame: Indigo){
     /**
      * Changes the current player to the next player in the list.
      */
-   /* fun changePlayer() {
+    /* fun changePlayer() {
         //val currentGame = rootService.currentGame
         //checkNotNull(currentGame)
 
@@ -314,39 +307,78 @@ class servicee (var currentGame: Indigo){
         isAiCalled: Boolean = false
     ) {
         //val currentGame = rootService.currentGame
-       // checkNotNull(currentGame)
+        //checkNotNull(currentGame)
         val middleTile = currentGame.middleTile
         val currentTile = currentGame.gameBoard.gameBoardTiles[currentCoordinate]
         val neighbourTile = currentGame.gameBoard.gameBoardTiles[neighborCoordinate]
-        val neighbourStart = (currentGemPosition + 3) % 6
+        var neighbourStart = (currentGemPosition + 3) % 6
         val neighborCoordinates = getNeighboringCoordinates(currentCoordinate)
         if (currentTile == null) {
             return
         }
+
+        // if in the middle are no more Gems
         if (neighborCoordinate.row == 0 && neighborCoordinate.column == 0) {
             val amountOfGems = middleTile.gemPosition.size
             if (amountOfGems <= 0) {
                 return
             }
+            if(neighbourStart == 5) neighbourStart = 1
+            else {
+                neighbourStart++
+            }
+            println("Neighbour Start before change$neighbourStart")
             val currentTileGem = currentTile.gemEndPosition[currentGemPosition]
+            if (middleTile.gemPosition[neighbourStart] == null) {
+                neighbourStart = (neighbourStart + 1) % 6
+                if (neighbourStart == 0 && amountOfGems > 1) neighbourStart = (neighbourStart - 2 + 6) % 6
+                if(middleTile.gemPosition[neighbourStart] == null){
+                    neighbourStart = (neighbourStart - 2 + 6) % 6
+                }
+            }
+            if (neighbourStart == 0 && amountOfGems > 1) {
+                neighbourStart = (neighbourStart -1+6) % 6
+                if (middleTile.gemPosition[neighbourStart] == null)neighbourStart = (neighbourStart +2) % 6
+            }
+            if(middleTile.gemPosition[neighbourStart]==null && amountOfGems == 2){
+                for ((key) in middleTile.gemPosition){
+                    if(key!=0){
+                        neighbourStart = key
+                    }
+                }
+            }
+            if (amountOfGems == 1) neighbourStart = 0
             if (currentTileGem != null) {
-                currentGame.gems.remove(middleTile.gemPosition[amountOfGems - 1])
-                currentGame.gems.remove(currentTile.gemEndPosition[currentGemPosition])
+
+                val removedElement =
+                    currentGame.gems.find { it.gemColor == middleTile.gemPosition[neighbourStart]!!.gemColor }
+                currentGame.gems.remove(removedElement)
+                val removedGem =
+                    currentGame.gems.find { it.gemColor == currentTile.gemEndPosition[currentGemPosition]!!.gemColor }
+                currentGame.gems.remove(removedGem)
                 middleTile.gemPosition.remove(amountOfGems - 1)
                 currentTile.gemEndPosition.remove(currentGemPosition)
                 return
             }
-            val middleTileGem = middleTile.gemPosition[amountOfGems - 1]
+            val middleTileGem = middleTile.gemPosition[neighbourStart]
             val lastGemPosition = getAnotherEdge(currentTile.edges[currentGemPosition], currentTile)
-            middleTile.gemPosition.remove(amountOfGems - 1)
+            middleTile.gemPosition.remove(neighbourStart)
             if (currentTile.gemEndPosition[lastGemPosition] != null) {
-                currentGame.gems.remove(middleTileGem)
-                currentGame.gems.remove(currentTile.gemEndPosition[lastGemPosition])
+
+                val removedElement = currentGame.gems.find { it.gemColor == middleTileGem!!.gemColor }
+                currentGame.gems.remove(removedElement)
+                val removedGem =
+                    currentGame.gems.find { it.gemColor == currentTile.gemEndPosition[lastGemPosition]!!.gemColor }
+                currentGame.gems.remove(removedGem)
                 currentTile.gemEndPosition.remove(lastGemPosition)
                 return
             }
+            println("Gem Postion$neighbourStart")
+            println("middleTileGem ${middleTileGem?.gemColor}")
             currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
-            //if(!isAiCalled) onAllRefreshables {refreshAfterMoveGems(currentTile.gemEndPosition[lastGemPosition]!!,currentCoordinate)}
+            println(currentCoordinate.toString())
+            println(lastGemPosition)
+
             moveGems(neighborCoordinates[lastGemPosition], currentCoordinate, ((lastGemPosition + 3) % 6))
         }
         if (neighbourTile == null) {
@@ -360,40 +392,48 @@ class servicee (var currentGame: Indigo){
 
         if (tileGems.contains(currentGemPosition)) {
             if (neighbourGems.contains(neighbourStart)) {
-                currentGame.gems.remove(tileGems[currentGemPosition])
-                currentGame.gems.remove(neighbourGems[neighbourStart])
+
+                val removedElement = currentGame.gems.find { it.gemColor == tileGems[currentGemPosition]!!.gemColor }
+                currentGame.gems.remove(removedElement)
+                val removedGem =
+                    currentGame.gems.find { it.gemColor == neighbourGems[neighbourStart]!!.gemColor }
+                currentGame.gems.remove(removedGem)
                 tileGems.remove(currentGemPosition)
                 neighbourGems.remove(neighbourStart)
                 return
             }
 
             if (neighbourGems.contains(neighborEnd)) {
-                currentGame.gems.remove(tileGems[currentGemPosition])
-                currentGame.gems.remove(neighbourGems[neighborEnd])
+
+                val removedElement = currentGame.gems.find { it.gemColor == tileGems[currentGemPosition]!!.gemColor }
+                currentGame.gems.remove(removedElement)
+                val removedGem =
+                    currentGame.gems.find { it.gemColor == neighbourGems[neighborEnd]!!.gemColor }
+                currentGame.gems.remove(removedGem)
                 tileGems.remove(currentGemPosition)
                 neighbourGems.remove(neighborEnd)
                 return
             }
+
         }
         if (!neighbourTile.gemEndPosition.contains(neighbourStart)) return
         val currentEdge = currentTile.edges[currentGemPosition]
         val currentEnd = getAnotherEdge(currentEdge, currentTile)
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
-        if(neighbourGems[neighbourStart] != null) {
-           /* if (!isAiCalled) onAllRefreshables {
-                refreshAfterMoveGems(
-                    currentTile.gemEndPosition[currentEnd]!!,
-                    currentCoordinate
-                )
-            }*/
+        if (currentTile.gemEndPosition[currentEnd] != null) {
+
         }
+        println( currentCoordinate.toString())
+        println("currentend $currentEnd")
         removeGemsReachedGate(currentTile, currentCoordinate)
 
         moveGems(
             neighborCoordinates[currentEnd], currentCoordinate, abs((currentEnd + 3)) % 6
         )
     }
+
+
 
 
     /**

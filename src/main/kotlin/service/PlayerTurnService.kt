@@ -16,7 +16,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
      * @throws Exception if the placement is invalid.
      */
 
-    fun placeRouteTile(space: Coordinate, tile: Tile) {
+    fun placeRouteTile(space: Coordinate, tile: Tile, isAiCalled: Boolean =false) {
         val currentGame = rootService.currentGame
         // Check if the game has started
         checkNotNull(currentGame) { "The game has not started yet" }
@@ -29,7 +29,9 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         */
         val firstAppearance = currentGame.copyTo()
         // Check if the tile placement is valid
-        if (rootService.gameService.checkPlacement(space, tile)) {
+        if (rootService.gameService.checkPlacement(space, tile,true)) {
+
+            rootService.gameService.checkPlacement(space, tile)
             // Move gems, check collisions, distribute new tiles, and change the player
             val neighbors = rootService.gameService.getNeighboringCoordinates(space)
             for (i in neighbors.indices) {
@@ -56,7 +58,13 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
                 onAllRefreshables { refreshAfterEndGame() }
             }
         } else {
-            throw Exception("Invalid space, choose another space please")
+            if (!isAiCalled) {
+                throw Exception("Invalid space, choose another space please")
+            } else{
+                rotateTileLeft(tile)
+                placeRouteTile(space,tile,true)
+
+            }
         }
     }
 
