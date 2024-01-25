@@ -35,9 +35,9 @@ class IOService(private val root: RootService) : AbstractRefreshingService() {
     /**
      * function for saving a game of Indigo to a file
      */
-    fun saveGameToFile(indigo: Indigo, path: String) {
-
-        val json = mapper.writeValueAsString(indigo)
+    fun saveGameToFile(gameStateList: List<Indigo>, path:String) {
+        //changed the parameters from indigo: Indigo, path: String to gameStateList: List<Indigo>, path: String
+        val json = mapper.writeValueAsString(gameStateList)
         File(path).writeText(json)
 
     }
@@ -45,8 +45,8 @@ class IOService(private val root: RootService) : AbstractRefreshingService() {
     /**
      * function for reading a saved game from a file
      */
-    fun readGameFromFile(path: String): Indigo {
+    fun readGameFromFile(path: String): List<Indigo> {
         val jsonString = File(path).readText()
-        return mapper.readValue<Indigo>(jsonString)
+        return mapper.readValue<List<Indigo>>(jsonString)
     }
 }

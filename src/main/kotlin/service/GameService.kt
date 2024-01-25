@@ -1,7 +1,9 @@
 package service
 
+import com.fasterxml.jackson.module.kotlin.jsonMapper
 import entity.*
 import service.network.ConnectionState
+import java.io.File
 import java.lang.Exception
 import kotlin.math.abs
 
@@ -393,7 +395,17 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     fun saveGame(path: String) {
         val game = rootService.currentGame
         checkNotNull(game)
-        rootService.ioService.saveGameToFile(game, path)
+        val gameStateList = mutableListOf<Indigo>()
+        var current: Indigo? = game
+        while (current != null){
+            gameStateList.add(current)
+            //gameStateList.add(0,current.copyTo())
+            current = current.previousGameState
+            //gameStateList.toList() //??
+        }
+        /*val json = mapper.writeValueAsString(gameStateList)
+        File(path).writeText(json)*/
+        rootService.ioService.saveGameToFile(gameStateList, path)
         onAllRefreshables { refreshAfterSaveGame() }
     }
 
@@ -404,8 +416,17 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @throws IllegalStateException if currentGame is null after loading
      */
     fun loadGame(path: String) {
-        rootService.currentGame = rootService.ioService.readGameFromFile(path)
+        val gameStateList: List<Indigo> = rootService.ioService.readGameFromFile(path)
+        //rootService.currentGame = rootService.ioService.readGameFromFile(path)
+        for (i in gameStateList.indices){
+            val current = gameStateList[i]
+            val next = if (i< gameStateList.size -1) gameStateList[i+1] else null
+            current.nextGameState = next
+            if (next != null) next.previousGameState = current
+        }
+        //rootService.currentGame = gameStateList.lastOrNull()
         checkNotNull(rootService.currentGame)
+
         onAllRefreshables { refreshAfterLoadGame() }
     }
 
