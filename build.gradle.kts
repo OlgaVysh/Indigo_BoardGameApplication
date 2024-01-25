@@ -32,7 +32,7 @@ application {
 
 dependencies {
     testImplementation(kotlin("test-junit5"))
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation(group = "tools.aqua", name = "bgw-gui", version = "0.9-4-06a99c3-SNAPSHOT")
     implementation(group = "tools.aqua", name = "bgw-net-common", version = "0.9")
     implementation(group = "tools.aqua", name = "bgw-net-client", version = "0.9")
