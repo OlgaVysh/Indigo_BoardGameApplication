@@ -980,6 +980,7 @@ class GameScene(val indigoApp: IndigoApplication) :
                 rotate(-60)
                 rotate(60 * rotationDegree)
             }
+        rotationDegree = 0
     }
 
     /**
