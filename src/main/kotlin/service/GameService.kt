@@ -1,9 +1,7 @@
 package service
 
-import com.fasterxml.jackson.module.kotlin.jsonMapper
 import entity.*
 import service.network.ConnectionState
-import java.io.File
 import java.lang.Exception
 import kotlin.math.abs
 
@@ -467,7 +465,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 }
             }
         }
-        //Meriem Code
+        // Meri em Code
         /*if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
             val currentCPUPlayer = currentGame.players[currentGame.currentPlayerIndex] as? CPUPlayer
             rootService.aiActionService.AiMove(currentCPUPlayer!!.difficulty)
@@ -668,7 +666,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             }
         }
         println( currentCoordinate.toString())
-        println("currentend $currentEnd")
+        println("currentEnd $currentEnd")
         removeGemsReachedGate(currentTile, currentCoordinate)
 
         moveGems(

@@ -41,7 +41,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     //view von dem angeklickten Place am GameBoard (für Highlighten)
     private var chosenPlace: HexagonView? = null
 
-    //coordinaten vom angeklicktem Place am GameBoard(zum Platzieren)
+    // Coordinaten vom angeklicktem Place am GameBoard(zum Platzieren)
     private var chosenCol: Int? = null
     private var chosenRow: Int? = null
 
@@ -59,7 +59,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     // reserveStack component
     private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
 
-    // undoButton component
+    // undo Button component
     val undoButton =
         view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40).apply {
             if (indigoApp.networkMode) {
@@ -955,7 +955,6 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
 
         repositionGems()
-
 
     }
 
