@@ -20,10 +20,11 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
     private var gemPositions: List<Pair<Int,Gem>> = listOf()
     /** all [Coordinate]s that extend the path of a [Gem] */
     private var moves: List<Coordinate> = listOf()
-    /** Nearest Gate index and distance to gate for each gem */
+    /** Nearest owned gate index and distance to gate for each gem */
     private var nearestGates: List<Pair<Int,Int>> = listOf()
+    /** Nearest enemy gate index and distance to gate for each gem */
     private var nearestEnemyGates: List<Pair<Int,Int>> = listOf()
-    /** [List] of [Pair]s consisting of the best rotation for each move and the Distance delta for that move */
+    /** [List] of [Pair]s consisting of the best rotation for each move and the value for that move */
     private var moveValues: List<Pair<Int,Int>> = listOf()
 
     /**
@@ -75,6 +76,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         var newEndPos: Int
         var tempNewOwnDist: Int
         var tempNewEnemyDist: Int
+        var moveValue: Int
         var bestValue: Int
         var bestRotation = 0
         val result: MutableList<Pair<Int,Int>> = mutableListOf()
@@ -87,8 +89,9 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
                         nearestGates[i].first)-nearestGates[i].second
                     tempNewEnemyDist = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),
                         nearestEnemyGates[i].first)-nearestEnemyGates[i].second
-                    if ((tempNewEnemyDist-(tempNewOwnDist*2))*(gemPositions[i].second.gemColor.ordinal+1)> bestValue){
-                        bestValue = (tempNewEnemyDist-(tempNewOwnDist*2))*(gemPositions[i].second.gemColor.ordinal+1)
+                    moveValue = (tempNewEnemyDist-(tempNewOwnDist*2))*(gemPositions[i].second.gemColor.ordinal+1)*(6-nearestGates[i].second)
+                    if (moveValue > bestValue){
+                        bestValue = moveValue
                         bestRotation = (j).mod(6)
                     }
                 }
