@@ -312,7 +312,7 @@ class GameServiceTest {
 
         val gameToSave = rootService.currentGame
         assertNotNull(gameToSave)
-        val testPath = "gameToSave.json"
+        val testPath = "gameToSaveNew.json"
         rootService.gameService.saveGame(testPath)
         assertTrue(refreshableTest.refreshAfterSaveGameCalled)
         refreshableTest.reset()
@@ -364,6 +364,24 @@ class GameServiceTest {
         assertEquals(0, loadedGame.tokens.size)
         assertEquals(newPlayer2handTile, loadedGame.players[1].handTile)
     }
+    /**
+     * Additional test for loadGame
+     */
+/*    @Test
+    fun loadGameTest2 (){
+        val savedGameFile = this::class.java.getResource("GameSaved1.json")?.toExternalForm()
+        println(savedGameFile)
+        rootService.gameService.loadGame("GameSaved1.json")
+        val loadedGame = rootService.currentGame
+        assertEquals(2,loadedGame?.players?.size)
+        assertEquals(12,loadedGame?.players?.get(0)?.name)
+        assertEquals(2,loadedGame?.players?.get(0)?.score)
+        assertEquals(TokenColor.BLUE,loadedGame?.players?.get(0)?.color)
+
+        assertEquals(123,loadedGame?.players?.get(1)?.name)
+        assertEquals(1,loadedGame?.players?.get(1)?.score)
+        assertEquals(TokenColor.RED,loadedGame?.players?.get(1)?.color)
+    }*/
 
     /**
      * Test the changePlayer function.
