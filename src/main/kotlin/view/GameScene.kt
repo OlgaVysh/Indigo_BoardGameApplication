@@ -565,6 +565,11 @@ class GameScene(val indigoApp: IndigoApplication) :
         for (player in players) {
             startHandTile.add(player.handTile)
         }
+
+        for(blueGemCounter in blueGems)
+        {
+            blueGemCounter.isVisible=false
+        }
         println(startHandTile.toString())
         mapGems()
         fillMap()
