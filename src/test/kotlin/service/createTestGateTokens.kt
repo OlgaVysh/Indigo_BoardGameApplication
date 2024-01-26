@@ -9,6 +9,9 @@ import entity.Token
  *  @param game The indigo game which you want to create gateTokens
  *  @param notSharedGates The notSharedGates is to if the gateTokens have
  *  sharedGates or notSharedGates
+ * @param game The Indigo game instance for which test gate tokens are created.
+ * @param notSharedGates A flag indicating whether the created gate tokens are not shared among players.
+ * @return A MutableList<Token> containing the created test gate tokens.
  */
 fun createTestGateTokens(game: Indigo, notSharedGates: Boolean): MutableList<Token> {
     // Retrieve the players and determine the size of the player list

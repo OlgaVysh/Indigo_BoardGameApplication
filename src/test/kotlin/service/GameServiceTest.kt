@@ -725,7 +725,9 @@ class GameServiceTest {
             assertEquals(sapphire, game.gems[game.gems.size - 1].gemColor)
         }
     }
-
+    /**
+     * Initializes token test for a specific scenario.
+     */
     @Test
     fun initializeTokenTest() {
         assertNull(rootService.currentGame)
@@ -762,8 +764,10 @@ class GameServiceTest {
             }
         }
     }
-
-    @Test
+/**
+ * Tests the scenario where the second player is controlled by artificial intelligence (KI).
+*/
+@Test
     fun testSecondPlayerIsKI() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
@@ -795,9 +799,11 @@ class GameServiceTest {
         assertEquals(true, testGame.players[1].isAI)
         assertEquals(false, testGame.players[0].isAI)
     }
-
+/**
+ * Tests the undo functionality for a specific scenario (test case).
+ */
     @Test
-    fun test() {
+    fun testUndo2() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
         //tileID 2 initialise
