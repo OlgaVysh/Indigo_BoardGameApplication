@@ -1,12 +1,11 @@
 package service
 
-import com.fasterxml.jackson.module.kotlin.jsonMapper
 import entity.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.javafx.JavaFx
 import service.network.ConnectionState
-import java.io.File
 import java.lang.Exception
 import kotlin.math.abs
-
 
 /**
  * Service class for managing the game logic.
@@ -233,7 +232,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
-        if (!isAiCalled) onAllRefreshables { refreshAfterPlaceTile(space, tile) }
+        if (!isAiCalled) onAllRefreshables { refreshAfterPlaceTile(space, tile)
+        }
     }
 
     /**
@@ -446,7 +446,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     /**
      * Changes the current player to the next player in the list.
      */
-    fun changePlayer() {
+    fun changePlayer()
+    {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
 
@@ -457,18 +458,37 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         // It's AI's turn
         val connectionState = rootService.networkService.connectionState
-        if (connectionState == ConnectionState.DISCONNECTED) {
+        if (connectionState == ConnectionState.DISCONNECTED)
+        {
             //Xue Code
             val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
-            if (currentPlayer.isAI) {
+            if (currentPlayer.isAI)
+            {
                 when (currentPlayer) {
                     is CPUPlayer -> {
-                        rootService.aiActionService.AiMove(currentPlayer.difficulty)
+
+                        when(currentPlayer.difficulty)
+                      {
+                          "easy" -> {CoroutineScope(Dispatchers.JavaFx).launch {
+                             delay((3000/currentPlayer.simulationSpeed).toLong())
+                              rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                              onAllRefreshables { refreshAfterChangePlayer() }}
+                          }
+
+
+                          else -> {CoroutineScope(Dispatchers.JavaFx).launch { //
+                              delay((100/currentPlayer.simulationSpeed).toLong())
+                              rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                              onAllRefreshables { refreshAfterChangePlayer() }
+                          }}
+                      }
                     }
                 }
             }
+
+            else onAllRefreshables { refreshAfterChangePlayer() }
         }
-        //Meriem Code
+        // Meri em Code
         /*if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
             val currentCPUPlayer = currentGame.players[currentGame.currentPlayerIndex] as? CPUPlayer
             rootService.aiActionService.AiMove(currentCPUPlayer!!.difficulty)
@@ -502,7 +522,6 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         }
          */
         //}
-        onAllRefreshables { refreshAfterChangePlayer() }
     }
 
     /**
@@ -669,7 +688,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             }
         }
         println( currentCoordinate.toString())
-        println("currentend $currentEnd")
+        println("currentEnd $currentEnd")
         removeGemsReachedGate(currentTile, currentCoordinate)
 
         moveGems(

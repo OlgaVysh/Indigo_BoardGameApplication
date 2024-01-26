@@ -41,7 +41,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     //view von dem angeklickten Place am GameBoard (für Highlighten)
     private var chosenPlace: HexagonView? = null
 
-    //coordinaten vom angeklicktem Place am GameBoard(zum Platzieren)
+    // Coordinaten vom angeklicktem Place am GameBoard(zum Platzieren)
     private var chosenCol: Int? = null
     private var chosenRow: Int? = null
 
@@ -59,7 +59,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     // reserveStack component
     private val reserveStack = HexagonView(posX = 869, posY = 870, visual = ImageVisual("plaintile.png"))
 
-    // undoButton component
+    // undo Button component
     val undoButton =
         view.components.Button(posX = 650, posY = 880, width = 160, height = 68, text = "Undo", fontSize = 40).apply {
             if (indigoApp.networkMode) {
@@ -887,6 +887,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
         //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()*/
         refreshAfterChangePlayer()
+        refreshAfterDistributeNewTile()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val nextTiles = indigoApp.rootService.currentGame!!.previousGameState!!.gameBoard.gameBoardTiles
 
@@ -909,6 +910,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         } else {
             println("No differing tile found.")
         }
+        refreshAfterDistributeNewTile()
         repositionGems()
         refreshAfterChangePlayer()
 
@@ -930,6 +932,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
     //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()*/
         refreshAfterChangePlayer()
+        refreshAfterDistributeNewTile()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val previousTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
         val differingTileEntries = previousTiles.entries.filter { entry ->
@@ -954,15 +957,43 @@ class GameScene(val indigoApp: IndigoApplication) :
             println("No differing tiles found.")
         }
 
+        refreshAfterDistributeNewTile()
         repositionGems()
-
 
     }
 
 
     private fun repositionGems() {
+        val gameBoardTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
+        val middle = indigoApp.rootService.currentGame!!.middleTile
+        for ((coordinate, tile) in gameBoardTiles) {
+            for ((gemPosition, gem) in tile.gemEndPosition) {
+                val position = coordMap[coordinate]
+                val posX = position!!.x + gemEndPos[gemPosition]!!.x
+                val posY = position.y + gemEndPos[gemPosition]!!.y
+                lock()
+                playAnimation(DelayAnimation(1000).apply {
+                    gemMap[gem]!!.reposition(posX, posY)
+                    unlock()
+                })
+                }
+            }
 
-    }
+            for ((int, gem) in middle.gemPosition) {
+                val coordinate = Coordinate(0,0)
+                val position = coordMap[coordinate]
+                val posX = position!!.x + gemEndPos[int]!!.x
+                val posY = position.y + gemEndPos[int]!!.y
+                lock()
+                playAnimation(DelayAnimation(1000).apply {
+                    gemMap[gem]!!.reposition(posX, posY)
+                    unlock()
+                })
+            }
+
+        }
+
+
 
 
     /**
@@ -1132,6 +1163,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         //gemMap.removeForward()
 
     }
+
 
 
     /**

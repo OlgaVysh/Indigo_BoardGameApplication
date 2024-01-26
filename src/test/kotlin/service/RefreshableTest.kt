@@ -1,6 +1,5 @@
 package service
 
-//import entity.*
 import entity.Coordinate
 import entity.Gem
 import entity.Tile

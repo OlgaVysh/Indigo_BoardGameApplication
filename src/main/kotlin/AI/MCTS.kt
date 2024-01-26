@@ -11,6 +11,7 @@ import java.util.*
 import kotlin.concurrent.schedule
 import kotlin.concurrent.thread
 import entity.*
+import kotlinx.coroutines.*
 
 /**
  * The MCTS: Monte Carlo Tree Search algorithm to find the best player moves
@@ -29,31 +30,36 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
      * @return A [Coordinate] object representing the best move for the AI player.
      */
     fun findNextMove(): Coordinate {
-
-        var iterations=0
+        var iterations = 0
         val defaultMove = Coordinate(-1, -1)
         val root = Node(rootService, null, defaultMove)
-
         var terminateCondition = false
-
 
         while (true) {
             iterations++
-            println("iterasion $iterations")
+            println("iteration $iterations")
             println("Still Thinking")
+
             val node = selectPromisingNode(root)
+
             if (SerivceAi.isGameOver(node.state) || terminateCondition) {
                 backpropagation(node, true)
-                println("Decisiom Made")
+                println("Decision Made")
                 return node.coordinate
             }
 
             terminateCondition = expandNode(node)
-            val nodeToExplore = selectPromisingNode(node)
-            val aiWon = simulateRandomPlayout(nodeToExplore,200)
-            backpropagation(nodeToExplore, aiWon)
+
+            // Parallelize simulations
+            repeat(4) { // Adjust the number of parallel simulations as needed
+                val nodeToExplore = selectPromisingNode(node)
+                val aiWon = simulateRandomPlayout(nodeToExplore, 200)
+                backpropagation(nodeToExplore, aiWon)
+            }
         }
     }
+
+
 
     /**
      * A simplified version of findNextMove that doesn't go through all the tree.
@@ -64,7 +70,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
      */
 
 
-    fun findNextMoveLimited(maxIterations: Int): Coordinate {
+    fun findNextMoveLimited(maxIterations: Int): Coordinate? {
         val defaultMove = Coordinate(-1, -1)
         val root = Node(rootService, null, defaultMove)
 
@@ -75,12 +81,12 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
             }
             expandNode(node)
             val nodeToExplore = selectPromisingNode(node)
-            simulateRandomPlayout(nodeToExplore,1000)
+            simulateRandomPlayout(nodeToExplore,200)
             backpropagation(nodeToExplore, true)
         }
 
-        return root.children.maxByOrNull { it.visitCount }?.coordinate ?: defaultMove
-    }
+        val bestMove = root.children.maxByOrNull { it.winCount }?.coordinate
+        return bestMove.takeIf { it != null && it != Coordinate(-1, -1) }    }
 
 
     /**
@@ -132,7 +138,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
             val child = Node(rootService, node, it)
             node.children.add(child)
         }
-        //node.children.shuffle()
+        node.children.shuffle()
         return node.children.isEmpty()
     }
 
@@ -142,6 +148,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
      * @return Boolean: returns true if the AI won the simulation, false otherwise
      */
     private fun simulateRandomPlayout(node: Node, maxSimulations: Int): Boolean {
+        val aiScores = mutableListOf<Int>() // Array to store AI player scores
         var tempNode = node.copy()
         var stop = false
         var simulations = 0
@@ -151,11 +158,18 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
             tempNode = selectPromisingNode(tempNode)
             simulations++
             println("simulations $simulations")
+
+            // Record the AI player's score after each simulation
+            val aiPlayerScore = tempNode.state.players[aiIndex].score
+            aiScores.add(aiPlayerScore)
         }
 
-        val aiWon = tempNode.state.players[aiIndex].score >= tempNode.state.players.maxOf { it.score }
+        // Determine if the AI won based on the maximum score achieved
+        val maxAiScore = aiScores.maxOrNull() ?: 0
+        val aiWon = tempNode.state.players[aiIndex].score >= maxAiScore
         return aiWon
     }
+
 
 
     /**
@@ -178,9 +192,9 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
 
     fun makeMove() {
         val resultcoordinate=findNextMoveLimited(200)
-        if (resultcoordinate.equals(Coordinate(0,0))){makeMove()}
+       // if (resultcoordinate.equals(Coordinate(0,0))){makeMove()}
         println("resultatcoordinate $resultcoordinate")
-        PlayerTurnService(rootService).placeRouteTile(resultcoordinate,rootService.currentGame!!.players[aiIndex].handTile!!)
+        PlayerTurnService(rootService).placeRouteTile(resultcoordinate!!,rootService.currentGame!!.players[aiIndex].handTile!!,true)
         println("tileplaced ")
 
     }
