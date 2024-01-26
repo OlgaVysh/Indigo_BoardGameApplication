@@ -1187,6 +1187,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         val currentGame = indigoApp.rootService.currentGame
         checkNotNull(currentGame)
         val currentPlayerIndex = currentGame.currentPlayerIndex
+        invokeButtons(currentGame.players)
         if (connectionState == ConnectionState.WAITING_FOR_OPPONENTS_TURN) {
             playerRotateRights[currentPlayerIndex].isVisible = false
             playerRotateRights[currentPlayerIndex].isDisabled = true

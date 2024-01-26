@@ -2,6 +2,8 @@ package view
 
 import entity.CPUPlayer
 import entity.Player
+import kotlinx.coroutines.*
+import kotlinx.coroutines.javafx.JavaFx
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.uicomponents.*
 import tools.aqua.bgw.core.Alignment
@@ -177,7 +179,20 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         if (currentPlayer.isAI) {
             when (currentPlayer) {
                 is CPUPlayer -> {
-                    rootService.aiActionService.aiMove(currentPlayer.difficulty)
+                    runBlocking {
+                        CoroutineScope(Dispatchers.JavaFx).launch {
+                            try {
+                                withTimeout(8000) {
+                                    delay((currentPlayer.simulationSpeed * 1000).toLong())
+                                    rootService.aiActionService.aiMove(currentPlayer.difficulty)
+                                    indigoApp.gameScene.refreshAfterChangePlayer()
+                                }
+                            } catch (e: Exception) {
+                                rootService.aiActionService.aiMove("easy")
+                                indigoApp.gameScene.refreshAfterChangePlayer()
+                            }
+                        }
+                    }
                 }
             }
         }
