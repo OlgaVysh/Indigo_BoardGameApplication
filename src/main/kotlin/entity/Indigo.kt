@@ -26,23 +26,25 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators
  */
 @JsonIdentityInfo(
     generator = ObjectIdGenerators.PropertyGenerator::class,
-    property = "id"
+    property = "id",
+    scope = Indigo::class
 )
 data class Indigo(
     val settings: GameSettings,
     val gameBoard: GameBoard,
     val allTiles: List<Tile>,
     var gems: MutableList<Gem>,
-    var tokens: MutableList<Token>
+    var tokens: MutableList<Token>,
+    val id : Int = 0
 ) {
     var players = settings.players
     var currentPlayerIndex = 0
     val middleTile = MiddleTile()
     val treasureTiles: List<Tile> = allTiles.take(6)
     var routeTiles: MutableList<Tile> = allTiles.drop(6).toMutableList()
-    @JsonIgnore
+    //@JsonIgnore
     var previousGameState: Indigo? = null
-    @JsonIgnore
+    //@JsonIgnore
     var nextGameState: Indigo? = null
 
     init {
@@ -117,7 +119,8 @@ data class Indigo(
             copiedGameBoard,
             this.allTiles,
             copiedGems,
-            this.tokens
+            this.tokens,
+            id = id + 1
         )
         copiedIndigo.currentPlayerIndex = this.currentPlayerIndex
         copiedIndigo.nextGameState = this.nextGameState

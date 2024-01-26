@@ -754,9 +754,9 @@ class GameScene(val indigoApp: IndigoApplication) :
                         isDisabled = true
                         isVisible = false
                     }
-                }
             }
         }
+    }
 
     }
 

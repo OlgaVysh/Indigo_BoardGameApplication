@@ -11,17 +11,17 @@ import tools.aqua.bgw.visual.ImageVisual
  *
  * @param games The list of saved game names.
  */
-class SavedGamesMenuScene(games: List<String>) :
+class SavedGamesMenuScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")),
     Refreshable {    // Label for the scene title
 
     private val label = Label(566, 22, 777, 155, "Saved games", 120)
 
     // Grid for displaying saved game views
-    private val grid = GridPane<SavedGameView>(960, 540, 1, games.size, 10, true)
+    private val grid = GridPane<SavedGameView>(960, 540, 1, 4, 10, true)
 
     // The size of the list of saved games
-    private val size = games.size - 1
+    private val size = 4 - 1
 
     // Camera pane for controlling the view of the saved games grid
     private val camera = CameraPane(
@@ -42,7 +42,11 @@ class SavedGamesMenuScene(games: List<String>) :
         // Populate the grid with SavedGameView instances
 
         for (i in 0..size) {
-            grid[0, i] = SavedGameView()
+            grid[0, i] = SavedGameView().apply {
+                onMouseClicked={
+                    indigoApp.rootService.gameService.loadGame("GameSaved1")
+                }
+            }
         }
         // Add components to the scene
         addComponents(label, camera)
