@@ -467,19 +467,20 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                     is CPUPlayer -> {
 
                         when(currentPlayer.difficulty)
-                        {
-                            "easy" -> {CoroutineScope(Dispatchers.JavaFx).launch { //
-                                delay((2000/currentPlayer.simulationSpeed).toLong())
-                                rootService.aiActionService.AiMove(currentPlayer.difficulty)
-                                onAllRefreshables { refreshAfterChangePlayer() }
-                            }}
+                      {
+                          "easy" -> {CoroutineScope(Dispatchers.JavaFx).launch {
+                             delay((3000/currentPlayer.simulationSpeed).toLong())
+                              rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                              onAllRefreshables { refreshAfterChangePlayer() }}
+                          }
 
-                            else -> {CoroutineScope(Dispatchers.JavaFx).launch { //
-                                delay((100/currentPlayer.simulationSpeed).toLong())
-                                rootService.aiActionService.AiMove(currentPlayer.difficulty)
-                                onAllRefreshables { refreshAfterChangePlayer() }
-                            }}
-                        }
+
+                          else -> {CoroutineScope(Dispatchers.JavaFx).launch { //
+                              delay((100/currentPlayer.simulationSpeed).toLong())
+                              rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                              onAllRefreshables { refreshAfterChangePlayer() }
+                          }}
+                      }
                     }
                 }
             }
