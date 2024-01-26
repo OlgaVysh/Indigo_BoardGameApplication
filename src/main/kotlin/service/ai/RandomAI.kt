@@ -1,4 +1,4 @@
-package AI
+package service.ai
 
 import entity.Coordinate
 import entity.Indigo

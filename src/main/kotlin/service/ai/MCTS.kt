@@ -1,15 +1,8 @@
-package AI
+package service.ai
 import entity.Coordinate
-import entity.Edge
-import entity.Tile
-import entity.TileType
 import service.AbstractRefreshingService
-import service.GameService
 import service.PlayerTurnService
-import service.network.ConnectionState
 import java.util.*
-import kotlin.concurrent.schedule
-import kotlin.concurrent.thread
 import entity.*
 import kotlinx.coroutines.*
 
@@ -76,7 +69,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
 
         repeat(maxIterations) {
             val node = selectPromisingNode(root)
-            if (SerivceAi.isGameOver(node.state) ) {
+            if (SerivceAi.isGameOver(node.state)) {
                 return node.coordinate
             }
             expandNode(node)

@@ -1,10 +1,6 @@
-package AI
+package service.ai
 
 import entity.*
-import service.AbstractRefreshingService
-import service.RootService
-import service.*
-import kotlin.io.path.Path
 
 /**
  * The `ServiceAi` class provides AI-related functionalities for the Indigo game.

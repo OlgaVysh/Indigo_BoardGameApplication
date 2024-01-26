@@ -1,8 +1,7 @@
-package AI
+package service.ai
 
 import entity.Indigo
 import entity.*
-import java.lang.Exception
 import kotlin.math.abs
 
 class servicee (var currentGame: Indigo) {

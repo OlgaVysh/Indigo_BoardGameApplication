@@ -913,7 +913,6 @@ class GameScene(val indigoApp: IndigoApplication) :
         refreshAfterDistributeNewTile()
         repositionGems()
         refreshAfterChangePlayer()
-
     }
 
 

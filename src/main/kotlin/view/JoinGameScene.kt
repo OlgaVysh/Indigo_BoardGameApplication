@@ -177,7 +177,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         if (currentPlayer.isAI) {
             when (currentPlayer) {
                 is CPUPlayer -> {
-                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                    rootService.aiActionService.aiMove(currentPlayer.difficulty)
                 }
             }
         }

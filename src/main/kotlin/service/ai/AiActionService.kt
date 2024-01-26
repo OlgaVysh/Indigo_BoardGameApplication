@@ -1,4 +1,4 @@
-package AI
+package service.ai
 
 import service.AbstractRefreshingService
 import service.RootService
@@ -14,7 +14,7 @@ class AiActionService(private val rootService: RootService) : AbstractRefreshing
      *
      * @param difficulty The difficulty level of the AI move. Supported values: "easy", "medium".
      */
-    fun AiMove(difficulty: String) {
+    fun aiMove(difficulty: String) {
         when (difficulty) {
             "easy" -> RandomAI(rootService).makeMove()
             //"medium" -> SimpleAI(rootService).makeMove()

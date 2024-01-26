@@ -104,7 +104,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         if (currentPlayer.isAI) {
             when (currentPlayer) {
                 is CPUPlayer -> {
-                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                    rootService.aiActionService.aiMove(currentPlayer.difficulty)
                 }
             }
         }
@@ -259,7 +259,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         if (currentPlayer.isAI) {
             when (currentPlayer) {
                 is CPUPlayer -> {
-                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                    rootService.aiActionService.aiMove(currentPlayer.difficulty)
                 }
             }
         }

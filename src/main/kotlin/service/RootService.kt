@@ -1,6 +1,6 @@
 package service
 
-import AI.AiActionService
+import service.ai.AiActionService
 import entity.Indigo
 import service.network.NetworkMappingService
 import service.network.NetworkService

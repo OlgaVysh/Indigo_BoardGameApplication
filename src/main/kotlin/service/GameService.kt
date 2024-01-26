@@ -75,7 +75,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             if (currentPlayer.isAI) {
                 when (currentPlayer) {
                     is CPUPlayer -> {
-                        rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                        rootService.aiActionService.aiMove(currentPlayer.difficulty)
                     }
                 }
             }
@@ -471,14 +471,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                       {
                           "easy" -> {CoroutineScope(Dispatchers.JavaFx).launch {
                              delay((3000/currentPlayer.simulationSpeed).toLong())
-                              rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                              rootService.aiActionService.aiMove(currentPlayer.difficulty)
                               onAllRefreshables { refreshAfterChangePlayer() }}
                           }
 
 
                           else -> {CoroutineScope(Dispatchers.JavaFx).launch { //
                               delay((100/currentPlayer.simulationSpeed).toLong())
-                              rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                              rootService.aiActionService.aiMove(currentPlayer.difficulty)
                               onAllRefreshables { refreshAfterChangePlayer() }
                           }}
                       }
