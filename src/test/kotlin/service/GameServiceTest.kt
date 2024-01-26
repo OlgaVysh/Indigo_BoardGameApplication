@@ -435,16 +435,16 @@ class GameServiceTest {
 
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 3), testTile2)
         val secondPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]
-        assertEquals(0, treasureTile1!!.gemEndPosition.size)
-        assertEquals(2, secondPlacedTile!!.gemEndPosition.size)
-        assertEquals(1, firstPlacedTile!!.gemEndPosition.size)
+        assertEquals(0,  rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]!!.gemEndPosition.size)
+        assertEquals(2,rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]!!.gemEndPosition.size)
+        assertEquals(1, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]!!.gemEndPosition.size)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
         assertTrue(refreshableTest.refreshAfterMoveGemsCalled)
 
         refreshableTest.reset()
 
-        assertNotNull(firstPlacedTile.gemEndPosition[5])
-        assertNull(secondPlacedTile.gemEndPosition[5])
+        assertNotNull(firstPlacedTile!!.gemEndPosition[5])
+        assertNull(secondPlacedTile!!.gemEndPosition[5])
         //thirdTile Typ 0 initialisieren
         val testTile3 = Tile(
             listOf(
@@ -476,8 +476,8 @@ class GameServiceTest {
         rootService.playerTurnService.placeRouteTile(Coordinate(-2, -2), testTile1)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
         refreshableTest.reset()
-        assertEquals(0, testTile2.gemEndPosition.size)
-        assertEquals(0, testTile1.gemEndPosition.size)
+        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-3,-1)]!!.gemEndPosition.size)
+        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-2,-2)]!!.gemEndPosition.size)
         assertEquals(8, rootService.currentGame!!.gems.size)
 
         testTile2.gemEndPosition.clear()
@@ -489,8 +489,8 @@ class GameServiceTest {
         rootService.playerTurnService.placeRouteTile(Coordinate(-1, -1), testTile2)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
         refreshableTest.reset()
-        assertEquals(0, testTile2.gemEndPosition.size)
-        assertEquals(0, testTile1.gemEndPosition.size)
+        assertEquals(0,rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-2,0)]!!.gemEndPosition.size)
+        assertEquals(0,rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1,-1)]!!.gemEndPosition.size)
         assertEquals(6, rootService.currentGame!!.gems.size)
     }
 
