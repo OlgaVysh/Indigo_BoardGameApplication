@@ -39,10 +39,10 @@ class PlayerView(name : String, color:String ="", turn : Int?, posX : Int = 0, p
     {
         if(color!="null")
         {
-            if(color=="red") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenred.png") }
-            if(color=="white") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenwhite.png")}
-            if(color=="blue") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenblue.png")}
-            if(color=="purple") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenpurple.png")}
+            if(color=="red") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenRed.png") }
+            if(color=="white") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenWhite.png")}
+            if(color=="blue") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenBlue.png")}
+            if(color=="purple") this[1, 0] = Label(text = "").apply{visual = ImageVisual("tokenPurple.png")}
         }
         else this[1, 0] = Label(text = "color : random", width = 400, height = 65,fontSize = 40)
     }

@@ -10,11 +10,11 @@ import view.components.Button
 import view.components.Label
 
 /**
- * Represents the game menu scene in which a player can choose his Tokencolor and his turn.
+ * Represents the game menu scene in which a player can choose his TokenColor and his turn.
  *
  * This scene is displayed when a player is chosen to be configured. It includes
  * a label indicating the title,
- * two comboboxes with matching labels for tokencolor and turn to choose from
+ * two comboBoxes with matching labels for TokenColor and turn to choose from
  * and a button for saving the configurations.
  *
  * The layout and design of these components are defined in this class.

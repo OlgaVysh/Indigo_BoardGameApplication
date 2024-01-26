@@ -442,7 +442,7 @@ class GameServiceTest {
             TileType.Type_1, mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(EMERALD)))
         )
         rootService.gameService.startGame(fourPlayers.toMutableList())
-        val treasureTile1 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
+        //val treasureTile1 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
 
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), testTile1)
         //test refreshable
@@ -821,7 +821,7 @@ class GameServiceTest {
         rootService.gameService.startGame(twoPlayer)
         checkNotNull(rootService.currentGame)
         rootService.currentGame!!.players[0].handTile = tile2
-        val player1HandTile = rootService.currentGame!!.players[0].handTile
+        //val player1HandTile = rootService.currentGame!!.players[0].handTile
 
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), tile2)
         rootService.currentGame!!.players[1].handTile = tile3

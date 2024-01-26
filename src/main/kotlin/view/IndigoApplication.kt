@@ -77,7 +77,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
 
 
     //In jeder Szene : private val gradient ="-fx-text-fill: linear-gradient(to bottom, #061598, #06987E);"
-    //an jedem Component mit Text : font = Font(family: "Irish Grover")
+    // an jedem Component mit Text : font = Font(family: "Irish Grover")
     // .apply { componentStyle = gradient }
 
 

@@ -104,7 +104,7 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameSce
         startGameButton.isDisabled = players.rows<2
         addNewPlayerButton.isDisabled= players.rows==4
     }*/
-    //add refreshScene addnewplayerButton is disabled = indigoApp.players.size>=4
+    //add refreshScene addNewPlayerButton is disabled = indigoApp.players.size>=4
 
     fun addPlayerView(name : String, color:TokenColor, turn : Int?, ai : Boolean) {
         val turnOutput = turn?.toString() ?: "random"
@@ -125,13 +125,13 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameSce
     private fun getGem(currentRows : Int, color: TokenColor)
     {
         when(color) {
-            TokenColor.WHITE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenwhite.png") }
+            TokenColor.WHITE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenWhite.png") }
 
-            TokenColor.PURPLE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenpurple.png") }
+            TokenColor.PURPLE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenPurple.png") }
 
-            TokenColor.BLUE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenblue.png") }
+            TokenColor.BLUE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenBlue.png") }
 
-            TokenColor.RED -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenred.png") }
+            TokenColor.RED -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenRed.png") }
         }
     }
 

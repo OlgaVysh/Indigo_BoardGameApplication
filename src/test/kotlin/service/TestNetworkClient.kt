@@ -35,8 +35,8 @@ class TestNetworkClient(
     private var onTilePlacedReceived: ((TilePlacedMessage, String) -> Unit)? = null
 
     // Accessor for the TestNetworkService
-    private val testNetworkService: TestNetworkService?
-        get() = networkService as? TestNetworkService
+    /*private val testNetworkService: TestNetworkService?
+        get() = networkService as? TestNetworkService*/
 
     /**
      * Overrides the callback for handling CreateGameResponse events.

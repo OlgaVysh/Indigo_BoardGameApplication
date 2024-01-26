@@ -264,10 +264,10 @@ class GameScene(val indigoApp: IndigoApplication) :
         reserveStack.scaleX(0.6)
 
         //initialize tokenViews
-        player1Token.visual = ImageVisual("tokenwhite.png")
-        player2Token.visual = ImageVisual("tokenblue.png")
-        player3Token.visual = ImageVisual("tokenpurple.png")
-        player4Token.visual = ImageVisual("tokenred.png")
+        player1Token.visual = ImageVisual("tokenWhite.png")
+        player2Token.visual = ImageVisual("tokenBlue.png")
+        player3Token.visual = ImageVisual("tokenPurple.png")
+        player4Token.visual = ImageVisual("tokenRed.png")
 
         //initialize gemViews
         player1greenGem.visual = ImageVisual("greenGem.png")
@@ -318,23 +318,23 @@ class GameScene(val indigoApp: IndigoApplication) :
          player4turnHighlight.resize(147.9, 171.7)*/
 
         //initialize gateTokenViews
-        gate1Token1.visual = ImageVisual("tokenred.png")
-        gate1Token2.visual = ImageVisual("tokenblue.png")
+        gate1Token1.visual = ImageVisual("tokenRed.png")
+        gate1Token2.visual = ImageVisual("tokenBlue.png")
 
-        gate2Token1.visual = ImageVisual("tokenred.png")
-        gate2Token2.visual = ImageVisual("tokenblue.png")
+        gate2Token1.visual = ImageVisual("tokenRed.png")
+        gate2Token2.visual = ImageVisual("tokenBlue.png")
 
-        gate3Token1.visual = ImageVisual("tokenred.png")
-        gate3Token2.visual = ImageVisual("tokenblue.png")
+        gate3Token1.visual = ImageVisual("tokenRed.png")
+        gate3Token2.visual = ImageVisual("tokenBlue.png")
 
-        gate4Token1.visual = ImageVisual("tokenred.png")
-        gate4Token2.visual = ImageVisual("tokenblue.png")
+        gate4Token1.visual = ImageVisual("tokenRed.png")
+        gate4Token2.visual = ImageVisual("tokenBlue.png")
 
-        gate5Token1.visual = ImageVisual("tokenred.png")
-        gate5Token2.visual = ImageVisual("tokenblue.png")
+        gate5Token1.visual = ImageVisual("tokenRed.png")
+        gate5Token2.visual = ImageVisual("tokenBlue.png")
 
-        gate6Token1.visual = ImageVisual("tokenred.png")
-        gate6Token2.visual = ImageVisual("tokenblue.png")
+        gate6Token1.visual = ImageVisual("tokenRed.png")
+        gate6Token2.visual = ImageVisual("tokenBlue.png")
 
 
         // Add the hexagonal grid to the components of the game scene
@@ -766,13 +766,13 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     private fun getGem(label: Label, color: TokenColor) {
         when (color) {
-            TokenColor.WHITE -> label.apply { visual = ImageVisual("tokenwhite.png") }
+            TokenColor.WHITE -> label.apply { visual = ImageVisual("tokenWhite.png") }
 
-            TokenColor.PURPLE -> label.apply { visual = ImageVisual("tokenpurple.png") }
+            TokenColor.PURPLE -> label.apply { visual = ImageVisual("tokenPurple.png") }
 
-            TokenColor.BLUE -> label.apply { visual = ImageVisual("tokenblue.png") }
+            TokenColor.BLUE -> label.apply { visual = ImageVisual("tokenBlue.png") }
 
-            TokenColor.RED -> label.apply { visual = ImageVisual("tokenred.png") }
+            TokenColor.RED -> label.apply { visual = ImageVisual("tokenRed.png") }
         }
     }
 

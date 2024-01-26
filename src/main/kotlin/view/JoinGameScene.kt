@@ -15,7 +15,7 @@ import view.components.Label
 /**
  * Represents the join game menu scene.
  *
- * This scene when a player enters the option to join a game in the scene before ("Szenenname").
+ * This scene when a player enters the option to join a game in the scene before ("SzenenName").
  *
  * The layout and design of these components are defined in this class.
  */
@@ -27,7 +27,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     var difficulty = "easy"
     var simulationSpeed = 0
 
-    //iregendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
+    //irgendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player", 96)
 
     private val nameLabel = Label(80, 370, width = 300, text = "Name : ", fontSize = 48)
