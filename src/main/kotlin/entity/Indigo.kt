@@ -1,5 +1,9 @@
 package entity
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.ObjectIdGenerators
+
 /**
  * class modelling the game state of an Indigo game, acts like an element in a doubly linked list
  *
@@ -20,7 +24,10 @@ package entity
  * @property nextGameState saves the next state of the game for redo action, initially null
  *
  */
-
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator::class,
+    property = "id"
+)
 data class Indigo(
     val settings: GameSettings,
     val gameBoard: GameBoard,
@@ -33,7 +40,9 @@ data class Indigo(
     val middleTile = MiddleTile()
     val treasureTiles: List<Tile> = allTiles.take(6)
     var routeTiles: MutableList<Tile> = allTiles.drop(6).toMutableList()
+    @JsonIgnore
     var previousGameState: Indigo? = null
+    @JsonIgnore
     var nextGameState: Indigo? = null
 
     init {

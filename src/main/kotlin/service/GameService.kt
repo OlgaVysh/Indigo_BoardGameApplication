@@ -395,17 +395,17 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     fun saveGame(path: String) {
         val game = rootService.currentGame
         checkNotNull(game)
-        val gameStateList = mutableListOf<Indigo>()
-        var current: Indigo? = game
+        //val gameStateList = mutableListOf<Indigo>()
+       /* var current: Indigo? = game
         while (current != null){
             gameStateList.add(current)
             //gameStateList.add(0,current.copyTo())
             current = current.previousGameState
             //gameStateList.toList() //??
-        }
+        }*/
         /*val json = mapper.writeValueAsString(gameStateList)
         File(path).writeText(json)*/
-        rootService.ioService.saveGameToFile(gameStateList, path)
+        rootService.ioService.saveGameToFile(game, path)
         onAllRefreshables { refreshAfterSaveGame() }
     }
 
@@ -416,15 +416,16 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @throws IllegalStateException if currentGame is null after loading
      */
     fun loadGame(path: String) {
-        val gameStateList: List<Indigo> = rootService.ioService.readGameFromFile(path)
-        //rootService.currentGame = rootService.ioService.readGameFromFile(path)
-        for (i in gameStateList.indices){
+        //val gameStateList: List<Indigo> = rootService.ioService.readGameFromFile(path)
+        val game = rootService.ioService.readGameFromFile(path)
+        /*for (i in gameStateList.indices){
             val current = gameStateList[i]
             val next = if (i< gameStateList.size -1) gameStateList[i+1] else null
             current.nextGameState = next
             if (next != null) next.previousGameState = current
-        }
+        }*/
         //rootService.currentGame = gameStateList.lastOrNull()
+        rootService.currentGame = game
         checkNotNull(rootService.currentGame)
 
         onAllRefreshables { refreshAfterLoadGame() }
