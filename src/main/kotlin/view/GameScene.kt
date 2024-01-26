@@ -910,6 +910,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         } else {
             println("No differing tile found.")
         }
+        refreshAfterDistributeNewTile()
         repositionGems()
         refreshAfterChangePlayer()
 
@@ -956,14 +957,29 @@ class GameScene(val indigoApp: IndigoApplication) :
             println("No differing tiles found.")
         }
 
+        refreshAfterDistributeNewTile()
         repositionGems()
 
     }
 
 
     private fun repositionGems() {
+        val gameBoardTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
+        for ((coordinate, tile) in gameBoardTiles) {
+            for ((gemPosition, gem) in tile.gemEndPosition) {
+                val position = coordMap[coordinate]
+                val posX = position!!.x + gemEndPos[gemPosition]!!.x
+                val posY = position.y + gemEndPos[gemPosition]!!.y
+                lock()
+                playAnimation(DelayAnimation(1000).apply {
+                    gemMap[gem]!!.reposition(posX, posY)
+                    unlock()
+                })
+                }
+            }
+        }
 
-    }
+
 
 
     /**
@@ -1133,6 +1149,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         //gemMap.removeForward()
 
     }
+
 
 
     /**
