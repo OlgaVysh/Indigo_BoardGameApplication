@@ -887,6 +887,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
         //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()*/
         refreshAfterChangePlayer()
+        refreshAfterDistributeNewTile()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val nextTiles = indigoApp.rootService.currentGame!!.previousGameState!!.gameBoard.gameBoardTiles
 
@@ -930,6 +931,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
     //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()*/
         refreshAfterChangePlayer()
+        refreshAfterDistributeNewTile()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val previousTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
         val differingTileEntries = previousTiles.entries.filter { entry ->
