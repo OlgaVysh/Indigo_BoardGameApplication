@@ -965,6 +965,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     private fun repositionGems() {
         val gameBoardTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
+        val middle = indigoApp.rootService.currentGame!!.middleTile
         for ((coordinate, tile) in gameBoardTiles) {
             for ((gemPosition, gem) in tile.gemEndPosition) {
                 val position = coordMap[coordinate]
@@ -977,6 +978,19 @@ class GameScene(val indigoApp: IndigoApplication) :
                 })
                 }
             }
+
+            for ((int, gem) in middle.gemPosition) {
+                val coordinate = Coordinate(0,0)
+                val position = coordMap[coordinate]
+                val posX = position!!.x + gemEndPos[int]!!.x
+                val posY = position.y + gemEndPos[int]!!.y
+                lock()
+                playAnimation(DelayAnimation(1000).apply {
+                    gemMap[gem]!!.reposition(posX, posY)
+                    unlock()
+                })
+            }
+
         }
 
 
