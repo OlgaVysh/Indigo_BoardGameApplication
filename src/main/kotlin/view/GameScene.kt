@@ -135,6 +135,24 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var player3yellowGemCounter = Label(posX = 504, posY = 717, text = "0", fontSize = 48)
     private var player4yellowGemCounter = Label(posX = 1276, posY = 717, text = "0", fontSize = 48)
 
+    //BlueGem appears when collected by player/players
+    private val blueGemCounter1 = Label(posX = 411, posY = 240, text = "", width = 81, height = 75).
+    apply { visual=ImageVisual("blueGem.png")
+    isVisible=false}
+
+    private val blueGemCounter2 = Label(posX = 1365, posY = 240, text = "", width = 81, height = 75).
+    apply { visual=ImageVisual("blueGem.png")
+        isVisible=false}
+
+    private val blueGemCounter3 = Label(posX = 492, posY = 904, text = "", width = 81, height = 75).
+    apply { visual=ImageVisual("blueGem.png")
+        isVisible=false}
+
+    private val blueGemCounter4 = Label(posX = 1271, posY = 904, text = "", width = 81, height = 75).
+    apply { visual=ImageVisual("blueGem.png")
+        isVisible=false}
+
+
     // PlayerHandTile components
     // player1 oben links player2 oben rechts player3 unten links player4 unten rechts
     private var player1handTile = HexagonView(posX = 122, posY = 184, size = 70.0, visual = ImageVisual("tile1.png"))
@@ -247,6 +265,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
     private val playerHandtiles = listOf(player1handTile, player2handTile, player3handTile, player4handTile)
     private val playerTokens = listOf(player1Token, player2Token, player3Token, player4Token)
+    private val blueGems = listOf(blueGemCounter1,blueGemCounter2,blueGemCounter3,blueGemCounter4)
 
     /**
      * Initializes the GameScene with default values and sets up the hexagonal grid.
@@ -291,31 +310,6 @@ class GameScene(val indigoApp: IndigoApplication) :
         yellowGem4.visual = ImageVisual("yellowGem.png")
         yellowGem5.visual = ImageVisual("yellowGem.png")
         yellowGem6.visual = ImageVisual("yellowGem.png")
-
-
-        //initialize handTileViews
-        /* player1handTile.rotate(30)
-         player2handTile.rotate(30)
-         player3handTile.rotate(30)
-         player4handTile.rotate(30)
-         player1handTile.resize(130.5, 151.5)
-         player2handTile.resize(130.5, 151.5)
-         player3handTile.resize(130.5, 151.5)
-         player4handTile.resize(130.5, 151.5)
-         player1handTile.visual = ImageVisual("tile1.png")
-         player2handTile.visual = ImageVisual("tile2.png")
-         player3handTile.visual = ImageVisual("tile3.png")
-         player4handTile.visual = ImageVisual("tile4.png")
-
-         //initialize playerturnHighlightViews
-         player1turnHighlight.rotate(30)
-         player2turnHighlight.rotate(30)
-         player3turnHighlight.rotate(30)
-         player4turnHighlight.rotate(30)
-         player1turnHighlight.resize(147.9, 171.7)
-         player2turnHighlight.resize(147.9, 171.7)
-         player3turnHighlight.resize(147.9, 171.7)
-         player4turnHighlight.resize(147.9, 171.7)*/
 
         //initialize gateTokenViews
         gate1Token1.visual = ImageVisual("tokenRed.png")
@@ -404,6 +398,10 @@ class GameScene(val indigoApp: IndigoApplication) :
             yellowGem4,
             yellowGem5,
             yellowGem6,
+            blueGemCounter1,
+            blueGemCounter2,
+            blueGemCounter3,
+            blueGemCounter4,
             player1leftButton,
             player1rightButton,
             player1checkButton,
@@ -1118,9 +1116,16 @@ class GameScene(val indigoApp: IndigoApplication) :
                 it.gemColor == GemColor.EMERALD
             }
 
+            val blueCounter = game.players[i - 1].collectedGems.count {
+                it.gemColor == GemColor.SAPPHIRE
+            }
+
             playerScores[i - 1].text = game.players[i - 1].score.toString() + " points"
             playerYellowGemCounters[i - 1].text = yellowGems.toString()
             playerGreenGemCounters[i - 1].text = greenGems.toString()
+
+            blueGems[i-1].isVisible = blueCounter>0
+            //blueGems[i-1].isVisible = game.players[i - 1].collectedGems.contains(Gem(GemColor.SAPPHIRE))
 
         }
         val entityGems = game.gems
