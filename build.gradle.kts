@@ -41,6 +41,10 @@ dependencies {
     //implementation("com.fasterxml.jackson.module", "jackson-module-kotlin","2.11.0")
     implementation("com.fasterxml.jackson.core","jackson-databind","2.11.0")
     implementation("com.fasterxml.jackson.module","jackson-module-kotlin","2.11.0")
+    //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    //implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.7.3")
 }
 
 tasks.distZip {
