@@ -7,7 +7,9 @@ import view.components.Button
 import view.components.Label
 
 /**
- * Represents the menu scene for network game options.
+ * NetworkMenuScene class represents a menu scene related to network operations in an Indigo application.
+ *
+ * @param indigoApp The IndigoApplication instance associated with the network menu scene.
  */
 class NetworkMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) ,Refreshable {
     // Buttons for network game options

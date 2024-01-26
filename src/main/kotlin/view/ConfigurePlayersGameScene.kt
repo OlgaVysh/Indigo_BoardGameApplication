@@ -19,7 +19,7 @@ import view.components.Label
  * and start the game which leads to the game scene (?)
  *
  * The layout and design of these components are defined in this class.
- *
+ * @param indigoApp The IndigoApplication instance associated with the configuration scene.
  */
 class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
     // UI components for configuring players
@@ -106,6 +106,14 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameSce
     }*/
     //add refreshScene addNewPlayerButton is disabled = indigoApp.players.size>=4
 
+    /**
+     * Adds a player view to the configuration scene.
+     *
+     * @param name The name of the player.
+     * @param color The TokenColor representing the player's color.
+     * @param turn The turn order of the player, or null if not specified.
+     * @param ai A boolean indicating whether the player is controlled by an AI.
+     */
     fun addPlayerView(name : String, color:TokenColor, turn : Int?, ai : Boolean) {
         val turnOutput = turn?.toString() ?: "random"
         val aiOutput = if(ai)"AI" else ""
@@ -121,7 +129,12 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameSce
         startGameButton.isDisabled = players.rows<2
         addNewPlayerButton.isDisabled= players.rows==4
     }
-
+    /**
+     * Retrieves a gem based on the current number of rows and the specified color.
+     *
+     * @param currentRows The current number of rows in the game.
+     * @param color The TokenColor representing the color of the gem to be retrieved.
+     */
     private fun getGem(currentRows : Int, color: TokenColor)
     {
         when(color) {

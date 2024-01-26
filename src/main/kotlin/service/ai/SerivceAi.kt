@@ -50,7 +50,7 @@ class SerivceAi {
 
             if (servicee(newIndigo).checkPlacement(
                     coordinate,
-                    tile!!,
+                    tile,
                     false
                 )
             ) { //when it blocks an exist we rotate it till it s correct

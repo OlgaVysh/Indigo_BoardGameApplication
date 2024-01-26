@@ -32,8 +32,9 @@ class RootService {
     var currentGame: Indigo? = null
 
     /**
-     * Adds the provided [newRefreshable] to all services connected
-     * to this root service
+     * Adds a Refreshable instance to multiple services for updating.
+     *
+     * @param newRefreshable The Refreshable instance to be added.
      */
     fun addRefreshable(newRefreshable: Refreshable) {
 
@@ -45,8 +46,9 @@ class RootService {
     }
 
     /**
-     * Adds each of the provided [newRefreshables] to all services
-     * connected to this root service
+     * Adds multiple Refreshable instances to multiple services for updating.
+     *
+     * @param newRefreshables The vararg parameter representing multiple Refreshable instances to be added.
      */
     fun addRefreshables(vararg newRefreshables: Refreshable) {
         newRefreshables.forEach { addRefreshable(it) }

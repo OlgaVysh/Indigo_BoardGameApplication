@@ -9,6 +9,7 @@ import view.components.Label
 /**
  * Menu scene displayed when a game has been successfully saved.
  * Extends [MenuScene] to inherit basic menu scene functionalities.
+ * @param indigoApp The IndigoApplication instance associated with the saved game menu scene.
  */
 class GameSavedMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")),Refreshable{
 

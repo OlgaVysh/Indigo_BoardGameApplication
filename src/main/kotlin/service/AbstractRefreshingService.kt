@@ -12,8 +12,9 @@ abstract class AbstractRefreshingService {
     private val refreshables = mutableListOf<Refreshable>()
 
     /**
-     * adds a [Refreshable] to the list that gets called
-     * whenever [onAllRefreshables] is used.
+     * Adds a new Refreshable instance to the list of refreshable components.
+     *
+     * @param newRefreshable The Refreshable instance to be added.
      */
     fun addRefreshable(newRefreshable : Refreshable) {
         refreshables += newRefreshable

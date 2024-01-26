@@ -22,7 +22,15 @@ class CoordinateMapKeyDeserializer: KeyDeserializer() {
 
     //
     //    return key?.let {kMapper.readValue<Coordinate>(key)}
-
+    /**
+     * Deserializes a key represented as a JSON string into a Coordinate object.
+     *
+     * @param key The JSON string representing the key to be deserialized.
+     * @param ctxt The DeserializationContext providing contextual information during deserialization.
+     * @return The deserialized Coordinate object, or null if the deserialization fails.
+     * @throws IOException If an I/O error occurs during deserialization.
+     * @throws JsonProcessingException If a JSON processing error occurs during deserialization.
+     */
     @Throws(IOException::class, JsonProcessingException::class)
     override fun deserializeKey(key: String?, ctxt: DeserializationContext?): Coordinate? {
         return key?.let { kMapper.readValue<Coordinate>(key) }

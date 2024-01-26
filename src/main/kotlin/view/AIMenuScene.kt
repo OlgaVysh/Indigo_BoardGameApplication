@@ -14,7 +14,7 @@ import view.components.Label
  *
  * This scene includes various UI components like labels, a combo box for selecting AI speed, and a button to start the game.
  * The layout and visual elements are defined within this class.
- *
+ * @param indigoApp The IndigoApplication instance associated with the menu scene.
  */
 class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Refreshable {
 

@@ -18,6 +18,7 @@ import view.components.Label
 
 /**
  * Represents the game scene containing a hexagonal grid.
+ * @param indigoApp The IndigoApplication instance associated with the game scene.
  */
 
 class GameScene(val indigoApp: IndigoApplication) :
@@ -136,21 +137,25 @@ class GameScene(val indigoApp: IndigoApplication) :
     private var player4yellowGemCounter = Label(posX = 1276, posY = 717, text = "0", fontSize = 48)
 
     //BlueGem appears when collected by player/players
-    private val blueGemCounter1 = Label(posX = 411, posY = 240, text = "", width = 81, height = 75).
-    apply { visual=ImageVisual("blueGem.png")
-    isVisible=false}
+    private val blueGemCounter1 = Label(posX = 411, posY = 240, text = "", width = 81, height = 75).apply {
+        visual = ImageVisual("blueGem.png")
+        isVisible = false
+    }
 
-    private val blueGemCounter2 = Label(posX = 1365, posY = 240, text = "", width = 81, height = 75).
-    apply { visual=ImageVisual("blueGem.png")
-        isVisible=false}
+    private val blueGemCounter2 = Label(posX = 1365, posY = 240, text = "", width = 81, height = 75).apply {
+        visual = ImageVisual("blueGem.png")
+        isVisible = false
+    }
 
-    private val blueGemCounter3 = Label(posX = 492, posY = 904, text = "", width = 81, height = 75).
-    apply { visual=ImageVisual("blueGem.png")
-        isVisible=false}
+    private val blueGemCounter3 = Label(posX = 492, posY = 904, text = "", width = 81, height = 75).apply {
+        visual = ImageVisual("blueGem.png")
+        isVisible = false
+    }
 
-    private val blueGemCounter4 = Label(posX = 1271, posY = 904, text = "", width = 81, height = 75).
-    apply { visual=ImageVisual("blueGem.png")
-        isVisible=false}
+    private val blueGemCounter4 = Label(posX = 1271, posY = 904, text = "", width = 81, height = 75).apply {
+        visual = ImageVisual("blueGem.png")
+        isVisible = false
+    }
 
 
     // PlayerHandTile components
@@ -265,7 +270,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         listOf(player1checkButton, player2checkButton, player3checkButton, player4checkButton)
     private val playerHandtiles = listOf(player1handTile, player2handTile, player3handTile, player4handTile)
     private val playerTokens = listOf(player1Token, player2Token, player3Token, player4Token)
-    private val blueGems = listOf(blueGemCounter1,blueGemCounter2,blueGemCounter3,blueGemCounter4)
+    private val blueGems = listOf(blueGemCounter1, blueGemCounter2, blueGemCounter3, blueGemCounter4)
 
     /**
      * Initializes the GameScene with default values and sets up the hexagonal grid.
@@ -419,6 +424,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     /**
      * invokes player actions to the buttons
+     * @param players The list of players for whom buttons will be invoked or updated.
      */
     private fun invokeButtons(players: List<Player>) {
         val count = players.size
@@ -566,9 +572,8 @@ class GameScene(val indigoApp: IndigoApplication) :
             startHandTile.add(player.handTile)
         }
 
-        for(blueGemCounter in blueGems)
-        {
-            blueGemCounter.isVisible=false
+        for (blueGemCounter in blueGems) {
+            blueGemCounter.isVisible = false
         }
         println(startHandTile.toString())
         mapGems()
@@ -578,7 +583,6 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     /**
      * private function to clean the game scene components
-     *
      */
     private fun cleanGameScene() {
         for (i in 0..3) {
@@ -757,15 +761,17 @@ class GameScene(val indigoApp: IndigoApplication) :
                         isDisabled = true
                         isVisible = false
                     }
+                }
             }
         }
-    }
 
     }
 
 
     /**
      * Sets Token-Label with an Image of the given TokenColor
+     * @param label The Label associated with the gem.
+     * @param color The TokenColor representing the color of the gem to be retrieved.
      */
     private fun getGem(label: Label, color: TokenColor) {
         when (color) {
@@ -849,7 +855,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     /**
      *  refreshes the GameScene after PlayerTurn rotateTileLeft was called
-     *
+     * @param currentPlayerIndex The index of the current player in the game.
      *  @throws IllegalStateException if no game is running
      */
     override fun refreshAfterLeftRotation(currentPlayerIndex: Int) {
@@ -863,7 +869,7 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     /**
      *  refreshes the GameScene after PlayerTurn rotateTileRight was called
-     *
+     * @param currentPlayerIndex The index of the current player in the game.
      *  @throws IllegalStateException if no game is running
      */
     override fun refreshAfterRightRotation(currentPlayerIndex: Int) {
@@ -875,6 +881,9 @@ class GameScene(val indigoApp: IndigoApplication) :
         rotationDegree++
     }
 
+    /**
+     * Refreshes the scene after redoing a move or action.
+     */
     override fun refreshAfterRedo() {
         val labelsListe = mutableListOf<Label>()
         labelsListe.add(player1ScoreLabel)
@@ -918,6 +927,9 @@ class GameScene(val indigoApp: IndigoApplication) :
         refreshAfterChangePlayer()
     }
 
+    /**
+     * Refreshes the scene after undoing a move or action.
+     */
 
     override fun refreshAfterUndo() {
         val labelsListe = mutableListOf<Label>()
@@ -964,7 +976,9 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     }
 
-
+    /**
+     * Repositions gems on the game board.
+     */
     private fun repositionGems() {
         val gameBoardTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val middle = indigoApp.rootService.currentGame!!.middleTile
@@ -978,24 +992,22 @@ class GameScene(val indigoApp: IndigoApplication) :
                     gemMap[gem]!!.reposition(posX, posY)
                     unlock()
                 })
-                }
             }
-
-            for ((int, gem) in middle.gemPosition) {
-                val coordinate = Coordinate(0,0)
-                val position = coordMap[coordinate]
-                val posX = position!!.x + gemEndPos[int]!!.x
-                val posY = position.y + gemEndPos[int]!!.y
-                lock()
-                playAnimation(DelayAnimation(1000).apply {
-                    gemMap[gem]!!.reposition(posX, posY)
-                    unlock()
-                })
-            }
-
         }
 
+        for ((int, gem) in middle.gemPosition) {
+            val coordinate = Coordinate(0, 0)
+            val position = coordMap[coordinate]
+            val posX = position!!.x + gemEndPos[int]!!.x
+            val posY = position.y + gemEndPos[int]!!.y
+            lock()
+            playAnimation(DelayAnimation(1000).apply {
+                gemMap[gem]!!.reposition(posX, posY)
+                unlock()
+            })
+        }
 
+    }
 
 
     /**
@@ -1026,6 +1038,9 @@ class GameScene(val indigoApp: IndigoApplication) :
     /**
      * Highlights the clicked tile and sets [chosenPlace] to the currently chosen space
      * Saves the coordinates of the chosen space in [chosenCol] and [chosenRow]
+     * @param tile The HexagonView representing the chosen tile.
+     * @param col The column index of the chosen tile on the game board.
+     * @param row The row index of the chosen tile on the game board.
      */
     private fun chooseTile(tile: HexagonView, col: Int, row: Int) {
         if (chosenPlace != null) chosenPlace!!.visual.borderWidth = BorderWidth(0)
@@ -1046,6 +1061,7 @@ class GameScene(val indigoApp: IndigoApplication) :
      * Creates Coordinate Object of chosenRow and chosenCol. Asserts if no space was chosen yet.
      * tileToPlace saves the latest View of currentPlayers tile to place on the gameBoard
      * Calls placeRouteTile with the given tile and created Coordinate
+     * @param tile The Tile to be placed on the game board.
      */
     private fun callPlaceTile(tile: Tile) {
         checkNotNull(chosenPlace) { "Please, choose space on the board and press ✓" }
@@ -1070,6 +1086,9 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     /**
      * Moves the view of a gem to its new position on the scene
+     * @param gem The Gem that has been moved.
+     * @param coordinate The target Coordinate where the gem is moved to.
+     * @param exit The exit index indicating the direction of the movement.
      */
     override fun refreshAfterMoveGems(gem: Gem, coordinate: Coordinate, exit: Int) {
         val game = indigoApp.rootService.currentGame
@@ -1084,7 +1103,12 @@ class GameScene(val indigoApp: IndigoApplication) :
         })
 
     }
-
+    /**
+     * Refreshes the scene after a collision between two gems.
+     *
+     * @param gem1 The first Gem involved in the collision.
+     * @param gem2 The second Gem involved in the collision.
+     */
     override fun refreshAfterCollision(gem1: Gem, gem2: Gem) {
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
@@ -1106,7 +1130,11 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
 
     }
-
+    /**
+     * Refreshes the scene after removing a gem from the game board.
+     *
+     * @param gem The Gem that has been removed.
+     */
     override fun refreshAfterRemoveGems(gem: Gem) {
         //gemToRemoveList: MutableList<Gem> als parameter??
         val game = indigoApp.rootService.currentGame
@@ -1129,7 +1157,7 @@ class GameScene(val indigoApp: IndigoApplication) :
             playerYellowGemCounters[i - 1].text = yellowGems.toString()
             playerGreenGemCounters[i - 1].text = greenGems.toString()
 
-            blueGems[i-1].isVisible = blueCounter>0
+            blueGems[i - 1].isVisible = blueCounter > 0
             //blueGems[i-1].isVisible = game.players[i - 1].collectedGems.contains(Gem(GemColor.SAPPHIRE))
 
         }
@@ -1174,7 +1202,6 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
 
-
     /**
      * Refreshes the GUI after the network player's turn based on the current connection state.
      * Updates the visibility and disabled state of rotation buttons for each player.
@@ -1197,7 +1224,11 @@ class GameScene(val indigoApp: IndigoApplication) :
             playerRotateCheck[currentPlayerIndex].isDisabled = true
         }
     }
-
+    /**
+     * Refreshes the scene after receiving a new tile with a specified rotation.
+     *
+     * @param rotation The rotation value of the received tile.
+     */
     override fun refreshAfterReceivedTile(rotation: Int) {
         rotationDegree = rotation
         /* val currentPlayer = rootService.currentGame!!.currentPlayerIndex
@@ -1241,7 +1272,10 @@ class GameScene(val indigoApp: IndigoApplication) :
 
          */
     }
-
+    /**
+     * Maps the gems on the game board.
+     * This function may handle tasks specific to organizing or updating the positions of gems on the game board.
+     */
     private fun mapGems() {
         val game = rootService.currentGame
         checkNotNull(game)

@@ -5,6 +5,8 @@ import service.PlayerTurnService
 import java.util.*
 import entity.*
 import kotlinx.coroutines.*
+import kotlin.math.ln
+import kotlin.math.sqrt
 
 /**
  * The MCTS: Monte Carlo Tree Search algorithm to find the best player moves
@@ -63,7 +65,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
      */
 
 
-    fun findNextMoveLimited(maxIterations: Int): Coordinate? {
+    private fun findNextMoveLimited(maxIterations: Int): Coordinate? {
         val defaultMove = Coordinate(-1, -1)
         val root = Node(rootService, null, defaultMove)
 
@@ -96,7 +98,7 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
             // Calculate UCT values for children
             val uctValues = current.children.map { child ->
                 if (child.visitCount != 0.0)
-                    child.winCount / child.visitCount + Math.sqrt(2.0 * Math.log(current.visitCount) / child.visitCount)
+                    child.winCount / child.visitCount + sqrt(2.0 * ln(current.visitCount) / child.visitCount)
                 else
                     Double.POSITIVE_INFINITY
             }

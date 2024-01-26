@@ -201,7 +201,12 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         addNewPlayerButton.isDisabled = true
         aiPlayer = false
     }
-
+    /**
+     * Converts a TokenColor to its corresponding text representation.
+     *
+     * @param color The TokenColor to be converted.
+     * @return The text representation of the TokenColor.
+     */
     private fun toColorText(color :TokenColor):String{
         return when(color){
             TokenColor.WHITE -> {

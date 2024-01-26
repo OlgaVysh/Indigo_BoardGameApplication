@@ -81,7 +81,11 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
             betweenGemsLabel, player1, player2, player3, player4, gameOverLabel, exitButton, newGameButton, restartButton
         )
     }
-
+    /**
+     * Refreshes the scene after the end of a game.
+     * This function may handle tasks specific to updating the graphical user interface after the game concludes.
+     * Additional implementation details can be added here.
+     */
     override fun refreshAfterEndGame() {
         val game = indigoApp.rootService.currentGame
         checkNotNull(game)
