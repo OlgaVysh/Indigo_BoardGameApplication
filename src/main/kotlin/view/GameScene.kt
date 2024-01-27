@@ -26,6 +26,14 @@ class GameScene(val indigoApp: IndigoApplication) :
     private val gemMap = mutableMapOf<Gem, Label>()
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
+    private val middleMap = mutableMapOf(
+        0 to Position(916.0, 438.0),
+        1 to Position(894.0, 410.0),
+        2 to Position(933.0, 408.0),
+        3 to Position(948.0, 442.0),
+        4 to Position(914.0, 468.0),
+        5 to Position(881.0, 443.0)
+    )
 
     private val gemEndPos = mutableMapOf(
         0 to Position(0.0, -36.0),
@@ -990,24 +998,20 @@ class GameScene(val indigoApp: IndigoApplication) :
                 lock()
                 playAnimation(DelayAnimation(1000).apply {
                     gemMap[gem]!!.reposition(posX, posY)
-                    gemMap[gem]!!.apply{isVisible = true}
+                    gemMap[gem]!!.apply { isVisible = true }
                     unlock()
                 })
             }
         }
 
         for ((int, gem) in middle.gemPosition) {
-            val coordinate = Coordinate(0, 0)
-            val position = coordMap[coordinate]
-            val posX = position!!.x + gemEndPos[int]!!.x
-            val posY = position.y + gemEndPos[int]!!.y
-            lock()
-            playAnimation(DelayAnimation(1000).apply {
-                gemMap[gem]!!.reposition(posX, posY)
-                unlock()
-            })
-        }
+            val label = gemMap[gem]!!
+            val newX  = middleMap[int]!!.x
+            val newY  = middleMap[int]!!.y
+                label.apply { posX = newX; posY = newY}
 
+
+        }
     }
 
 
