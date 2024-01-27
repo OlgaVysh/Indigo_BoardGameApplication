@@ -990,6 +990,7 @@ class GameScene(val indigoApp: IndigoApplication) :
                 lock()
                 playAnimation(DelayAnimation(1000).apply {
                     gemMap[gem]!!.reposition(posX, posY)
+                    gemMap[gem]!!.apply{isVisible = true}
                     unlock()
                 })
             }
