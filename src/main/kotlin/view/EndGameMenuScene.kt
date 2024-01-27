@@ -107,7 +107,7 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
             betweenGemsLabel.text =
                 "${sortedPlayers[0].name} has  ${sortedPlayers[0].score}  Points and ${sortedPlayers[0].collectedGems.size} Gems "
             player2.text =
-                "${sortedPlayers[0].name} has  ${sortedPlayers[1].score}  Points and ${sortedPlayers[1].collectedGems.size} Gems "
+                "${sortedPlayers[1].name} has  ${sortedPlayers[1].score}  Points and ${sortedPlayers[1].collectedGems.size} Gems "
         }
         if (sortedPlayers[0].score == sortedPlayers[1].score && sortedPlayers[0].collectedGems.size == sortedPlayers[1].collectedGems.size) {
             betweenGemsLabel.text = "It's a Tie between " + sortedPlayers[0].name + " and " + sortedPlayers[1].name
