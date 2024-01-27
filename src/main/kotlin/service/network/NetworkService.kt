@@ -113,11 +113,11 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                             withTimeout(8000) {
                                 delay((currentPlayer.simulationSpeed * 1000).toLong())
                                 rootService.aiActionService.aiMove(currentPlayer.difficulty)
-                                onAllRefreshables { refreshAfterChangePlayer()}
+                                onAllRefreshables { refreshAfterChangePlayer() }
                             }
                         } catch (e: Exception) {
                             rootService.aiActionService.aiMove("easy")
-                            onAllRefreshables { refreshAfterChangePlayer()}
+                            onAllRefreshables { refreshAfterChangePlayer() }
                         }
                     }
                 }
@@ -237,7 +237,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                 updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             }
         }
-        onAllRefreshables { refreshAfterChangePlayer()}
+        onAllRefreshables { refreshAfterChangePlayer() }
         onAllRefreshables { refreshAfterNetworkPlayerTurn() }
     }
 
@@ -270,7 +270,10 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         if (client?.otherPlayers!!.contains(currentGame.players[currentPlayerIndex].name)) {
             updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
         }
-        onAllRefreshables { refreshAfterNetworkPlayerTurn() }
+        onAllRefreshables {
+            refreshAfterChangePlayer()
+            refreshAfterNetworkPlayerTurn()
+        }
         val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
         if (currentPlayer.isAI) {
             when (currentPlayer) {
@@ -281,18 +284,18 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                                 withTimeout(8000) {
                                     delay((currentPlayer.simulationSpeed * 1000).toLong())
                                     rootService.aiActionService.aiMove(currentPlayer.difficulty)
-                                    onAllRefreshables { refreshAfterChangePlayer()}
-                                    }
+                                    onAllRefreshables { refreshAfterChangePlayer() }
+                                }
                             } catch (e: Exception) {
                                 rootService.aiActionService.aiMove("easy")
-                                onAllRefreshables { refreshAfterChangePlayer()}
+                                onAllRefreshables { refreshAfterChangePlayer() }
                             }
                         }
                     }
                 }
             }
         }
-        onAllRefreshables { refreshAfterNetworkPlayerTurn()}
+        onAllRefreshables { refreshAfterNetworkPlayerTurn() }
         println(connectionState.toString())
     }
 
