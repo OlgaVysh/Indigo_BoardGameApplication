@@ -501,7 +501,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
 
                           else -> {CoroutineScope(Dispatchers.JavaFx).launch { //
-                              delay((100/currentPlayer.simulationSpeed).toLong())
+                              delay((2000/currentPlayer.simulationSpeed).toLong())
                               rootService.aiActionService.aiMove(currentPlayer.difficulty)
                               onAllRefreshables { refreshAfterChangePlayer() }
                           }}
