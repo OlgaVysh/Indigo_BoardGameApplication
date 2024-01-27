@@ -181,7 +181,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         indigoApp.showGameScene(indigoApp.gameScene)
         indigoApp.hideMenuScene()
         indigoApp.gameScene.refreshAfterStartGame()
-
+        indigoApp.gameScene.refreshAfterNetworkPlayerTurn()
         val players = rootService.currentGame!!.players
         val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
         val currentPlayer = players[currentPlayerIndex]

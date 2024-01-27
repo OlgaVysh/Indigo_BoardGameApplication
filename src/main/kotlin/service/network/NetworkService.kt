@@ -102,7 +102,9 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         { "currently not prepared to start a new hosted game." }
         rootService.gameService.startGame(players, notSharedGates, random)
         sendGameInitMessage()
-        onAllRefreshables { refreshAfterNetworkPlayerTurn() }
+        onAllRefreshables {
+            refreshAfterChangePlayer()
+            refreshAfterNetworkPlayerTurn() }
         val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
         val currentPlayer = players[currentPlayerIndex]
         when (currentPlayer) {
@@ -295,7 +297,6 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                 }
             }
         }
-        onAllRefreshables { refreshAfterNetworkPlayerTurn() }
         println(connectionState.toString())
     }
 
