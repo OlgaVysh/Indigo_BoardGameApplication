@@ -364,25 +364,26 @@ class GameServiceTest {
         assertEquals(0, loadedGame.tokens.size)
         assertEquals(newPlayer2handTile, loadedGame.players[1].handTile)
     }
+
     /**
      * Additional test for loadGame
      */
-/*  @Test
-    fun loadGameTest2 (){
-       //al savedGameFile = this::class.java.getResource("GameSaved1.json")?.toExternalForm()
-       //rintln(savedGameFile)
+    @Test
+    fun loadGameTest2() {
+        //al savedGameFile = this::class.java.getResource("GameSaved1.json")?.toExternalForm()
+        //rintln(savedGameFile)
         rootService.gameService.loadGame("GameSaved1.json")
         val loadedGame = rootService.currentGame
-        assertEquals(2,loadedGame?.players?.size)
-        assertEquals("12",loadedGame?.players?.get(0)?.name)
-        assertEquals(2,loadedGame?.players?.get(0)?.score)
-        assertEquals(TokenColor.BLUE,loadedGame?.players?.get(0)?.color)
+        assertEquals(2, loadedGame?.players?.size)
+        assertEquals("12", loadedGame?.players?.get(0)?.name)
+        assertEquals(2, loadedGame?.players?.get(0)?.score)
+        assertEquals(TokenColor.BLUE, loadedGame?.players?.get(0)?.color)
 
-        assertEquals("123",loadedGame?.players?.get(1)?.name)
-        assertEquals(2,loadedGame?.players?.get(1)?.score)
-        assertEquals(TokenColor.RED,loadedGame?.players?.get(1)?.color)
+        assertEquals("123", loadedGame?.players?.get(1)?.name)
+        assertEquals(2, loadedGame?.players?.get(1)?.score)
+        assertEquals(TokenColor.RED, loadedGame?.players?.get(1)?.color)
     }
-*/
+
     /**
      * Test the changePlayer function.
      */
@@ -454,8 +455,8 @@ class GameServiceTest {
 
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 3), testTile2)
         val secondPlacedTile = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]
-        assertEquals(0,  rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]!!.gemEndPosition.size)
-        assertEquals(2,rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]!!.gemEndPosition.size)
+        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]!!.gemEndPosition.size)
+        assertEquals(2, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 3)]!!.gemEndPosition.size)
         assertEquals(1, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 2)]!!.gemEndPosition.size)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
         assertTrue(refreshableTest.refreshAfterMoveGemsCalled)
@@ -495,8 +496,8 @@ class GameServiceTest {
         rootService.playerTurnService.placeRouteTile(Coordinate(-2, -2), testTile1)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
         refreshableTest.reset()
-        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-3,-1)]!!.gemEndPosition.size)
-        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-2,-2)]!!.gemEndPosition.size)
+        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-3, -1)]!!.gemEndPosition.size)
+        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-2, -2)]!!.gemEndPosition.size)
         assertEquals(8, rootService.currentGame!!.gems.size)
 
         testTile2.gemEndPosition.clear()
@@ -508,8 +509,8 @@ class GameServiceTest {
         rootService.playerTurnService.placeRouteTile(Coordinate(-1, -1), testTile2)
         assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
         refreshableTest.reset()
-        assertEquals(0,rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-2,0)]!!.gemEndPosition.size)
-        assertEquals(0,rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1,-1)]!!.gemEndPosition.size)
+        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-2, 0)]!!.gemEndPosition.size)
+        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, -1)]!!.gemEndPosition.size)
         assertEquals(6, rootService.currentGame!!.gems.size)
     }
 
@@ -726,6 +727,7 @@ class GameServiceTest {
             assertEquals(sapphire, game.gems[game.gems.size - 1].gemColor)
         }
     }
+
     /**
      * Initializes token test for a specific scenario.
      */
@@ -765,10 +767,11 @@ class GameServiceTest {
             }
         }
     }
-/**
- * Tests the scenario where the second player is controlled by artificial intelligence (KI).
-*/
-@Test
+
+    /**
+     * Tests the scenario where the second player is controlled by artificial intelligence (KI).
+     */
+    @Test
     fun testSecondPlayerIsKI() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
@@ -800,9 +803,10 @@ class GameServiceTest {
         assertEquals(true, testGame.players[1].isAI)
         assertEquals(false, testGame.players[0].isAI)
     }
-/**
- * Tests the undo functionality for a specific scenario (test case).
- */
+
+    /**
+     * Tests the undo functionality for a specific scenario (test case).
+     */
     @Test
     fun testUndo2() {
         val refreshableTest = RefreshableTest()

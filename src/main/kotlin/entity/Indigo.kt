@@ -1,6 +1,8 @@
 package entity
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo
+import com.fasterxml.jackson.annotation.JsonIdentityReference
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.ObjectIdGenerators
 
 /**
@@ -42,8 +44,10 @@ data class Indigo(
     val treasureTiles: List<Tile> = allTiles.take(6)
     var routeTiles: MutableList<Tile> = allTiles.drop(6).toMutableList()
     //@JsonIgnore
+    @JsonIdentityReference(alwaysAsId = true)
     var previousGameState: Indigo? = null
     //@JsonIgnore
+    @JsonIdentityReference(alwaysAsId = true)
     var nextGameState: Indigo? = null
 
     init {
@@ -119,7 +123,7 @@ data class Indigo(
             this.allTiles,
             copiedGems,
             this.tokens,
-            id = id + 1
+            id = id+1
         )
         copiedIndigo.currentPlayerIndex = this.currentPlayerIndex
         copiedIndigo.nextGameState = this.nextGameState
