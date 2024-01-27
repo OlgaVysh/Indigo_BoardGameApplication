@@ -37,7 +37,6 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         val game = root.currentGame
         checkNotNull(game)
         val player = game.players[game.currentPlayerIndex]
-        if (player.handTile==null) onAllRefreshables { refreshAfterEndGame() }
         val playerTurnService = root.playerTurnService
         gatherInformation()
         if (gemTiles.isNotEmpty()){
@@ -54,15 +53,17 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
             }
             println("[SimpleAI DEBUG] gemTile: "+gemTiles[bestMoveIndex]+" move: " +
                     moves[bestMoveIndex]+"rotation:"+moveValues[bestMoveIndex].first)
-            playerTurnService.placeRouteTile(moves[bestMoveIndex],player.handTile!!)
+            playerTurnService.placeRouteTile(moves[bestMoveIndex], player.handTile!!)
         }else{
-            val randomMove = randomAI.findAvailableMoves(root.currentGame!!).shuffled().first().first
-            playerTurnService.placeRouteTile(randomMove,player.handTile!!)
+            val randomMove = randomAI.findAvailableMoves().shuffled().first().first
+            playerTurnService.placeRouteTile(randomMove, player.handTile!!)
         }
         onAllRefreshables { refreshAfterAITurn() }
     }
     /**
      * Simulates where a [Gem] ends up after each move in [moves] with each possible rotation
+     *
+     * Value of a move is calculated using twice the distance
      *
      * @return [List] of [Pair]s representing the best Orientation of the tile for each move
      * and the Distance delta the move causes
@@ -91,7 +92,9 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
                         nearestGates[i].first)-nearestGates[i].second
                     tempNewEnemyDist = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),
                         nearestEnemyGates[i].first)-nearestEnemyGates[i].second
-                    moveValue = (tempNewEnemyDist-(tempNewOwnDist*2))*(gemPositions[i].second.gemColor.ordinal+1)*(6-nearestGates[i].second)
+                    moveValue = (tempNewEnemyDist-(tempNewOwnDist*2))*
+                            (gemPositions[i].second.gemColor.ordinal+1)*
+                            (6-nearestGates[i].second)
                     if (moveValue > bestValue){
                         bestValue = moveValue
                         bestRotation = (j).mod(6)
