@@ -432,6 +432,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             if (next != null) next.previousGameState = current
         }*/
         //rootService.currentGame = gameStateList.lastOrNull()
+        /*
         for(i in gameList.size-1 downTo  0) {
             rootService.currentGame = gameList[i]
             rootService.currentGame?.previousGameState = gameList[i-1]
@@ -440,7 +441,17 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         }
         rootService.currentGame = gameList[gameList.size-1]
         checkNotNull(rootService.currentGame)
-
+        */
+        for (i in gameList.indices){
+            if (i>0){
+                gameList[i].previousGameState = gameList[i-1]
+            }
+            if (i<gameList.size-1){
+                gameList[i].nextGameState = gameList[i+1]
+            }
+        }
+        rootService.currentGame = gameList.lastOrNull()
+        checkNotNull(rootService.currentGame)
         onAllRefreshables { refreshAfterLoadGame() }
     }
 
