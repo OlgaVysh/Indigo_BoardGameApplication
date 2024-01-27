@@ -17,8 +17,11 @@ class SaveGameMenuScene(indigoApp : IndigoApplication) : MenuScene(1920, 1080, b
 
     // Button for confirming the decision to save the game
     private val yesButton = Button(1100, 642, 528, 207, "Yes", 48).
-    apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.gameSavedScene)
-    indigoApp.rootService.gameService.saveGame("GameSaved1.json")} }
+    apply { onMouseClicked = {
+        indigoApp.rootService.gameService.saveGame("GameState.json")
+        indigoApp.showMenuScene(indigoApp.gameSavedScene)
+        }
+    }
 
     // Label displaying the first part of the confirmation message
     private val label1 = Label(424, 284, 1072, 116, "Do you want to break of", 86)

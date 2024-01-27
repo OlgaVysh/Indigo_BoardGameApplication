@@ -402,17 +402,17 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     fun saveGame(path: String) {
         val game = rootService.currentGame
         checkNotNull(game)
-        //val gameStateList = mutableListOf<Indigo>()
-       /* var current: Indigo? = game
+        val gameStateList = mutableListOf<Indigo>()
+        var current: Indigo? = game
         while (current != null){
             gameStateList.add(current)
             //gameStateList.add(0,current.copyTo())
             current = current.previousGameState
             //gameStateList.toList() //??
-        }*/
+        }
         /*val json = mapper.writeValueAsString(gameStateList)
         File(path).writeText(json)*/
-        rootService.ioService.saveGameToFile(game, path)
+        rootService.ioService.saveGameToFile(gameStateList, path)
         onAllRefreshables { refreshAfterSaveGame() }
     }
 
@@ -424,7 +424,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      */
     fun loadGame(path: String) {
         //val gameStateList: List<Indigo> = rootService.ioService.readGameFromFile(path)
-        val game = rootService.ioService.readGameFromFile(path)
+        val gameList = rootService.ioService.readGameFromFile(path)
         /*for (i in gameStateList.indices){
             val current = gameStateList[i]
             val next = if (i< gameStateList.size -1) gameStateList[i+1] else null
@@ -432,7 +432,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             if (next != null) next.previousGameState = current
         }*/
         //rootService.currentGame = gameStateList.lastOrNull()
-        rootService.currentGame = game
+        for(i in gameList.size-1 downTo  0) {
+            rootService.currentGame = gameList[i]
+            rootService.currentGame?.previousGameState = gameList[i-1]
+            rootService.currentGame?.previousGameState?.nextGameState = gameList[i]
+            rootService.currentGame = rootService.currentGame?.previousGameState
+        }
+        rootService.currentGame = gameList[gameList.size-1]
         checkNotNull(rootService.currentGame)
 
         onAllRefreshables { refreshAfterLoadGame() }

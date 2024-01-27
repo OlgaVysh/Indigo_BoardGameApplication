@@ -23,8 +23,11 @@ class NewGameMenuScene(indigoApp: IndigoApplication) :
 
     private val continueButton = Button(696, 664, 528, 207, "Continue game", 48).apply {
         onMouseClicked = {
-            indigoApp.showGameScene(indigoApp.savedGamesScene)
+            indigoApp.rootService.gameService.loadGame("./indigogames/GameState.json")
+            indigoApp.showGameScene(indigoApp.gameScene)
             indigoApp.hideMenuScene()
+            //indigoApp.showGameScene(indigoApp.savedGamesScene)
+            //indigoApp.hideMenuScene()
         }
     }
 
