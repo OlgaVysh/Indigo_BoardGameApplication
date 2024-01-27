@@ -86,7 +86,7 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
             aiDiff
         )
         aiSpeed.items = mutableListOf("low", "middle", "high")
-        aiDiff.items = mutableListOf("easy", "medium")
+        aiDiff.items = mutableListOf("easy", "medium","advance")
     }
 
     private fun aiSpeed(): Int {
