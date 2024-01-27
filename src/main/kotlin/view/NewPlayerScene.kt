@@ -52,7 +52,6 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     private val yesButton = RadioButton(posX = 350, posY = 710, toggleGroup = toggleGroup).apply {
         onMouseClicked = {
             aiPlayer = true
-            indigoApp.aiGame = true
         }
     }
     private val noButton = RadioButton(posX = 550, posY = 710, isSelected = true, toggleGroup = toggleGroup).
