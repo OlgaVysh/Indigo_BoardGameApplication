@@ -59,18 +59,18 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
         }
     }
 
-    private val restartButton = Button(737, 871, 440, 158, "Restart game", 38).
-    apply { onMouseClicked = {
+    private val restartButton = Button(737, 871, 440, 158, "Restart game", 38).apply {
+        onMouseClicked = {
 
-        val newPlayers = mutableListOf<Player>()
-        for(player in indigoApp.rootService.currentGame!!.players)
-        {
-                player.score=0
+            val newPlayers = mutableListOf<Player>()
+            for (player in indigoApp.rootService.currentGame!!.players) {
+                player.score = 0
+                player.collectedGems.clear()
                 newPlayers.add(player)
+            }
+            indigoApp.rootService.gameService.startGame(newPlayers, indigoApp.notSharedGates, false)
+            indigoApp.hideMenuScene()
         }
-        indigoApp.rootService.gameService.startGame(newPlayers,indigoApp.notSharedGates,false)
-        indigoApp.hideMenuScene()
-    }
     }
 
     // Setting the background and adding components to the scene.
@@ -78,9 +78,18 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
         background = ImageVisual("FiveGemsBackGround.png")
         opacity = 1.0
         addComponents(
-            betweenGemsLabel, player1, player2, player3, player4, gameOverLabel, exitButton, newGameButton, restartButton
+            betweenGemsLabel,
+            player1,
+            player2,
+            player3,
+            player4,
+            gameOverLabel,
+            exitButton,
+            newGameButton,
+            restartButton
         )
     }
+
     /**
      * Refreshes the scene after the end of a game.
      * This function may handle tasks specific to updating the graphical user interface after the game concludes.
@@ -94,6 +103,12 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
             players.sortedWith(compareByDescending<Player> { it.score }.thenByDescending { it.collectedGems.size })
         betweenGemsLabel.text = sortedPlayers[0].name + " has " + sortedPlayers[0].score + "Points."
         player2.text = sortedPlayers[1].name + " has " + sortedPlayers[1].score + "Points."
+        if (sortedPlayers[0].score == sortedPlayers[1].score) {
+            betweenGemsLabel.text =
+                "${sortedPlayers[0].name} has  ${sortedPlayers[0].score}  Points and ${sortedPlayers[0].collectedGems.size} Gems "
+            player2.text =
+                "${sortedPlayers[0].name} has  ${sortedPlayers[1].score}  Points and ${sortedPlayers[1].collectedGems.size} Gems "
+        }
         if (sortedPlayers[0].score == sortedPlayers[1].score && sortedPlayers[0].collectedGems.size == sortedPlayers[1].collectedGems.size) {
             betweenGemsLabel.text = "It's a Tie between " + sortedPlayers[0].name + " and " + sortedPlayers[1].name
             player1.isVisible = true
@@ -108,6 +123,11 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
         if (players.size >= 3) {
             player3.text = players[2].name + " has " + players[2].score + "Points."
             player3.isVisible = true
+            if (sortedPlayers[2].score == sortedPlayers[0].score) {
+                player3.text =
+                    players[2].name + " has " + players[2].score + "Points and " + players[2].collectedGems.size + " Gems."
+                player3.posX = 605.0
+            }
             if (sortedPlayers[0].score == sortedPlayers[2].score && sortedPlayers[0].collectedGems.size == sortedPlayers[2].collectedGems.size) {
                 betweenGemsLabel.text =
                     "It's a Tie between " + sortedPlayers[0].name + ", " + sortedPlayers[1].name + " and " + sortedPlayers[2].name
@@ -120,6 +140,11 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
         if (players.size == 4) {
             player4.text = players[3].name + " has " + players[3].score + "Points."
             player4.isVisible = true
+            if (sortedPlayers[0].score == sortedPlayers[3].score) {
+                player4.text =
+                    players[3].name + " has " + players[3].score + "Points and " + players[3].collectedGems.size + " Gems."
+                player4.posX = 605.0
+            }
             if (sortedPlayers[0].score == sortedPlayers[3].score && sortedPlayers[0].collectedGems.size == sortedPlayers[3].collectedGems.size) {
                 betweenGemsLabel.text =
                     "It's a Tie between " + sortedPlayers[0].name + ", " + sortedPlayers[1].name + ", " + sortedPlayers[2].name + " and " + sortedPlayers[3].name
