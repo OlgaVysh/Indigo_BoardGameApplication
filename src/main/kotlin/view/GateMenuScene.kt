@@ -10,8 +10,9 @@ import view.components.Label
 
 /**
  * Represents the menu scene for selecting gate options.
+ *
+ * @param indigoApp The IndigoApplication instance associated with the gate menu scene.
  */
-
 class GateMenuScene(val indigoApp: IndigoApplication) :
     MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")), Refreshable {
     // Buttons for selecting game modes

@@ -2,7 +2,7 @@ package service
 
 import service.network.ConnectionState
 import service.network.NetworkService
-import tools.aqua.bgw.observable.lists.ObservableArrayList
+//import tools.aqua.bgw.observable.lists.ObservableArrayList
 import tools.aqua.bgw.observable.properties.Property
 
 /**
@@ -13,7 +13,7 @@ import tools.aqua.bgw.observable.properties.Property
  */
 class TestNetworkService(rootService: RootService) : NetworkService(rootService) {
     // Observable list to store opponent names
-    var opponentsProperty: ObservableArrayList<String> = ObservableArrayList()
+    //var opponentsProperty: ObservableArrayList<String> = ObservableArrayList()
 
     // Property to observe the connection state
     var connectionStateProperty: Property<ConnectionState> = Property(this.connectionState)

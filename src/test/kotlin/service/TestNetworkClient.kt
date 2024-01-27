@@ -35,11 +35,12 @@ class TestNetworkClient(
     private var onTilePlacedReceived: ((TilePlacedMessage, String) -> Unit)? = null
 
     // Accessor for the TestNetworkService
-    private val testNetworkService: TestNetworkService?
-        get() = networkService as? TestNetworkService
+    /*private val testNetworkService: TestNetworkService?
+        get() = networkService as? TestNetworkService*/
 
     /**
      * Overrides the callback for handling CreateGameResponse events.
+     * @param response The CreateGameResponse containing information about the outcome of the create game attempt.
      */
     override fun onCreateGameResponse(response: CreateGameResponse) {
         onCreateGameResponse?.invoke(response)
@@ -48,6 +49,7 @@ class TestNetworkClient(
 
     /**
      * Overrides the callback for handling JoinGameResponse events.
+     * @param response The JoinGameResponse containing information about the outcome of the join game attempt.
      */
     override fun onJoinGameResponse(response: JoinGameResponse) {
         onJoinedGameResponse?.invoke(response)
@@ -56,6 +58,7 @@ class TestNetworkClient(
 
     /**
      * Overrides the callback for handling PlayerJoinedNotification events.
+     * @param notification The PlayerJoinedNotification containing information about the joined player.
      */
 
     override fun onPlayerJoined(notification: PlayerJoinedNotification) {
@@ -65,6 +68,7 @@ class TestNetworkClient(
 
     /**
      * Overrides the callback for handling PlayerLeftNotification events.
+     * @param notification The PlayerLeftNotification containing information about the departed player.
      */
 
     override fun onPlayerLeft(notification: PlayerLeftNotification) {
@@ -74,6 +78,7 @@ class TestNetworkClient(
 
     /**
      * Overrides the callback for handling GameActionResponse events.
+     * @param response The GameActionResponse containing information about the outcome of the game action.
      */
     override fun onGameActionResponse(response: GameActionResponse) {
         onGameActionResponse?.invoke(response)
@@ -82,6 +87,8 @@ class TestNetworkClient(
 
     /**
      * Overrides the callback for handling TilePlacedMessage events.
+     * @param message The TilePlacedMessage containing information about the placed tile.
+     * @param sender The identifier of the sender of the message.
      */
     @GameActionReceiver
     override fun onTilePlacedReceived(message: TilePlacedMessage, sender: String) {
@@ -91,6 +98,8 @@ class TestNetworkClient(
 
     /**
      * Overrides the callback for handling GameInitMessage events.
+     * @param message The GameInitMessage containing information about the game initialization.
+     * @param sender The identifier of the sender of the message.
      */
 
     @GameActionReceiver

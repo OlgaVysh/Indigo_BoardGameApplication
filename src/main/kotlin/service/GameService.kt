@@ -8,8 +8,9 @@ import java.lang.Exception
 import kotlin.math.abs
 
 /**
- * Service class for managing the game logic.
- * @param rootService The root service providing access to the current game state.
+ * GameService class responsible for managing game-related services and functionalities.
+ *
+ * @param rootService The RootService providing access to various game-related functionalities.
  */
 class GameService(private val rootService: RootService) : AbstractRefreshingService() {
     /**
@@ -75,7 +76,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             if (currentPlayer.isAI) {
                 when (currentPlayer) {
                     is CPUPlayer -> {
-                        rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                        rootService.aiActionService.aiMove(currentPlayer.difficulty)
                     }
                 }
             }
@@ -165,7 +166,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         }
     }
 
-
+    /**
+     * Checks if placing a tile at the specified coordinate is valid for AI.
+     *
+     * @param space The coordinate where the tile is intended to be placed.
+     * @param tile The tile to be placed.
+     * @return True if the placement is valid, false otherwise.
+     */
     //for AI returning false instead of throwing exception
     fun checkPlacementAI(space: Coordinate, tile: Tile): Boolean {
         val currentGame = rootService.currentGame
@@ -471,14 +478,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                       {
                           "easy" -> {CoroutineScope(Dispatchers.JavaFx).launch {
                              delay((3000/currentPlayer.simulationSpeed).toLong())
-                              rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                              rootService.aiActionService.aiMove(currentPlayer.difficulty)
                               onAllRefreshables { refreshAfterChangePlayer() }}
                           }
 
 
                           else -> {CoroutineScope(Dispatchers.JavaFx).launch { //
                               delay((100/currentPlayer.simulationSpeed).toLong())
-                              rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                              rootService.aiActionService.aiMove(currentPlayer.difficulty)
                               onAllRefreshables { refreshAfterChangePlayer() }
                           }}
                       }

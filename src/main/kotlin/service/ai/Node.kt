@@ -1,4 +1,4 @@
-package AI
+package service.ai
 import entity.*
 import service.RootService
 
@@ -50,7 +50,7 @@ data class Node(val rootService: RootService, val parent: Node?, val coordinate:
             for (col in Integer.max(-4, -row - 4)..Integer.min(4, -row + 4)) {
                 val coordinate = Coordinate(row, col)
                 // Check if placing the tile at the coordinate is a valid move
-                if (servicee(state).checkPlacement(coordinate, playerTile!!,true)) { //even when it blocks an exist it return true because we ll rotate the tile later
+                if (servicee(state).checkPlacement(coordinate, playerTile!!,true)) { //even when it blocks an exit it returns true because we ll rotate the tile later
                     availableMoves.add(Coordinate(row, col))
                 }
             }

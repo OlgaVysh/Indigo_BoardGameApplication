@@ -3,9 +3,13 @@ package service.network
 import edu.udo.cs.sopra.ntf.GameInitMessage
 import edu.udo.cs.sopra.ntf.TilePlacedMessage
 import entity.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.javafx.JavaFx
+import kotlinx.coroutines.time.withTimeout
 import service.AbstractRefreshingService
 import service.RootService
 import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
+import java.util.concurrent.TimeoutException
 
 /**
  *  The class [NetworkService] is to have all function  with the network for online gaming.
@@ -101,10 +105,21 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         onAllRefreshables { refreshAfterNetworkPlayerTurn() }
         val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
         val currentPlayer = players[currentPlayerIndex]
-        if (currentPlayer.isAI) {
-            when (currentPlayer) {
-                is CPUPlayer -> {
-                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+        when (currentPlayer) {
+            is CPUPlayer -> {
+                runBlocking {
+                    CoroutineScope(Dispatchers.JavaFx).launch {
+                        try {
+                            withTimeout(8000) {
+                                delay((currentPlayer.simulationSpeed * 1000).toLong())
+                                rootService.aiActionService.aiMove(currentPlayer.difficulty)
+                                onAllRefreshables { refreshAfterChangePlayer()}
+                            }
+                        } catch (e: Exception) {
+                            rootService.aiActionService.aiMove("easy")
+                            onAllRefreshables { refreshAfterChangePlayer()}
+                        }
+                    }
                 }
             }
         }
@@ -155,7 +170,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
             Coordinate(4, 0),
             Coordinate(4, -4),
             Coordinate(0, -4),
-            )
+        )
         for (i in listCoordinate.indices) {
             val coordinate = listCoordinate[i]
             rootService.currentGame!!.gameBoard.gameBoardTiles[coordinate] = allTiles[i]
@@ -222,6 +237,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                 updateConnectionState(ConnectionState.WAITING_FOR_OPPONENTS_TURN)
             }
         }
+        onAllRefreshables { refreshAfterChangePlayer()}
         onAllRefreshables { refreshAfterNetworkPlayerTurn() }
     }
 
@@ -259,10 +275,24 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         if (currentPlayer.isAI) {
             when (currentPlayer) {
                 is CPUPlayer -> {
-                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                    runBlocking {
+                        CoroutineScope(Dispatchers.JavaFx).launch {
+                            try {
+                                withTimeout(8000) {
+                                    delay((currentPlayer.simulationSpeed * 1000).toLong())
+                                    rootService.aiActionService.aiMove(currentPlayer.difficulty)
+                                    onAllRefreshables { refreshAfterChangePlayer()}
+                                    }
+                            } catch (e: Exception) {
+                                rootService.aiActionService.aiMove("easy")
+                                onAllRefreshables { refreshAfterChangePlayer()}
+                            }
+                        }
+                    }
                 }
             }
         }
+        onAllRefreshables { refreshAfterNetworkPlayerTurn()}
         println(connectionState.toString())
     }
 

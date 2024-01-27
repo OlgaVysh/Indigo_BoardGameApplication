@@ -58,6 +58,10 @@ class NetworkConnectionTests {
 
     /**
      *  The function await wait of a Time, if a specific connection state are reached.
+     * @param state The target state to await for the Property.
+     * @param timeout The maximum duration to wait for the Property to reach the specified state.
+     *                Default timeout is 5 seconds.
+     * @param T The type of the Property.
      */
     private fun <T> Property<T>.await(state: T, timeout: Duration = Duration.ofSeconds(5)) {
         runBlocking {

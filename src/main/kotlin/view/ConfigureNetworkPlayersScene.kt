@@ -13,7 +13,7 @@ import tools.aqua.bgw.visual.ImageVisual
 
 /**
  * Scene for configuring network players before starting a new game.
- *
+ * @param indigoApp The IndigoApplication instance associated with the configuration scene.
  * //@param games List of strings representing available games for configuration.
  */
 class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: List<String>*/) : BoardGameScene(
@@ -139,6 +139,9 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
         }
     }
 
+    /**
+     * Resets the settings by removing rows from the grid and updating button states.
+     */
     fun resetSettings(){
         for(i in grid.rows-1 downTo  1){
             grid.removeRow(i)
@@ -207,7 +210,9 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
         startButton.isDisabled = grid.rows < 2
         addButton.isDisabled = grid.rows == 4
     }
-
+    /**
+     * Refreshes the UI after starting a game, showing the game scene if the network connection is established.
+     */
     override fun refreshAfterStartGame() {
         val networkService = indigoApp.rootService.networkService
         val connectionState = networkService.connectionState

@@ -10,11 +10,11 @@ import view.components.Button
 import view.components.Label
 
 /**
- * Represents the game menu scene in which a player can choose his Tokencolor and his turn.
+ * Represents the game menu scene in which a player can choose his TokenColor and his turn.
  *
  * This scene is displayed when a player is chosen to be configured. It includes
  * a label indicating the title,
- * two comboboxes with matching labels for tokencolor and turn to choose from
+ * two comboBoxes with matching labels for TokenColor and turn to choose from
  * and a button for saving the configurations.
  *
  * The layout and design of these components are defined in this class.
@@ -58,7 +58,11 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
         turnBox.items = turn
         colorBox.items = colors
     }
-
+    /**
+     * Performs actions related to a configured player.
+     * This function may handle tasks specific to the configuration of players.
+     * Additional implementation details can be added here.
+     */
     private fun configuredPlayer() {
         val color: TokenColor
         when (colorBox.selectedItem) {
@@ -109,7 +113,12 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
         }
         refreshScene()
     }
-
+    /**
+     * Maps a TokenColor to its corresponding string representation.
+     *
+     * @param tokenColor The TokenColor to be mapped to a string.
+     * @return The string representation of the specified TokenColor.
+     */
     private fun mapToColorString(tokenColor: TokenColor): String {
         var color = ""
         when (tokenColor) {
@@ -131,7 +140,11 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
         }
         return color
     }
-
+    /**
+     * Refreshes the scene.
+     * This function may handle tasks specific to refreshing the graphical user interface of the scene.
+     * Additional implementation details can be added here.
+     */
     private fun refreshScene() {
 
         colors.remove(colorBox.selectedItem)
@@ -146,7 +159,10 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
         turnBox.selectedItem = null
         indigoApp.networkConfigureScene.grid[0, currentRow-1]!!.button.isDisabled = true
     }
-
+    /**
+     * Resets the configuration by initializing turn and color lists and updating associated UI elements.
+     * This function also triggers a scene refresh.
+     */
     fun reset(){
         turn = mutableListOf(1, 2, 3, 4)
         colors = mutableListOf("blue", "purple", "red", "white")

@@ -121,13 +121,19 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             backPfeil
         )
     }
-
+    /**
+     * Refreshes the scene after hosting a game.
+     */
     override fun refreshAfterHostGame() {
         textMessageLabel.isVisible = true
         textMessageLabel.isDisabled = false
         textMessageLabel.text = rootService.networkService.connectionState.name
     }
-
+    /**
+     * Refreshes the scene after receiving a response from creating a game.
+     *
+     * @param sessionID The session ID associated with the created game, or null if creation failed.
+     */
     override fun refreshAfterOnCreateGameResponse(sessionID: String?) {
         textMessageLabel.isVisible = true
         textMessageLabel.isDisabled = false
@@ -154,7 +160,9 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         }
         )
     }
-
+    /**
+     * Resets the settings of the scene.
+     */
     private fun resetSettings(){
         textMessageLabel.isVisible = false
         textMessageLabel.isDisabled = true

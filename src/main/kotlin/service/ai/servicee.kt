@@ -1,13 +1,23 @@
-package AI
+package service.ai
 
 import entity.Indigo
 import entity.*
-import java.lang.Exception
 import kotlin.math.abs
-
+/**
+ * Service class responsible for managing game-related logic.
+ *
+ * @property currentGame The current game instance of type Indigo.
+ */
 class servicee (var currentGame: Indigo) {
 
-
+    /**
+     * Checks whether placing a tile at a specified coordinate is valid.
+     *
+     * @param space The coordinate where the tile is intended to be placed.
+     * @param tile The tile to be placed.
+     * @param isAiCalled Indicates whether the check is called by an AI component.
+     * @return True if the placement is valid, false otherwise.
+     */
     fun checkPlacement(space: Coordinate, tile: Tile, isAiCalled: Boolean = false): Boolean {
         //val currentGame = rootService.currentGame
         //checkNotNull(currentGame)
@@ -473,7 +483,12 @@ class servicee (var currentGame: Indigo) {
         return neighbors
     }
 /*
-
+/**
+ * Checks if the game is over based on the current state of the Indigo game.
+ *
+ * @param state The current game state of type Indigo.
+ * @return True if the game is over, false otherwise.
+ */
         fun isGameOver(state: Indigo): Boolean {
             val availableMoves:MutableList<Coordinate> = mutableListOf()
 

@@ -1,9 +1,11 @@
-package AI
+package service.ai
 import entity.*
 import service.*
 
 /**
- * A simple AI Strategy attempting to minimize distance of gems to nearest own gate
+ * SimpleAI class responsible for managing the artificial intelligence behavior in the game.
+ *
+ * @property root The root service providing access to various game-related functionalities.
  */
 class SimpleAI(private val root: RootService): AbstractRefreshingService() {
 
@@ -161,9 +163,10 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         }
     }
     /**
-     * calculates smallest distance between [Tile] adjacent to [Gem] and an owned Gate
+     * Finds the nearest gate for each coordinate in the given list of coordinates.
      *
-     * @return [Pair] of Gate Index [Int] and distance [Int] in that order
+     * @param gates The list of gate indices to consider.
+     * @return A list of pairs, each containing the index of the nearest gate and its distance for the corresponding coordinate.
      */
     private fun findNearestGate(gates: List<Int>) : List<Pair<Int,Int>>{
         val game = root.currentGame

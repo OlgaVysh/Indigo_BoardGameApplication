@@ -17,7 +17,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
     // also holds the currently active game
     var aiGame = false //ob es KI Spieler gibt
     var players: MutableList<Player?> = mutableListOf(null,null,null,null) // list of players for the Game
-    var networkMode : Boolean=false //sagt, ob wir Hotseat oder Network spielen (wird in ModusMenuScene gesetzt)
+    var networkMode : Boolean=false //sagt, ob wir Hot seat oder Network spielen (wird in ModusMenuScene gesetzt)
     var isRandom = false //if the participant are all random
     var notSharedGates = true // if you play on notSharedGates and SharedGAtes mode
     var availableColors = mutableListOf(TokenColor.BLUE,TokenColor.RED,TokenColor.WHITE,TokenColor.PURPLE)
@@ -77,7 +77,7 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
 
 
     //In jeder Szene : private val gradient ="-fx-text-fill: linear-gradient(to bottom, #061598, #06987E);"
-    //an jedem Component mit Text : font = Font(family: "Irish Grover")
+    // a jedem Component mit Text : font = Font(family: "Irish Grover")
     // .apply { componentStyle = gradient }
 
 

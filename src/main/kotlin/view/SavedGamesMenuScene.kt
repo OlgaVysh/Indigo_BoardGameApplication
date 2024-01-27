@@ -7,9 +7,9 @@ import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.visual.ImageVisual
 
 /**
- * Represents the menu scene for displaying saved games.
+ * Represents the scene for displaying saved games in the menu.
  *
- * @param games The list of saved game names.
+ * @property indigoApp The Indigo application instance.
  */
 class SavedGamesMenuScene(val indigoApp: IndigoApplication) :
     BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")),

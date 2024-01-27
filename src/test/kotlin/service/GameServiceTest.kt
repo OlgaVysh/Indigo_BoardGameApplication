@@ -443,7 +443,7 @@ class GameServiceTest {
             TileType.Type_1, mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(EMERALD)))
         )
         rootService.gameService.startGame(fourPlayers.toMutableList())
-        val treasureTile1 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
+        //val treasureTile1 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
 
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), testTile1)
         //test refreshable
@@ -726,7 +726,9 @@ class GameServiceTest {
             assertEquals(sapphire, game.gems[game.gems.size - 1].gemColor)
         }
     }
-
+    /**
+     * Initializes token test for a specific scenario.
+     */
     @Test
     fun initializeTokenTest() {
         assertNull(rootService.currentGame)
@@ -763,8 +765,10 @@ class GameServiceTest {
             }
         }
     }
-
-    @Test
+/**
+ * Tests the scenario where the second player is controlled by artificial intelligence (KI).
+*/
+@Test
     fun testSecondPlayerIsKI() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
@@ -796,9 +800,11 @@ class GameServiceTest {
         assertEquals(true, testGame.players[1].isAI)
         assertEquals(false, testGame.players[0].isAI)
     }
-
+/**
+ * Tests the undo functionality for a specific scenario (test case).
+ */
     @Test
-    fun test() {
+    fun testUndo2() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
         //tileID 2 initialise
@@ -822,7 +828,7 @@ class GameServiceTest {
         rootService.gameService.startGame(twoPlayer)
         checkNotNull(rootService.currentGame)
         rootService.currentGame!!.players[0].handTile = tile2
-        val player1HandTile = rootService.currentGame!!.players[0].handTile
+        //val player1HandTile = rootService.currentGame!!.players[0].handTile
 
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 2), tile2)
         rootService.currentGame!!.players[1].handTile = tile3

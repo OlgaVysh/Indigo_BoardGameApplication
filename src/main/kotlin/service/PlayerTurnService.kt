@@ -21,7 +21,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         // Check if the game has started
         checkNotNull(currentGame) { "The game has not started yet" }
 
-        //maryem code
+        // meryem code
         // Check if game ended
         /*if (rootService.gameService.endGame()) {
             onAllRefreshables { refreshAfterEndGame() }
@@ -108,9 +108,10 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
     }
 
     /**
-     * Rotates the tile to the left.
+     * Rotates the edges of a tile to the left.
+     *
      * @param tile The tile to be rotated.
-     * @throws IllegalStateException if no game is running
+     * @param isAiCalled Indicates whether the rotation is called by an AI component.
      */
     fun rotateTileLeft(tile: Tile, isAiCalled: Boolean = false) {    // Add the first edge to the end of the list
         val game = rootService.currentGame

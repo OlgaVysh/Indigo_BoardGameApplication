@@ -7,6 +7,7 @@ import view.components.Label
 
 /**
  * Represents the menu scene for saving a game.
+ * @param indigoApp The IndigoApplication instance associated with the save game menu scene.
  */
 class SaveGameMenuScene(indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SaveMenuScene.png")),Refreshable {
     // Button for continuing the game without saving

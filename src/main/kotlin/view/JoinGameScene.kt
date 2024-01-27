@@ -2,6 +2,8 @@ package view
 
 import entity.CPUPlayer
 import entity.Player
+import kotlinx.coroutines.*
+import kotlinx.coroutines.javafx.JavaFx
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.uicomponents.*
 import tools.aqua.bgw.core.Alignment
@@ -15,9 +17,10 @@ import view.components.Label
 /**
  * Represents the join game menu scene.
  *
- * This scene when a player enters the option to join a game in the scene before ("Szenenname").
+ * This scene when a player enters the option to join a game in the scene before ("SzenenName").
  *
  * The layout and design of these components are defined in this class.
+ * @param indigoApp The IndigoApplication instance associated with the join game scene.
  */
 class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Refreshable {
     //private val game = rootService.currentGame
@@ -27,7 +30,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     var difficulty = "easy"
     var simulationSpeed = 0
 
-    //iregendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
+    //irgendwie noch an zu bearbeitenden Spieler drankommen jetzt noch X
     private val titleLabel = Label(42, 80, 900, 116, "Configure Player", 96)
 
     private val nameLabel = Label(80, 370, width = 300, text = "Name : ", fontSize = 48)
@@ -99,13 +102,19 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         aiLabel.alignment = Alignment.CENTER_LEFT
         idLabel.alignment = Alignment.CENTER_LEFT
     }
-
+    /**
+     * Refreshes the scene after joining a game.
+     */
     override fun refreshAfterJoinGame() {
         textMessageLabel.isVisible = true
         textMessageLabel.isDisabled = false
         textMessageLabel.text = rootService.networkService.connectionState.name
     }
-
+    /**
+     * Refreshes the scene after receiving a response from joining a game.
+     *
+     * @param responseStatus The JoinGameResponseStatus indicating the outcome of the join game attempt.
+     */
     override fun refreshAfterOnJoinGameResponse(responseStatus: JoinGameResponseStatus) {
         textMessageLabel.isVisible = true
         textMessageLabel.isDisabled = false
@@ -142,14 +151,16 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             }
         })
     }
-
+    /**
+     * Refreshes the scene after starting a new game that has been joined.
+     */
     override fun refreshAfterStartNewJoinedGame() {
         if (indigoApp.aiGame) {
             val currentGame = indigoApp.rootService.currentGame
             checkNotNull(currentGame)
             val player = currentGame.players.find { it.name == nameInput.text }
             val playerIndex = currentGame.players.indexOf(player)
-            val CPUPlayer = CPUPlayer(player!!.name, player.age, player.color, difficulty, simulationSpeed).apply {
+            val cpuPlayer = CPUPlayer(player!!.name, player.age, player.color, difficulty, simulationSpeed).apply {
                 handTile = player.handTile
                 score = player.score
                 collectedGems = player.collectedGems.toMutableList()
@@ -157,7 +168,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             val newPlayers = mutableListOf<Player>()
             for (i in currentGame.players.indices) {
                 if (i == playerIndex) {
-                    newPlayers.add(CPUPlayer)
+                    newPlayers.add(cpuPlayer)
                 } else {
                     newPlayers.add(currentGame.players[i])
                 }
@@ -177,13 +188,28 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         if (currentPlayer.isAI) {
             when (currentPlayer) {
                 is CPUPlayer -> {
-                    rootService.aiActionService.AiMove(currentPlayer.difficulty)
+                    runBlocking {
+                        CoroutineScope(Dispatchers.JavaFx).launch {
+                            try {
+                                withTimeout(8000) {
+                                    delay((currentPlayer.simulationSpeed * 1000).toLong())
+                                    rootService.aiActionService.aiMove(currentPlayer.difficulty)
+                                    indigoApp.gameScene.refreshAfterChangePlayer()
+                                }
+                            } catch (e: Exception) {
+                                rootService.aiActionService.aiMove("easy")
+                                indigoApp.gameScene.refreshAfterChangePlayer()
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-
-    fun startJoinGame() {
+/**
+ * Initiates the process of joining a game.
+*/
+fun startJoinGame() {
         indigoApp.rootService.networkService.joinGame(
             name = nameInput.text, sessionID = idInput.text
         )

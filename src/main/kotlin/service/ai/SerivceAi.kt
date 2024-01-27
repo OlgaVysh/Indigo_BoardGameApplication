@@ -1,10 +1,6 @@
-package AI
+package service.ai
 
 import entity.*
-import service.AbstractRefreshingService
-import service.RootService
-import service.*
-import kotlin.io.path.Path
 
 /**
  * The `ServiceAi` class provides AI-related functionalities for the Indigo game.
@@ -54,7 +50,7 @@ class SerivceAi {
 
             if (servicee(newIndigo).checkPlacement(
                     coordinate,
-                    tile!!,
+                    tile,
                     false
                 )
             ) { //when it blocks an exist we rotate it till it s correct
