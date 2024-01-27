@@ -595,7 +595,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 neighbourStart = (neighbourStart -1+6) % 6
                 if (middleTile.gemPosition[neighbourStart] == null)neighbourStart = (neighbourStart +2) % 6
             }
-            if(middleTile.gemPosition[neighbourStart]==null && amountOfGems == 2){
+            if(middleTile.gemPosition[neighbourStart]==null){
                 for ((key) in middleTile.gemPosition){
                     if(key!=0){
                         neighbourStart = key
