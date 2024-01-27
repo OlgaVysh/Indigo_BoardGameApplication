@@ -93,7 +93,7 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         isDisabled = true
     }
 
-    private val backPfeil = BackPfeil (100, 40 ,70, 60).apply {
+    private val backPfeil = BackPfeil (60, 40 ,70, 60).apply {
         onMouseClicked = {
             indigoApp.showMenuScene(indigoApp.networkScene)
             resetSettings()

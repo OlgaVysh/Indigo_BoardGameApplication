@@ -94,9 +94,10 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
     }
 
 
-    private val backPfeil = BackPfeil ().apply {
+    private val backPfeil = BackPfeil().apply {
         onMouseClicked = {
-            indigoApp.showMenuScene(indigoApp.hostGameScene)
+            indigoApp.rootService.networkService.disconnect()
+            indigoApp.showMenuScene(indigoApp.networkScene)
         }
     }
 

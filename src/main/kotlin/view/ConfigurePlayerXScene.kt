@@ -45,7 +45,7 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
     var turn = mutableListOf(1, 2, 3, 4)
     var colors = mutableListOf("blue", "purple", "red", "white")
 
-    private val backPfeil = BackPfeil ().apply {
+    private val backPfeil = BackPfeil().apply {
         onMouseClicked = {
             indigoApp.showGameScene(indigoApp.networkConfigureScene)
         }
