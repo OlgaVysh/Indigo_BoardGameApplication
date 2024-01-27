@@ -1162,12 +1162,14 @@ class GameScene(val indigoApp: IndigoApplication) :
             //blueGems[i-1].isVisible = game.players[i - 1].collectedGems.contains(Gem(GemColor.SAPPHIRE))
 
         }
+        /*
         val entityGems = game.gems
         val gemViewList = mutableListOf(
             greenGem1, greenGem2, greenGem3, greenGem4, greenGem5,
             yellowGem1, yellowGem2, yellowGem3, yellowGem4, yellowGem5,
             blueGem
         )
+         */
         // val gemToRemoveList<Gem> =
         /*        for(gem in entityGems){
                     if (!gemMap.containsKey(gem)){
@@ -1372,6 +1374,18 @@ class GameScene(val indigoApp: IndigoApplication) :
         for (i in -4..4) {
             val count = i + 4
             coordMap[Coordinate(i, 0)] = Position(920.0, y5 + count * 95)
+        }
+    }
+
+    override fun refreshAfterLoadGame() {
+        var game = indigoApp.rootService.currentGame
+        while (game!!.previousGameState != null) {
+                game = game.previousGameState
+            }
+        indigoApp.rootService.currentGame = game
+        refreshAfterStartGame()
+        while(indigoApp.rootService.currentGame!!.nextGameState != null){
+        indigoApp.rootService.playerTurnService.redo()
         }
     }
 
