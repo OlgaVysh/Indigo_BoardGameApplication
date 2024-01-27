@@ -9,6 +9,7 @@ import tools.aqua.bgw.components.uicomponents.RadioButton
 import tools.aqua.bgw.components.uicomponents.TextField
 import tools.aqua.bgw.components.uicomponents.ToggleGroup
 import tools.aqua.bgw.core.MenuScene
+import view.components.BackPfeil
 import view.components.Button
 import view.components.Label
 import view.components.NetworkPlayersView
@@ -61,7 +62,6 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         }
     }
 
-
     private val playerName: TextField = TextField(
         width = 350,
         height = 50,
@@ -70,6 +70,14 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     ).apply {
         onKeyTyped = {
             addNewPlayerButton.isDisabled = this.text.isBlank()
+        }
+    }
+
+    private val backPfeil = BackPfeil (40, 40 ,70, 60).apply {
+        onMouseClicked = {
+            indigoApp.hideMenuScene()
+            resetSettings()
+
         }
     }
 
@@ -135,7 +143,8 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             noButton,
             addNewPlayerButton,
             playerName,
-            playerAge
+            playerAge,
+            backPfeil
         )
     }
 
@@ -224,5 +233,14 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
                 "purple"
             }
         }
+    }
+
+    private fun resetSettings(){
+        playerName.text = ""
+        playerAge.text=""
+        yesButton.isSelected = false
+        noButton.isSelected = true
+        colorBox.selectedItem=null
+        turnBox.selectedItem=null
     }
 }

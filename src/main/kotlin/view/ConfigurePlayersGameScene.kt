@@ -52,9 +52,11 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameSce
 
     val players = GridPane<ComponentView>(posX = 300, posY = 300, layoutFromCenter = false, rows = 0, columns = 5, spacing = 50)
 
-    private val backPfeil = BackPfeil ().apply {
+    private val backPfeil = BackPfeil().apply {
         onMouseClicked = {
             indigoApp.showGameScene(indigoApp.modusScene)
+            indigoApp.players = mutableListOf(null,null,null,null)
+            clearPlayerView()
         }
     }
 
