@@ -38,8 +38,10 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
                 rootService.gameService.moveGems(space, neighbors[i], i)
             }
             // change rows with moveGems?
-            rootService.gameService.distributeNewTile()
-            rootService.gameService.changePlayer()
+            if (!rootService.gameService.endGame()){
+                rootService.gameService.distributeNewTile()
+                rootService.gameService.changePlayer()
+            }
 
             val lastGame = rootService.currentGame?.copyTo()
             firstAppearance.nextGameState = lastGame
