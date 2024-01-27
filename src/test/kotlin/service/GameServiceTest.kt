@@ -345,7 +345,7 @@ class GameServiceTest {
         rootService.currentGame!!.gems.clear()
         rootService.currentGame!!.tokens.clear()
         val newPlayer2handTile = rootService.currentGame!!.players[1].handTile
-        val testPath = "gameToSave.json"
+        val testPath = "gameToSaveNew.json"
         val toSaveGame = rootService.currentGame
         assertNotNull(toSaveGame)
 
@@ -367,22 +367,22 @@ class GameServiceTest {
     /**
      * Additional test for loadGame
      */
-/*    @Test
+/*  @Test
     fun loadGameTest2 (){
-        val savedGameFile = this::class.java.getResource("GameSaved1.json")?.toExternalForm()
-        println(savedGameFile)
+       //al savedGameFile = this::class.java.getResource("GameSaved1.json")?.toExternalForm()
+       //rintln(savedGameFile)
         rootService.gameService.loadGame("GameSaved1.json")
         val loadedGame = rootService.currentGame
         assertEquals(2,loadedGame?.players?.size)
-        assertEquals(12,loadedGame?.players?.get(0)?.name)
+        assertEquals("12",loadedGame?.players?.get(0)?.name)
         assertEquals(2,loadedGame?.players?.get(0)?.score)
         assertEquals(TokenColor.BLUE,loadedGame?.players?.get(0)?.color)
 
-        assertEquals(123,loadedGame?.players?.get(1)?.name)
-        assertEquals(1,loadedGame?.players?.get(1)?.score)
+        assertEquals("123",loadedGame?.players?.get(1)?.name)
+        assertEquals(2,loadedGame?.players?.get(1)?.score)
         assertEquals(TokenColor.RED,loadedGame?.players?.get(1)?.color)
-    }*/
-
+    }
+*/
     /**
      * Test the changePlayer function.
      */
@@ -409,6 +409,7 @@ class GameServiceTest {
         currentPlayerIndex = testGame.currentPlayerIndex
         assertEquals(0, currentPlayerIndex)
     }
+
 
     /**
      * Test the moveGems function.
