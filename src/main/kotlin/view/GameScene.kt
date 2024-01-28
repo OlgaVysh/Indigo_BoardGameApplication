@@ -1000,11 +1000,13 @@ class GameScene(val indigoApp: IndigoApplication) :
                 if(gemMap[gem] != null) {
                     playAnimation(DelayAnimation(1000).apply {
                         gemMap[gem]!!.reposition(posX, posY)
+
                         gemMap[gem]!!.apply { isVisible = true }
                         unlock()
                     })
                 }
             }
+
         }
 
         for ((int, gem) in middle.gemPosition) {
@@ -1015,6 +1017,7 @@ class GameScene(val indigoApp: IndigoApplication) :
                 label.apply { posX = newX; posY = newY}
             }
         }
+
     }
 
 
