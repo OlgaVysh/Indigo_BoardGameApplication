@@ -367,7 +367,6 @@ class servicee (var currentGame: Indigo) {
 
         return neighbors
     }
-
 }
 
 
