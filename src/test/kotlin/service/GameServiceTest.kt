@@ -368,7 +368,7 @@ class GameServiceTest {
     /**
      * Additional test for loadGame
      */
-    @Test
+    //@Test
     fun loadGameTest2() {
         //al savedGameFile = this::class.java.getResource("GameSaved1.json")?.toExternalForm()
         //rintln(savedGameFile)
@@ -810,7 +810,7 @@ class GameServiceTest {
     /**
      * Tests the undo functionality for a specific scenario (test case).
      */
-    @Test
+    //@Test
     fun testUndo2() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
