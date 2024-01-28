@@ -1,10 +1,9 @@
 package service.ai
-
 import entity.Indigo
 import entity.*
 import kotlin.math.abs
 /**
- * Service class responsible for managing game-related logic.
+ * Service class responsible for managing game-related logic for AI simulation.
  *
  * @property currentGame The current game instance of type Indigo.
  */
@@ -19,10 +18,8 @@ class servicee (var currentGame: Indigo) {
      * @return True if the placement is valid, false otherwise.
      */
     fun checkPlacement(space: Coordinate, tile: Tile, isAiCalled: Boolean = false): Boolean {
-        //val currentGame = rootService.currentGame
-        //checkNotNull(currentGame)
+
         if (space == Coordinate(0, 0)) {
-            //if (!isAiCalled) //onAllRefreshables { refreshAfterCheckPlacement() }
             return false
         }
         // Check if the space is occupied
@@ -43,33 +40,6 @@ class servicee (var currentGame: Indigo) {
             }
         }
     }
-
-    /*
-    //for AI returning false instead of throwing exception
-    fun checkPlacementAI(space: Coordinate, tile: Tile): Boolean {
-      //  val currentGame = rootService.currentGame
-        checkNotNull(currentGame)
-
-        if (space == Coordinate(0, 0) || currentGame.gameBoard.gameBoardTiles[space] != null) {
-            // Return false when the space is occupied or is (0, 0)
-            return false
-        }
-
-        // Check if the space has an exit
-        if (!coordinateHasExit(space)) {
-            placeTile(space, tile)
-            return true
-        }
-
-        // Check if the tile blocks an exit
-        if (!tileBlocksExit(space, tile)) {
-            placeTile(space, tile)
-            return true
-        }
-
-        // Return false when the tile blocks an exit
-        return false
-    }*/
 
     /**
      * Checks if the given coordinate has an exit.
@@ -108,10 +78,7 @@ class servicee (var currentGame: Indigo) {
      * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      */
     fun placeTile(space: Coordinate, tile: Tile, isAiCalled: Boolean = false) {
-        //val currentGame = rootService.currentGame
-        //checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
-        // if (!isAiCalled) onAllRefreshables { refreshAfterPlaceTile(space, tile) }
     }
 
     /**
@@ -121,8 +88,6 @@ class servicee (var currentGame: Indigo) {
      * @return True if placement blocks an exit, false otherwise.
      */
     private fun tileBlocksExit(space: Coordinate, tile: Tile): Boolean {
-        // val currentGame = rootService.currentGame
-        // checkNotNull(currentGame)
         // Define coordinates for each gate
         val gate1 = listOf(Coordinate(-4, 1), Coordinate(-4, 2), Coordinate(-4, 3))
         val gate2 = listOf(Coordinate(-3, 4), Coordinate(-2, 4), Coordinate(-1, 4))
@@ -172,40 +137,12 @@ class servicee (var currentGame: Indigo) {
     }
 
     /**
-     * Checks for collisions between gems at the beginning and end of paths on the given tile.
-     *
-     * This function examines each path on the provided tile to determine if gems are present at both
-     * the beginning and end of the path. If such a collision is detected, the gems are considered
-     * to be colliding, and the collision is resolved by removing the gems from their positions.
-     *
-     * @param tile The tile to check for gem collisions.
-     * @return `true` if a collision is detected and resolved, `false` otherwise.
-     */
-    fun checkCollision(tile: Tile): Boolean {//done
-        for (path in tile.paths) {
-            val gemAtBeginning = tile.gemEndPosition[path.first.ordinal]
-            val gemAtEnd = tile.gemEndPosition[path.second.ordinal]
-            //Checks if the beginning and the end of the path gave gems
-            if (gemAtBeginning != null && gemAtEnd != null && gemAtBeginning != gemAtEnd) {
-                //Two gems are colliding
-                tile.gemEndPosition.remove(path.first.ordinal)
-                tile.gemEndPosition.remove(path.second.ordinal)
-                //onAllRefreshables { refreshAfterCollision(gemAtEnd, gemAtBeginning) }
-                return true
-            }
-        }
-        return false
-    }
-
-    /**
      * Removes gems from the specified tile and updates scores based on the gate coordinates.
      * @param tile The tile containing the gems.
      * @param coordinate The coordinate of the tile.
      */
 
     fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {//done
-        //val currentGame = rootService.currentGame
-       // checkNotNull(currentGame)
         val players = currentGame.players
 
         val gateTokens = currentGame.gameBoard.gateTokens
@@ -255,7 +192,6 @@ class servicee (var currentGame: Indigo) {
                                 tile.gemEndPosition.remove((0 + i) % 6)
                         }
                     }
-                   // onAllRefreshables { refreshAfterRemoveGems(gem) }
                     println(gem.gemColor)
                     val removedElement = currentGame.gems.find { it.gemColor == gem.gemColor }
                     currentGame.gems.remove(removedElement)
@@ -276,34 +212,6 @@ class servicee (var currentGame: Indigo) {
     }
 
     /**
-     * Changes the current player to the next player in the list.
-     */
-    /* fun changePlayer() {
-        //val currentGame = rootService.currentGame
-        //checkNotNull(currentGame)
-
-        val playerSize = currentGame.players.size
-        val currentPlayerIndex = currentGame.currentPlayerIndex
-
-        currentGame.currentPlayerIndex = (currentPlayerIndex + 1) % playerSize
-
-        // It's AI's turn
-        val connectionState = rootService.networkService.connectionState
-        if(connectionState==ConnectionState.DISCONNECTED) {
-            //Xue Code
-            val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
-            if (currentPlayer.isAI) {
-                when (currentPlayer) {
-                    is CPUPlayer -> {
-                        rootService.aiActionService.AiMove(currentPlayer.difficulty)
-                    }
-                }
-            }
-        }
-
-    }*/
-
-    /**
      * Moves gems from one tile to another based on the specified edge indices.
      * @param currentCoordinate The tile coordinate  to which gems are moved.
      * @param neighborCoordinate The tile coordinate from which gems are moved.
@@ -316,8 +224,7 @@ class servicee (var currentGame: Indigo) {
         currentCoordinate: Coordinate, neighborCoordinate: Coordinate, currentGemPosition: Int,
         isAiCalled: Boolean = false
     ) {
-        //val currentGame = rootService.currentGame
-        //checkNotNull(currentGame)
+
         val middleTile = currentGame.middleTile
         val currentTile = currentGame.gameBoard.gameBoardTiles[currentCoordinate]
         val neighbourTile = currentGame.gameBoard.gameBoardTiles[neighborCoordinate]
@@ -443,28 +350,6 @@ class servicee (var currentGame: Indigo) {
         )
     }
 
-
-
-
-    /**
-     * function to give the current [Player] a new route [Tile] at the end of their turn (first in list)
-     *
-     * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
-     * @throws IllegalStateException if currentGame in [rootService] is null or no route [Tile]s remain
-     */
-    fun distributeNewTile(isAiCalled: Boolean = false) {
-        //val game = rootService.currentGame
-        //checkNotNull(game)
-        if (currentGame.routeTiles.isEmpty()) {
-            currentGame.players[currentGame.currentPlayerIndex].handTile = null
-        } else {
-            val newHandTile = currentGame.routeTiles.removeAt(0)
-            val currentPlayerIndex = currentGame.currentPlayerIndex
-            currentGame.settings.players[currentPlayerIndex].handTile = newHandTile
-        }
-        //if (!isAiCalled) onAllRefreshables { refreshAfterDistributeNewTile() }
-    }
-
     /**
      * Gets the neighboring coordinates for a given coordinate, which the contains a tile
      * @param coordinate The coordinate for which to find neighboring coordinates
@@ -482,29 +367,7 @@ class servicee (var currentGame: Indigo) {
 
         return neighbors
     }
-/*
-/**
- * Checks if the game is over based on the current state of the Indigo game.
- *
- * @param state The current game state of type Indigo.
- * @return True if the game is over, false otherwise.
- */
-        fun isGameOver(state: Indigo): Boolean {
-            val availableMoves:MutableList<Coordinate> = mutableListOf()
 
-            // Iterate over the game board and find available moves
-            for (row in -4..4) {
-                for (col in Integer.max(-4, -row - 4)..Integer.min(4, -row + 4)) {
-                    val coordinate = Coordinate(row, col)
-                    // Check if placing the tile at the coordinate is a valid move
-                    if (state.gameBoard.gameBoardTiles[coordinate]==null) {
-                        availableMoves.add(Coordinate(row,col))
-                    }
-                }
-            }
-            return availableMoves.isEmpty()     }*/
-
-
-    }
+}
 
 
