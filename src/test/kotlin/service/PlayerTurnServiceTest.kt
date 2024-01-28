@@ -211,7 +211,7 @@ class PlayerTurnServiceTest {
      * Tests the undo functionality by checking the game state after undoing a player's move.
      * It involves starting a game, placing a route tile, undoing the move, and verifying the game state consistency.
      */
-    //@Test
+    @Test
     fun testUndo() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
