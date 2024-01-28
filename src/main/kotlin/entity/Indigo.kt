@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import java.util.*
 
 /**
  * class modelling the game state of an Indigo game, acts like an element in a doubly linked list
@@ -40,7 +39,7 @@ data class Indigo(
     val allTiles: List<Tile>,
     var gems: MutableList<Gem>,
     var tokens: MutableList<Token>,
-    val id : Int = IDGenerator.generateID()
+    val id: Int = IDGenerator.generateID()
     //val id: UUID = UUID.randomUUID()
 ) {
     var players = settings.players
@@ -48,9 +47,11 @@ data class Indigo(
     val middleTile = MiddleTile()
     val treasureTiles: List<Tile> = allTiles.take(6)
     var routeTiles: MutableList<Tile> = allTiles.drop(6).toMutableList()
+
     //@JsonIgnore
     @JsonIdentityReference(alwaysAsId = true)
     var previousGameState: Indigo? = null
+
     //@JsonIgnore
     @JsonIdentityReference(alwaysAsId = true)
     var nextGameState: Indigo? = null
@@ -71,12 +72,12 @@ data class Indigo(
         for (gem in gems) {
             copiedGems.add(gem)
         }
-        val copiedGameBoardTiles = mutableMapOf<Coordinate,Tile>()
-        for((key, value ) in this.gameBoard.gameBoardTiles ){
+        val copiedGameBoardTiles = mutableMapOf<Coordinate, Tile>()
+        for ((key, value) in this.gameBoard.gameBoardTiles) {
             val gemEndPosition = value.gemEndPosition.toMutableMap()
             val egdes = value.edges.toMutableList()
             val paths = value.paths.toMutableList()
-            val copiedTile = Tile(paths,value.type,gemEndPosition).apply {
+            val copiedTile = Tile(paths, value.type, gemEndPosition).apply {
                 this.edges.clear()
                 this.edges.addAll(egdes)
             }
@@ -135,22 +136,26 @@ data class Indigo(
         copiedIndigo.nextGameState = this.nextGameState
         copiedIndigo.previousGameState = this.previousGameState
         copiedIndigo.middleTile.gemPosition.clear()
-       for ((key,value ) in this.middleTile.gemPosition) {
-            copiedIndigo.middleTile.gemPosition[key] =value
+        for ((key, value) in this.middleTile.gemPosition) {
+            copiedIndigo.middleTile.gemPosition[key] = value
         }
         copiedIndigo.routeTiles = this.routeTiles.toMutableList()
         return copiedIndigo
     }
-    fun copy():Indigo{
+
+    //einfacher alternative für copyTo methode
+    fun copy(): Indigo {
         val mapper = jacksonObjectMapper()
         val jsonString = mapper.writeValueAsString(this)
         return mapper.readValue<Indigo>(jsonString)
     }
 
 }
-object IDGenerator{
+
+// to generate Id´s für toSave Indigo files
+object IDGenerator {
     private var idCounter = 0
-    fun generateID():Int{
+    fun generateID(): Int {
         return ++idCounter
     }
 }

@@ -112,11 +112,9 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                             withTimeout(8000) {
                                 delay((currentPlayer.simulationSpeed * 1000).toLong())
                                 rootService.aiActionService.aiMove(currentPlayer.difficulty)
-                                onAllRefreshables { refreshAfterChangePlayer() }
                             }
-                        } catch (e: Exception) {
+                        } catch (e: TimeoutCancellationException) {
                             rootService.aiActionService.aiMove("easy")
-                            onAllRefreshables { refreshAfterChangePlayer() }
                         }
                     }
                 }
@@ -284,7 +282,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                                     delay((currentPlayer.simulationSpeed * 1000).toLong())
                                     rootService.aiActionService.aiMove(currentPlayer.difficulty)
                                 }
-                            } catch (e: Exception) {
+                            } catch (e: TimeoutCancellationException) {
                                 rootService.aiActionService.aiMove("easy")
                             }
                         }
@@ -339,10 +337,16 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
         onAllRefreshables { refreshAfterPlayerLeft(playerLeftName) }
     }
 
+    /**
+     *  The function trigger the [refreshAfterOnCreateGameResponse] function
+     */
     fun refreshAfterOnCreateGameResponse(sessionID: String?) {
         onAllRefreshables { refreshAfterOnCreateGameResponse(sessionID) }
     }
 
+    /**
+     *  The function trigger the [refreshAfterOnCreateGameResponse] function
+     */
     fun refreshAfterOnJoinGameResponse(responseStatus: JoinGameResponseStatus) {
         onAllRefreshables { refreshAfterOnJoinGameResponse(responseStatus) }
     }

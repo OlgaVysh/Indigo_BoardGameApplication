@@ -82,13 +82,13 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
 
     private val textMessageLabel = Label(
         15,
-        340,
+        320,
         960,
         480,
         "Waiting for Confirmation",
         48
     ).apply {
-        visual = ImageVisual("button.png")
+        visual = ImageVisual("message.png")
         isVisible = false
         isDisabled = true
     }
@@ -104,7 +104,7 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
 
     // Setting the scene's opacity and adding all components
     init {
-        opacity = 0.5
+        opacity = 0.7
         addComponents(
             hostLabel,
             nameLabel,
@@ -112,13 +112,13 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             hostName,
             sessionId,
             hostGameButton,
-            textMessageLabel,
             yesLabel,
             noLabel,
             aiLabel,
             yesButton,
             noButton,
-            backPfeil
+            backPfeil,
+            textMessageLabel,
         )
     }
     /**

@@ -45,29 +45,24 @@ class SerivceAi {
 */
 
             if (tile == null) {
-                tile = newIndigo.routeTiles.removeFirst()
+                //tile = newIndigo.routeTiles.removeFirst()
+                servicee(newIndigo).distributeNewTile()
             }
 
-            if (servicee(newIndigo).checkPlacement(
-                    coordinate,
-                    tile,
-                    false
-                )
-            ) { //when it blocks an exist we rotate it till it s correct
+            if (servicee(newIndigo).checkPlacement(coordinate, tile!!, false)) { //when it blocks an exist we rotate it till it s correct
                 // Place the tile on the board at the specified coordinate
                 servicee(newIndigo).placeTile(coordinate, tile, true)
             } else { // Rotate the tile until it can be placed
                 while (!servicee(newIndigo).checkPlacement(coordinate, tile, false)) {
                     rotateTileLeft(tile)
                 }
-
                 // Place the tile on the board at the specified coordinate after rotations
                 servicee(newIndigo).placeTile(coordinate, tile, true)
             }
              val neighbors = servicee(newIndigo).getNeighboringCoordinates(coordinate)
-            for (i in neighbors.indices) {
+            /*for (i in neighbors.indices) {
                 servicee(newIndigo).moveGems(coordinate, neighbors[i], i)
-             }
+             }*/
 
 
             // Return the updated Indigo state after the move

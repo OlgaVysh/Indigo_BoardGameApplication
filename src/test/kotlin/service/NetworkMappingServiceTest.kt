@@ -192,6 +192,7 @@ class NetworkMappingServiceTest {
     fun toTileTypeListTest() {
         val testGame = RootService()
         assertThrows<IllegalStateException> { (testGame.networkMappingService.toTileTypeList()) }
+        treasureTiles.addAll(routeTiles)
         testGame.currentGame = Indigo(
             gameSetting,
             allTiles = treasureTiles.toList(),
