@@ -47,7 +47,8 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
 
     private val backPfeil = BackPfeil().apply {
         onMouseClicked = {
-            indigoApp.showGameScene(indigoApp.networkConfigureScene)
+            indigoApp.hideMenuScene()
+            reset()
         }
     }
 
@@ -160,14 +161,10 @@ class ConfigurePlayerXScene(val indigoApp: IndigoApplication) : MenuScene(990, 1
         indigoApp.networkConfigureScene.grid[0, currentRow-1]!!.button.isDisabled = true
     }
     /**
-     * Resets the configuration by initializing turn and color lists and updating associated UI elements.
-     * This function also triggers a scene refresh.
+     * Resets the configuration
      */
-    fun reset(){
-        turn = mutableListOf(1, 2, 3, 4)
-        colors = mutableListOf("blue", "purple", "red", "white")
-        colorBox.items = colors
-        turnBox.items = turn
-        refreshScene()
+    private fun reset(){
+        colorBox.selectedItem=null
+        turnBox.selectedItem=null
     }
 }
