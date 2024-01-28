@@ -99,12 +99,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         if (currentGame.nextGameState != null) {
-            //currentGame.previousGameState = currentGame
             rootService.currentGame = currentGame.nextGameState
-            //differenz berechnen
-            val currentGems = rootService.currentGame?.gems
-            val nextStateGems = rootService.currentGame?.nextGameState?.gems
-
             onAllRefreshables { refreshAfterRedo() }
             println("REDO")
         } else {
