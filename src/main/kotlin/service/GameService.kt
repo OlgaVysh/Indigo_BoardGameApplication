@@ -400,18 +400,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @throws IllegalStateException if currentGame is null
      */
     fun saveGame(path: String) {
-        val game = rootService.currentGame
+        var game = rootService.currentGame
         checkNotNull(game)
         val gameStateList = mutableListOf<Indigo>()
-        var current: Indigo? = game
-        while (current != null){
-            gameStateList.add(current)
-            //gameStateList.add(0,current.copyTo())
-            current = current.previousGameState
-            //gameStateList.toList() //??
+        while(game?.previousGameState != null){
+            gameStateList.add(game)
+            game = game.previousGameState
         }
-        /*val json = mapper.writeValueAsString(gameStateList)
-        File(path).writeText(json)*/
+        gameStateList.add(game!!)
         rootService.ioService.saveGameToFile(gameStateList, path)
         onAllRefreshables { refreshAfterSaveGame() }
     }
@@ -423,34 +419,20 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @throws IllegalStateException if currentGame is null after loading
      */
     fun loadGame(path: String) {
-        //val gameStateList: List<Indigo> = rootService.ioService.readGameFromFile(path)
         val gameList = rootService.ioService.readGameFromFile(path)
-        /*for (i in gameStateList.indices){
-            val current = gameStateList[i]
-            val next = if (i< gameStateList.size -1) gameStateList[i+1] else null
-            current.nextGameState = next
-            if (next != null) next.previousGameState = current
-        }*/
-        //rootService.currentGame = gameStateList.lastOrNull()
-        /*
-        for(i in gameList.size-1 downTo  0) {
+        if(gameList.isNotEmpty()){
+            rootService.currentGame = gameList[0]
+            rootService.currentGame?.nextGameState = null
+            rootService.currentGame?.previousGameState = gameList[1]
+        }
+        for(i in 1 until  gameList.size-1) {
             rootService.currentGame = gameList[i]
-            rootService.currentGame?.previousGameState = gameList[i-1]
-            rootService.currentGame?.previousGameState?.nextGameState = gameList[i]
-            rootService.currentGame = rootService.currentGame?.previousGameState
+            rootService.currentGame?.nextGameState = gameList[i-1]
+            rootService.currentGame?.previousGameState = gameList[i+1]
         }
         rootService.currentGame = gameList[gameList.size-1]
-        checkNotNull(rootService.currentGame)
-        */
-        for (i in gameList.indices){
-            if (i>0){
-                gameList[i].previousGameState = gameList[i-1]
-            }
-            if (i<gameList.size-1){
-                gameList[i].nextGameState = gameList[i+1]
-            }
-        }
-        rootService.currentGame = gameList.lastOrNull()
+
+
         checkNotNull(rootService.currentGame)
         onAllRefreshables { refreshAfterLoadGame() }
     }

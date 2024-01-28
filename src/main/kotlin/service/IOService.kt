@@ -25,32 +25,14 @@ class IOService(private val root: RootService) : AbstractRefreshingService() {
         registerModules(module)
     }
 
-    /*
-    init {
-        val module = SimpleModule()
-        module.addKeyDeserializer(Coordinate::class.java,CoordinateMapKeyDeserializer())
-        mapper.registerModules(SimpleModule().addKeyDeserializer(Coordinate::class.java,CoordinateMapKeyDeserializer()))
-    }
-*/
-
-
-
     /**
      * Saves a game state to a file in JSON format.
      *
      * @param indigoList The Indigo game state to be saved.
      * @param path The path to the file where the game state will be saved.
      */
-    /*fun saveGameToFile(indigo: Indigo, path:String) {
-        //changed the parameters from indigo: Indigo, path: String to gameStateList: List<Indigo>, path: String
 
-        val json = mapper.writeValueAsString(indigo)
-        File(path).writeText(json)
-
-    }
-
-     */
-    fun saveGameToFile(indigoList: MutableList<Indigo>, path:String) {
+    fun saveGameToFile(indigoList: List<Indigo>, path:String) {
         val dirPath = Path("./indigogames/")
         dirPath.createDirectories()
         val json = mapper.writeValueAsString(indigoList)
@@ -58,7 +40,6 @@ class IOService(private val root: RootService) : AbstractRefreshingService() {
         fileToWrite.createNewFile()
         fileToWrite.writeText(json)
     }
-
 
     /**
      * Reads a game state from a file in JSON format.
@@ -69,19 +50,6 @@ class IOService(private val root: RootService) : AbstractRefreshingService() {
 
     fun readGameFromFile(path: String): List<Indigo> {
         val jsonString = File(path).readText()
-        val indigoList = mutableListOf<Indigo>()
-        indigoList.add(mapper.readValue<Indigo>(jsonString))
-        return indigoList
+        return mapper.readValue(jsonString)
     }
-
-    /*
-    fun readGameFromFile(path: String): Indigo {
-        val jsonString = File(path).readText()
-
-        return mapper.readValue<Indigo>(jsonString)
-    }
-
-     */
-
-
 }

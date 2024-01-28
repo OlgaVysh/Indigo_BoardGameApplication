@@ -3,6 +3,8 @@ package entity
 import com.fasterxml.jackson.annotation.JsonIdentityInfo
 import com.fasterxml.jackson.annotation.JsonIdentityReference
 import com.fasterxml.jackson.annotation.ObjectIdGenerators
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import java.util.*
 
 /**
  * class modelling the game state of an Indigo game, acts like an element in a doubly linked list
@@ -29,13 +31,15 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators
     property = "id",
     scope = Indigo::class
 )
+@JsonSerialize
 data class Indigo(
     val settings: GameSettings,
     val gameBoard: GameBoard,
     val allTiles: List<Tile>,
     var gems: MutableList<Gem>,
     var tokens: MutableList<Token>,
-    val id : Int = 0
+    //val id : Int = 0
+    val id: UUID = UUID.randomUUID()
 ) {
     var players = settings.players
     var currentPlayerIndex = 0
@@ -122,7 +126,8 @@ data class Indigo(
             this.allTiles,
             copiedGems,
             this.tokens,
-            id = id+1
+            //id = id+1
+            id = UUID.randomUUID()
         )
         copiedIndigo.currentPlayerIndex = this.currentPlayerIndex
         copiedIndigo.nextGameState = this.nextGameState
