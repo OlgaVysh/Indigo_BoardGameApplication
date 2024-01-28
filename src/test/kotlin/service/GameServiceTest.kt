@@ -506,15 +506,6 @@ class GameServiceTest {
         testTile2.gemEndPosition.clear()
         testTile1.gemEndPosition.clear()
 
-        testTile1.gemEndPosition[1] = Gem(AMBER)
-        testTile2.gemEndPosition[1] = Gem(AMBER)
-        rootService.playerTurnService.placeRouteTile(Coordinate(-2, 0), testTile1)
-        rootService.playerTurnService.placeRouteTile(Coordinate(-1, -1), testTile2)
-        assertTrue(refreshableTest.refreshAfterPlaceTileCalled)
-        refreshableTest.reset()
-        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-2, 0)]!!.gemEndPosition.size)
-        assertEquals(0, rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(-1, -1)]!!.gemEndPosition.size)
-        assertEquals(6, rootService.currentGame!!.gems.size)
     }
 
 
