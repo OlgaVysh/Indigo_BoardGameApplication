@@ -27,7 +27,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
             onAllRefreshables { refreshAfterEndGame() }
         }
         */
-        var firstAppearance = currentGame
+        val firstAppearance = currentGame
         // Check if the tile placement is valid
         if (rootService.gameService.checkPlacement(space, tile,true)) {
 
@@ -61,7 +61,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
             }
         } else {
             if (!isAiCalled) {
-                throw Exception("Invalid space, choose another space please")
+                throw IllegalStateException("Invalid space, choose another space please")
             } else{
                 rotateTileLeft(tile)
                 placeRouteTile(space,tile,true)

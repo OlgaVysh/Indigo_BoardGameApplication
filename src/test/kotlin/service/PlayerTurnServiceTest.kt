@@ -55,7 +55,7 @@ class PlayerTurnServiceTest {
         assertThrows<IllegalStateException> { playerTurnService.placeRouteTile(Coordinate(0, 0), testTile) }
         // Start a game and attempt to place the tile at another invalid coordinate, expecting an exception
         rootService.gameService.startGame(players, true)
-        assertThrows<Exception> { playerTurnService.placeRouteTile(Coordinate(-4, 0), testTile) }
+        assertThrows<IllegalStateException> { playerTurnService.placeRouteTile(Coordinate(-4, 0), testTile) }
 
         // initialise tiles
         val tile1 = Tile(

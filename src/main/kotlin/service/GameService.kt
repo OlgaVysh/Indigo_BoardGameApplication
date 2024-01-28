@@ -150,7 +150,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
             if (!isAiCalled) {
                 onAllRefreshables { refreshAfterCheckPlacement() }
-                throw Exception("this place is occupied")
+                throw IllegalStateException("this place is occupied")
             } else return false
 
         }
@@ -167,7 +167,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             } else {
                 if (!isAiCalled) {
                     onAllRefreshables { refreshAfterCheckPlacement() }
-                    throw Exception("tile blocks exit, please rotate Tile")
+                    throw IllegalStateException("tile blocks exit, please rotate Tile")
                 } else return false
             }
         }
