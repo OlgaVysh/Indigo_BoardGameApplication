@@ -1,11 +1,11 @@
-package service.ai
+package  service.ai
+
 import entity.*
 import service.*
 
 /**
- * SimpleAI class responsible for managing the artificial intelligence behavior in the game.
- *
- * @property root The root service providing access to various game-related functionalities.
+ * SimpleAI class implementing a strategy of maximizing value gained during a turn.
+ * @param root [RootService] this SimpleAI belongs to
  */
 class SimpleAI(private val root: RootService): AbstractRefreshingService() {
 
@@ -55,16 +55,16 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
                     moves[bestMoveIndex]+"rotation:"+moveValues[bestMoveIndex].first)
             playerTurnService.placeRouteTile(moves[bestMoveIndex], player.handTile!!)
         }else{
-            val randomMove = randomAI.findAvailableMoves().shuffled().first().first
-            playerTurnService.placeRouteTile(randomMove, player.handTile!!)
+            val randomCoordinate = randomAI.findAvailableMoves().shuffled().first().first
+            playerTurnService.placeRouteTile(randomCoordinate, player.handTile!!)
         }
         onAllRefreshables { refreshAfterAITurn() }
     }
     /**
      * Simulates where a [Gem] ends up after each move in [moves] with each possible rotation
      *
-     * Value of a move is calculated using twice the distance
-     *
+     * the value of a move is calculated using twice the distance gained towards the nearest own gate and
+     * the distance lost towards the nearest enemy gate, weighted based on [Gem] value and closeness to own gate
      * @return [List] of [Pair]s representing the best Orientation of the tile for each move
      * and the Distance delta the move causes
      */
@@ -77,8 +77,8 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         val playerTurnService = root.playerTurnService
         val gameService = root.gameService
         var newEndPos: Int
-        var tempNewOwnDist: Int
-        var tempNewEnemyDist: Int
+        var ownGateDelta: Int
+        var enemyGateDelta: Int
         var moveValue: Int
         var bestValue: Int
         var bestRotation = 0
@@ -88,13 +88,13 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
             for (j in 0..5){
                 if (gameService.checkPlacement(moves[i],player.handTile!!,true)) {   //handTile checked above
                     newEndPos = calculateNewEndPosition(i,j)
-                    tempNewOwnDist = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),
+                    ownGateDelta = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),
                         nearestGates[i].first)-nearestGates[i].second
-                    tempNewEnemyDist = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),
+                    enemyGateDelta = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),
                         nearestEnemyGates[i].first)-nearestEnemyGates[i].second
-                    moveValue = (tempNewEnemyDist-(tempNewOwnDist*2))*
-                            (gemPositions[i].second.gemColor.ordinal+1)*
-                            (6-nearestGates[i].second)
+                    moveValue = (enemyGateDelta-(ownGateDelta * 2))*
+                            (gemPositions[i].second.gemColor.ordinal + 1)*
+                            (6 - nearestGates[i].second)
                     if (moveValue > bestValue){
                         bestValue = moveValue
                         bestRotation = (j).mod(6)
@@ -166,10 +166,10 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
         }
     }
     /**
-     * Finds the nearest gate for each coordinate in the given list of coordinates.
+     * Finds the nearest gate for each move [Coordinate] where a gem would be moved by placing a tile
      *
-     * @param gates The list of gate indices to consider.
-     * @return A list of pairs, each containing the index of the nearest gate and its distance for the corresponding coordinate.
+     * @param gates [List] of gate indices to be evaluated
+     * @return [List] of [Pair]s representing the nearest Gate index and the distance to it for each move
      */
     private fun findNearestGate(gates: List<Int>) : List<Pair<Int,Int>>{
         val game = root.currentGame
