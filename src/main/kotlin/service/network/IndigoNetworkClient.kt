@@ -10,14 +10,14 @@ import tools.aqua.bgw.net.common.annotations.GameActionReceiver
 import tools.aqua.bgw.net.common.notification.PlayerJoinedNotification
 import tools.aqua.bgw.net.common.notification.PlayerLeftNotification
 
+
 /**
- *  The class [IndigoNetworkClient] describe the Interaction with bgw net as a client
+ * The IndigoNetworkClient class represents a network client for the Indigo game.
  *
- *  @property playerName The player Name is the name of the player
- *  @property host The name of the host
- *  @property secret The secret for the project to make a secure connection
- *  @property networkService The networkService of the game
- *  to use the functions of the class
+ * @param playerName The name of the player using the network client.
+ * @param host The host address for connecting to the game server.
+ * @param secret The secret for the project to establish a secure connection.
+ * @param networkService The network service of the game to use the functions of the class.
  */
 open class IndigoNetworkClient(
     playerName: String,
@@ -94,8 +94,10 @@ open class IndigoNetworkClient(
      */
     override fun onPlayerJoined(notification: PlayerJoinedNotification) {
         BoardGameApplication.runOnGUIThread {
-            check(networkService.connectionState == ConnectionState.WAITING_FOR_GUEST
-                    || networkService.connectionState == ConnectionState.WAITING_FOR_INIT)
+            check(
+                networkService.connectionState == ConnectionState.WAITING_FOR_GUEST
+                        || networkService.connectionState == ConnectionState.WAITING_FOR_INIT
+            )
             { "not awaiting any guests." }
 
             otherPlayers.add(notification.sender)
@@ -128,7 +130,7 @@ open class IndigoNetworkClient(
      * @param message The message with information of the tile placing
      * @param sender The player who sent the message
      */
-    @Suppress("UNUSED_PARAMETER", "unused")
+    @Suppress("unused")
     @GameActionReceiver
     open fun onTilePlacedReceived(message: TilePlacedMessage, sender: String) {
         BoardGameApplication.runOnGUIThread {
@@ -162,7 +164,7 @@ open class IndigoNetworkClient(
      *  The function [onInitReceivedMessage] is to receive a [GameInitMessage] from the server
      *  to set the game
      */
-    @Suppress("UNUSED_PARAMETER", "unused")
+    @Suppress("unused")
     @GameActionReceiver
     open fun onInitReceivedMessage(message: GameInitMessage, sender: String) {
 

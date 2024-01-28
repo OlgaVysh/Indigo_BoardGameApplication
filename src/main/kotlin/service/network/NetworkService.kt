@@ -5,11 +5,9 @@ import edu.udo.cs.sopra.ntf.TilePlacedMessage
 import entity.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.time.withTimeout
 import service.AbstractRefreshingService
 import service.RootService
 import tools.aqua.bgw.net.common.response.JoinGameResponseStatus
-import java.util.concurrent.TimeoutException
 
 /**
  *  The class [NetworkService] is to have all function  with the network for online gaming.
@@ -106,8 +104,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
             refreshAfterChangePlayer()
             refreshAfterNetworkPlayerTurn() }
         val currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
-        val currentPlayer = players[currentPlayerIndex]
-        when (currentPlayer) {
+        when (val currentPlayer = players[currentPlayerIndex]) {
             is CPUPlayer -> {
                 runBlocking {
                     CoroutineScope(Dispatchers.JavaFx).launch {
