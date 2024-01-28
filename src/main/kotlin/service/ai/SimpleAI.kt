@@ -1,4 +1,4 @@
-package  service.ai
+package service.ai
 
 import entity.*
 import service.*
@@ -93,8 +93,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
                     enemyGateDelta = calculateDistance(findNeighbor(moves[i],(newEndPos-j).mod(6)),
                         nearestEnemyGates[i].first)-nearestEnemyGates[i].second
                     moveValue = (enemyGateDelta-(ownGateDelta * 2))*
-                            (gemPositions[i].second.gemColor.ordinal + 1)*
-                            (6 - nearestGates[i].second)
+                            (gemPositions[i].second.gemColor.ordinal + 1) * (6 - nearestGates[i].second)
                     if (moveValue > bestValue){
                         bestValue = moveValue
                         bestRotation = (j).mod(6)
@@ -194,7 +193,7 @@ class SimpleAI(private val root: RootService): AbstractRefreshingService() {
     }
 
     /**
-     * calculates the Distance between a given Point and the imaginary [Coordinate] of a given Gate
+     * calculates the Distance between a given Point and a given gate using the threefold symmetry of the [GameBoard]
      *
      * @param position [Coordinate] from which to calculate the Distance
      * @param gate [Int] representing the Gate to which the Distance is calculated
