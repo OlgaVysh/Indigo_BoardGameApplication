@@ -26,8 +26,6 @@ class NewGameMenuScene(indigoApp: IndigoApplication) :
             indigoApp.rootService.gameService.loadGame("./indigogames/GameState.json")
             indigoApp.showGameScene(indigoApp.gameScene)
             indigoApp.hideMenuScene()
-            //indigoApp.showGameScene(indigoApp.savedGamesScene)
-            //indigoApp.hideMenuScene()
         }
     }
 
