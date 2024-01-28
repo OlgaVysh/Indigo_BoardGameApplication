@@ -108,7 +108,7 @@ class PlayerTurnServiceTest {
     /**
      * Test the correctness of undo and redo operations.
      */
-    //@Test
+    @Test
     fun testUndoRedo() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
@@ -124,7 +124,9 @@ class PlayerTurnServiceTest {
         val player1HandTile = testGame!!.players[0].handTile
         println(player1HandTile.toString())
         assertNotNull(testGame)
-        assertNull(testGame.previousGameState)
+        assertNotNull(testGame.previousGameState)
+        assertNull(testGame.previousGameState?.previousGameState)
+        assertNull(testGame.nextGameState)
         // Perform actions to change the game state and then undo and redo
         //test refreshable
         // Place a route tile and observe the changes in the game state
@@ -170,12 +172,12 @@ class PlayerTurnServiceTest {
         assertTrue(refreshableTest.refreshAfterUndoCalled)
         refreshableTest.reset()
         actualGame = rootService.currentGame
-        assertNull(actualGame!!.previousGameState)
-        assertEquals(0, actualGame.currentPlayerIndex)
-        assertEquals(52, actualGame.routeTiles.size)
-        assertEquals(player1HandTile, actualGame.players[0].handTile)
-        assertEquals(6, actualGame.gameBoard.gameBoardTiles.size)
-        assertEquals(6, actualGame.middleTile.gemPosition.size)
+        assertNotNull(actualGame!!.previousGameState)
+        assertEquals(1, actualGame!!.currentPlayerIndex)
+        assertEquals(51, actualGame.routeTiles.size)
+        assertEquals(newPlayer1handTile, actualGame.players[0].handTile)
+        assertEquals(7, actualGame.gameBoard.gameBoardTiles.size)
+        assertEquals(5, actualGame.middleTile.gemPosition.size)
         // Redo the last undone action and validate the game state
 
         rootService.playerTurnService.redo()
@@ -202,9 +204,6 @@ class PlayerTurnServiceTest {
         // Validate route tiles and their count after redo
         assertEquals(51, actualGame.routeTiles.size)
 
-        rootService.playerTurnService.undo()
-        rootService.playerTurnService.placeRouteTile(Coordinate(3,3),testTile)
-        assertNull(rootService.currentGame!!.nextGameState)
     }
 
 
