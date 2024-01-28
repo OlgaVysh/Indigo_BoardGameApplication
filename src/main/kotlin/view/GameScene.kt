@@ -1000,18 +1000,13 @@ class GameScene(val indigoApp: IndigoApplication) :
                 if(gemMap[gem] != null) {
                     playAnimation(DelayAnimation(1000).apply {
                         gemMap[gem]!!.reposition(posX, posY)
+
                         gemMap[gem]!!.apply { isVisible = true }
                         unlock()
                     })
                 }
             }
-            val treasureTiles = indigoApp.rootService.currentGame!!.treasureTiles
-            if(!treasureTiles[0].gemEndPosition.isEmpty()) {yellowGem1.apply { posX = 914.0; posY = 70.0 }}
-            if(!treasureTiles[1].gemEndPosition.isEmpty()) {yellowGem2.apply { posX = 1230.0; posY = 254.0 }}
-            if(!treasureTiles[2].gemEndPosition.isEmpty()) {yellowGem3.apply { posX = 1230.0; posY = 619.0 }}
-            if(!treasureTiles[3].gemEndPosition.isEmpty()) {yellowGem4.apply { posX = 914.0; posY = 801.0 }}
-            if(!treasureTiles[4].gemEndPosition.isEmpty()) {yellowGem5.apply { posX = 590.0; posY = 619.0 }}
-            if(!treasureTiles[5].gemEndPosition.isEmpty()) {yellowGem6.apply { posX = 590.0; posY = 254.0 }}
+
         }
 
         for ((int, gem) in middle.gemPosition) {
@@ -1022,6 +1017,7 @@ class GameScene(val indigoApp: IndigoApplication) :
                 label.apply { posX = newX; posY = newY}
             }
         }
+
     }
 
 
