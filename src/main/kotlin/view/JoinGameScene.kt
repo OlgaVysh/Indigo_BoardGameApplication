@@ -212,6 +212,10 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         }
     }
 
+    /**
+     * Refreshes the scene after a connection was broken because a host left
+     * @param [playerLeftName] is name of the host that disconnected
+     */
     override fun refreshAfterPlayerLeft(playerLeftName: String) {
         val otherPlayer = indigoApp.rootService.networkService.client!!.otherPlayers
         val connectionState = indigoApp.rootService.networkService.connectionState
@@ -242,6 +246,9 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         )
     }
 
+    /**
+     * Refreshes and resets the scene
+     */
     private fun reset() {
         textMessageLabel.isVisible = false
         textMessageLabel.isDisabled = true

@@ -1,12 +1,10 @@
 package service
-import entity.*
-import java.io.File
-import kotlin.test.*
+
 /*
 /**
  * This class contains test cases for the [GameService.saveGame]  functions.
  * */
-class SavegameTest {
+class SaveGameTest {
     private lateinit var gameService: GameService
     private lateinit var playerTurnService: PlayerTurnService
     private lateinit var rootService: RootService
@@ -24,7 +22,7 @@ class SavegameTest {
     fun saveTest() {
         val players = mutableListOf<Player>()
         gameService.startGame(players, false, false)
-        val file = "/Users/mohammadkarkanawi/IdeaProjects/Projekt2-gruppe1/src/test/resources/"
+        val file = "src/test/resources/"
 
         gameService.saveGame(file)
         assert(File(file).exists())

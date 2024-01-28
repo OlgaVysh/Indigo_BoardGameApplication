@@ -7,7 +7,9 @@ import view.components.Button
 import view.components.Label
 
 /**
- * Represents the menu scene for selecting game modes.
+ * Represents the menu scene for selecting game modes : HotSeat and Network.
+ * HotSeat game is played by all players on the same device by taking turns while network game is played
+ * by each player locally on his/her device with other players via network
  * @param indigoApp represents an object of [IndigoApplication]
  */
 

@@ -89,6 +89,9 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
         aiDiff.items = mutableListOf("easy", "medium","advanced")
     }
 
+    /**
+     * Sets chosen ai simulationSpeed to the corresponding integer value for [CPUPlayer]
+     */
     private fun aiSpeed(): Int {
         when (aiSpeed.selectedItem) {
             "low" -> return 1
@@ -98,6 +101,9 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
         return 2
     }
 
+    /**
+     * Handles default ai difficulty if no difficulty was set by player
+     */
     private fun aiDiff(): String {
         return if(aiDiff.selectedItem != null) {
             this.aiDiff.selectedItem.toString()
@@ -106,6 +112,9 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
         }
     }
 
+    /**
+     * hides [AIMenuScene] and shows [GameScene]
+     */
     override fun refreshAfterStartGame() {
         indigoApp.hideMenuScene()
         indigoApp.showGameScene(indigoApp.gameScene)

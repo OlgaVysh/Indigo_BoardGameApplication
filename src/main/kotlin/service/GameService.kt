@@ -242,7 +242,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @param tile The tile to be placed.
      * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      */
-    fun placeTile(space: Coordinate, tile: Tile, isAiCalled: Boolean = false) {
+    private fun placeTile(space: Coordinate, tile: Tile, isAiCalled: Boolean = false) {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile

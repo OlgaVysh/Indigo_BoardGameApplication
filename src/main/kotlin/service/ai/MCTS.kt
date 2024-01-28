@@ -2,18 +2,14 @@ package service.ai
 import entity.Coordinate
 import service.AbstractRefreshingService
 import service.PlayerTurnService
-import java.util.*
-import entity.*
-import kotlinx.coroutines.*
 import kotlin.math.ln
 import kotlin.math.sqrt
 
 /**
- * The MCTS: Monte Carlo Tree Search algorithm to find the best player moves
+ * Class representing the Monte Carlo Tree Search (MCTS) algorithm for decision-making in a game.
  *
- * @param rootService the RootService instance that holds the game state information
- * @property aiActionService to get access to functions from the [AiActionService]
- * @property aiIndex the index of the player that the AI is playing as.
+ * @param rootService The RootService providing access to the game state and functionalities.
+ * @param aiIndex The index of the AI player using the MCTS algorithm.
  */
 class MCTS (private val rootService: service.RootService, private val aiIndex: Int): AbstractRefreshingService() {
 

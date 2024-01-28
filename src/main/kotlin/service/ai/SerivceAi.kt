@@ -106,7 +106,7 @@ class SerivceAi {
         }
 
 
-        fun rotateTileLeft(tile: Tile) {    // Add the first edge to the end of the list
+        private fun rotateTileLeft(tile: Tile) {    // Add the first edge to the end of the list
             //val game = rootService.currentGame
             //checkNotNull(game) { "No game found." }
             tile.edges.addAll(tile.edges.subList(0, 1))

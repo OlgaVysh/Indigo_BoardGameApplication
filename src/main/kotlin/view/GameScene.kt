@@ -590,7 +590,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     /**
-     * private function to clean the game scene components
+     * private function to reset the game scene components
      */
     private fun cleanGameScene() {
         for (i in 0..3) {
@@ -794,7 +794,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     /**
-     * Update the Gui highlight after refresh called
+     * Update the Gui after a players turn. For the current player show highlight and interaction buttons
      */
     override fun refreshAfterChangePlayer() {
         val currentGame = indigoApp.rootService.currentGame
@@ -986,7 +986,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     }
 
     /**
-     * Repositions gems on the game board.
+     * Repositions gems on the game board after a player undoes a turn
      */
     private fun repositionGems() {
         val gameBoardTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
@@ -1384,6 +1384,9 @@ class GameScene(val indigoApp: IndigoApplication) :
         }
     }
 
+    /**
+     * Updates GUI and sets gameboard after a saved game was reloaded
+     */
     override fun refreshAfterLoadGame() {
         var game = indigoApp.rootService.currentGame
         checkNotNull(game)

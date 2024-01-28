@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 
 /**
  *  The class [NetworkMappingServiceTest] is testing
- *  all function of the [NetworkMappingService]
+ *  all function of the NetworkMappingService.
  */
 class NetworkMappingServiceTest {
     private val players = listOf(
@@ -61,7 +61,6 @@ class NetworkMappingServiceTest {
         Tile(tile3,entity.TileType.Type_3),
         Tile(tile4,entity.TileType.Type_4)
     )
-    private val allTiles = treasureTiles.addAll(routeTiles)
     private val threeNotSharedTokens = mutableListOf(
         Token(TokenColor.PURPLE),
         Token(TokenColor.PURPLE),
@@ -132,7 +131,7 @@ class NetworkMappingServiceTest {
     )
 
     /**
-     * The function [toGameModeTest] test all function of [toGameMode] with alle functionality
+     * The function [toGameModeTest] test all function of toGameMode with alle functionality
      */
     @Test
     fun toGameModeTest() {
@@ -187,7 +186,7 @@ class NetworkMappingServiceTest {
     }
 
     /**
-     *  The function[toTileTypeListTest] test the function to [toTileTypeList]
+     *  The function[toTileTypeListTest] test the function to toTileTypeList
      */
     @Test
     fun toTileTypeListTest() {

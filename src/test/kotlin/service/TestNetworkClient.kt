@@ -40,7 +40,7 @@ class TestNetworkClient(
 
     /**
      * Overrides the callback for handling CreateGameResponse events.
-     * @param response The CreateGameResponse containing information about the outcome of the create game attempt.
+     * @param response The CreateGameResponse containing information about the outcome of  create game attempt.
      */
     override fun onCreateGameResponse(response: CreateGameResponse) {
         onCreateGameResponse?.invoke(response)

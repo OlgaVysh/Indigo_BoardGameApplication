@@ -126,6 +126,9 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         }
     }
 
+    /**
+     * Initializes the Scene with default values and sets up UI components.
+     */
     init {
         opacity = 0.5
         addComponents(
@@ -235,6 +238,9 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         }
     }
 
+    /**
+     * Resets UI components of the scene
+     */
     private fun resetSettings(){
         playerName.text = ""
         playerAge.text=""
