@@ -73,9 +73,9 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     private val noButton = RadioButton(posX = 620, posY = 700, toggleGroup = toggleGroup)
 
     private val textMessageLabel = Label(
-        15, 340, 960, 480, "Waiting for Confirmation", 48
+        15, 320, 960, 480, "Waiting for Confirmation", 48
     ).apply {
-        visual = ImageVisual("button.png")
+        visual = ImageVisual("message.png")
         isVisible = false
         isDisabled = true
     }
@@ -91,7 +91,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
     //Initializes the JoinGameScene with default values and sets up UI components.
     init {
         // Set the initial opacity of the scene
-        opacity = 0.5
+        opacity = 0.7
         // Add components to the scene
         addComponents(
             titleLabel, idLabel, nameLabel, aiLabel, nameInput,
