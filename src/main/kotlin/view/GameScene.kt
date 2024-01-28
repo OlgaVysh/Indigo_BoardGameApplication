@@ -893,6 +893,7 @@ class GameScene(val indigoApp: IndigoApplication) :
      * Refreshes the scene after redoing a move or action.
      */
     override fun refreshAfterRedo() {
+        refreshAfterChangePlayer()
         val labelsListe = mutableListOf<Label>()
         labelsListe.add(player1ScoreLabel)
         labelsListe.add(player2ScoreLabel)
@@ -906,7 +907,7 @@ class GameScene(val indigoApp: IndigoApplication) :
         player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
         //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
         //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()*/
-        refreshAfterChangePlayer()
+        //refreshAfterChangePlayer()
         refreshAfterDistributeNewTile()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val nextTiles = indigoApp.rootService.currentGame!!.previousGameState!!.gameBoard.gameBoardTiles
@@ -996,21 +997,23 @@ class GameScene(val indigoApp: IndigoApplication) :
                 val posX = position!!.x + gemEndPos[gemPosition]!!.x
                 val posY = position.y + gemEndPos[gemPosition]!!.y
                 lock()
-                playAnimation(DelayAnimation(1000).apply {
-                    gemMap[gem]!!.reposition(posX, posY)
-                    gemMap[gem]!!.apply { isVisible = true }
-                    unlock()
-                })
+                if(gemMap[gem] != null) {
+                    playAnimation(DelayAnimation(1000).apply {
+                        gemMap[gem]!!.reposition(posX, posY)
+                        gemMap[gem]!!.apply { isVisible = true }
+                        unlock()
+                    })
+                }
             }
         }
 
         for ((int, gem) in middle.gemPosition) {
+            if(gemMap[gem] != null){
             val label = gemMap[gem]!!
             val newX  = middleMap[int]!!.x
             val newY  = middleMap[int]!!.y
                 label.apply { posX = newX; posY = newY}
-
-
+            }
         }
     }
 
@@ -1383,14 +1386,14 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     override fun refreshAfterLoadGame() {
         var game = indigoApp.rootService.currentGame
-        while (game!!.previousGameState != null) {
-                game = game.previousGameState
-            }
-        indigoApp.rootService.currentGame = game
+        checkNotNull(game)
         refreshAfterStartGame()
-        while(indigoApp.rootService.currentGame!!.nextGameState != null){
-        indigoApp.rootService.playerTurnService.redo()
+        mapGems()
+        repositionGems()
+        while(game?.nextGameState != null){
+            indigoApp.rootService.currentGame = indigoApp.rootService.currentGame?.nextGameState
+            refreshAfterRedo()
+            game = indigoApp.rootService.currentGame
         }
     }
-
 }
