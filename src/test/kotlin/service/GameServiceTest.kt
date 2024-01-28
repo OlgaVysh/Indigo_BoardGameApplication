@@ -212,7 +212,7 @@ class GameServiceTest {
         refreshableTest.reset()
 
         assertFalse(rootService.gameService.checkPlacement(Coordinate(0, 0), tile2))
-        val exception1 = assertThrows<Exception> {
+        val exception1 = assertThrows<IllegalStateException> {
             rootService.gameService.checkPlacement(Coordinate(-1, -3), tile2)
         }
         assertEquals(exception1.message, "this place is occupied")
@@ -221,13 +221,13 @@ class GameServiceTest {
         assertFalse(refreshableTest.refreshAfterLeftRotationCalled)
         rootService.playerTurnService.rotateTileLeft(tile2)
         assertTrue(refreshableTest.refreshAfterLeftRotationCalled)
+        assertFalse(refreshableTest.refreshAfterRightRotationCalled)
         refreshableTest.reset()
         /*
                 val exception2 = assertThrows<Exception> {
                     rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2)
                 }*/
         //assertEquals(exception2.message, "tile blocks exit, please rotate Tile")
-        assertFalse(refreshableTest.refreshAfterRightRotationCalled)
         rootService.playerTurnService.rotateTileRight(tile2)
         rootService.playerTurnService.rotateTileRight(tile2)
         assertTrue(refreshableTest.refreshAfterRightRotationCalled)
