@@ -143,8 +143,8 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
     /**
      * Resets the settings by removing rows from the grid and updating button states.
      */
-    fun resetSettings(){
-        for(i in grid.rows-1 downTo  1){
+    fun resetSettings() {
+        for (i in grid.rows - 1 downTo 1) {
             grid.removeRow(i)
         }
         startButton.isDisabled = true
@@ -190,17 +190,19 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
      *  @param playerLeftName is a String which contains the name of the left Player
      */
     override fun refreshAfterPlayerLeft(playerLeftName: String) {
-        for (i in 1 until grid.rows) {
-            val networkPlayer = grid[0, i] ?: continue
-            val name = networkPlayer.label.text.substringAfter(": ")
-            if (name == playerLeftName) {
-                grid.removeRow(i)
-                break
+        val connectionState = indigoApp.rootService.networkService.connectionState
+        if (connectionState == ConnectionState.WAITING_FOR_GUEST) {
+            for (i in 1 until grid.rows) {
+                val networkPlayer = grid[0, i] ?: continue
+                val name = networkPlayer.label.text.substringAfter(": ")
+                if (name == playerLeftName) {
+                    grid.removeRow(i)
+                    break
+                }
             }
-        }
-        val removePlayer = indigoApp.players.find { it?.name == playerLeftName }
-        indigoApp.players.remove(removePlayer)
-        grid.removeEmptyRows()/*for (i in 0 until grid.rows) {
+            val removePlayer = indigoApp.players.find { it?.name == playerLeftName }
+            indigoApp.players.remove(removePlayer)
+            grid.removeEmptyRows()/*for (i in 0 until grid.rows) {
          val networkPlayer = grid.get(0, i) ?: continue
         networkPlayer.apply {
             posY = (151 * i).toDouble()
@@ -208,9 +210,11 @@ class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication/*, games: Li
             button.posY = (151 * i).toDouble()
         }
         }*/
-        startButton.isDisabled = grid.rows < 2
-        addButton.isDisabled = grid.rows == 4
+            startButton.isDisabled = grid.rows < 2
+            addButton.isDisabled = grid.rows == 4
+        }
     }
+
     /**
      * Refreshes the UI after starting a game, showing the game scene if the network connection is established.
      */

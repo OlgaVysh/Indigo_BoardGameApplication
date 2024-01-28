@@ -4,6 +4,7 @@ import entity.CPUPlayer
 import entity.Player
 import kotlinx.coroutines.*
 import kotlinx.coroutines.javafx.JavaFx
+import service.network.ConnectionState
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.uicomponents.*
 import tools.aqua.bgw.core.Alignment
@@ -79,7 +80,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         isDisabled = true
     }
 
-    private val backPfeil = BackPfeil (60, 40 ,70, 60).apply {
+    private val backPfeil = BackPfeil(60, 40, 70, 60).apply {
         onMouseClicked = {
             reset()
             indigoApp.rootService.networkService.disconnect()
@@ -95,13 +96,15 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         addComponents(
             titleLabel, idLabel, nameLabel, aiLabel, nameInput,
             idInput, yesButton, noButton, yesLabel, noLabel,
-            joinButton, textMessageLabel, backPfeil)
+            joinButton, textMessageLabel, backPfeil
+        )
 
         // Set alignment for specific labels
         nameLabel.alignment = Alignment.CENTER_LEFT
         aiLabel.alignment = Alignment.CENTER_LEFT
         idLabel.alignment = Alignment.CENTER_LEFT
     }
+
     /**
      * Refreshes the scene after joining a game.
      */
@@ -110,6 +113,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         textMessageLabel.isDisabled = false
         textMessageLabel.text = rootService.networkService.connectionState.name
     }
+
     /**
      * Refreshes the scene after receiving a response from joining a game.
      *
@@ -151,6 +155,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             }
         })
     }
+
     /**
      * Refreshes the scene after starting a new game that has been joined.
      */
@@ -206,23 +211,45 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             }
         }
     }
-/**
- * Initiates the process of joining a game.
-*/
-fun startJoinGame() {
+
+    override fun refreshAfterPlayerLeft(playerLeftName: String) {
+        val otherPlayer = indigoApp.rootService.networkService.client!!.otherPlayers
+        val connectionState = indigoApp.rootService.networkService.connectionState
+        if (connectionState == ConnectionState.WAITING_FOR_INIT) {
+            if (playerLeftName != indigoApp.rootService.networkService.client!!.playerName && !otherPlayer.contains(
+                    playerLeftName
+                )
+            )
+                textMessageLabel.text = "Host left the Game"
+            playAnimation(DelayAnimation(duration = 2000).apply {
+                onFinished = {
+                    textMessageLabel.isVisible = false
+                    textMessageLabel.isDisabled = true
+                    joinButton.isDisabled = false
+                    reset()
+                    indigoApp.showMenuScene(indigoApp.networkScene)
+                }
+            })
+        }
+    }
+
+    /**
+     * Initiates the process of joining a game.
+     */
+    fun startJoinGame() {
         indigoApp.rootService.networkService.joinGame(
             name = nameInput.text, sessionID = idInput.text
         )
     }
 
-    private fun reset(){
+    private fun reset() {
         textMessageLabel.isVisible = false
         textMessageLabel.isDisabled = true
         joinButton.isDisabled = false
         nameInput.text = ""
         joinButton.isDisabled = true
         idInput.text = ""
-        yesButton.isSelected =false
+        yesButton.isSelected = false
         noButton.isSelected = true
     }
 }

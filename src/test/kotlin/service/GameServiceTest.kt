@@ -375,13 +375,16 @@ class GameServiceTest {
         rootService.gameService.loadGame("GameSaved1.json")
         val loadedGame = rootService.currentGame
         assertEquals(2, loadedGame?.players?.size)
-        assertEquals("12", loadedGame?.players?.get(0)?.name)
-        assertEquals(2, loadedGame?.players?.get(0)?.score)
+        assertEquals("sss", loadedGame?.players?.get(0)?.name)
+        assertEquals(0, loadedGame?.players?.get(0)?.score)
         assertEquals(TokenColor.BLUE, loadedGame?.players?.get(0)?.color)
 
-        assertEquals("123", loadedGame?.players?.get(1)?.name)
-        assertEquals(2, loadedGame?.players?.get(1)?.score)
+        assertEquals("sss", loadedGame?.players?.get(1)?.name)
+        assertEquals(0, loadedGame?.players?.get(1)?.score)
         assertEquals(TokenColor.RED, loadedGame?.players?.get(1)?.color)
+        assertNull(loadedGame!!.nextGameState)
+        println(loadedGame.previousGameState!!.id)
+        println(loadedGame.id)
     }
 
     /**

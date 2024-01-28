@@ -24,8 +24,7 @@ open class IndigoNetworkClient(
     host: String,
     secret: String,
     var networkService: NetworkService,
-) : BoardGameClient(playerName, host, secret, NetworkLogging.VERBOSE)
-{
+) : BoardGameClient(playerName, host, secret, NetworkLogging.VERBOSE) {
     /**
      * @property sessionID The SessionID is to connect to the specific game
      */
@@ -52,6 +51,7 @@ open class IndigoNetworkClient(
                     networkService.connectionState = ConnectionState.WAITING_FOR_GUEST
                     sessionID = response.sessionID
                 }
+
                 else -> {
                     networkService.disconnect()
                 }
@@ -78,6 +78,7 @@ open class IndigoNetworkClient(
                     sessionID = response.sessionID
                     networkService.updateConnectionState(ConnectionState.WAITING_FOR_INIT)
                 }
+
                 else -> {
                     networkService.disconnect()
                 }
@@ -93,11 +94,12 @@ open class IndigoNetworkClient(
      */
     override fun onPlayerJoined(notification: PlayerJoinedNotification) {
         BoardGameApplication.runOnGUIThread {
-            check(networkService.connectionState == ConnectionState.WAITING_FOR_GUEST)
+            check(networkService.connectionState == ConnectionState.WAITING_FOR_GUEST
+                    || networkService.connectionState == ConnectionState.WAITING_FOR_INIT)
             { "not awaiting any guests." }
 
             otherPlayers.add(notification.sender)
-           networkService.refreshAfterPlayerJoined(notification.sender)
+            networkService.refreshAfterPlayerJoined(notification.sender)
         }
     }
 
@@ -108,7 +110,10 @@ open class IndigoNetworkClient(
      */
     override fun onPlayerLeft(notification: PlayerLeftNotification) {
         BoardGameApplication.runOnGUIThread {
-            check(networkService.connectionState == ConnectionState.WAITING_FOR_GUEST)
+            check(
+                networkService.connectionState == ConnectionState.WAITING_FOR_GUEST
+                        || networkService.connectionState == ConnectionState.WAITING_FOR_INIT
+            )
             { "Player should not leave" }
 
             otherPlayers.remove(notification.sender)
@@ -146,6 +151,7 @@ open class IndigoNetworkClient(
             GameActionResponseStatus.SUCCESS -> {
                 println("SUCCESS")
             }
+
             else -> {
                 println("Fail")
             }
