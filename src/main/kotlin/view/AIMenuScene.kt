@@ -95,10 +95,10 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
     private fun aiSpeed(): Int {
         when (aiSpeed.selectedItem) {
             "low" -> return 1
-            "middle" -> return 2
-            "high" -> return 3
+            "middle" -> return 3
+            "high" -> return 5
         }
-        return 2
+        return 3
     }
 
     /**
