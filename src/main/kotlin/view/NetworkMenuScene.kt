@@ -26,6 +26,7 @@ class NetworkMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, b
     private val backPfeil = BackPfeil (100, 40 ,70, 60).apply {
         onMouseClicked = {
             indigoApp.showGameScene(indigoApp.modusScene)
+            indigoApp.hideMenuScene()
         }
     }
 
