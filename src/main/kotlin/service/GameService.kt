@@ -632,7 +632,6 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         val tileGems = currentTile.gemEndPosition
         val neighbourGems = neighbourTile.gemEndPosition
-        val neighborEdge = neighbourTile.edges[neighbourStart]
 
         if (tileGems.contains(currentGemPosition)) {
             if (neighbourGems.contains(neighbourStart)) {
