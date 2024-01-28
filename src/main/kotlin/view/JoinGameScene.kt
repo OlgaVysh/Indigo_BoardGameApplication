@@ -181,7 +181,6 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             currentGame.settings.players = newPlayers.toList()
             currentGame.players = newPlayers.toList()
         }
-
         reset()
         indigoApp.showGameScene(indigoApp.gameScene)
         indigoApp.hideMenuScene()
@@ -199,11 +198,9 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
                                 withTimeout(8000) {
                                     delay((currentPlayer.simulationSpeed * 1000).toLong())
                                     rootService.aiActionService.aiMove(currentPlayer.difficulty)
-                                    indigoApp.gameScene.refreshAfterChangePlayer()
                                 }
-                            } catch (e: Exception) {
+                            } catch (e: TimeoutCancellationException) {
                                 rootService.aiActionService.aiMove("easy")
-                                indigoApp.gameScene.refreshAfterChangePlayer()
                             }
                         }
                     }
