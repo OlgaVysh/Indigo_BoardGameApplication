@@ -63,6 +63,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             players[i].handTile = rootService.currentGame!!.routeTiles.removeAt(0)
             onAllRefreshables { refreshAfterDistributeNewTile() }
         }
+        var firstAppearance = rootService.currentGame
+        val lastGame = rootService.currentGame?.copyTo()
+        firstAppearance?.nextGameState = lastGame
+        lastGame?.previousGameState = firstAppearance
+        //rootService.currentGame?.nextGameState = lastGame
+        rootService.currentGame = lastGame //rootService.currentGame?.nextGameState
+        //rootService.currentGame?.nextGameState = null
 
         onAllRefreshables {
             refreshAfterChangePlayer()

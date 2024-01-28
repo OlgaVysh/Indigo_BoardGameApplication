@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo
 import com.fasterxml.jackson.annotation.JsonIdentityReference
 import com.fasterxml.jackson.annotation.ObjectIdGenerators
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import java.util.*
 
 /**
@@ -38,8 +40,8 @@ data class Indigo(
     val allTiles: List<Tile>,
     var gems: MutableList<Gem>,
     var tokens: MutableList<Token>,
-    //val id : Int = 0
-    val id: UUID = UUID.randomUUID()
+    val id : Int = IDGenerator.generateID()
+    //val id: UUID = UUID.randomUUID()
 ) {
     var players = settings.players
     var currentPlayerIndex = 0
@@ -127,7 +129,7 @@ data class Indigo(
             copiedGems,
             this.tokens,
             //id = id+1
-            id = UUID.randomUUID()
+            id = IDGenerator.generateID()
         )
         copiedIndigo.currentPlayerIndex = this.currentPlayerIndex
         copiedIndigo.nextGameState = this.nextGameState
@@ -138,5 +140,17 @@ data class Indigo(
         }
         copiedIndigo.routeTiles = this.routeTiles.toMutableList()
         return copiedIndigo
+    }
+    fun copy():Indigo{
+        val mapper = jacksonObjectMapper()
+        val jsonString = mapper.writeValueAsString(this)
+        return mapper.readValue<Indigo>(jsonString)
+    }
+
+}
+object IDGenerator{
+    private var idCounter = 0
+    fun generateID():Int{
+        return ++idCounter
     }
 }

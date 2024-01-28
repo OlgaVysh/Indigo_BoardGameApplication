@@ -27,7 +27,7 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
             onAllRefreshables { refreshAfterEndGame() }
         }
         */
-        val firstAppearance = currentGame.copyTo()
+        var firstAppearance = currentGame
         // Check if the tile placement is valid
         if (rootService.gameService.checkPlacement(space, tile,true)) {
 
@@ -46,9 +46,9 @@ class PlayerTurnService(private val rootService: RootService) : AbstractRefreshi
             val lastGame = rootService.currentGame?.copyTo()
             firstAppearance.nextGameState = lastGame
             lastGame?.previousGameState = firstAppearance
-            rootService.currentGame?.nextGameState = lastGame
-            rootService.currentGame = rootService.currentGame?.nextGameState
-            rootService.currentGame?.nextGameState = null
+            //rootService.currentGame?.nextGameState = lastGame
+            rootService.currentGame = lastGame //rootService.currentGame?.nextGameState
+            //rootService.currentGame?.nextGameState = null
 
             //if is your turn in the NetworkMode
             val connectionState = rootService.networkService.connectionState
