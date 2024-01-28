@@ -894,6 +894,9 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     override fun refreshAfterRedo() {
         refreshAfterChangePlayer()
+        val currentGame = rootService.currentGame
+        val nextState = currentGame?.nextGameState
+        currentGame?.gameBoard?.gameBoardTiles?.values
         val labelsListe = mutableListOf<Label>()
         labelsListe.add(player1ScoreLabel)
         labelsListe.add(player2ScoreLabel)
@@ -915,6 +918,9 @@ class GameScene(val indigoApp: IndigoApplication) :
         val differingTileEntry = currentTiles.entries.find { entry ->
             !nextTiles.containsKey(entry.key)
         }
+        //val currentGems = indigoApp.rootService.currentGame?.gems
+        //val nextStateGems = indigoApp.rootService.currentGame?.nextGameState?.gems
+        //val nextToUpdatePosition = currentGems.entries
 
         if (differingTileEntry != null) {
             val differingCoordinate = differingTileEntry.key
@@ -928,6 +934,17 @@ class GameScene(val indigoApp: IndigoApplication) :
                     rotate(-60)
                     rotate(60 * rotation)
                 }
+            val neighbors = rootService.gameService.getNeighboringCoordinates(differingCoordinate)
+            for ((exit,gem) in differingTile.gemEndPosition) {
+                //rootService.gameService.moveGems(differingCoordinate, neighbors[i], i)
+
+                refreshAfterMoveGems(
+
+                    gem,
+                    differingCoordinate,
+                    exit
+                )
+            }
         } else {
             println("No differing tile found.")
         }

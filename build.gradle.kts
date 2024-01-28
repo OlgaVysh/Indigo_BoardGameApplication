@@ -50,6 +50,10 @@ dependencies {
 tasks.distZip {
     archiveFileName.set("distribution.zip")
     destinationDirectory.set(layout.projectDirectory.dir("public"))
+    into(""){
+        from(".")
+        include("HowToPlay.pdf")
+    }
 }
 
 tasks.test {

@@ -294,7 +294,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @param tile The tile containing the edges.
      * @return The index of the second edge in the tile's edges list.
      */
-    private fun getAnotherEdge(edge1: Edge, tile: Tile): Int {
+    internal fun getAnotherEdge(edge1: Edge, tile: Tile): Int {
 
         val paths = tile.paths
         val edges = tile.edges
