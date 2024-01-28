@@ -286,11 +286,9 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                                 withTimeout(8000) {
                                     delay((currentPlayer.simulationSpeed * 1000).toLong())
                                     rootService.aiActionService.aiMove(currentPlayer.difficulty)
-                                    onAllRefreshables { refreshAfterChangePlayer() }
                                 }
                             } catch (e: Exception) {
                                 rootService.aiActionService.aiMove("easy")
-                                onAllRefreshables { refreshAfterChangePlayer() }
                             }
                         }
                     }
