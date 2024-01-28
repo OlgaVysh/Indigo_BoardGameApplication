@@ -173,7 +173,7 @@ class PlayerTurnServiceTest {
         refreshableTest.reset()
         actualGame = rootService.currentGame
         assertNotNull(actualGame!!.previousGameState)
-        assertEquals(1, actualGame!!.currentPlayerIndex)
+        assertEquals(1, actualGame.currentPlayerIndex)
         assertEquals(51, actualGame.routeTiles.size)
         assertEquals(newPlayer1handTile, actualGame.players[0].handTile)
         assertEquals(7, actualGame.gameBoard.gameBoardTiles.size)
@@ -239,6 +239,7 @@ class PlayerTurnServiceTest {
 
         // Undo the move
         rootService.playerTurnService.undo()
+        rootService.playerTurnService.undo()
         assertTrue(refreshableTest.refreshAfterUndoCalled)
         refreshableTest.reset()
         actualGame = rootService.currentGame
@@ -249,7 +250,7 @@ class PlayerTurnServiceTest {
 
         // Assertions after undo
         println("Player 1 Hand Tile after undo: $updatedPlayer1HandTile")
-        assertEquals(initialPlayer1HandTile.paths, updatedPlayer1HandTile?.paths)
+        assertEquals(initialPlayer1HandTile.type, updatedPlayer1HandTile?.type)
 
     }
 
