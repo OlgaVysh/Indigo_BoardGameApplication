@@ -9,7 +9,8 @@ import view.components.Button
 import view.components.Label
 
 /**
- * Represents the menu scene for selecting gate options.
+ * Represents the menu scene for selecting gate options (shared or separated)
+ * for a game of three players.
  *
  * @param indigoApp The IndigoApplication instance associated with the gate menu scene.
  */
