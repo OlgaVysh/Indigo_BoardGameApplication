@@ -33,29 +33,28 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     private var aiPlayer = false
 
     // UI components for displaying information and receiving input from the user.
-    private val label = Label(42, 80, 900, 116, "Configure Player", 96)
+    private val label = Label(42, 120, 900, 116, "Configure Player", 96)
 
-    private val nameLabel = Label(65, 293, 300, 98, text = "Name: ", fontSize = 48)
-    private val ageLabel = Label(80, 393, 300, 98, text = "Age (opt): ", fontSize = 48)
+    private val nameLabel = Label(65, 273, 300, 98, text = "Name: ", fontSize = 48)
 
-    private val colorLabel = Label(80, 493, width = 300, text = "Color (opt): ", fontSize = 48)
-    var colorBox = ComboBox(360, 485, 454.34, 69, prompt = "Select your color!", items = colors)
+    private val colorLabel = Label(80, 413, width = 300, text = "Color (opt): ", fontSize = 48)
+    var colorBox = ComboBox(360, 405, 454.34, 69, prompt = "Select your color!", items = colors)
 
-    private val turnLabel = Label(80, 593, width = 300, text = "Turn (opt): ", fontSize = 48)
-    var turnBox = ComboBox(360, 585, 454.34, 69, prompt = "Select your turn!", items = turns)
+    private val turnLabel = Label(80, 553, width = 300, text = "Turn (opt): ", fontSize = 48)
+    var turnBox = ComboBox(360, 545, 454.34, 69, prompt = "Select your turn!", items = turns)
 
-    private val aiLabel = Label(140, 693, width = 200, text = "AI : ", fontSize = 48)
-    private val yesLabel = Label(400, 693, width = 80, text = "yes", fontSize = 48)
-    private val noLabel = Label(600, 693, width = 80, text = "no", fontSize = 48)
+    private val aiLabel = Label(140, 673, width = 200, text = "AI : ", fontSize = 48)
+    private val yesLabel = Label(400, 673, width = 80, text = "yes", fontSize = 48)
+    private val noLabel = Label(600, 673, width = 80, text = "no", fontSize = 48)
 
     // Buttons for AI selection.
     private val toggleGroup = ToggleGroup()
-    private val yesButton = RadioButton(posX = 350, posY = 710, toggleGroup = toggleGroup).apply {
+    private val yesButton = RadioButton(posX = 350, posY = 690, toggleGroup = toggleGroup).apply {
         onMouseClicked = {
             aiPlayer = true
         }
     }
-    private val noButton = RadioButton(posX = 550, posY = 710, isSelected = true, toggleGroup = toggleGroup).
+    private val noButton = RadioButton(posX = 550, posY = 690, isSelected = true, toggleGroup = toggleGroup).
     apply {
         onMouseClicked = {
             aiPlayer = false
@@ -66,7 +65,7 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         width = 350,
         height = 50,
         posX = 360,
-        posY = 320,
+        posY = 290,
     ).apply {
         onKeyTyped = {
             addNewPlayerButton.isDisabled = this.text.isBlank()
@@ -115,26 +114,14 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
         }
     }
 
-    private val playerAge: TextField = TextField(
-        width = 350,
-        height = 50,
-        posX = 360,
-        posY = 420,
-    ).apply {
-        onKeyTyped = {
-            addNewPlayerButton.isDisabled = this.text.isBlank()
-        }
-    }
-
     /**
      * Initializes the Scene with default values and sets up UI components.
      */
     init {
-        opacity = 0.5
+        opacity = 0.7
         addComponents(
             label,
             nameLabel,
-            ageLabel,
             turnBox,
             turnLabel,
             colorLabel,
@@ -146,7 +133,6 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
             noButton,
             addNewPlayerButton,
             playerName,
-            playerAge,
             backPfeil
         )
     }
@@ -199,7 +185,6 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
     private fun refreshScene() {
         noButton.isSelected = true
         playerName.text = ""
-        playerAge.text = ""
 
         colors.remove(colorBox.selectedItem)
         colorBox.items = colors
@@ -243,7 +228,6 @@ class NewPlayerScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), R
      */
     private fun resetSettings(){
         playerName.text = ""
-        playerAge.text=""
         yesButton.isSelected = false
         noButton.isSelected = true
         colorBox.selectedItem=null
