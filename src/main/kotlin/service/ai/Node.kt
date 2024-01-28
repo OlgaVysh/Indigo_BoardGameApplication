@@ -57,12 +57,7 @@ data class Node(val rootService: RootService, val parent: Node?, val coordinate:
         }
         return availableMoves
     }
-
-
-
-
-
-
+/*
     fun rotateTileLeft(tile: Tile, isAiCalled: Boolean = false) {    // Add the first edge to the end of the list
 
 
@@ -70,5 +65,5 @@ data class Node(val rootService: RootService, val parent: Node?, val coordinate:
         // Remove the original first edge
         tile.edges.removeAll(tile.edges.subList(0, 1))
         //if (!isAiCalled) onAllRefreshables { refreshAfterLeftRotation(game.currentPlayerIndex) }
-    }
+    }*/
 }

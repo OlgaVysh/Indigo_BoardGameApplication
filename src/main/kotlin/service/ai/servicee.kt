@@ -367,6 +367,19 @@ class servicee (var currentGame: Indigo) {
 
         return neighbors
     }
+
+    fun distributeNewTile(isAiCalled: Boolean = false) {
+        //val game = rootService.currentGame
+        //heckNotNull(game)
+        if (currentGame.routeTiles.isEmpty()) {
+            currentGame.players[currentGame.currentPlayerIndex].handTile = null
+        } else {
+            val newHandTile = currentGame.routeTiles.removeAt(0)
+            val currentPlayerIndex = currentGame.currentPlayerIndex
+            currentGame.settings.players[currentPlayerIndex].handTile = newHandTile
+        }
+       // if (!isAiCalled) onAllRefreshables { refreshAfterDistributeNewTile() }
+    }
 }
 
 

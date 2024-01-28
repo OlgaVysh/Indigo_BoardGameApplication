@@ -112,11 +112,6 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
         return current
     }
 
-
-/*    fun setcurrentstate (indigo :Indigo ){
-        val game =rootService.currentGame
-        game.gameBoard=indigo.gameBoard
-    }*/
     /**
      * expandNode - a function that expands the given node by adding its possible moves as children
      * @param node: the node to be expanded
