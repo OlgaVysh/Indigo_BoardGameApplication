@@ -895,7 +895,7 @@ class GameScene(val indigoApp: IndigoApplication) :
     override fun refreshAfterRedo() {
         refreshAfterChangePlayer()
         val currentGame = rootService.currentGame
-        val nextState = currentGame?.nextGameState
+        //val nextState = currentGame?.nextGameState
         currentGame?.gameBoard?.gameBoardTiles?.values
         getPlayersScores()
         refreshAfterDistributeNewTile()
@@ -921,7 +921,7 @@ class GameScene(val indigoApp: IndigoApplication) :
                     rotate(-60)
                     rotate(60 * rotation)
                 }
-            val neighbors = rootService.gameService.getNeighboringCoordinates(differingCoordinate)
+           // val neighbors = rootService.gameService.getNeighboringCoordinates(differingCoordinate)
             for ((exit,gem) in differingTile.gemEndPosition) {
                 //rootService.gameService.moveGems(differingCoordinate, neighbors[i], i)
 
