@@ -16,8 +16,10 @@ class MCTS(private val rootService: service.RootService, private val aiIndex: In
     /**
      *
      * This method initiates the MCTS algorithm to find the next best move for the AI player.
-     * It starts with a root node and iteratively performs selection, expansion, simulation, and backpropagation
-     * until a stopping condition is met: "game is over" or " If there are no more possible moves to explore from the current node"
+     * It starts with a root node and iteratively performs selection, expansion, simulation,
+     * and backpropagation
+     * until a stopping condition is met: "game is over" or "
+     * If there are no more possible moves to explore from the current node"
      *
      * @return A [Coordinate] object representing the best move for the AI player.
      */
@@ -74,7 +76,9 @@ class MCTS(private val rootService: service.RootService, private val aiIndex: In
 
     /**
      * selectPromisingNode - a function that selects the most promising node to be expanded
-     * It traverses the tree to find the most promising node based on the UCT (Upper Confidence Bound applied to Trees) formula
+     * It traverses the tree to find the most promising node based on the UCT
+     * (Upper Confidence Bound applied to Trees) formula
+     *
      * @param node: the current node
      * @return Node: the most promising node
      */
@@ -105,8 +109,10 @@ class MCTS(private val rootService: service.RootService, private val aiIndex: In
 
     /**
      * expandNode - a function that expands the given node by adding its possible moves as children
+     *
      * @param node: the node to be expanded
-     * @return Boolean: returns true if there are no possible moves (i.e., the node is a terminal state)
+     * @return Boolean: returns true if there are no possible moves
+     * (i.e., the node is a terminal state)
      * false otherwise
      */
 

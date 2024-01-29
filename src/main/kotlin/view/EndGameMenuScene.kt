@@ -114,7 +114,8 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
         if (sortedPlayers[0].score == sortedPlayers[1].score &&
             sortedPlayers[0].collectedGems.size == sortedPlayers[1].collectedGems.size
         ) {
-            betweenGemsLabel.text = "It's a Tie between " + sortedPlayers[0].name + " and " + sortedPlayers[1].name
+            betweenGemsLabel.text = "It's a Tie between " +
+                    sortedPlayers[0].name + " and " + sortedPlayers[1].name
             player1.isVisible = true
             player1.text =
                 players[0].name + " has " + players[0].score + "Points and " +
@@ -157,7 +158,9 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
                             players[3].collectedGems.size + " Gems."
                 player4.posX = 605.0
             }
-            if (sortedPlayers[0].score == sortedPlayers[3].score && sortedPlayers[0].collectedGems.size == sortedPlayers[3].collectedGems.size) {
+            if (sortedPlayers[0].score == sortedPlayers[3].score &&
+                sortedPlayers[0].collectedGems.size == sortedPlayers[3].collectedGems.size
+            ) {
                 betweenGemsLabel.text =
                     "It's a Tie between " + sortedPlayers[0].name + ", " +
                             sortedPlayers[1].name + ", " + sortedPlayers[2].name + " and " +

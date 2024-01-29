@@ -14,7 +14,8 @@ import view.components.Label
 /**
  * Represents the scene for hosting a game.
  *
- * This scene includes elements for entering host and game details, such as name and game ID, along with a button to initiate hosting a game.
+ * This scene includes elements for entering host and game details, such as name and game ID,
+ * along with a button to initiate hosting a game.
  * The layout and interaction logic for these components are defined within this class.
  *
  * @property rootService An instance of RootService to access and manipulate game data.
