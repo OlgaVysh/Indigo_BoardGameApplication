@@ -11,7 +11,7 @@ import view.components.Label
  *
  * @param indigoApp The IndigoApplication instance associated with the network menu scene.
  */
-class NetworkMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")) ,Refreshable {
+class NetworkMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("seven_gems2_background.png")) ,Refreshable {
     // Buttons for network game options
     private val hostButton = Button(266, 642, 528, 207, "Host game", 48).
     apply { onMouseClicked = {indigoApp.showMenuScene(indigoApp.hostGameScene)} }

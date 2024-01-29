@@ -22,7 +22,7 @@ import view.components.Label
  */
 
 class GameScene(val indigoApp: IndigoApplication) :
-    BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
+    BoardGameScene(1920, 1080, background = ImageVisual("plain_background.png")), Refreshable {
     private val gemMap = mutableMapOf<Gem, Label>()
     private val rootService = indigoApp.rootService
     private var rotationDegree = 0
@@ -146,22 +146,22 @@ class GameScene(val indigoApp: IndigoApplication) :
 
     //BlueGem appears when collected by player/players
     private val blueGemCounter1 = Label(posX = 411, posY = 240, text = "", width = 81, height = 75).apply {
-        visual = ImageVisual("blueGem.png")
+        visual = ImageVisual("blue_gem.png")
         isVisible = false
     }
 
     private val blueGemCounter2 = Label(posX = 1365, posY = 240, text = "", width = 81, height = 75).apply {
-        visual = ImageVisual("blueGem.png")
+        visual = ImageVisual("blue_gem.png")
         isVisible = false
     }
 
     private val blueGemCounter3 = Label(posX = 492, posY = 904, text = "", width = 81, height = 75).apply {
-        visual = ImageVisual("blueGem.png")
+        visual = ImageVisual("blue_gem.png")
         isVisible = false
     }
 
     private val blueGemCounter4 = Label(posX = 1271, posY = 904, text = "", width = 81, height = 75).apply {
-        visual = ImageVisual("blueGem.png")
+        visual = ImageVisual("blue_gem.png")
         isVisible = false
     }
 
@@ -296,52 +296,52 @@ class GameScene(val indigoApp: IndigoApplication) :
         reserveStack.scaleX(0.6)
 
         //initialize tokenViews
-        player1Token.visual = ImageVisual("tokenWhite.png")
-        player2Token.visual = ImageVisual("tokenBlue.png")
-        player3Token.visual = ImageVisual("tokenPurple.png")
-        player4Token.visual = ImageVisual("tokenRed.png")
+        player1Token.visual = ImageVisual("token_white.png")
+        player2Token.visual = ImageVisual("token_blue.png")
+        player3Token.visual = ImageVisual("token_purple.png")
+        player4Token.visual = ImageVisual("token_red.png")
 
         //initialize gemViews
-        player1greenGem.visual = ImageVisual("greenGem.png")
-        player2greenGem.visual = ImageVisual("greenGem.png")
-        player3greenGem.visual = ImageVisual("greenGem.png")
-        player4greenGem.visual = ImageVisual("greenGem.png")
-        player1yellowGem.visual = ImageVisual("yellowGem.png")
-        player2yellowGem.visual = ImageVisual("yellowGem.png")
-        player3yellowGem.visual = ImageVisual("yellowGem.png")
-        player4yellowGem.visual = ImageVisual("yellowGem.png")
+        player1greenGem.visual = ImageVisual("green_gem.png")
+        player2greenGem.visual = ImageVisual("green_gem.png")
+        player3greenGem.visual = ImageVisual("green_gem.png")
+        player4greenGem.visual = ImageVisual("green_gem.png")
+        player1yellowGem.visual = ImageVisual("yellow_gem.png")
+        player2yellowGem.visual = ImageVisual("yellow_gem.png")
+        player3yellowGem.visual = ImageVisual("yellow_gem.png")
+        player4yellowGem.visual = ImageVisual("yellow_gem.png")
 
-        blueGem.visual = ImageVisual("blueGem.png")
-        greenGem1.visual = ImageVisual("greenGem.png")
-        greenGem2.visual = ImageVisual("greenGem.png")
-        greenGem3.visual = ImageVisual("greenGem.png")
-        greenGem4.visual = ImageVisual("greenGem.png")
-        greenGem5.visual = ImageVisual("greenGem.png")
-        yellowGem1.visual = ImageVisual("yellowGem.png")
-        yellowGem2.visual = ImageVisual("yellowGem.png")
-        yellowGem3.visual = ImageVisual("yellowGem.png")
-        yellowGem4.visual = ImageVisual("yellowGem.png")
-        yellowGem5.visual = ImageVisual("yellowGem.png")
-        yellowGem6.visual = ImageVisual("yellowGem.png")
+        blueGem.visual = ImageVisual("blue_gem.png")
+        greenGem1.visual = ImageVisual("green_gem.png")
+        greenGem2.visual = ImageVisual("green_gem.png")
+        greenGem3.visual = ImageVisual("green_gem.png")
+        greenGem4.visual = ImageVisual("green_gem.png")
+        greenGem5.visual = ImageVisual("green_gem.png")
+        yellowGem1.visual = ImageVisual("yellow_gem.png")
+        yellowGem2.visual = ImageVisual("yellow_gem.png")
+        yellowGem3.visual = ImageVisual("yellow_gem.png")
+        yellowGem4.visual = ImageVisual("yellow_gem.png")
+        yellowGem5.visual = ImageVisual("yellow_gem.png")
+        yellowGem6.visual = ImageVisual("yellow_gem.png")
 
         //initialize gateTokenViews
-        gate1Token1.visual = ImageVisual("tokenRed.png")
-        gate1Token2.visual = ImageVisual("tokenBlue.png")
+        gate1Token1.visual = ImageVisual("token_red.png")
+        gate1Token2.visual = ImageVisual("token_blue.png")
 
-        gate2Token1.visual = ImageVisual("tokenRed.png")
-        gate2Token2.visual = ImageVisual("tokenBlue.png")
+        gate2Token1.visual = ImageVisual("token_red.png")
+        gate2Token2.visual = ImageVisual("token_blue.png")
 
-        gate3Token1.visual = ImageVisual("tokenRed.png")
-        gate3Token2.visual = ImageVisual("tokenBlue.png")
+        gate3Token1.visual = ImageVisual("token_red.png")
+        gate3Token2.visual = ImageVisual("token_blue.png")
 
-        gate4Token1.visual = ImageVisual("tokenRed.png")
-        gate4Token2.visual = ImageVisual("tokenBlue.png")
+        gate4Token1.visual = ImageVisual("token_red.png")
+        gate4Token2.visual = ImageVisual("token_blue.png")
 
-        gate5Token1.visual = ImageVisual("tokenRed.png")
-        gate5Token2.visual = ImageVisual("tokenBlue.png")
+        gate5Token1.visual = ImageVisual("token_red.png")
+        gate5Token2.visual = ImageVisual("token_blue.png")
 
-        gate6Token1.visual = ImageVisual("tokenRed.png")
-        gate6Token2.visual = ImageVisual("tokenBlue.png")
+        gate6Token1.visual = ImageVisual("token_red.png")
+        gate6Token2.visual = ImageVisual("token_blue.png")
 
 
         // Add the hexagonal grid to the components of the game scene
@@ -783,13 +783,13 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
     private fun getGem(label: Label, color: TokenColor) {
         when (color) {
-            TokenColor.WHITE -> label.apply { visual = ImageVisual("tokenWhite.png") }
+            TokenColor.WHITE -> label.apply { visual = ImageVisual("token_white.png") }
 
-            TokenColor.PURPLE -> label.apply { visual = ImageVisual("tokenPurple.png") }
+            TokenColor.PURPLE -> label.apply { visual = ImageVisual("token_purple.png") }
 
-            TokenColor.BLUE -> label.apply { visual = ImageVisual("tokenBlue.png") }
+            TokenColor.BLUE -> label.apply { visual = ImageVisual("token_blue.png") }
 
-            TokenColor.RED -> label.apply { visual = ImageVisual("tokenRed.png") }
+            TokenColor.RED -> label.apply { visual = ImageVisual("token_red.png") }
         }
     }
 

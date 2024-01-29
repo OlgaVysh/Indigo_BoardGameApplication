@@ -11,7 +11,7 @@ import view.components.Label
  * Extends [MenuScene] to inherit basic menu scene functionalities.
  * @param indigoApp The IndigoApplication instance associated with the saved game menu scene.
  */
-class GameSavedMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")),Refreshable{
+class GameSavedMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("seven_gems2_background.png")),Refreshable{
 
 
     // Button for exiting to the main menu or closing the application

@@ -73,7 +73,7 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
 
     // Setting the background and adding all components to the scene.
     init {
-        background = ImageVisual("ThreeGemsBackground.png")
+        background = ImageVisual("three_gems_background.png")
         opacity = 1.0
         addComponents(
             aiGameLabel,

@@ -14,7 +14,7 @@ import view.components.Label
  */
 
 class ModusMenuScene(indigoApp: IndigoApplication) :
-    BoardGameScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")), Refreshable {
+    BoardGameScene(1920, 1080, background = ImageVisual("seven_gems2_background.png")), Refreshable {
     // Buttons for selecting game modes
     private val hotSeatButton = Button(266, 642, 528, 207, "HotSeat", 48).apply {
         onMouseClicked = {

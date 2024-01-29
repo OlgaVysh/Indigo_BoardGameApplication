@@ -75,7 +75,7 @@ class EndGameMenuScene(private val indigoApp: IndigoApplication) : MenuScene(192
 
     // Setting the background and adding components to the scene.
     init {
-        background = ImageVisual("FiveGemsBackGround.png")
+        background = ImageVisual("five_gems_background.png")
         opacity = 1.0
         addComponents(
             betweenGemsLabel,

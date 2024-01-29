@@ -15,7 +15,7 @@ import view.components.Label
  * @param indigoApp The IndigoApplication instance associated with the gate menu scene.
  */
 class GateMenuScene(val indigoApp: IndigoApplication) :
-    MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")), Refreshable {
+    MenuScene(1920, 1080, background = ImageVisual("seven_gems2_background.png")), Refreshable {
     // Buttons for selecting game modes
     private val sharedButton = Button(266, 642, 528, 207, "SharedGates", 48).apply {
         onMouseClicked = {

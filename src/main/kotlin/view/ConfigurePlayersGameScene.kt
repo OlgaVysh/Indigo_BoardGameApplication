@@ -21,7 +21,7 @@ import view.components.Label
  * The layout and design of these components are defined in this class.
  * @param indigoApp The IndigoApplication instance associated with the configuration scene.
  */
-class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
+class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameScene(1920, 1080, background = ImageVisual("plain_background.png")), Refreshable {
     // UI components for configuring players
 
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)
@@ -140,13 +140,13 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) : BoardGameSce
     private fun getGem(currentRows : Int, color: TokenColor)
     {
         when(color) {
-            TokenColor.WHITE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenWhite.png") }
+            TokenColor.WHITE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("token_white.png") }
 
-            TokenColor.PURPLE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenPurple.png") }
+            TokenColor.PURPLE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("token_purple.png") }
 
-            TokenColor.BLUE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenBlue.png") }
+            TokenColor.BLUE -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("token_blue.png") }
 
-            TokenColor.RED -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("tokenRed.png") }
+            TokenColor.RED -> players[2,currentRows]= Label(text = "").apply{visual = ImageVisual("token_red.png") }
         }
     }
 
