@@ -1,4 +1,5 @@
 package service.ai
+
 import entity.Coordinate
 import service.PlayerTurnService
 import kotlin.math.ln
@@ -10,7 +11,7 @@ import kotlin.math.sqrt
  * @param rootService The RootService providing access to the game state and functionalities.
  * @param aiIndex The index of the AI player using the MCTS algorithm.
  */
-class MCTS (private val rootService: service.RootService, private val aiIndex: Int) {
+class MCTS(private val rootService: service.RootService, private val aiIndex: Int) {
 
     /**
      *
@@ -33,14 +34,13 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
                 return node.coordinate
             }
 
-            terminateCondition=expandNode(node)
-            val nodeToExplore=selectPromisingNode(node)
-            val aiWon=simulateRandomPlayout(nodeToExplore,1000)
-            backpropagation(nodeToExplore,aiWon)
+            terminateCondition = expandNode(node)
+            val nodeToExplore = selectPromisingNode(node)
+            val aiWon = simulateRandomPlayout(nodeToExplore, 1000)
+            backpropagation(nodeToExplore, aiWon)
 
         }
     }
-
 
 
     /**
@@ -63,12 +63,13 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
             }
             expandNode(node)
             val nodeToExplore = selectPromisingNode(node)
-            simulateRandomPlayout(nodeToExplore,200)
+            simulateRandomPlayout(nodeToExplore, 200)
             backpropagation(nodeToExplore, true)
         }
 
         val bestMove = root.children.maxByOrNull { it.winCount }?.coordinate
-        return bestMove.takeIf { it != null && it != Coordinate(-1, -1) }    }
+        return bestMove.takeIf { it != null && it != Coordinate(-1, -1) }
+    }
 
 
     /**
@@ -173,9 +174,13 @@ class MCTS (private val rootService: service.RootService, private val aiIndex: I
 
     fun makeMove() {
         // Choose how many Iterations
-        val resultCoordinate=findNextMoveLimited(500)
+        val resultCoordinate = findNextMoveLimited(500)
         println("resultatCoordinate $resultCoordinate")
-        PlayerTurnService(rootService).placeRouteTile(resultCoordinate!!,rootService.currentGame!!.players[aiIndex].handTile!!,true)
+        PlayerTurnService(rootService).placeRouteTile(
+            resultCoordinate!!,
+            rootService.currentGame!!.players[aiIndex].handTile!!,
+            true
+        )
         println("TilePlaced ")
 
     }

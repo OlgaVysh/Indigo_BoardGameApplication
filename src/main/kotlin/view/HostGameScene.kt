@@ -66,17 +66,18 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             aiHost = true
         }
     }
-    private val noButton = RadioButton(posX = 590, posY = 693, isSelected = true,toggleGroup = toggleGroup).apply{
-    onMouseClicked = {
-        aiHost = false
-    }}
+    private val noButton = RadioButton(posX = 590, posY = 693, isSelected = true, toggleGroup = toggleGroup).apply {
+        onMouseClicked = {
+            aiHost = false
+        }
+    }
 
     // Button for host to game.
     private val hostGameButton = Button(247, 798, 532, 207, "Host game", 48).apply {
         isDisabled = hostName.text.isBlank()
         onMouseClicked = {
             indigoApp.rootService.networkService.hostGame(name = hostName.text, sessionID = sessionId.text)
-            indigoApp.aiGame=aiHost
+            indigoApp.aiGame = aiHost
         }
     }
 
@@ -93,7 +94,7 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         isDisabled = true
     }
 
-    private val backPfeil = BackPfeil (60, 40 ,70, 60).apply {
+    private val backPfeil = BackPfeil(60, 40, 70, 60).apply {
         onMouseClicked = {
             indigoApp.showMenuScene(indigoApp.networkScene)
             resetSettings()
@@ -121,6 +122,7 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
             textMessageLabel,
         )
     }
+
     /**
      * Refreshes the scene after hosting a game.
      */
@@ -129,6 +131,7 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         textMessageLabel.isDisabled = false
         textMessageLabel.text = rootService.networkService.connectionState.name
     }
+
     /**
      * Refreshes the scene after receiving a response from creating a game.
      *
@@ -160,10 +163,11 @@ class HostGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
         }
         )
     }
+
     /**
      * Resets the settings of the scene.
      */
-    private fun resetSettings(){
+    private fun resetSettings() {
         textMessageLabel.isVisible = false
         textMessageLabel.isDisabled = true
         hostName.text = ""
