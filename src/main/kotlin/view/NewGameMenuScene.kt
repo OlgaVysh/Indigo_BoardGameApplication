@@ -10,7 +10,7 @@ import view.components.Label
  *@param indigoApp represents an object of [IndigoApplication]
  */
 class NewGameMenuScene(indigoApp: IndigoApplication) :
-    MenuScene(1920, 1080, background = ImageVisual("NewGameMenuBackground.png")), Refreshable {
+    MenuScene(1920, 1080, background = ImageVisual("new_game_menu_background.png")), Refreshable {
     // Button for starting a new game
 
     private val startButton = Button(696, 337, 528, 207, "Start new game", 48).apply {

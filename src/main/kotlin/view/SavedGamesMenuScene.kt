@@ -12,7 +12,7 @@ import tools.aqua.bgw.visual.ImageVisual
  * @property indigoApp The Indigo application instance.
  */
 class SavedGamesMenuScene(val indigoApp: IndigoApplication) :
-    BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")),
+    BoardGameScene(1920, 1080, background = ImageVisual("plain_background.png")),
     Refreshable {    // Label for the scene title
 
     private val label = Label(566, 22, 777, 155, "Saved games", 120)

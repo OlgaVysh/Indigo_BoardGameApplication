@@ -17,9 +17,9 @@ enum class TokenColor {
      */
     fun toImg() =
         when(this) {
-            WHITE -> ImageVisual("tokenWhite.png")
-            PURPLE -> ImageVisual("tokenPurple.png")
-            BLUE -> ImageVisual("tokenBlue.png")
-            RED -> ImageVisual("tokenRed.png")
+            WHITE -> ImageVisual("token_white.png")
+            PURPLE -> ImageVisual("token_purple.png")
+            BLUE -> ImageVisual("token_blue.png")
+            RED -> ImageVisual("token_red.png")
         }
 }

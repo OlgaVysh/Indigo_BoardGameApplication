@@ -16,7 +16,7 @@ import tools.aqua.bgw.visual.ImageVisual
  * @param indigoApp The IndigoApplication instance associated with the configuration scene.
  */
 class ConfigureNetworkPlayersScene(val indigoApp: IndigoApplication) : BoardGameScene(
-    1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")
+    1920, 1080, background = ImageVisual("plain_background.png")
 ), Refreshable {    // Title label for the scene
 
     private val label = Label(453, 21, 1050, 155, "Configure Players", 120)
