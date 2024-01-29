@@ -142,13 +142,13 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) :
     private fun getGem(currentRows: Int, color: TokenColor) {
         when (color) {
             TokenColor.WHITE -> players[2, currentRows] =
-                Label(text = "").apply { visual = ImageVisual("tokenWhite.png") }
+                Label(text = "").apply { visual = ImageVisual("token_white.png") }
 
             TokenColor.PURPLE -> players[2, currentRows] =
-                Label(text = "").apply { visual = ImageVisual("tokenPurple.png") }
+                Label(text = "").apply { visual = ImageVisual("token_purple.png") }
 
             TokenColor.BLUE -> players[2, currentRows] =
-                Label(text = "").apply { visual = ImageVisual("tokenBlue.png") }
+                Label(text = "").apply { visual = ImageVisual("token_blue.png") }
 
             TokenColor.RED -> players[2, currentRows] = Label(text = "").apply { visual = ImageVisual("tokenRed.png") }
         }
