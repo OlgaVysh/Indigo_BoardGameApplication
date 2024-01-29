@@ -150,7 +150,7 @@ class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) :
             TokenColor.BLUE -> players[2, currentRows] =
                 Label(text = "").apply { visual = ImageVisual("token_blue.png") }
 
-            TokenColor.RED -> players[2, currentRows] = Label(text = "").apply { visual = ImageVisual("tokenRed.png") }
+            TokenColor.RED -> players[2, currentRows] = Label(text = "").apply { visual = ImageVisual("token_red.png") }
         }
     }
 
