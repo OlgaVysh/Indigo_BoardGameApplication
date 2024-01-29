@@ -24,7 +24,7 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
 
     // Labels for instructions regarding the simulation speed.
     private val speed1Label = Label(107, 224, 1800, 77, "Please, choose simulation speed and AI-difficulty:", 64)
-    private val speed2Label = Label(397, 416, 1192, 58, "(Default : middle)", 48)
+    private val speed2Label = Label(397, 416, 1192, 58, "(Default : advanced AI and middle speed)", 48)
     private val speed3Label = Label(230, 508, 1192, 58, "Set speed to :", 48)
     private val speed4Label = Label(230, 608, 1192, 58, "Set difficulty to :", 48)
 
@@ -100,7 +100,7 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
             "middle" -> return 2
             "fast" -> return 5
         }
-        return 3
+        return 2
     }
 
     /**
