@@ -110,7 +110,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                     CoroutineScope(Dispatchers.JavaFx).launch {
                         try {
                             withTimeout(8000) {
-                                delay((currentPlayer.simulationSpeed * 1000).toLong())
+                                delay((4000/currentPlayer.simulationSpeed ).toLong())
                                 rootService.aiActionService.aiMove(currentPlayer.difficulty)
                             }
                         } catch (e: TimeoutCancellationException) {
@@ -279,7 +279,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                         CoroutineScope(Dispatchers.JavaFx).launch {
                             try {
                                 withTimeout(8000) {
-                                    delay((currentPlayer.simulationSpeed * 1000).toLong())
+                                    delay((4000/currentPlayer.simulationSpeed).toLong())
                                     rootService.aiActionService.aiMove(currentPlayer.difficulty)
                                 }
                             } catch (e: TimeoutCancellationException) {

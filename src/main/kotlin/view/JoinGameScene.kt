@@ -196,7 +196,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
                         CoroutineScope(Dispatchers.JavaFx).launch {
                             try {
                                 withTimeout(8000) {
-                                    delay((currentPlayer.simulationSpeed * 1000).toLong())
+                                    delay((4000/currentPlayer.simulationSpeed).toLong())
                                     rootService.aiActionService.aiMove(currentPlayer.difficulty)
                                 }
                             } catch (e: TimeoutCancellationException) {
