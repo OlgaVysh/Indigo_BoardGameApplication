@@ -3,7 +3,6 @@ package view
 
 import service.RootService
 import tools.aqua.bgw.core.BoardGameApplication
-import java.io.File
 import java.io.FileNotFoundException
 import entity.*
 
@@ -64,10 +63,10 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
             gameScene,
             newPlayerScene
         )
-        val resource = this::class.java.getResource("/IrishGrover.ttf")
+        val resource = this::class.java.getResourceAsStream("/IrishGrover.ttf")
             ?: throw FileNotFoundException()
-        val fontFile = File(resource.toURI())
-        loadFont(fontFile)
+        //val fontFile = File(resource.toURI())
+        loadFont(resource)
 
         this.showMenuScene(startScene)
 
