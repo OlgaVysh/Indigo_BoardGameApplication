@@ -110,7 +110,7 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
         return if(aiDiff.selectedItem != null) {
             this.aiDiff.selectedItem.toString()
         } else {
-            "medium"
+            "advanced"
         }
     }
 
