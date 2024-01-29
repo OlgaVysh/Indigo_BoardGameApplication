@@ -22,7 +22,7 @@ import service.RootService
         // The game state associated with this node
         var state: Indigo =
             // If there is a parent, apply the move associated with this node to derive the new game state
-            if (parent != null) SerivceAi.doMove(parent.state, coordinate)
+            if (parent != null) ServiceAi.doMove(parent.state, coordinate)
             // If this is the root node, initialize the state from the current game in the root service
             else rootService.currentGame!!.copyTo()
 
