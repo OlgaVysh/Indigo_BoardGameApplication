@@ -86,7 +86,9 @@ class AIMenuScene(val indigoApp: IndigoApplication) : MenuScene(1920, 1080), Ref
             aiDiff
         )
         aiSpeed.items = mutableListOf("slow", "middle", "fast")
-        aiDiff.items = mutableListOf("easy", "medium","advanced")
+        //aiDiff.items = mutableListOf("easy", "medium","advanced")
+        aiDiff.items = mutableListOf("easy","advanced") //the medium is set to the MCTS and still needs to be fixed
+
     }
 
     /**
