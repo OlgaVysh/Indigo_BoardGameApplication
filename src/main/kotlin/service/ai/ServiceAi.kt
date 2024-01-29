@@ -18,6 +18,8 @@ class ServiceAi {
          * @param coordinate The coordinate where the tile should be placed.
          * @return The updated state of the Indigo game after the move.
          */
+
+        // To Do : to add the simulation for the opponent to calculate the score at the end
         fun doMove(newIndigoo: Indigo, coordinate: Coordinate): Indigo {
             // Create a copy of the current Indigo state to modify
             val newIndigo = newIndigoo.copyTo()
@@ -32,7 +34,7 @@ class ServiceAi {
 
             if (GameServiceAi(newIndigo).checkPlacement(coordinate, tile!!, false)) { //when it blocks an exist we rotate it till it s correct
                 // Place the tile on the board at the specified coordinate
-                GameServiceAi(newIndigo).placeTile(coordinate, tile, true)
+                GameServiceAi(newIndigo).placeTile(coordinate, tile)
             } else { // Rotate the tile until it can be placed
 
                 while (!GameServiceAi(newIndigo).checkPlacement(coordinate, tile, false)) {
@@ -40,7 +42,7 @@ class ServiceAi {
                 }
 
                 // Place the tile on the board at the specified coordinate after rotations
-                GameServiceAi(newIndigo).placeTile(coordinate, tile, true)
+                GameServiceAi(newIndigo).placeTile(coordinate, tile)
             }
 
             //to fix to calculate the score for the Ai analysis
