@@ -135,7 +135,8 @@ class NetworkConnectionTests {
                 onGameActionResponse = {
                     println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
                     when (it.status) {
-                        GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+                        GameActionResponseStatus.INVALID_JSON ->
+                            println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
 
                         else -> {}
                     }
@@ -201,7 +202,8 @@ class NetworkConnectionTests {
                 onGameActionResponse = {
                     println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
                     when (it.status) {
-                        GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+                        GameActionResponseStatus.INVALID_JSON ->
+                            println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
 
                         else -> {}
                     }
@@ -279,7 +281,8 @@ class NetworkConnectionTests {
                 onGameActionResponse = {
                     println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
                     when (it.status) {
-                        GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+                        GameActionResponseStatus.INVALID_JSON ->
+                            println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
 
                         else -> {}
                     }
@@ -357,7 +360,8 @@ class NetworkConnectionTests {
                 onGameActionResponse = {
                     println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
                     when (it.status) {
-                        GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+                        GameActionResponseStatus.INVALID_JSON ->
+                            println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
 
                         else -> {}
                     }

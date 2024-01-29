@@ -215,7 +215,9 @@ class GameServiceTest {
         }
         assertEquals(exception1.message, "this place is occupied")
 
-        //rotate tile2 and place it in (-2,-2) , then check that the gate is blocked, then rotate right and place it,then the place is occupied for other tile.
+        //rotate tile2 and place it in (-2,-2) ,
+        // then check that the gate is blocked,
+        // then rotate right and place it,then the place is occupied for other tile.
         assertFalse(refreshableTest.refreshAfterLeftRotationCalled)
         rootService.playerTurnService.rotateTileLeft(tile2)
         assertTrue(refreshableTest.refreshAfterLeftRotationCalled)
