@@ -246,7 +246,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
         currentGame.gameBoard.gameBoardTiles[space] = tile
-        if (!isAiCalled) onAllRefreshables { refreshAfterPlaceTile(space, tile)
+        if (!isAiCalled) onAllRefreshables {
+            refreshAfterPlaceTile(space, tile)
         }
     }
 
@@ -410,7 +411,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         var game = rootService.currentGame
         checkNotNull(game)
         val gameStateList = mutableListOf<Indigo>()
-        while(game?.previousGameState != null){
+        while (game?.previousGameState != null) {
             gameStateList.add(game)
             game = game.previousGameState
         }
@@ -427,17 +428,17 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      */
     fun loadGame(path: String) {
         val gameList = rootService.ioService.readGameFromFile(path)
-        if(gameList.isNotEmpty()){
+        if (gameList.isNotEmpty()) {
             rootService.currentGame = gameList[0]
             rootService.currentGame?.nextGameState = null
             rootService.currentGame?.previousGameState = gameList[1]
         }
-        for(i in 1 until  gameList.size-1) {
+        for (i in 1 until gameList.size - 1) {
             rootService.currentGame = gameList[i]
-            rootService.currentGame?.nextGameState = gameList[i-1]
-            rootService.currentGame?.previousGameState = gameList[i+1]
+            rootService.currentGame?.nextGameState = gameList[i - 1]
+            rootService.currentGame?.previousGameState = gameList[i + 1]
         }
-        rootService.currentGame = gameList[gameList.size-1]
+        rootService.currentGame = gameList[gameList.size - 1]
 
 
         checkNotNull(rootService.currentGame)
@@ -459,8 +460,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     /**
      * Changes the current player to the next player in the list.
      */
-    fun changePlayer()
-    {
+    fun changePlayer() {
         val currentGame = rootService.currentGame
         checkNotNull(currentGame)
 
@@ -471,35 +471,34 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         // It's AI's turn
         val connectionState = rootService.networkService.connectionState
-        if (connectionState == ConnectionState.DISCONNECTED)
-        {
+        if (connectionState == ConnectionState.DISCONNECTED) {
             //Xue Code
             val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
-            if (currentPlayer.isAI)
-            {
+            if (currentPlayer.isAI) {
                 when (currentPlayer) {
                     is CPUPlayer -> {
 
-                        when(currentPlayer.difficulty)
-                      {
-                          "easy" -> {CoroutineScope(Dispatchers.JavaFx).launch {
-                             delay((4000/currentPlayer.simulationSpeed).toLong())
-                              rootService.aiActionService.aiMove(currentPlayer.difficulty)
-                              onAllRefreshables { refreshAfterChangePlayer() }}
-                          }
+                        when (currentPlayer.difficulty) {
+                            "easy" -> {
+                                CoroutineScope(Dispatchers.JavaFx).launch {
+                                    delay((4000 / currentPlayer.simulationSpeed).toLong())
+                                    rootService.aiActionService.aiMove(currentPlayer.difficulty)
+                                    onAllRefreshables { refreshAfterChangePlayer() }
+                                }
+                            }
 
 
-                          else -> {CoroutineScope(Dispatchers.JavaFx).launch { //
-                              delay((2000/currentPlayer.simulationSpeed).toLong())
-                              rootService.aiActionService.aiMove(currentPlayer.difficulty)
-                              onAllRefreshables { refreshAfterChangePlayer() }
-                          }}
-                      }
+                            else -> {
+                                CoroutineScope(Dispatchers.JavaFx).launch { //
+                                    delay((2000 / currentPlayer.simulationSpeed).toLong())
+                                    rootService.aiActionService.aiMove(currentPlayer.difficulty)
+                                    onAllRefreshables { refreshAfterChangePlayer() }
+                                }
+                            }
+                        }
                     }
                 }
-            }
-
-            else onAllRefreshables { refreshAfterChangePlayer() }
+            } else onAllRefreshables { refreshAfterChangePlayer() }
         }
         // Meri em Code
         /*if (currentGame.players[currentGame.currentPlayerIndex].isAI) {
@@ -567,7 +566,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             if (amountOfGems <= 0) {
                 return
             }
-            if(neighbourStart == 5) neighbourStart = 1
+            if (neighbourStart == 5) neighbourStart = 1
             else {
                 neighbourStart++
             }
@@ -576,17 +575,17 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             if (middleTile.gemPosition[neighbourStart] == null) {
                 neighbourStart = (neighbourStart + 1) % 6
                 if (neighbourStart == 0 && amountOfGems > 1) neighbourStart = (neighbourStart - 2 + 6) % 6
-                if(middleTile.gemPosition[neighbourStart] == null){
+                if (middleTile.gemPosition[neighbourStart] == null) {
                     neighbourStart = (neighbourStart - 2 + 6) % 6
                 }
             }
             if (neighbourStart == 0 && amountOfGems > 1) {
-                neighbourStart = (neighbourStart -1+6) % 6
-                if (middleTile.gemPosition[neighbourStart] == null)neighbourStart = (neighbourStart +2) % 6
+                neighbourStart = (neighbourStart - 1 + 6) % 6
+                if (middleTile.gemPosition[neighbourStart] == null) neighbourStart = (neighbourStart + 2) % 6
             }
-            if(middleTile.gemPosition[neighbourStart]==null){
-                for ((key) in middleTile.gemPosition){
-                    if(key!=0){
+            if (middleTile.gemPosition[neighbourStart] == null) {
+                for ((key) in middleTile.gemPosition) {
+                    if (key != 0) {
                         neighbourStart = key
                     }
                 }
@@ -665,7 +664,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 )
             }
         }
-        println( currentCoordinate.toString())
+        println(currentCoordinate.toString())
         println("currentEnd $currentEnd")
         removeGemsReachedGate(currentTile, currentCoordinate)
 
