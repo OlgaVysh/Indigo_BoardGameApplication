@@ -27,20 +27,20 @@ class ServiceAi {
 
 
             if (tile == null) {
-                servicee(newIndigo).distributeNewTile()
+                GameServiceAi(newIndigo).distributeNewTile()
             }
 
-            if (servicee(newIndigo).checkPlacement(coordinate, tile!!, false)) { //when it blocks an exist we rotate it till it s correct
+            if (GameServiceAi(newIndigo).checkPlacement(coordinate, tile!!, false)) { //when it blocks an exist we rotate it till it s correct
                 // Place the tile on the board at the specified coordinate
-                servicee(newIndigo).placeTile(coordinate, tile, true)
+                GameServiceAi(newIndigo).placeTile(coordinate, tile, true)
             } else { // Rotate the tile until it can be placed
 
-                while (!servicee(newIndigo).checkPlacement(coordinate, tile, false)) {
+                while (!GameServiceAi(newIndigo).checkPlacement(coordinate, tile, false)) {
                     rotateTileLeft(tile)
                 }
 
                 // Place the tile on the board at the specified coordinate after rotations
-                servicee(newIndigo).placeTile(coordinate, tile, true)
+                GameServiceAi(newIndigo).placeTile(coordinate, tile, true)
             }
 
             //to fix to calculate the score for the Ai analysis

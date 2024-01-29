@@ -7,7 +7,7 @@ import kotlin.math.abs
  *
  * @property currentGame The current game instance of type Indigo.
  */
-class servicee (var currentGame: Indigo) {
+class GameServiceAi (var currentGame: Indigo) {
 
     /**
      * Checks whether placing a tile at a specified coordinate is valid.
@@ -19,7 +19,7 @@ class servicee (var currentGame: Indigo) {
      */
     fun checkPlacement(space: Coordinate, tile: Tile, isAiCalled: Boolean = false): Boolean {
 
-        if (space == Coordinate(0, 0)) {
+        if (space == Coordinate(0, 0)|| isHiddenCoordinate(space)|| isTreasureCoordinate(space)) {
             return false
         }
         // Check if the space is occupied
@@ -40,6 +40,44 @@ class servicee (var currentGame: Indigo) {
             }
         }
     }
+
+    /**
+     * Checks if a given coordinate corresponds to a gate tile.
+     *
+     * @param coordinate The coordinate to be checked.
+     * @return True if the coordinate represents a gate tile, false otherwise.
+     */
+    private fun isTreasureCoordinate(coordinate: Coordinate): Boolean {
+        // List of coordinates representing gate tiles
+        val gateCoordinates = listOf(
+            Coordinate(0, -4),
+            Coordinate(4, -4),
+            Coordinate(4, 0),
+            Coordinate(0, 4),
+            Coordinate(-4, 4),
+            Coordinate(-4, 0)
+        )
+        return coordinate in gateCoordinates
+    }
+
+    /**
+     * Checks if a given coordinate corresponds to a hidden tile.
+     *
+     * @param coordinate The coordinate to be checked.
+     * @return True if the coordinate represents a hidden tile, false otherwise.
+     */
+    private fun isHiddenCoordinate(coordinate: Coordinate): Boolean {
+        for (i in 0..3) {
+            for (j in -4..-4 + i) {
+                // Check if the coordinate matches the hidden tile pattern
+                if (coordinate == Coordinate(-(i + 1), j) || coordinate == Coordinate(i + 1, -j)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
 
     /**
      * Checks if the given coordinate has an exit.
@@ -75,9 +113,8 @@ class servicee (var currentGame: Indigo) {
      * Places a tile at the specified coordinate.
      * @param space The coordinate where the tile is to be placed.
      * @param tile The tile to be placed.
-     * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      */
-    fun placeTile(space: Coordinate, tile: Tile, isAiCalled: Boolean = false) {
+    fun placeTile(space: Coordinate, tile: Tile) {
         currentGame.gameBoard.gameBoardTiles[space] = tile
     }
 
@@ -129,10 +166,24 @@ class servicee (var currentGame: Indigo) {
         val edges = tile.edges
 
         var secondEdge: Edge? = null
+
+        // Debug: Print the paths and edges
+
+        //if (tile.type==TileType.Type_5) println("Debug: Paths : $paths")
+        //if (tile.type==TileType.Type_5) println("Debug: Edges : $edges")
         for (path in paths) {
             if (path.first == edge1) secondEdge = path.second
             if (path.second == edge1) secondEdge = path.first
         }
+
+        // Debug: Print the secondEdge
+        //if (tile.type==TileType.Type_5) println("Debug: Second Edge : $secondEdge")
+
+       // val indexOfSecondEdge = edges.indexOf(secondEdge)
+
+        // Debug: Print the result
+        //if (tile.type==TileType.Type_5) println("Debug: Index of Second Edge : $indexOfSecondEdge")
+
         return edges.indexOf(secondEdge)
     }
 
@@ -142,7 +193,7 @@ class servicee (var currentGame: Indigo) {
      * @param coordinate The coordinate of the tile.
      */
 
-    fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {//done
+    private fun removeGemsReachedGate(tile: Tile, coordinate: Coordinate) {
         val players = currentGame.players
 
         val gateTokens = currentGame.gameBoard.gateTokens
@@ -216,14 +267,13 @@ class servicee (var currentGame: Indigo) {
      * @param currentCoordinate The tile coordinate  to which gems are moved.
      * @param neighborCoordinate The tile coordinate from which gems are moved.
      * @param currentGemPosition is the Position of the current tile which is used to check for collision
-     * @param isAiCalled (optional) [Boolean] to prevent refreshes when simulating moves for the AI, defaults false
      * if both are on the Edge
 
      */
+
+    //***********************TO DO : to fix for the AI-simulation**************
     fun moveGems(
-        currentCoordinate: Coordinate, neighborCoordinate: Coordinate, currentGemPosition: Int,
-        isAiCalled: Boolean = false
-    ) {
+        currentCoordinate: Coordinate, neighborCoordinate: Coordinate, currentGemPosition: Int, ) {
 
         val middleTile = currentGame.middleTile
         val currentTile = currentGame.gameBoard.gameBoardTiles[currentCoordinate]
@@ -267,12 +317,18 @@ class servicee (var currentGame: Indigo) {
             if (amountOfGems == 1) neighbourStart = 0
             if (currentTileGem != null) {
 
-                val removedElement =
-                    currentGame.gems.find { it.gemColor == middleTile.gemPosition[neighbourStart]!!.gemColor }
-                currentGame.gems.remove(removedElement)
-                val removedGem =
-                    currentGame.gems.find { it.gemColor == currentTile.gemEndPosition[currentGemPosition]!!.gemColor }
-                currentGame.gems.remove(removedGem)
+                val removedElement = middleTile.gemPosition[neighbourStart]?.let { gem ->
+                    currentGame.gems.find { it.gemColor == gem.gemColor }
+                }
+
+                removedElement?.let { currentGame.gems.remove(it) }
+
+                val removedGem = currentTile.gemEndPosition[currentGemPosition]?.let { gem ->
+                    currentGame.gems.find { it.gemColor == gem.gemColor }
+                }
+
+                removedGem?.let { currentGame.gems.remove(it) }
+
                 middleTile.gemPosition.remove(amountOfGems - 1)
                 currentTile.gemEndPosition.remove(currentGemPosition)
                 return
@@ -282,17 +338,27 @@ class servicee (var currentGame: Indigo) {
             middleTile.gemPosition.remove(neighbourStart)
             if (currentTile.gemEndPosition[lastGemPosition] != null) {
 
-                val removedElement = currentGame.gems.find { it.gemColor == middleTileGem!!.gemColor }
-                currentGame.gems.remove(removedElement)
-                val removedGem =
-                    currentGame.gems.find { it.gemColor == currentTile.gemEndPosition[lastGemPosition]!!.gemColor }
-                currentGame.gems.remove(removedGem)
-                currentTile.gemEndPosition.remove(lastGemPosition)
-                return
+                val removedElement = middleTileGem?.let { gem ->
+                    currentGame.gems.find { it.gemColor == gem.gemColor }
+                }
+
+                removedElement?.let { currentGame.gems.remove(it) }
+
+                val removedGem = currentTile.gemEndPosition[lastGemPosition]?.let { gem ->
+                    currentGame.gems.find { it.gemColor == gem.gemColor }
+                }
+
+                removedGem?.let {
+                    currentGame.gems.remove(it)
+                    currentTile.gemEndPosition.remove(lastGemPosition)
+                }
+
             }
             println("Gem Postion$neighbourStart")
             println("middleTileGem ${middleTileGem?.gemColor}")
-            currentTile.gemEndPosition[lastGemPosition] = middleTileGem!!
+            middleTileGem?.let {
+                currentTile.gemEndPosition[lastGemPosition] = it
+            }
             println(currentCoordinate.toString())
             println(lastGemPosition)
 
@@ -338,16 +404,18 @@ class servicee (var currentGame: Indigo) {
         val currentEnd = getAnotherEdge(currentEdge, currentTile)
         currentTile.gemEndPosition[currentEnd] = neighbourGems[neighbourStart]!!
         neighbourGems.remove(neighbourStart)
-        if (currentTile.gemEndPosition[currentEnd] != null) {
+        /*if (currentTile.gemEndPosition[currentEnd] != null) {
 
-        }
+        }*/
         println( currentCoordinate.toString())
         println("currentend $currentEnd")
         removeGemsReachedGate(currentTile, currentCoordinate)
 
+        if(currentEnd!=-1){
         moveGems(
             neighborCoordinates[currentEnd], currentCoordinate, abs((currentEnd + 3)) % 6
         )
+        }
     }
 
     /**
@@ -355,7 +423,7 @@ class servicee (var currentGame: Indigo) {
      * @param coordinate The coordinate for which to find neighboring coordinates
      * @return List of neighboring coordinates
      */
-    fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
+    private fun getNeighboringCoordinates(coordinate: Coordinate): List<Coordinate> {
         val neighbors = mutableListOf<Coordinate>()
         //hexagonal grid
         neighbors.add(Coordinate(coordinate.row - 1, coordinate.column))      // Above
@@ -368,18 +436,23 @@ class servicee (var currentGame: Indigo) {
         return neighbors
     }
 
-    fun distributeNewTile(isAiCalled: Boolean = false) {
-        //val game = rootService.currentGame
-        //heckNotNull(game)
+
+    /**
+     * Distributes a new tile to the current player. If there are no more route tiles,
+     * sets the current player's hand tile to null.
+     */
+    fun distributeNewTile() {
         if (currentGame.routeTiles.isEmpty()) {
             currentGame.players[currentGame.currentPlayerIndex].handTile = null
         } else {
+            // Shuffle before distributing new Tile so that the AI don't cheat
+            currentGame.routeTiles.shuffle()
             val newHandTile = currentGame.routeTiles.removeAt(0)
             val currentPlayerIndex = currentGame.currentPlayerIndex
             currentGame.settings.players[currentPlayerIndex].handTile = newHandTile
         }
-       // if (!isAiCalled) onAllRefreshables { refreshAfterDistributeNewTile() }
     }
+
 }
 
 
