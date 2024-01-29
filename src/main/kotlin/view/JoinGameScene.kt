@@ -200,6 +200,7 @@ class JoinGameScene(val indigoApp: IndigoApplication) : MenuScene(990, 1080), Re
                                     rootService.aiActionService.aiMove(currentPlayer.difficulty)
                                 }
                             } catch (e: TimeoutCancellationException) {
+                                println(e.message)
                                 rootService.aiActionService.aiMove("easy")
                             }
                         }
