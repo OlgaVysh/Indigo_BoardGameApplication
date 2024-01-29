@@ -152,7 +152,9 @@ data class Indigo(
 
 }
 
-// to generate Id´s für toSave Indigo files
+/**
+ * The `IDGenerator` object provides functionality for generating unique integer IDs.
+ */
 object IDGenerator {
     private var idCounter = 0
     fun generateID(): Int {
