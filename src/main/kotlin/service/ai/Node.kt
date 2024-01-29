@@ -2,35 +2,34 @@ package service.ai
 import entity.*
 import service.RootService
 
-/**
- * Represents a node in the Monte Carlo Tree Search algorithm for game decision-making.
- *
- * @property rootService The RootService instance containing game-related information.
- * @property parent The parent node in the search tree (null if the node is the root).
- * @property coordinate The [Coordinate] where the move that leads from the parent node to this node was made.
- */
+    /**
+     * Represents a node in the Monte Carlo Tree Search algorithm for game decision-making.
+     *
+     * @property rootService The RootService instance containing game-related information.
+     * @property parent The parent node in the search tree (null if the node is the root).
+     * @property coordinate The [Coordinate] where the move that leads from the parent node to this node was made.
+     */
 
+    data class Node(val rootService: RootService, val parent: Node?, val coordinate: Coordinate) {
 
-data class Node(val rootService: RootService, val parent: Node?, val coordinate: Coordinate) {
+        // List to store child nodes of this node
+        val children: MutableList<Node> = mutableListOf()
 
-    // List to store child nodes of this node
-    val children: MutableList<Node> = mutableListOf()
+        // Variables to track statistics for the MCTS algorithm
+        var winCount = 0.0
+        var visitCount = 0.0
 
-    // Variables to track statistics for the MCTS algorithm
-    var winCount = 0.0
-    var visitCount = 0.0
+        // The game state associated with this node
+        var state: Indigo =
+            // If there is a parent, apply the move associated with this node to derive the new game state
+            if (parent != null) SerivceAi.doMove(parent.state, coordinate)
+            // If this is the root node, initialize the state from the current game in the root service
+            else rootService.currentGame!!.copyTo()
 
-    // The game state associated with this node
-    var state: Indigo =
-        // If there is a parent, apply the move associated with this node to derive the new game state
-        if (parent != null) SerivceAi.doMove(parent.state, coordinate)
-        // If this is the root node, initialize the state from the current game in the root service
-        else rootService.currentGame!!.copyTo()
-
-    // Initialize the current player index if this is the root node
-    init {
-        if (parent == null) state.currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
-    }
+        // Initialize the current player index if this is the root node
+        init {
+            if (parent == null) state.currentPlayerIndex = rootService.currentGame!!.currentPlayerIndex
+        }
 
     /**
      * Returns a list of possible moves in this node's state.
@@ -45,7 +44,6 @@ data class Node(val rootService: RootService, val parent: Node?, val coordinate:
         val playerTile= state.players[state.currentPlayerIndex].handTile
 
         // Iterate over the game board and find available moves
-        // Iterate over the game board and find available moves
         for (row in -4..4) {
             for (col in Integer.max(-4, -row - 4)..Integer.min(4, -row + 4)) {
                 val coordinate = Coordinate(row, col)
@@ -57,13 +55,5 @@ data class Node(val rootService: RootService, val parent: Node?, val coordinate:
         }
         return availableMoves
     }
-/*
-    fun rotateTileLeft(tile: Tile, isAiCalled: Boolean = false) {    // Add the first edge to the end of the list
 
-
-        tile.edges.addAll(tile.edges.subList(0, 1))
-        // Remove the original first edge
-        tile.edges.removeAll(tile.edges.subList(0, 1))
-        //if (!isAiCalled) onAllRefreshables { refreshAfterLeftRotation(game.currentPlayerIndex) }
-    }*/
 }
