@@ -27,9 +27,7 @@ class GameServiceTest {
 
     private val tile0 = Tile(
         listOf(
-            Pair(Edge.ZERO, Edge.TWO),
-            Pair(Edge.ONE, Edge.FOUR),
-            Pair(Edge.THREE, Edge.FIVE)
+            Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)
         ),
         TileType.Type_0,
     )
@@ -222,8 +220,7 @@ class GameServiceTest {
         rootService.playerTurnService.rotateTileLeft(tile2)
         assertTrue(refreshableTest.refreshAfterLeftRotationCalled)
         assertFalse(refreshableTest.refreshAfterRightRotationCalled)
-        refreshableTest.reset()
-        /*
+        refreshableTest.reset()/*
                 val exception2 = assertThrows<Exception> {
                     rootService.gameService.checkPlacement(Coordinate(-2, -2), tile2)
                 }*/
@@ -431,20 +428,14 @@ class GameServiceTest {
         //firstTile Typ 1 initialisieren
         val testTile1 = Tile(
             listOf(
-                Pair(Edge.ZERO, Edge.THREE),
-                Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.TWO, Edge.FIVE)
-            ),
-            TileType.Type_1
+                Pair(Edge.ZERO, Edge.THREE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.FIVE)
+            ), TileType.Type_1
         )
         //secondTile Typ 1 initialisieren
         val testTile2 = Tile(
             listOf(
-                Pair(Edge.ZERO, Edge.THREE),
-                Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.TWO, Edge.FIVE)
-            ),
-            TileType.Type_1, mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(EMERALD)))
+                Pair(Edge.ZERO, Edge.THREE), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.TWO, Edge.FIVE)
+            ), TileType.Type_1, mutableMapOf(Pair(1, Gem(EMERALD)), Pair(4, Gem(EMERALD)))
         )
         rootService.gameService.startGame(fourPlayers.toMutableList())
         //val treasureTile1 = rootService.currentGame!!.gameBoard.gameBoardTiles[Coordinate(0, 4)]
@@ -471,11 +462,8 @@ class GameServiceTest {
         //thirdTile Typ 0 initialisieren
         val testTile3 = Tile(
             listOf(
-                Pair(Edge.ZERO, Edge.TWO),
-                Pair(Edge.ONE, Edge.FOUR),
-                Pair(Edge.THREE, Edge.FIVE)
-            ),
-            TileType.Type_0
+                Pair(Edge.ZERO, Edge.TWO), Pair(Edge.ONE, Edge.FOUR), Pair(Edge.THREE, Edge.FIVE)
+            ), TileType.Type_0
         )
         rootService.playerTurnService.rotateTileRight(testTile3)
         rootService.playerTurnService.placeRouteTile(Coordinate(0, 1), testTile3)
@@ -599,8 +587,7 @@ class GameServiceTest {
             mutableMapOf(Pair(2, Gem(SAPPHIRE)))
         )
         val twoPlayers = listOf(
-            Player("John", color = TokenColor.RED),
-            Player("Jack", color = TokenColor.BLUE)
+            Player("John", color = TokenColor.RED), Player("Jack", color = TokenColor.BLUE)
         )
         rootService.gameService.startGame(
             twoPlayers.toMutableList(), true
@@ -773,8 +760,7 @@ class GameServiceTest {
         assertNull(rootService.currentGame)
 
         val twoPlayer = mutableListOf(
-            Player("Alice", Date(0), TokenColor.WHITE, false),
-            Player("Bob", Date(0), TokenColor.PURPLE, true)
+            Player("Alice", Date(0), TokenColor.WHITE, false), Player("Bob", Date(0), TokenColor.PURPLE, true)
         )
         rootService.gameService.startGame(twoPlayer)
         rootService.gameService.changePlayer()
@@ -820,8 +806,7 @@ class GameServiceTest {
         assertNull(game)
 
         val twoPlayer = mutableListOf(
-            Player("Alice", Date(0), TokenColor.WHITE, false),
-            Player("Bob", Date(0), TokenColor.PURPLE, true)
+            Player("Alice", Date(0), TokenColor.WHITE, false), Player("Bob", Date(0), TokenColor.PURPLE, true)
         )
         rootService.gameService.startGame(twoPlayer)
         checkNotNull(rootService.currentGame)
