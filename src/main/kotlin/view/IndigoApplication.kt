@@ -63,10 +63,12 @@ class IndigoApplication : BoardGameApplication("Indigo Game"), Refreshable {
             gameScene,
             newPlayerScene
         )
-        val resource = this::class.java.getResourceAsStream("/IrishGrover.ttf")
+
+        val resource = BlokusApplication::class.java.getResourceAsStream("/IrishGrover.ttf")
             ?: throw FileNotFoundException()
-        //val fontFile = File(resource.toURI())
-        loadFont(resource)
+        val fontFile = File.createTempFile("font", ".tmp")
+        Files.copy(resource, fontFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        loadFont(fontFile)
 
         this.showMenuScene(startScene)
 
