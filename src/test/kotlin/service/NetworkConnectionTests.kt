@@ -71,8 +71,11 @@ class NetworkConnectionTests {
             try {
                 withTimeout(timeout) { while (running) delay(100) }
             } catch (e: TimeoutCancellationException) {
+                println(e.message)
                 throw TimeoutException(
-                    "Property ${this@await} with value ${this@await.value}" + " did not reach the expected state" + " $state within the specified timeout."
+                    "Property ${this@await} with value ${this@await.value}" +
+                            " did not reach the expected state" +
+                            " $state within the specified timeout."
                 )
             } finally {
                 this@await.removeListener(listener)
@@ -133,6 +136,7 @@ class NetworkConnectionTests {
                     println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
                     when (it.status) {
                         GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+
                         else -> {}
                     }
                 }
@@ -198,6 +202,7 @@ class NetworkConnectionTests {
                     println("[$hostPlayerName] Received GameActionResponse with status ${it.status}")
                     when (it.status) {
                         GameActionResponseStatus.INVALID_JSON -> println("[$hostPlayerName] Invalid JSON: ${it.errorMessages}")
+
                         else -> {}
                     }
                 }
