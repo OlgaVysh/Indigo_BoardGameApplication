@@ -895,22 +895,9 @@ class GameScene(val indigoApp: IndigoApplication) :
     override fun refreshAfterRedo() {
         refreshAfterChangePlayer()
         val currentGame = rootService.currentGame
-        val nextState = currentGame?.nextGameState
+        //val nextState = currentGame?.nextGameState
         currentGame?.gameBoard?.gameBoardTiles?.values
-        val labelsListe = mutableListOf<Label>()
-        labelsListe.add(player1ScoreLabel)
-        labelsListe.add(player2ScoreLabel)
-        labelsListe.add(player3ScoreLabel)
-        labelsListe.add(player4ScoreLabel)
-        val players = indigoApp.rootService.currentGame!!.players
-        for (i in players.indices) {
-            labelsListe[i].text = players[i].score.toString() + " points"
-        }
-        /*  player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
-        player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
-        //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
-        //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()*/
-        //refreshAfterChangePlayer()
+        getPlayersScores()
         refreshAfterDistributeNewTile()
         val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
         val nextTiles = indigoApp.rootService.currentGame!!.previousGameState!!.gameBoard.gameBoardTiles
@@ -934,7 +921,7 @@ class GameScene(val indigoApp: IndigoApplication) :
                     rotate(-60)
                     rotate(60 * rotation)
                 }
-            val neighbors = rootService.gameService.getNeighboringCoordinates(differingCoordinate)
+           // val neighbors = rootService.gameService.getNeighboringCoordinates(differingCoordinate)
             for ((exit,gem) in differingTile.gemEndPosition) {
                 //rootService.gameService.moveGems(differingCoordinate, neighbors[i], i)
 
@@ -958,23 +945,13 @@ class GameScene(val indigoApp: IndigoApplication) :
      */
 
     override fun refreshAfterUndo() {
-        val labelsListe = mutableListOf<Label>()
-        labelsListe.add(player1ScoreLabel)
-        labelsListe.add(player2ScoreLabel)
-        labelsListe.add(player3ScoreLabel)
-        labelsListe.add(player4ScoreLabel)
-        val players = indigoApp.rootService.currentGame!!.players
-        for (i in players.indices) {
-            labelsListe[i].text = players[i].score.toString() + " points"
-        }
-        /*player1ScoreLabel.text = indigoApp.rootService.currentGame!!.players[0].score.toString() + " points"
-    player2ScoreLabel.text = indigoApp.rootService.currentGame!!.players[1].score.toString() + " points"
-    //player3ScoreLabel.text = indigoApp.rootService.currentGame!!.players[2].score.toString()
-    //player4ScoreLabel.text = indigoApp.rootService.currentGame!!.players[3].score.toString()*/
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game) { "No game found." }
+        getPlayersScores()
         refreshAfterChangePlayer()
         refreshAfterDistributeNewTile()
-        val currentTiles = indigoApp.rootService.currentGame!!.gameBoard.gameBoardTiles
-        val previousTiles = indigoApp.rootService.currentGame!!.nextGameState!!.gameBoard.gameBoardTiles
+        val currentTiles = game.gameBoard.gameBoardTiles
+        val previousTiles = game.nextGameState!!.gameBoard.gameBoardTiles
         val differingTileEntries = previousTiles.entries.filter { entry ->
             !currentTiles.containsKey(entry.key)
         }
@@ -1164,57 +1141,11 @@ class GameScene(val indigoApp: IndigoApplication) :
      * @param gem The Gem that has been removed.
      */
     override fun refreshAfterRemoveGems(gem: Gem) {
-        //gemToRemoveList: MutableList<Gem> als parameter??
         val game = indigoApp.rootService.currentGame
         checkNotNull(game) { "No game found." }
 
-        val count = game.players.size
-        for (i in count downTo 1 step 1) {
-            val yellowGems = game.players[i - 1].collectedGems.count {
-                it.gemColor == GemColor.AMBER
-            }
-            val greenGems = game.players[i - 1].collectedGems.count {
-                it.gemColor == GemColor.EMERALD
-            }
+        getPlayersScores()
 
-            val blueCounter = game.players[i - 1].collectedGems.count {
-                it.gemColor == GemColor.SAPPHIRE
-            }
-
-            playerScores[i - 1].text = game.players[i - 1].score.toString() + " points"
-            playerYellowGemCounters[i - 1].text = yellowGems.toString()
-            playerGreenGemCounters[i - 1].text = greenGems.toString()
-
-            blueGems[i - 1].isVisible = blueCounter > 0
-            //blueGems[i-1].isVisible = game.players[i - 1].collectedGems.contains(Gem(GemColor.SAPPHIRE))
-
-        }
-        /*
-        val entityGems = game.gems
-        val gemViewList = mutableListOf(
-            greenGem1, greenGem2, greenGem3, greenGem4, greenGem5,
-            yellowGem1, yellowGem2, yellowGem3, yellowGem4, yellowGem5,
-            blueGem
-        )
-         */
-        // val gemToRemoveList<Gem> =
-        /*        for(gem in entityGems){
-                    if (!gemMap.containsKey(gem)){
-                        //gemToRemoveList.add(gem)
-                        val gemToR
-                    }
-                }
-                for(gemToRemove in gemToRemoveList) {
-                    val gemToRemoveView = gemMap[gemToRemove]
-                    gemToRemoveView?.let {
-                        //gemView.removeFromParent()
-                        it.removeFromParent()
-
-                        //gemToRemoveView.visual = Visual.EMPTY
-                        //gemViewList.remove(gemToRemoveView)
-                        gemMap.remove(gemToRemove)
-                    }
-                }*/
         val gemLabel = gemMap[gem]
         gemLabel?.apply {
             isVisible = false
@@ -1227,8 +1158,6 @@ class GameScene(val indigoApp: IndigoApplication) :
                 gemsOnBoard.addAll(tile.gemEndPosition.values)
             }
         }
-        //gemMap.removeForward()
-
     }
 
 
@@ -1417,6 +1346,34 @@ class GameScene(val indigoApp: IndigoApplication) :
             indigoApp.rootService.currentGame = indigoApp.rootService.currentGame?.nextGameState
             refreshAfterRedo()
             game = indigoApp.rootService.currentGame
+        }
+    }
+
+    /**
+     * Actualizes the gemCounters and Scores of the players of a gameState
+     *
+     */
+    private fun getPlayersScores () {
+        val game = indigoApp.rootService.currentGame
+        checkNotNull(game)
+        val count = game.players.size
+        for (i in count downTo 1 step 1) {
+            val yellowGems = game.players[i - 1].collectedGems.count {
+                it.gemColor == GemColor.AMBER
+            }
+            val greenGems = game.players[i - 1].collectedGems.count {
+                it.gemColor == GemColor.EMERALD
+            }
+
+            val blueCounter = game.players[i - 1].collectedGems.count {
+                it.gemColor == GemColor.SAPPHIRE
+            }
+
+            playerScores[i - 1].text = game.players[i - 1].score.toString() + " points"
+            playerYellowGemCounters[i - 1].text = yellowGems.toString()
+            playerGreenGemCounters[i - 1].text = greenGems.toString()
+
+            blueGems[i - 1].isVisible = blueCounter > 0
         }
     }
 }
