@@ -1,4 +1,5 @@
 package service.ai
+
 import entity.*
 
 /**
@@ -32,7 +33,12 @@ class ServiceAi {
                 GameServiceAi(newIndigo).distributeNewTile()
             }
 
-            if (GameServiceAi(newIndigo).checkPlacement(coordinate, tile!!, false)) { //when it blocks an exist we rotate it till it s correct
+            if (GameServiceAi(newIndigo).checkPlacement(
+                    coordinate,
+                    tile!!,
+                    false
+                )
+            ) { //when it blocks an exist we rotate it till it s correct
                 // Place the tile on the board at the specified coordinate
                 GameServiceAi(newIndigo).placeTile(coordinate, tile)
             } else { // Rotate the tile until it can be placed
@@ -95,7 +101,6 @@ class ServiceAi {
             // Remove the original first edge (which is now at the end after rotation)
             tile.edges.removeAll(tile.edges.subList(0, 1))
         }
-
 
 
     }

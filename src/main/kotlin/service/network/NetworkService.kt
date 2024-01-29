@@ -114,6 +114,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                                 rootService.aiActionService.aiMove(currentPlayer.difficulty)
                             }
                         } catch (e: TimeoutCancellationException) {
+                            println(e.message)
                             rootService.aiActionService.aiMove("easy")
                         }
                     }
@@ -283,6 +284,7 @@ open class NetworkService(private val rootService: RootService) : AbstractRefres
                                     rootService.aiActionService.aiMove(currentPlayer.difficulty)
                                 }
                             } catch (e: TimeoutCancellationException) {
+                                println(e.message)
                                 rootService.aiActionService.aiMove("easy")
                             }
                         }

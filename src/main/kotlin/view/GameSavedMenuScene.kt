@@ -11,30 +11,32 @@ import view.components.Label
  * Extends [MenuScene] to inherit basic menu scene functionalities.
  * @param indigoApp The IndigoApplication instance associated with the saved game menu scene.
  */
-class GameSavedMenuScene (indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("seven_gems2_background.png")),Refreshable{
+class GameSavedMenuScene(indigoApp: IndigoApplication) :
+    MenuScene(1920, 1080, background = ImageVisual("SevenGems2Background.png")), Refreshable {
 
 
     // Button for exiting to the main menu or closing the application
-    private val exitButton = Button(702, 779, 506, 192, "Exit", 48).
-    apply { onMouseClicked = {indigoApp.exit()} }
+    private val exitButton = Button(702, 779, 506, 192, "Exit", 48).apply { onMouseClicked = { indigoApp.exit() } }
 
     // Button for starting a new game after saving
-    private val newGameButton = Button(702, 301, 506, 192, "Start new game", 48).
-    apply { onMouseClicked = {indigoApp.configurePlayersScene.clearPlayerView()
-        indigoApp.showMenuScene(indigoApp.startScene) }}
-
-    private val restartButton = Button(702, 540, 506, 192, "Restart game", 48).
-    apply { onMouseClicked = {
-
-    val newPlayers = mutableListOf<Player>()
-    for(player in indigoApp.rootService.currentGame!!.players)
-    {
-            player.score=0
-            newPlayers.add(player)
+    private val newGameButton = Button(702, 301, 506, 192, "Start new game", 48).apply {
+        onMouseClicked = {
+            indigoApp.configurePlayersScene.clearPlayerView()
+            indigoApp.showMenuScene(indigoApp.startScene)
+        }
     }
-        indigoApp.rootService.gameService.startGame(newPlayers,indigoApp.notSharedGates,false)
-        indigoApp.hideMenuScene()
-    }
+
+    private val restartButton = Button(702, 540, 506, 192, "Restart game", 48).apply {
+        onMouseClicked = {
+
+            val newPlayers = mutableListOf<Player>()
+            for (player in indigoApp.rootService.currentGame!!.players) {
+                player.score = 0
+                newPlayers.add(player)
+            }
+            indigoApp.rootService.gameService.startGame(newPlayers, indigoApp.notSharedGates, false)
+            indigoApp.hideMenuScene()
+        }
     }
 
     // Label indicating that the game has been saved

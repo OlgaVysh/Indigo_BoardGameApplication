@@ -9,17 +9,21 @@ import view.components.Label
  * Represents the menu scene for saving a game.
  * @param indigoApp The IndigoApplication instance associated with the save game menu scene.
  */
-class SaveGameMenuScene(indigoApp : IndigoApplication) : MenuScene(1920, 1080, background = ImageVisual("save_menu_scene.png")),Refreshable {
+class SaveGameMenuScene(indigoApp: IndigoApplication) :
+    MenuScene(1920, 1080, background = ImageVisual("SaveMenuScene.png")), Refreshable {
     // Button for continuing the game without saving
-    private val continueButton = Button(266, 642, 528, 207, "Continue game", 48).
-    apply { onMouseClicked = {indigoApp.showGameScene(indigoApp.gameScene)
-    indigoApp.hideMenuScene()} }
+    private val continueButton = Button(266, 642, 528, 207, "Continue game", 48).apply {
+        onMouseClicked = {
+            indigoApp.showGameScene(indigoApp.gameScene)
+            indigoApp.hideMenuScene()
+        }
+    }
 
     // Button for confirming the decision to save the game
-    private val yesButton = Button(1100, 642, 528, 207, "Yes", 48).
-    apply { onMouseClicked = {
-        indigoApp.rootService.gameService.saveGame("GameState.json")
-        indigoApp.showMenuScene(indigoApp.gameSavedScene)
+    private val yesButton = Button(1100, 642, 528, 207, "Yes", 48).apply {
+        onMouseClicked = {
+            indigoApp.rootService.gameService.saveGame("GameState.json")
+            indigoApp.showMenuScene(indigoApp.gameSavedScene)
         }
     }
 
