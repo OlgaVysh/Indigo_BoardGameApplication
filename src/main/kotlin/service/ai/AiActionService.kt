@@ -17,8 +17,8 @@ class AiActionService(private val rootService: RootService) : AbstractRefreshing
     fun aiMove(difficulty: String) {
         when (difficulty) {
             "easy" -> RandomAI(rootService).makeMove()
-            "medium" -> SimpleAI(rootService).makeMove()
-            "advanced" -> MCTS(rootService, rootService.currentGame!!.currentPlayerIndex).makeMove()
+            "advanced" -> SimpleAI(rootService).makeMove()
+            "medium" -> MCTS(rootService, rootService.currentGame!!.currentPlayerIndex).makeMove() //still needs fixes
         }
     }
 }
