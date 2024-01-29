@@ -22,7 +22,7 @@ import view.components.Label
  * @param indigoApp The IndigoApplication instance associated with the configuration scene.
  */
 class ConfigurePlayersGameScene(val indigoApp: IndigoApplication) :
-    BoardGameScene(1920, 1080, background = ImageVisual("PlainBackground_FCE6BD.png")), Refreshable {
+    BoardGameScene(1920, 1080, background = ImageVisual("plain_background.png")), Refreshable {
     // UI components for configuring players
 
     private val titleLabel = Label(397, 80, 1058, 155, "Configure Players", 128)
