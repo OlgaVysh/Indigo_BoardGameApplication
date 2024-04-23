@@ -1,6 +1,6 @@
 # BoardGameWork "Indigo" Application
 ## Einleitung
-In diesem Gruppenprojekt wurde das Brettspiel "Indigo" implementiert.
+In diesem Gruppenprojekt wurde das in Deutschland beliebte Brettspiel "Indigo" implementiert. Das Spiel kann im Hotseat auf eigenem Rechner sowie über Netzwerk mit anderen Spielern gespielt werden. Zusätzlich kann man KI-Spieler hinzufügen oder reine KI Spiele durchführen.
 ## Spielbeschreibung
 Die Spielregeln von Indigo können aus der Datei "HowToPlay.pdf" entnommen werden.
 ## Anforderungsanalyse
