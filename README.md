@@ -1,31 +1,29 @@
-# BoardGameWork "Indigo" Application
-## Einleitung
-In diesem Gruppenprojekt wurde das in Deutschland beliebte Brettspiel "Indigo" implementiert. Das Spiel kann mit 2 bis 5 Spieler im Hotseat Modus auf eigenem Rechner sowie über Netzwerk gespielt werden. Zusätzlich kann man KI-Spieler hinzufügen oder reine KI Spiele durchführen.
-## Spielbeschreibung
-Die Spielregeln von Indigo können aus der Datei "HowToPlay.pdf" entnommen werden.
-## Anforderungsanalyse
-Im Folgenden werden die Ergebnisse der Anforderungsanalyse und Modellierung dargestellt. 
+# Indigo – Kotlin Board Game Implementation
 
-### Anwendungsfalldiagramm
-![anwendung](https://github.com/OlgaVysh/Indigo_BoardGameApplication/assets/75023035/2a9e2753-234c-4749-bc50-48f0275f3771)
+This project implements the popular board game *Indigo* as a Kotlin application.
 
-### Aktivitätsdiagramme
-#### Start new game
-![Start_New_Game_Act](https://github.com/OlgaVysh/Indigo_BoardGameApplication/assets/75023035/2d21cb62-0a15-4831-8bc0-7e41d61b3351)
-#### Continue Saved Game
-![Continue_Saved_Game_act](https://github.com/OlgaVysh/Indigo_BoardGameApplication/assets/75023035/b2aee507-2e60-45c8-b323-fe8d7063f312)
-#### Place route tile
-![Place_Route_Tile_Akt](https://github.com/OlgaVysh/Indigo_BoardGameApplication/assets/75023035/cb379440-952a-4799-9c33-960a3c415036)
+## Features
 
-## Design
-Im Folgenden werden die Ergebnisse der Designphase dargestellt.
-### Domainmodell
-![Indigo_Domain_Model](https://github.com/OlgaVysh/Indigo_BoardGameApplication/assets/75023035/cb9db173-90f4-4369-93c5-38592c5727e5)
-### GUI Konzept
-#### Start new Game
-![1GUI](https://github.com/OlgaVysh/Indigo_BoardGameApplication/assets/75023035/0ea765d4-b0e1-44fa-bbc7-ae1af2af4800)
-#### Hotseat Mode
-![2GUI](https://github.com/OlgaVysh/Indigo_BoardGameApplication/assets/75023035/0199cae9-b364-4d9e-92f6-e23f745cdf58)
-#### Network Mode
-![3GUI](https://github.com/OlgaVysh/Indigo_BoardGameApplication/assets/75023035/eb1c4349-0485-4083-808e-4d7bea3ce0a1)
+- Hotseat mode – Play locally with friends by taking turns on the same computer.  
+- Network mode – Host a new game or join an existing one over the network.  
+- AI opponents – Challenge the built-in AI, with adjustable difficulty and speed.  
+- Undo/Redo – Reverse and redo moves freely during gameplay.  
+- Save & Resume – Save your game at any point and continue exactly where you left off.
 
+## Technologies
+
+- Backend: Kotlin  
+- GUI Framework: [BoardGameWork](https://tudo-aqua.github.io/bgw)
+- Build Tool: Gradle  
+- Testing: JUnit  
+
+For fuether documentation see [Dokumentation](Dokumentatiom.md).
+
+![NewGameMenuScene](https://github.com/user-attachments/assets/79b9c68e-4909-46f6-a9b0-4d130d65d512)
+![ModusMenuScene](https://github.com/user-attachments/assets/574a003c-2557-4b22-9105-c6758e5fe2e8)
+![HostGameScene](https://github.com/user-attachments/assets/44cc1522-08a4-4792-88e9-ce4c2e535fc7)
+![NewPlayerScene](https://github.com/user-attachments/assets/20a2909a-34bf-4d2b-8623-6d6b9d796824)
+![GameScene_HotSeat2](https://github.com/user-attachments/assets/328fe6b1-702d-4248-9fea-b229b00907cd)
+![GameScene_Rotate](https://github.com/user-attachments/assets/5ca82534-57ab-4e8a-a9bc-5d54204e09ff)
+![AIMenuScene](https://github.com/user-attachments/assets/cab4a94b-4483-4ed8-8cfa-c35a062bdf84)
+![SavedGamesMenuScene](https://github.com/user-attachments/assets/1e9dea39-257c-4b84-b1a3-6befe41beebf)
